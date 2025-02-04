@@ -10,5 +10,10 @@
     </div>
     <h1>Hello, {{user.username}}!</h1>
     <div class="footer"></div>
+    <h1>Welcome to TasteBuddies</h1>
+    <p>Click the button below to add a new user to the database:</p>
+    <a href="{{ url_for('addUserPage') }}">
+        <button>Add User</button>
+    </a>
 </body>
 </html>

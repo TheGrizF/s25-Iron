@@ -1,1 +1,1 @@
-this folder will be for any backend stuff
+this folder will be for any backend stuff except database

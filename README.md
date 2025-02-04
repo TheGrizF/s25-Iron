@@ -16,3 +16,4 @@ Old Dominion University
 2. FLASK_APP should be set correctly in .flaskenv. If not, run `export FLASK_APP=tastebuddies.py`
 3. run `flask run`
 
+If you would like to debug  run `flask run --debug`

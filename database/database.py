@@ -1,10 +1,14 @@
 import sqlite3
+import os
 
-# Connect to SQLite database (or create it if it doesn't exist)
-conn = sqlite3.connect('tastebuddies.db')
+# get the path to the database folder
+database = os.path.join(os.path.dirname(__file__), "tastebuddies.db")
+
+# connect to SQLite database (or create it if it doesn't exist) in the database folder
+conn = sqlite3.connect(database)
 cursor = conn.cursor()
 
-# Create tables
+# create tables
 cursor.executescript("""
 CREATE TABLE cuisine (
   cuisineID INTEGER PRIMARY KEY,
@@ -121,6 +125,6 @@ CREATE TABLE savedRestaurants (
 );
 """)
 
-# Commit changes and close the connection
+# commit changes and close the connection
 conn.commit()
 conn.close()
