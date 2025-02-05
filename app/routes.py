@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 from app import app
 
@@ -34,3 +34,22 @@ def addUser():
     conn.close()
 
     return redirect(url_for('index'))
+
+# Login Route
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.json.get('email')
+
+    #Connect to db and check
+    conn = sqlite3.connect('database/tastebuddies.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM user WHERE email = ?", (email,))
+    user = cursor.fetchone()
+
+    conn.close()
+
+    if user:
+        return jsonify({"message": "Login successful", "user": user}), 200
+    else:
+        return jsonify({"message": "Invalid credentials"}), 401
+

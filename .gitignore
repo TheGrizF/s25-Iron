@@ -29,3 +29,6 @@ __pycache__/
 
 #database files
 *.db
+
+#react node modules
+node_modules/
