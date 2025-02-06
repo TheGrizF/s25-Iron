@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 import sqlite3
 from app import app
 
-print("IM IN ROUTES")
+print("IM IN ROUTESw")
 
 # API route to fetch mock user data
 @app.route('/api/user', methods=['GET'])

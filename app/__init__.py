@@ -2,7 +2,7 @@ from flask import Flask
 import os
 import subprocess
 import sqlite3
-print("IM IN INIT")
+print("IM IN INITw")
 
 # path to the database file
 db_path = os.path.join("database", "tastebuddies.db")
