@@ -1,0 +1,256 @@
+.home-container {
+    padding: 20px;
+    margin-bottom: 70px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 28px;
+    color: var(--slate-dark);
+    margin: 0 0 20px;
+}
+
+.section-subtitle {
+    font-size: 24px;
+    color: var(--slate-dark);
+    margin: 0;
+}
+
+.section-description {
+    color: var(--slate-light);
+    margin: 5px 0 15px;
+}
+
+/* Carousel Styles */
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    margin: 20px 0;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    position: relative;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+/* Live Feed Styles */
+.live-feed {
+    margin-top: 30px;
+}
+
+.feed-item {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.feed-header {
+    margin-bottom: 10px;
+}
+
+.username {
+    color: var(--burgundy-main);
+    font-weight: bold;
+}
+
+.action {
+    color: var(--slate-light);
+}
+
+.feed-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feed-content img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.profile-pic {
+    border-radius: 50% !important;
+}
+
+.feed-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    color: var(--slate-light);
+}
+
+.feed-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.feed-actions i {
+    cursor: pointer;
+}
+
+.timestamp {
+    font-size: 0.9em;
+}
+
+.private-content {
+    color: var(--slate-light);
+    font-style: italic;
+    margin: 0;
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+    .home-container {
+        max-width: 1200px;
+        padding: 20px 40px;
+        margin: 0 auto;
+    }
+
+    .main-content-wrapper {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+
+    .main-column .section-title {
+        margin: 0 0 20px 0;
+    }
+
+    .featured-section {
+        margin-top: 0;
+    }
+
+    .side-column {
+        margin-top: 48px; /* Aligns with "Hot on the Grill" */
+    }
+
+    .side-column .section-title {
+        margin: 0 0 20px 0;
+    }
+
+    /* More reasonable carousel size */
+    .carousel-item img {
+        height: 300px;
+    }
+
+    /* Feed improvements */
+    .live-feed {
+        grid-column: 2 / 3;
+    }
+
+    .feed-item {
+        margin-bottom: 15px;
+        transition: transform 0.2s ease;
+    }
+
+    .feed-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .feed-content img {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+    }
+
+    /* Subtle hover effects */
+    .feed-item:hover {
+        transform: translateY(-2px);
+    }
+
+    .carousel-button {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .carousel-container:hover .carousel-button {
+        opacity: 1;
+    }
+
+    /* Title alignments */
+    .section-title {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .section-subtitle {
+        font-size: 24px;
+        margin-top: 30px;
+    }
+
+    /* This is the key change - remove the margin-top from live-feed title */
+    .live-feed .section-title {
+        margin-top: 72px;
+    }
+}
+
+/* Large Desktop Styles */
+@media (min-width: 1200px) {
+    .home-container {
+        padding: 30px 60px;
+    }
+
+    .carousel-item img {
+        height: 350px; /* Slightly taller but still reasonable */
+    }
+
+    .feed-content img {
+        width: 100px;
+        height: 100px;
+    }
+} 

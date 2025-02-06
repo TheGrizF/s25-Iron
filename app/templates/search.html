@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="What are you in the mood for?">
+    </div>
+
+    <div class="sidebar">
+        <div class="menu-item active">Occasion</div>
+        <div class="menu-item">Dishes</div>
+        <div class="menu-item">Restaurants</div>
+        <div class="menu-item">Moody Foody</div>
+        <div class="menu-item">Group Matching</div>
+    </div>
+
+    <div class="main-content">
+        <h2>Top Suggestions</h2>
+        <div class="food-images">
+            <img src="{{ url_for('static', filename='images/yogurt.jpg') }}" alt="Yogurt with berries">
+            <img src="{{ url_for('static', filename='images/pasta.jpg') }}" alt="Pasta dish">
+        </div>
+
+        <h2>Categories</h2>
+        <div class="categories-grid">
+            <div class="category-item">
+                <i class="fas fa-utensils"></i>
+                <span>Buffet</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-utensils"></i>
+                <span>Chinese</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-fish"></i>
+                <span>Japanese</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-drumstick-bite"></i>
+                <span>Steak</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-ice-cream"></i>
+                <span>Dessert</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-hamburger"></i>
+                <span>American</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-fish"></i>
+                <span>Seafood</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-leaf"></i>
+                <span>Salad</span>
+            </div>
+            <div class="category-item">
+                <i class="fas fa-fire"></i>
+                <span>Barbecue</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

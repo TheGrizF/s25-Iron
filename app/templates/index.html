@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="main-content-wrapper">
+        <!-- Left Column -->
+        <div class="main-column">
+            <h1 class="section-title">Daily Dish</h1>
+            
+            <!-- Hot on the Grill Section -->
+            <section class="featured-section">
+                <h2 class="section-subtitle">Hot on the Grill</h2>
+                <p class="section-description">Todays Featured Dishes</p>
+                
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <div class="carousel-item">
+                            <img src="{{ url_for('static', filename='images/yogurt.jpg') }}" alt="Moroccan Chicken">
+                            <div class="carousel-caption">Yogurt @ Yogurt place</div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ url_for('static', filename='images/pasta.jpg') }}" alt="Sushi Platter">
+                            <div class="carousel-caption">Pasta pasta @ Sakura</div>
+                        </div>
+                        <!-- Add more carousel items as needed -->
+                    </div>
+                    <button class="carousel-button prev">&lt;</button>
+                    <button class="carousel-button next">&gt;</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Right Column -->
+        <div class="side-column">
+            <h2 class="section-title">Live Feed</h2>
+            <section class="live-feed">
+                <div class="feed-item">
+                    <div class="feed-header">
+                        <span class="username">g0ezm8</span>
+                        <span class="action">posted @ Bol A Punch</span>
+                    </div>
+                    <div class="feed-content">
+                        <p>86 escargot, I guess they all got away</p>
+                        <img src="{{ url_for('static', filename='images/escargot.jpg') }}" alt="Escargot dish">
+                    </div>
+                    <div class="feed-footer">
+                        <span class="timestamp">5 minutes ago</span>
+                        <div class="feed-actions">
+                            <i class="far fa-star"></i>
+                            <i class="fas fa-share"></i>
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feed-item">
+                    <div class="feed-header">
+                        <span class="username">MelCollie</span>
+                        <span class="action">left a new dish review @ The Baattery</span>
+                    </div>
+                    <div class="feed-content">
+                        <p class="private-content">private</p>
+                        <img src="{{ url_for('static', filename='images/profile-dog.jpg') }}" alt="User profile" class="profile-pic">
+                    </div>
+                    <div class="feed-footer">
+                        <span class="timestamp">1 hour ago</span>
+                        <div class="feed-actions">
+                            <i class="far fa-star"></i>
+                            <i class="fas fa-share"></i>
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add more feed items as needed -->
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- Add JavaScript for carousel functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('.carousel');
+    const items = document.querySelectorAll('.carousel-item');
+    const prevBtn = document.querySelector('.carousel-button.prev');
+    const nextBtn = document.querySelector('.carousel-button.next');
+    let currentIndex = 0;
+
+    function showItem(index) {
+        const offset = -index * 100;
+        carousel.style.transform = `translateX(${offset}%)`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        currentIndex = Math.max(currentIndex - 1, 0);
+        showItem(currentIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentIndex = Math.min(currentIndex + 1, items.length - 1);
+        showItem(currentIndex);
+    });
+});
+</script>
+{% endblock %}

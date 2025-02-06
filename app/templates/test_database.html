@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Database Viewer{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/database.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="database-container">
+    <h1 class="database-title">Database Contents</h1>
+    
+    {% for table_name, table_data in tables_data.items() %}
+    <div class="table-section">
+        <h2>{{ table_name }}</h2>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        {% for column in table_data.columns %}
+                        <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table_data.rows %}
+                    <tr>
+                        {% for cell in row %}
+                        <td>{{ cell if cell is not none else '' }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="nav-links">
+        <a href="{{ url_for('database') }}">
+            <button>Back to Database Management</button>
+        </a>
+    </div>
+</div>
+{% endblock %} 

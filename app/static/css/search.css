@@ -1,0 +1,132 @@
+.search-page {
+    background-color: var(--gray-light);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-container {
+    display: flex;
+    flex: 1;
+}
+
+.search-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 25px;
+    color: #666;
+}
+
+.sidebar {
+    width: 150px;
+    background: white;
+    padding: 80px 0 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 60px;
+    border-right: 1px solid #eee;
+}
+
+.menu-item {
+    padding: 15px 20px;
+    cursor: pointer;
+}
+
+.menu-item.active {
+    background-color: var(--burgundy-main);
+    color: var(--white);
+}
+
+.main-content {
+    margin-left: 150px;
+    padding: 80px 20px 70px;
+    flex: 1;
+}
+
+.food-images {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.food-images img {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.category-item i {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--burgundy-main);
+}
+
+.category-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .food-images {
+        flex-direction: column;
+    }
+    
+    .food-images img {
+        width: 100%;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+} 

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Norm's Corner{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/restaurant_detail.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="restaurant-detail">
+    <div class="header-images">
+        <img src="{{ url_for('static', filename='images/restaurant-header.jpg') }}" alt="Restaurant ambiance">
+        <button class="back-button">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div class="restaurant-info">
+        <h1>Norm's Corner</h1>
+        <p class="category">Casual Dining</p>
+        <p class="hours">Open hours: 10:00 - 21:00</p>
+        <button class="update-button">
+            Post Update <i class="fas fa-bullhorn"></i>
+        </button>
+    </div>
+
+    <section class="recommendations">
+        <h2>Recommended for You:</h2>
+        <div class="dishes-grid">
+            <div class="dish-card">
+                <img src="{{ url_for('static', filename='images/yogurt.jpg') }}" alt="Sesaroom Udon">
+                <div class="dish-info">
+                    <h3>Sesaroom Udon</h3>
+                    <span class="match">89%</span>
+                    <p class="price">15 USD/Each</p>
+                </div>
+            </div>
+            <div class="dish-card">
+                <img src="{{ url_for('static', filename='images/dish2.jpg') }}" alt="Poki Knoll">
+                <div class="dish-info">
+                    <h3>Poki Knoll</h3>
+                    <span class="match">73%</span>
+                    <p class="price">18 USD/Each</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="section-header">
+            <h2>About the restaurant</h2>
+            <button class="show-detail">Show Detail</button>
+        </div>
+        <p class="description">
+            Bustling, modern restaurant featuring eclectic fusion fare in a polished, yet warm atmosphere.
+        </p>
+    </section>
+</div>
+{% endblock %} 

@@ -1,0 +1,69 @@
+.database-container {
+    padding: 20px;
+    margin-bottom: 70px;  /* Space for mobile nav */
+}
+
+.database-title {
+    color: var(--burgundy-main);
+    margin: 20px 0;
+    text-align: center;
+}
+
+.table-section {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.table-section h2 {
+    color: var(--burgundy-main);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--burgundy-main);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    background: var(--white);
+    overflow-x: auto;
+    display: block;
+}
+
+.data-table th {
+    background: var(--slate-dark);
+    color: var(--white);
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.data-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--gray-medium);
+    color: var(--slate-light);
+}
+
+.data-table tr:hover {
+    background-color: var(--gray-light);
+}
+
+/* Make tables scrollable horizontally on mobile */
+@media (max-width: 768px) {
+    .table-section {
+        margin: 10px -10px;
+        border-radius: 0;
+    }
+    
+    .data-table {
+        font-size: 14px;
+    }
+    
+    .data-table th,
+    .data-table td {
+        min-width: 120px;  /* Ensure columns don't get too narrow */
+    }
+} 
