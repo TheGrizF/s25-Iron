@@ -1,7 +1,7 @@
 import sqlite3
 
 # connect to the database
-conn = sqlite3.connect("database/tastebuddies.db")
+conn = sqlite3.connect("../database/tastebuddies.db")
 cursor = conn.cursor()
 
 # get a list of all tables in the database
