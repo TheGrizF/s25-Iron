@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import Login from "./Login";
-import BottomNav from "./BottomNav";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import AddUser from './components/AddUser';
+import Welcome from './components/Welcome';
 
-function App() {
-  const [page, setPage] = useState(0);
-
+const App = () => {
   return (
-    <div>
-      {page === 0 && <h1>Home Page</h1>}
-      {page === 1 && <h1>Profile Page</h1>}
-      {page === 2 && <h1>Settings Page</h1>}
-      
-      <BottomNav onChange={setPage} />
-    </div>
+    <Router basename='/'>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/adduser" element={<AddUser />} />
+        <Route path="/welcome" element={<Welcome />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

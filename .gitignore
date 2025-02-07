@@ -1,6 +1,7 @@
 .gradle
 **/build/
 !src/**/build/
+/node_modules
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -29,6 +30,3 @@ __pycache__/
 
 #database files
 *.db
-
-#react node modules
-node_modules/
