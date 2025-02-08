@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 from app import app
 
@@ -78,3 +78,52 @@ def restaurants():
 @app.route('/restaurant/<id>')
 def restaurant_detail(id):
     return render_template('restaurant_detail.html')
+
+@app.route('/api/taste-profile', methods=['POST'])
+def save_taste_profile():
+    try:
+        data = request.get_json()
+        
+        conn = sqlite3.connect('database/tastebuddies.db')
+        cursor = conn.cursor()
+        
+        # Insert into tasteProfile table
+        cursor.execute("""
+            INSERT INTO tasteProfile (
+                dietaryRestrictions,
+                sweet,
+                salty,
+                sour,
+                bitter,
+                umami
+            ) VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            data['dietaryRestrictions'],
+            data['tasteScores']['sweet'],
+            data['tasteScores']['salty'],
+            data['tasteScores']['sour'],
+            data['tasteScores']['bitter'],
+            data['tasteScores']['umami']
+        ))
+        
+        profile_id = cursor.lastrowid
+        
+        # Update user table with the new taste profile ID
+        cursor.execute("""
+            UPDATE user 
+            SET tasteProfileID = ? 
+            WHERE userID = ?
+        """, (profile_id, data['userId']))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'success': True}), 200
+        
+    except Exception as e:
+        print(f"Error saving taste profile: {str(e)}")
+        return jsonify({'error': 'Failed to save taste profile'}), 500
+
+@app.route('/taste-profile')
+def taste_profile():
+    return render_template('tasteProfile.html')

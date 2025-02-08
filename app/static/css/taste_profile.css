@@ -1,0 +1,174 @@
+/* Container styles */
+.taste-profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+h1 {
+    color: var(--burgundy-main);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+h3 {
+    color: var(--slate-dark);
+    margin: 15px 0;
+    font-size: 1.2em;
+    border-bottom: 2px solid var(--burgundy-light);
+    padding-bottom: 8px;
+}
+
+/* Ranking container styles */
+.ranking-container {
+    background: #fff;
+    margin: 25px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.ranking-list {
+    list-style: none;
+    padding: 0;
+}
+
+.ranking-item {
+    padding: 12px 15px;
+    margin: 8px 0;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    cursor: move;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.ranking-item::before {
+    content: '≡';
+    margin-right: 10px;
+    color: #adb5bd;
+}
+
+.ranking-item:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+}
+
+/* Section styles */
+.section {
+    background: #fff;
+    margin: 25px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Checkbox grid styles */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.checkbox-grid label {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.checkbox-grid label:hover {
+    background: #e9ecef;
+}
+
+.checkbox-grid input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Select styles */
+select {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+select:hover {
+    border-color: var(--burgundy-light);
+}
+
+/* Preference item styles */
+.preference-item {
+    margin: 20px 0;
+}
+
+.preference-item p {
+    margin-bottom: 10px;
+    color: var(--slate-dark);
+}
+
+/* Submit button styles */
+.submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 40px auto 100px;
+    padding: 15px 30px;
+    background-color: var(--burgundy-main);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+    background-color: var(--burgundy-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .taste-profile-container {
+        padding: 15px;
+    }
+
+    .ranking-container, .section {
+        padding: 15px;
+    }
+
+    .checkbox-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    select {
+        max-width: 100%;
+    }
+}
+
+/* Animation for drag and drop */
+.sortable-ghost {
+    opacity: 0.4;
+}
+
+.sortable-drag {
+    background-color: var(--burgundy-light) !important;
+    color: white;
+} 

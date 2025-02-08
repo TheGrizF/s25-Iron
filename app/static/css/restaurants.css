@@ -1,6 +1,7 @@
 .restaurants-container {
     padding: 20px;
     padding-bottom: 80px;
+    overflow-x: hidden;
 }
 
 .search-header {
@@ -120,15 +121,39 @@
     font-size: 14px;
 }
 
-.location-footer {
-    position: fixed;
-    bottom: 70px;
-    left: 0;
-    right: 0;
-    background: var(--white);
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+@media (max-width: 768px) {
+    .restaurants-container {
+        padding: 15px;
+    }
+
+    .restaurant-card {
+        flex-direction: column;
+        padding: 12px;
+    }
+
+    .restaurant-card img {
+        width: 100%;
+        height: 200px;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .tags {
+        flex-wrap: wrap;
+    }
+
+    .filter-row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .filter-dropdown {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 120px;
+    }
+
+    .smart-filter {
+        width: 100%;
+        margin-top: 8px;
+    }
 } 
