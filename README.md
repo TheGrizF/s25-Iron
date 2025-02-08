@@ -17,3 +17,14 @@ Old Dominion University
 3. run `flask run`
 
 If you would like to debug  run `flask run --debug`
+
+# Digital Ocean
+SSH keys required.
+
+1. `ssh root@167.172.145.100`
+2. `source venv/bin/activate`
+3. `cd ../var/www/tastebuddies`
+4. After pulling from github branch, run `systemctl restart tastebuddies`
+5. Run `systemctl status tastebuddies` to check the status. 
+
+
