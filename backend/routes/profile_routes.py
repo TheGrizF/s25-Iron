@@ -1,0 +1,35 @@
+from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
+from database.models import User, TasteProfile
+from database import db
+
+profile_bp = Blueprint('profile', __name__)
+
+@profile_bp.route('/taste-profile')
+def taste_profile():
+    return render_template('tasteProfile.html')
+
+@profile_bp.route('/api/taste-profile', methods=['POST'])
+def save_taste_profile():
+    try:
+        data = request.get_json()
+        taste_profile = TasteProfile(
+            dietaryRestrictions=data['dietaryRestrictions'],
+            sweet=data['tasteScores']['sweet'],
+            salty=data['tasteScores']['salty'],
+            sour=data['tasteScores']['sour'],
+            bitter=data['tasteScores']['bitter'],
+            umami=data['tasteScores']['umami']
+        )
+
+        db.session.add(taste_profile)
+        db.session.commit()
+
+        user = User.query.get(data['userId'])
+        user.tasteProfileID = taste_profile.tasteProfileID
+        db.session.commit()
+
+        return jsonify({'success': True}), 200
+
+    except Exception as e:
+        print(f"Error saving taste profile: {str(e)}")
+        return jsonify({'error': 'Failed to save taste profile'}), 500
