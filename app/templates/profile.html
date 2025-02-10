@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<h2>Welcome, {{ user.name }}!</h2>
+<p>Your email: {{ user.email }}</p>
+<p>Explore your taste matches and reviews.</p>
+<p><a href="/logout">Logout</a></p>
+{% endblock %}
