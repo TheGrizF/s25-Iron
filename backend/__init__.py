@@ -6,7 +6,7 @@ from backend.routes.profile_routes import profile_bp
 from backend.routes.daily_dish_routes import daily_dish_bp
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='../app/templates', static_folder='../app/static')
     app.config['SECRET_KEY'] = 't4st3budd13s_s3cr3t_k3y'
 
     base_dir = os.path.abspath(os.path.dirname(__file__))
