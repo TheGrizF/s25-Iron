@@ -16,7 +16,7 @@ def init_db():
 
   if not os.path.exists(db_path):
     print("Database not found. Running database.py to create it...")
-    subprocess.run(["python", "database/database.py"])
+    subprocess.run(["python", os.path.join(base_dir, "addTestData.py")])
   else:
     print("Database exists. Population check...")
 

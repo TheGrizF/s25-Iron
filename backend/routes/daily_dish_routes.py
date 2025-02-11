@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template
 
 
-
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
 @daily_dish_bp.route('/search')
@@ -23,7 +22,7 @@ def database():
 @daily_dish_bp.route('/test_database')
 def test_database():
     from database import db
-    from database.models import User  # Add more models if needed
+    from database.models import User
 
     data = {}
     users = User.query.all()

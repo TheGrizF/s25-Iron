@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Add User</h1>
-    <form action="/addUser" method="post">
+    <form action="{{ url_for('auth.add_user') }}" method="post">
         <label for="firstName">First Name:</label><br>
         <input type="text" id="firstName" name="firstName" required><br><br>
 
