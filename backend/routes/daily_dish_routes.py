@@ -3,6 +3,10 @@ from flask import Blueprint, render_template
 
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
+@daily_dish_bp.route('/dailyDish')
+def daily_dish():
+    return render_template('dailyDish.html')
+
 @daily_dish_bp.route('/search')
 def search():
     return render_template('search.html')

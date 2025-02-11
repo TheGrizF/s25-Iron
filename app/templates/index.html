@@ -5,12 +5,32 @@
     <title> Login - TasteBuddies</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .flash-message.error {
+            background-color: #ffdddd;
+            color: #d8000c;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #d8000c;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="login-container">
         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TasteBuddies Logo" class ="logo" />
         <h1>Welcome to TasteBuddies!</h1>
-        <form action="{{ url_for(auth.login')}}" method="post" class="login-form">
+
+        <!-- Flash Error for invalid login -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('auth.login')}}" method="post" class="login-form">
             <div class="form-group">
                 <input type="email" id="email" name="email" placeholder="Email" required>
             </div>

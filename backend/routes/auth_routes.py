@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database.models import User
 from database import db
 
@@ -19,6 +19,12 @@ def add_user():
     lastName = request.form['lastName']
     email = request.form['email']
 
+    # Check for already in database
+    exists = User.query.filter_by(email=email).first()
+    if exists:
+        flash('Email already attached to an account.', 'error')
+        return redirect(url_for('auth.add_user_page'))
+
     new_user = User(firstName=firstName, lastName=lastName, email=email)
     db.session.add(new_user)
     db.session.commit()
@@ -33,6 +39,7 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if user:
-        return redirect(url_for('/dailyDish'))
+        return redirect(url_for('daily_dish.daily_dish'))
     else:
-        return "Invalid login. Please try again.", 401
+        flash("Invalid login. Please try again.", "error")
+        return redirect(url_for('auth.index'))
