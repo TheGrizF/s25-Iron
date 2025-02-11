@@ -6,13 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 15px auto;
+            border-radius: 5px;
+            width: 60%;
+            max-width: 300px;
+            text-align: center;
+        }
         .flash-message.error {
             background-color: #ffdddd;
             color: #d8000c;
-            padding: 10px;
-            margin-bottom: 15px;
             border: 1px solid #d8000c;
-            border-radius: 5px;
+        }
+        .flash-message.success {
+            background-color: #ddffdd;
+            color: #006400
+            border: 1px solid #006400;
         }
     </style>
 </head>
@@ -25,17 +35,17 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
+                    <div class="flash-message {{ category }}">{{ message }}</div><br>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
         <form action="{{ url_for('auth.login')}}" method="post" class="login-form">
             <div class="form-group">
-                <input type="email" id="email" name="email" placeholder="Email" required>
+                <input type="email" id="email" name="email" placeholder="Email" required><br><br>
             </div>
             <div class="form-group">
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" placeholder="Password" required><br><br>
             </div>
             <button type="submit">Login</button>
         </form>

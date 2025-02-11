@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from database.models import User
 from database import db
 
@@ -39,7 +39,29 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if user:
-        return redirect(url_for('daily_dish.daily_dish'))
+        session['user_id'] = user.userID
+        return redirect(url_for('profile.view_profile'))
     else:
         flash("Invalid login. Please try again.", "error")
         return redirect(url_for('auth.index'))
+    
+@auth_bp.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been logged out.", "success")
+    return redirect(url_for('auth.index'))
+
+@auth_bp.route('/database')
+def database():
+    return render_template('database.html')
+
+@auth_bp.route('/test_database')
+def test_database():
+    from database import db
+    from database.models import User
+
+    data = {}
+    users = User.query.all()
+    data['users'] = [{'firstName': u.firstName, 'lastName': u.lastName, 'email': u.email} for u in users]
+
+    return render_template('test_database.html', tables_data=data)

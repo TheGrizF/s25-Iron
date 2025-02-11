@@ -10,15 +10,15 @@
     </div>
     <h1>Database Management</h1>
     <div class="button-container">
-        <a href="{{ url_for('addUserPage') }}">
+        <a href="{{ url_for('auth.add_user_page') }}">
             <button>Add New User</button>
         </a>
-        <a href="{{ url_for('test_database') }}">
+        <a href="{{ url_for('auth.test_database') }}">
             <button>View Database</button>
         </a>
     </div>
     <br>
-    <a href="{{ url_for('index') }}">Back to Homepage</a>
+    <a href="{{ url_for('auth.index') }}">Back to Homepage</a>
     <div class="footer"></div>
 </body>
 </html> 

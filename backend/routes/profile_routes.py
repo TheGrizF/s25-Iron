@@ -8,6 +8,15 @@ profile_bp = Blueprint('profile', __name__)
 def taste_profile():
     return render_template('tasteProfile.html')
 
+@profile_bp.route('/profile')
+def view_profile():
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('auth.index'))
+    
+    user = User.query.get(user_id)
+    return render_template('profile.html', user=user)
+
 @profile_bp.route('/api/taste-profile', methods=['POST'])
 def save_taste_profile():
     try:
