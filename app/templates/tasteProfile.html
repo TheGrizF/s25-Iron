@@ -4,195 +4,54 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-<script src="{{ url_for('static', filename='js/taste_profile.js') }}" defer></script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 <div class="taste-profile-container">
     <h1>Create Your Taste Profile</h1>
-    <form id="tasteProfileForm">
-        <!-- Cuisine Rankings -->
-        <div class="ranking-container">
-            <h3>Rank these cuisines in order of preference</h3>
-            <ul class="ranking-list" id="cuisineRanking">
-                <li class="ranking-item" data-id="italian">Italian (pasta)</li>
-                <li class="ranking-item" data-id="japanese">Japanese (sushi & ramen)</li>
-                <li class="ranking-item" data-id="french">French (kill me with butter)</li>
-                <li class="ranking-item" data-id="american">American (burgers, steak)</li>
-                <li class="ranking-item" data-id="spanish">Spanish (paella)</li>
-                <li class="ranking-item" data-id="mexican">Mexican (tacos)</li>
-            </ul>
-        </div>
-
-        <!-- Hot Sauce Selection -->
-        <div class="section">
-            <h3>What is the hottest sauce you enjoy?</h3>
-            <select name="hotSauce" id="hotSauce">
-                <option value="ranch">Ranch</option>
-                <option value="texas_pete">Texas Pete's (747)</option>
-                <option value="franks">Frank's RedHot (450)</option>
-                <option value="cholula">Cholula (3,600)</option>
-                <option value="sriracha">Huy Fong Sriracha (2,200)</option>
-                <option value="tabasco">Tabasco (4,000)</option>
-            </select>
-        </div>
-
-        <!-- More ranking sections following the same pattern -->
-        <!-- Carbs Ranking -->
-        <div class="ranking-container">
-            <h3>Rank these carbs in order of preference</h3>
-            <ul class="ranking-list" id="carbRanking">
-                <li class="ranking-item" data-id="rice">Rice</li>
-                <li class="ranking-item" data-id="bread">Bread</li>
-                <li class="ranking-item" data-id="noodles">Noodles</li>
-                <li class="ranking-item" data-id="potatoes">Potatoes</li>
-                <li class="ranking-item" data-id="corn">Corn</li>
-                <li class="ranking-item" data-id="quinoa">Quinoa</li>
-            </ul>
-        </div>
-
-        <!-- Allergens Section -->
-        <div class="section">
-            <h3>Please select any allergens:</h3>
-            <div class="checkbox-grid">
-                <label><input type="checkbox" name="allergens" value="dairy"> Dairy</label>
-                <label><input type="checkbox" name="allergens" value="eggs"> Eggs</label>
-                <label><input type="checkbox" name="allergens" value="fish"> Fish</label>
-                <label><input type="checkbox" name="allergens" value="shellfish"> Shellfish</label>
-                <label><input type="checkbox" name="allergens" value="treenuts"> Tree nuts</label>
-                <label><input type="checkbox" name="allergens" value="peanuts"> Peanuts</label>
-                <label><input type="checkbox" name="allergens" value="wheat"> Wheat</label>
-                <label><input type="checkbox" name="allergens" value="soy"> Soy</label>
-                <label><input type="checkbox" name="allergens" value="sesame"> Sesame</label>
-                <label><input type="checkbox" name="allergens" value="gluten"> Gluten</label>
+    <div class="intro-section">
+        <h2>Tell us about Yourself!</h2>
+        <form id="tasteProfileForm">
+            <div class="form-group">
+                <label for="favoriteRestaurant">What's your favorite restaurant?</label>
+                <input type="text" 
+                       id="favoriteRestaurant" 
+                       name="favoriteRestaurant" 
+                       required>
             </div>
-            <div>
-                <label>Other allergens: <input type="text" name="otherAllergens"></label>
+            <div class="form-group">
+                <label for="favoriteDish">What's your favorite dish?</label>
+                <input type="text" 
+                       id="favoriteDish" 
+                       name="favoriteDish" 
+                       required>
             </div>
-        </div>
-
-        <!-- Flavors Ranking -->
-        <div class="ranking-container">
-            <h3>Rank these flavours in order of importance</h3>
-            <ul class="ranking-list" id="flavorRanking">
-                <li class="ranking-item" data-id="sweet">Sweet</li>
-                <li class="ranking-item" data-id="spicy">Spicy</li>
-                <li class="ranking-item" data-id="sour">Sour</li>
-                <li class="ranking-item" data-id="savory">Savory</li>
-                <li class="ranking-item" data-id="umami">Umami</li>
-                <li class="ranking-item" data-id="bitter">Bitter</li>
-            </ul>
-        </div>
-
-        <!-- Dining Experience Ranking -->
-        <div class="ranking-container">
-            <h3>Rank these dining experiences in order of preference</h3>
-            <ul class="ranking-list" id="diningRanking">
-                <li class="ranking-item" data-id="casual">Casual dining</li>
-                <li class="ranking-item" data-id="fine">Fine dining</li>
-                <li class="ranking-item" data-id="fast">Fast Food</li>
-                <li class="ranking-item" data-id="family">Family-friendly</li>
-                <li class="ranking-item" data-id="trendy">Trendy</li>
-            </ul>
-        </div>
-
-        <!-- Cooking Method Ranking -->
-        <div class="ranking-container">
-            <h3>Rank in preference</h3>
-            <ul class="ranking-list" id="cookingRanking">
-                <li class="ranking-item" data-id="grilled">Grilled food</li>
-                <li class="ranking-item" data-id="fried">Fried food</li>
-                <li class="ranking-item" data-id="roasted">Roasted food</li>
-                <li class="ranking-item" data-id="raw">Raw food</li>
-            </ul>
-        </div>
-
-        <!-- Dietary Preferences -->
-        <div class="section">
-            <h3>Please select the diet(s) that pertain to you:</h3>
-            <div class="checkbox-grid">
-                <label><input type="checkbox" name="diets" value="vegetarian"> Vegetarian</label>
-                <label><input type="checkbox" name="diets" value="vegan"> Vegan</label>
-                <label><input type="checkbox" name="diets" value="pescatarian"> Pescatarian</label>
-                <label><input type="checkbox" name="diets" value="keto"> Keto</label>
-                <label><input type="checkbox" name="diets" value="gluten-free"> Gluten-free</label>
-                <label><input type="checkbox" name="diets" value="halal"> Halal</label>
-                <label><input type="checkbox" name="diets" value="kosher"> Kosher</label>
+            <div class="form-group">
+                <label>Do you like to try new things?</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" 
+                               name="tryNew" 
+                               value="yes" 
+                               required>
+                        Yes
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" 
+                               name="tryNew" 
+                               value="no">
+                        No
+                    </label>
+                </div>
             </div>
-        </div>
-
-        <!-- Popcorn Preference -->
-        <div class="section">
-            <h3>What kind of popcorn do you prefer?</h3>
-            <select name="popcorn" id="popcorn">
-                <option value="plain">Plain</option>
-                <option value="buttered">Salted and buttered</option>
-                <option value="caramel">Caramel</option>
-                <option value="cheese">Cheese</option>
-            </select>
-        </div>
-
-        <!-- Condiments -->
-        <div class="section">
-            <h3>When you dine out, which condiments do you most often reach for?</h3>
-            <div class="checkbox-grid">
-                <label><input type="checkbox" name="condiments" value="salt"> Salt</label>
-                <label><input type="checkbox" name="condiments" value="olive_oil"> Olive Oil</label>
-                <label><input type="checkbox" name="condiments" value="chili_oil"> Chili Oil</label>
-                <label><input type="checkbox" name="condiments" value="pepper"> Pepper</label>
-                <label><input type="checkbox" name="condiments" value="hot_sauce"> Hot sauce</label>
-                <label><input type="checkbox" name="condiments" value="worcester"> Worcester sauce</label>
-                <label><input type="checkbox" name="condiments" value="vinegar"> Malt Vinegar</label>
-                <label><input type="checkbox" name="condiments" value="soy_sauce"> Soy Sauce</label>
-                <label><input type="checkbox" name="condiments" value="hoisin"> Hoisin</label>
-                <label><input type="checkbox" name="condiments" value="fish_sauce"> Fish Sauce</label>
-            </div>
-        </div>
-
-        <!-- Additional Preferences -->
-        <div class="section">
-            <h3>Additional Preferences</h3>
-            
-            <div class="preference-item">
-                <p>Do you like kimchi?</p>
-                <select name="kimchi" id="kimchi">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                    <option value="unknown">I don't know</option>
-                </select>
-            </div>
-
-            <div class="preference-item">
-                <p>How do you feel about natto?</p>
-                <select name="natto" id="natto">
-                    <option value="love">Love it</option>
-                    <option value="hate">Hate it</option>
-                    <option value="neutral">Don't really care</option>
-                    <option value="unknown">Nat-what?</option>
-                </select>
-            </div>
-
-            <div class="preference-item">
-                <p>Do you like to try new foods?</p>
-                <select name="tryNew" id="tryNew">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="preference-item">
-                <p>When you are feeling sad, you are most likely to eat:</p>
-                <select name="comfortFood" id="comfortFood">
-                    <option value="sweet">Sweet food</option>
-                    <option value="savory">Savory food</option>
-                    <option value="rich">Rich food</option>
-                    <option value="none">I lose my appetite</option>
-                </select>
-            </div>
-        </div>
-
-        <button type="submit" class="submit-btn">Save Taste Profile</button>
-    </form>
+            <button type="submit" class="submit-btn">Continue</button>
+        </form>
+    </div>
 </div>
-{% endblock %} 
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %} 

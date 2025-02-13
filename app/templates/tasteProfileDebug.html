@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Taste Profile - Debug Summary{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
+<style>
+    .debug-section {
+        background: #f8f9fa;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 8px;
+        border-left: 4px solid var(--burgundy-main);
+    }
+    
+    .debug-title {
+        color: var(--burgundy-main);
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+    
+    .debug-item {
+        display: flex;
+        margin: 8px 0;
+        padding: 8px;
+        background: white;
+        border-radius: 4px;
+    }
+    
+    .debug-label {
+        font-weight: 500;
+        min-width: 150px;
+        color: var(--slate-dark);
+    }
+    
+    .debug-value {
+        color: var(--gray-dark);
+    }
+
+    .confirm-btn {
+        margin-top: 30px;
+        background-color: var(--burgundy-main);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+    }
+
+    .confirm-btn:hover {
+        background-color: var(--burgundy-light);
+        transform: translateY(-2px);
+    }
+
+    .edit-btn {
+        background-color: var(--gray-medium);
+        margin-right: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="taste-profile-container">
+    <h1>Review Your Taste Profile</h1>
+    <div class="intro-section">
+        <h2>DEBUG</h2>
+
+        <div class="debug-section">
+            <div class="debug-title">Basic Preferences</div>
+            {% with step1_data = session.get('taste_profile_step1', {}) %}
+                {% if step1_data %}
+                    <div class="debug-item">
+                        <span class="debug-label">Favorite Restaurant:</span>
+                        <span class="debug-value">{{ step1_data.get('favoriteRestaurant', 'Not set') }}</span>
+                    </div>
+                    <div class="debug-item">
+                        <span class="debug-label">Favorite Dish:</span>
+                        <span class="debug-value">{{ step1_data.get('favoriteDish', 'Not set') }}</span>
+                    </div>
+                    <div class="debug-item">
+                        <span class="debug-label">Try New Things:</span>
+                        <span class="debug-value">{{ step1_data.get('tryNew', 'Not set') }}</span>
+                    </div>
+                {% else %}
+                    <div class="debug-item">
+                        <span class="debug-label">Status:</span>
+                        <span class="debug-value">No step 1 data found in session</span>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="debug-section">
+            <div class="debug-title">Dietary Restrictions</div>
+            <div class="debug-item">
+                <span class="debug-label">Allergens:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step2', {}).get('allergens', [])|join(', ') or 'None' }}</span>
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Other Allergies:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step2', {}).get('otherAllergy') or 'None' }}</span>
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Dietary Restrictions:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step2', {}).get('diets', [])|join(', ') or 'None' }}</span>
+            </div>
+        </div>
+
+        <div class="debug-section">
+            <div class="debug-title">Taste Preferences (1-5 scale)</div>
+            <div class="debug-item">
+                <span class="debug-label">Sour:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step3', {}).get('sour', 'Not set') }}</span>
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Sweet:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step4', {}).get('sweet', 'Not set') }}</span>
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Umami:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step5', {}).get('umami', 'Not set') }}</span>
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Savory:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step6', {}).get('savory', 'Not set') }}</span>
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Spicy:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step7', {}).get('spicy', 'Not set') }}</span>
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Bitter:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step8', {}).get('bitter', 'Not set') }}</span>
+            </div>
+        </div>
+
+        <div class="debug-section">
+            <div class="debug-title">Dining Preferences</div>
+            <div class="debug-item">
+                <span class="debug-label">Preferred Atmosphere:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step9', {}).get('atmosphere', 'Not set') }}</span>
+            </div>
+        </div>
+
+        <div class="debug-section">
+            <div class="debug-title">Cuisine Ratings (1-5 scale)</div>
+            {% for cuisine, rating in session.get('taste_profile_step10', {}).get('cuisines', {}).items() %}
+            <div class="debug-item">
+                <span class="debug-label">{{ cuisine|title }}:</span>
+                <span class="debug-value">{{ rating }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="debug-section">
+            <div class="debug-title">Preferred Condiments</div>
+            <div class="debug-item">
+                <span class="debug-label">Selected:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step11', {}).get('condiments', [])|join(', ') or 'None selected' }}</span>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <button onclick="submitFinalProfile()" class="confirm-btn">Confirm & Save Profile</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function submitFinalProfile() {
+    try {
+        const response = await fetch('/api/taste-profile/step2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({{ session.get('taste_profile_step2', {})|tojson|safe }})
+        });
+
+        if (response.ok) {
+            window.location.href = '/profile';
+        } else {
+            throw new Error('Failed to save profile');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to save profile. Please try again.');
+    }
+}
+</script>
+{% endblock %} 

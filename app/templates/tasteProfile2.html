@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Taste Profile - Dietary Preferences{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="taste-profile-container">
+    <h1>Create Your Taste Profile</h1>
+    <div class="intro-section">
+        <h2>Do you have any allergies or dietary restrictions?</h2>
+        <form id="dietaryForm">
+            <div class="form-group">
+                <label>Please select any allergens:</label>
+                <div class="checkbox-grid">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="dairy">
+                        Dairy
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="eggs">
+                        Eggs
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="fish">
+                        Fish
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="shellfish">
+                        Shellfish
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="treenuts">
+                        Tree nuts
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="peanuts">
+                        Peanuts
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="wheat">
+                        Wheat
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="soy">
+                        Soy
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="sesame">
+                        Sesame
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="allergens" value="gluten">
+                        Gluten
+                    </label>
+                </div>
+                
+                <div class="other-allergy">
+                    <label for="otherAllergy">Other: Please specify:</label>
+                    <input type="text" id="otherAllergy" name="otherAllergy">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Please select the diet(s) that pertains to you:</label>
+                <div class="checkbox-grid">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="diets" value="vegetarian">
+                        Vegetarian
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="diets" value="vegan">
+                        Vegan
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="diets" value="pescatarian">
+                        Pescatarian
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="diets" value="keto">
+                        Keto
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="diets" value="glutenfree">
+                        Gluten-free
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="diets" value="halal">
+                        Halal
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="diets" value="kosher">
+                        Kosher
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Continue</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %} 

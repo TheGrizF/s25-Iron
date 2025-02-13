@@ -30,3 +30,6 @@ __pycache__/
 #database files
 *.db
 node_modules
+
+# Flask session files
+flask_session/

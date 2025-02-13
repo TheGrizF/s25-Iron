@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Taste Profile - Sour Preferences{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="taste-profile-container">
+    <h1>Create Your Taste Profile</h1>
+    <div class="intro-section">
+        <h2>Which Fruit would you prefer?</h2>
+        <form id="sourPreferenceForm">
+            <div class="image-grid">
+                {% for i in range(1, 5) %}
+                <div class="image-option">
+                    <input type="radio" 
+                           name="sourPreference" 
+                           id="sour{{ i }}" 
+                           value="{{ i }}" 
+                           required>
+                    <label for="sour{{ i }}">
+                        <img src="{{ url_for('static', filename='images/tasteProfile/sour' + i|string + '.jpg') }}" 
+                             alt="Sour preference option {{ i }}">
+                    </label>
+                </div>
+                {% endfor %}
+                <div class="image-option center-option">
+                    <input type="radio" 
+                           name="sourPreference" 
+                           id="sour5" 
+                           value="5" 
+                           required>
+                    <label for="sour5">
+                        <img src="{{ url_for('static', filename='images/tasteProfile/sour5.jpg') }}" 
+                             alt="Sour preference option 5">
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">Continue</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %} 

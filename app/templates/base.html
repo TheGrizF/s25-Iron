@@ -16,6 +16,7 @@
     
     {% block content %}{% endblock %}
     
+    {% block bottom_nav %}
     <div class="mobile-nav">
         <a href="{{ url_for('profile.view_profile') }}" class="nav-item">
             <i class="far fa-user"></i>
@@ -38,5 +39,8 @@
             <span>Updates</span>
         </a>
     </div>
+    {% endblock %}
+
+    {% block scripts %}{% endblock %}
 </body>
 </html> 
