@@ -1,0 +1,11 @@
+dishID,dishTasteProfileID,dishName,featured,available
+1,1,Margherita Pizza,TRUE,TRUE
+2,2,General Tso's Chicken,FALSE,TRUE
+3,3,Tacos al Pastor,TRUE,TRUE
+4,4,Sushi Roll,FALSE,TRUE
+5,5,Coq au Vin,FALSE,FALSE
+6,6,Butter Chicken,TRUE,TRUE
+7,7,Pad Thai,FALSE,TRUE
+8,8,Greek Salad,TRUE,TRUE
+9,9,Burger,FALSE,TRUE
+10,10,Bibimbap,TRUE,FALSE

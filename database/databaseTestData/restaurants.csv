@@ -1,0 +1,11 @@
+restaurantID,restaurantName,operatingHoursID,reviewID,dietaryRestrictions,location,ratingAverage,phoneNumber,menuID,cleanAverage,busyAverage
+1,Luigi's Italian,1,1,None,New York,5,212-555-1234,1,4,3
+2,Golden Dragon,2,2,None,San Francisco,4,415-555-5678,2,3,5
+3,El Mariachi,3,3,None,Los Angeles,5,310-555-9876,3,5,2
+4,Sakura Sushi,4,4,None,Seattle,4,206-555-2468,4,5,4
+5,Le Gourmet,5,5,None,Chicago,3,312-555-1357,5,4,3
+6,Curry Delight,6,6,vegan,Houston,5,713-555-7531,6,3,5
+7,Spicy Thai,7,7,None,Boston,4,617-555-6420,7,5,2
+8,Med Bistro,8,8,None,Miami,3,305-555-8492,8,4,4
+9,All-American Grill,9,9,None,Dallas,4,214-555-2314,9,3,5
+10,Kimchi House,10,10,None,Philadelphia,5,215-555-3841,10,5,3
