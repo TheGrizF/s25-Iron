@@ -26,10 +26,11 @@ def add_user():
         return redirect(url_for('auth.add_user_page'))
 
     new_user = User(firstName=firstName, lastName=lastName, email=email)
+    
     db.session.add(new_user)
     db.session.commit()
-
-    return redirect(url_for('auth.index'))
+    session['user_id'] = new_user.userID
+    return redirect(url_for('profile.taste_profile'))
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
@@ -62,6 +63,28 @@ def test_database():
 
     data = {}
     users = User.query.all()
-    data['users'] = [{'firstName': u.firstName, 'lastName': u.lastName, 'email': u.email} for u in users]
+
+    for u in users:
+        print(f"User: {u.firstName} {u.lastName}")
+    if u.taste_profile:
+        print(f"  Dietary Restrictions: {u.taste_profile.dietaryRestrictions}")
+    else:
+        print("  No taste profile found")
+
+
+    data['users'] = [{
+        'firstName': u.firstName, 
+        'lastName': u.lastName, 
+        'email': u.email,
+        'tasteProfile': {
+            'sweet': u.taste_profile.sweet if u.taste_profile else None,
+            'spicy': u.taste_profile.spicy if u.taste_profile else None,
+            'sour': u.taste_profile.sour if u.taste_profile else None,
+            'bitter': u.taste_profile.bitter if u.taste_profile else None,
+            'umami': u.taste_profile.umami if u.taste_profile else None,
+            'savory': u.taste_profile.savory if u.taste_profile else None,
+            'dietaryRestrictions': u.taste_profile.dietaryRestrictions if u.taste_profile else None
+        }    
+    } for u in users]
 
     return render_template('test_database.html', tables_data=data)

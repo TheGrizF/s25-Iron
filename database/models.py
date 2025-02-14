@@ -1,7 +1,8 @@
 from database import db
+from sqlalchemy.dialects.postgresql import JSON
 
 class User(db.Model):
-    userID = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     firstName = db.Column(db.String(20), nullable=False)
     lastName = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -12,18 +13,29 @@ class User(db.Model):
     savedDishesID = db.Column(db.Integer, db.ForeignKey('saved_dishes.userID'))
     userRole = db.Column(db.String(20))
 
+    taste_profile = db.relationship('TasteProfile', back_populates='user', uselist=False, foreign_keys='TasteProfile.userID')
+
     def __repr__(self):
-        return f'<User {self.name}>'
+        return f'<User {self.firstName} {self.lastName} (email: {self.email})>'
 
 class TasteProfile(db.Model):
     tasteProfileID = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, db.ForeignKey('user.userID'), unique=True, nullable=False)
     dietaryRestrictions = db.Column(db.Text)
     sweet = db.Column(db.SmallInteger)
-    salty = db.Column(db.SmallInteger)
+    spicy = db.Column(db.SmallInteger)
     sour = db.Column(db.SmallInteger)
     bitter = db.Column(db.SmallInteger)
     umami = db.Column(db.SmallInteger)
+    savory = db.Column(db.SmallInteger)
     cuisineID = db.Column(db.Integer, db.ForeignKey('cuisine.cuisineID'))
+
+    user = db.relationship('User', back_populates='taste_profile', foreign_keys=[userID])
+
+    def __repr__(self):    
+        return (f"<TasteProfile ID={self.tasteProfileID}, Sweet={self.sweet}, "
+                f"Spicy={self.spicy}, Sour={self.sour}, Bitter={self.bitter}, "
+                f"Umami={self.umami}, Savory={self.savory}>")
     
 class Cuisine(db.Model):
     cuisineID = db.Column(db.Integer, primary_key=True)

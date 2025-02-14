@@ -11,7 +11,7 @@ def create_app():
     app = Flask(__name__, template_folder='../app/templates', static_folder='../app/static')
     
     # Session configuration
-    app.config['SECRET_KEY'] = 'your-secret-key'  # Make sure this is set
+    app.config['SECRET_KEY'] = 't4st3budd13s_s3cr3t-k3y'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
     app.config['SESSION_PERMANENT'] = True

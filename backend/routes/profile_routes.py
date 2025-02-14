@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
 from database.models import User, TasteProfile
 from database import db
+import json
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -210,4 +211,61 @@ def save_taste_profile_step11():
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+    
+@profile_bp.route('/api/taste-profile/save', methods=['POST'])
+def save_taste_profile():
+    try:
+
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
+
+        data = {}
+        for i in range(1, 12):
+            key = f'taste_profile_step{i}'
+            data.update(session.get(key, {}))
+
+        user = User.query.get(user_id)
+
+        print(f"Combined profile: {data}")
+
+        if not user:
+            return jsonify({'status': 'error', 'message': 'User not found'}), 404
+
+        taste_profile = user.taste_profile
+        
+        if not taste_profile:
+            taste_profile = TasteProfile(userID=user_id)
+            user.taste_profile = taste_profile
+            db.session.add(taste_profile)
+        else:
+            taste_profile.userID = user_id
+
+        # Add allergies to Dietary Restrictions
+        diet_allergy = {
+            "dietaryRestrictions": data.get('dietaryRestrictions', []),
+            "allergies": data.get('allergies', [])
+        }
+
+        taste_profile.dietaryRestrictions = json.dumps(diet_allergy)
+        taste_profile.sweet = data.get('sweet', 0)
+        taste_profile.spicy = data.get('spicy', 0)
+        taste_profile.sour = data.get('sour', 0)
+        taste_profile.bitter = data.get('bitter', 0)
+        taste_profile.umami = data.get('umami', 0)
+        taste_profile.savory = data.get('savory', 0)
+
+
+        print(f"Saving TasteProfile - Sweet: {taste_profile.sweet} "
+              f"DietaryRestrictions: {taste_profile.dietaryRestrictions}")
+        db.session.commit()
+
+        for i in range(1, 12):
+            session.pop(f'taste_profile_step{i}', None)
+        flash('Taste Profile Saved!', 'success')
+        return jsonify({'status': 'success'})
+    
+    except Exception as e:
+        db.session.rollback()
         return jsonify({'status': 'error', 'message': str(e)}), 500

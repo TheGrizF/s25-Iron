@@ -174,15 +174,16 @@
 <script>
 async function submitFinalProfile() {
     try {
-        const response = await fetch('/api/taste-profile/step2', {
+        const response = await fetch('/api/taste-profile/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({{ session.get('taste_profile_step2', {})|tojson|safe }})
+            body: JSON.stringify({ message: 'Finalize Profile' })
         });
 
         if (response.ok) {
+            alert('Taste Profile Saved!')
             window.location.href = '/profile';
         } else {
             throw new Error('Failed to save profile');
