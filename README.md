@@ -26,5 +26,3 @@ SSH keys required.
 3. `cd ../var/www/tastebuddies`
 4. After pulling from github branch, run `systemctl restart tastebuddies`
 5. Run `systemctl status tastebuddies` to check the status. 
-
-
