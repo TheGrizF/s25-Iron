@@ -91,13 +91,11 @@ def taste_profile_debug():
 def save_taste_profile_step1():
     try:
         data = request.get_json()
-        print("Received data:", data)  # Debug log
         
         # Store the data in session
         session['taste_profile_step1'] = data
         session.modified = True  # Explicitly mark the session as modified
         
-        print("Session after storage:", dict(session))  # Debug log
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))  # Debug log
@@ -228,8 +226,6 @@ def save_taste_profile():
 
         user = User.query.get(user_id)
 
-        print(f"Combined profile: {data}")
-
         if not user:
             return jsonify({'status': 'error', 'message': 'User not found'}), 404
 
@@ -244,8 +240,8 @@ def save_taste_profile():
 
         # Add allergies to Dietary Restrictions
         diet_allergy = {
-            "dietaryRestrictions": data.get('dietaryRestrictions', []),
-            "allergies": data.get('allergies', [])
+            "dietaryRestrictions": data.get('diets', []),
+            "allergies": data.get('allergens', [])
         }
 
         taste_profile.dietaryRestrictions = json.dumps(diet_allergy)
@@ -256,9 +252,6 @@ def save_taste_profile():
         taste_profile.umami = data.get('umami', 0)
         taste_profile.savory = data.get('savory', 0)
 
-
-        print(f"Saving TasteProfile - Sweet: {taste_profile.sweet} "
-              f"DietaryRestrictions: {taste_profile.dietaryRestrictions}")
         db.session.commit()
 
         for i in range(1, 12):

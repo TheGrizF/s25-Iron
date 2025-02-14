@@ -64,14 +64,6 @@ def test_database():
     data = {}
     users = User.query.all()
 
-    for u in users:
-        print(f"User: {u.firstName} {u.lastName}")
-    if u.taste_profile:
-        print(f"  Dietary Restrictions: {u.taste_profile.dietaryRestrictions}")
-    else:
-        print("  No taste profile found")
-
-
     data['users'] = [{
         'firstName': u.firstName, 
         'lastName': u.lastName, 
