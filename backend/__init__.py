@@ -7,19 +7,21 @@ from backend.routes.daily_dish_routes import daily_dish_bp
 from flask_session import Session
 from datetime import timedelta
 
+print("I AM IN BACKEND INIT.PY")
+
 def create_app():
     app = Flask(__name__, template_folder='../app/templates', static_folder='../app/static')
     
-    # Session configuration
-    app.config['SECRET_KEY'] = 't4st3budd13s_s3cr3t-k3y'
+    # session configuration
+    app.config['SECRET_KEY'] = 'your-secret-key'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
     app.config['SESSION_PERMANENT'] = True
     
-    # Initialize Flask-Session
+    # initialize Flask-Session
     Session(app)
-    
-    # Make sure sessions are permanent by default
+
+    # make sure sessions are permanent by default
     @app.before_request
     def make_session_permanent():
         session.permanent = True
@@ -28,7 +30,11 @@ def create_app():
     db_path = os.path.join(base_dir, '../database/tastebuddies.db')
     app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 
-    db.init_app(app)
+    db.init_app(app)  # initialize db within app context
+
+    with app.app_context():
+        from database.database_setup import init_db
+        init_db()  # run setup inside app context to avoid circular import
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)

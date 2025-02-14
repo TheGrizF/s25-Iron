@@ -82,12 +82,13 @@ def test_database():
     taste_profiles = TasteProfile.query.all()
     data['taste_profiles'] = [{
         'tasteProfileID': tp.tasteProfileID,  # primary key
+        'userID' : tp.userID,
         'dietaryRestrictions': tp.dietaryRestrictions,
         'sweet': tp.sweet,
-        'salty': tp.salty,
         'sour': tp.sour,
         'bitter': tp.bitter,
         'umami': tp.umami,
+        'savory': tp.savory,
         'cuisineID': tp.cuisineID  # foreign key
     } for tp in taste_profiles]
 
