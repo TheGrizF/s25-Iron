@@ -15,6 +15,11 @@ def search():
 def restaurants():
     return render_template('restaurants.html')
 
+@daily_dish_bp.route('/TasteBuds.html')
+def TasteBuds():
+    return render_template('TasteBuds.html')
+
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
     return render_template('restaurant_detail.html')
+    

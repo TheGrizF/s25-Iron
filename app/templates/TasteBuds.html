@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Restaurants{% endblock %}
+
+{% block extra_css %}
+
+<!------ {{ url_for('static', filename='css/TasteBuds.css') }} ----->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/TasteBuds.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="TasteBuds-container">
+    <div class="search-header">
+        <h1>TasteBuddies</h1>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Find a buddy...">
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-row">
+            <select class="filter-dropdown">
+                <option value="">Super TasteBuddies</option>
+            </select>
+            
+        </div>
+    <div class="filter-section">
+         <div class="filter-row">
+                <select class="filter-dropdown">
+                    <option value=""> TasteBuddies</option>
+                </select>
+        </div>
+
+    <div class="filter-section">
+                <div class="filter-row">
+                    <select class="filter-dropdown">
+                        <option value="">Buddies</option>
+                    </select>
+                </div>
+    </div>
+
+   <button type="submit"> Find a Restaraunt for Active Group </button>
+    
+       
+    
+</div>
+{% endblock %} 
