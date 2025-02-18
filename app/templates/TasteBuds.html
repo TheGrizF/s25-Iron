@@ -1,49 +1,63 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %}Restaurants{% endblock %} {% block
+extra_css %}
 
-{% block title %}Restaurants{% endblock %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/TasteBuds.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+{% endblock %} {% block content %}
 
-{% block extra_css %}
-
-<!------ {{ url_for('static', filename='css/TasteBuds.css') }} ----->
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/TasteBuds.css') }}">
-{% endblock %}
-
-{% block content %}
 <div class="TasteBuds-container">
-    <div class="search-header">
-        <h1>TasteBuddies</h1>
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Find a buddy...">
-        </div>
-    </div>
+  <!-- Flash Error for User Not Found login -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="flash-message {{ category }}">{{ message }}</div>
+  <br />
+  {% endfor %} {% endif %} {% endwith %}
 
+  <div class="search-bar">
+    <form
+      name="Search TasteBuddies"
+      action="{{ url_for('auth.searchUser')}}"
+      method="post"
+    >
+      <i class="fas fa-magnifying-glass"></i>
+      <input
+        type="text"
+        name="userName"
+        id="userName"
+        placeholder="Find a buddy"
+      />
+    </form>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-row">
+      <select class="filter-dropdown">
+        <option value="">Super TasteBuddies</option>
+      </select>
+    </div>
     <div class="filter-section">
+      <div class="filter-row">
+        <select class="filter-dropdown">
+          <option value="">TasteBuddies</option>
+        </select>
+      </div>
+
+      <div class="filter-section">
         <div class="filter-row">
-            <select class="filter-dropdown">
-                <option value="">Super TasteBuddies</option>
-            </select>
-            
+          <select class="filter-dropdown">
+            <option value="">Buddies</option>
+          </select>
         </div>
-    <div class="filter-section">
-         <div class="filter-row">
-                <select class="filter-dropdown">
-                    <option value=""> TasteBuddies</option>
-                </select>
-        </div>
+      </div>
 
-    <div class="filter-section">
-                <div class="filter-row">
-                    <select class="filter-dropdown">
-                        <option value="">Buddies</option>
-                    </select>
-                </div>
+      <button type="submit">Find a Restaraunt for Active Group</button>
     </div>
-
-   <button type="submit"> Find a Restaraunt for Active Group </button>
-    
-       
-    
+    {% endblock %}
+  </div>
 </div>
-{% endblock %} 

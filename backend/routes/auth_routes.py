@@ -52,6 +52,19 @@ def logout():
     flash("You have been logged out.", "success")
     return redirect(url_for('auth.index'))
 
+@auth_bp.route('/TasteBuds', methods=['GET','POST'])
+def searchUser():
+    userName = request.form['userName']
+    
+    user = (User.query.filter_by(firstName=userName).first()) or (User.query.filter_by(email=userName).first())
+
+    if user:
+       return redirect(url_for('profile.viewUserProfile',user_id=user.userID))
+    else:
+       flash("No user found")
+       return redirect(url_for('daily_dish.TasteBuds'))
+        
+
 @auth_bp.route('/database')
 def database():
     return render_template('database.html')

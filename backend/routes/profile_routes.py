@@ -15,6 +15,12 @@ def view_profile():
     user = User.query.get(user_id)
     return render_template('profile.html', user=user)
 
+
+@profile_bp.route('/userProfile/<user_id>')
+def viewUserProfile(user_id):
+    user = User.query.get(user_id)
+    return render_template('userProfile.html', user=user)
+
 @profile_bp.route('/delete_profile', methods=['POST'])
 def delete_profile():
     user_id = session.get('user_id')

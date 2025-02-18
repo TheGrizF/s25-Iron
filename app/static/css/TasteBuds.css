@@ -1,71 +1,51 @@
 .TasteBuds-container {
-    padding: 20px;
-    padding-bottom: 80px;
-    overflow-x: hidden;
+  padding: 20px;
+  padding-bottom: 80px;
+  overflow-x: hidden;
 }
 
 .search-header {
-    position: sticky;
-    top: 0;
-    background: var(--white);
-    padding: 15px 0;
-    z-index: 100;
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  padding: 15px 0;
+  z-index: 100;
 }
 
 .search-bar {
-    position: relative;
-    margin: 15px 0;
+  position: relative;
+  margin: 20px 0;
 }
 
 .search-bar input {
-    width: 100%;
-    padding: 12px 40px;
-    border: 1px solid var(--gray-medium);
-    border-radius: 25px;
-    font-size: 16px;
+  width: 100%;
+  padding: 12px 40px;
+  border: 1px solid var(--gray-medium);
+  border-radius: 25px;
+  font-size: 16px;
 }
 
 .search-bar i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--slate-light);
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--slate-light);
 }
 
 .filter-section {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 .filter-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .filter-dropdown {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid var(--gray-medium);
-    border-radius: 5px;
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--gray-medium);
+  border-radius: 5px;
 }
-
-
-
-
-
-@media (max-width: 768px) {
-    .TasteBuds-container {
-        padding: 15px;
-    }
-    
-    .filter-row {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .filter-dropdown {
-        flex: 1 1 calc(50% - 8px);
-        min-width: 120px;
-    }
-} 
