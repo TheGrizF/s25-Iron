@@ -100,6 +100,35 @@ h2 {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+.profile-info {
+    text-align: center;
+    color: var(--slate-dark);
+    margin: 20px 0;
+    font-style: italic;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.done-btn {
+    background-color: var(--burgundy-main);
+}
+
+.done-btn:hover {
+    background-color: var(--burgundy-light);
+}
+
+.submit-btn:last-child {
+    background-color: var(--slate-light);
+}
+
+.submit-btn:last-child:hover {
+    background-color: var(--slate-dark);
+}
+
 @media (max-width: 768px) {
     .taste-profile-container {
         padding: 20px;
@@ -255,17 +284,17 @@ select:hover {
 /* Update the image grid styles */
 .image-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* Always show 2 columns */
+    grid-template-columns: repeat(2, 1fr);  /* Always 2 columns */
     gap: 20px;
     padding: 20px;
-    max-width: 800px;  /* Increase max width to allow more space */
+    max-width: 800px;
     margin: 0 auto;
 }
 
-/* Add styles for the centered option */
+/* Center option styling */
 .center-option {
-    grid-column: 1 / -1;
-    width: 50%;  /* Make center option half width */
+    grid-column: 1 / -1;  /* Span both columns */
+    width: 50%;
     margin: 0 auto;
 }
 
@@ -317,13 +346,18 @@ select:hover {
     }
 
     .image-grid {
-        grid-template-columns: 1fr;  /* Single column on mobile */
+        grid-template-columns: repeat(2, 1fr);  /* Keep 2 columns on mobile */
         padding: 10px;
-        gap: 15px;
+        gap: 10px;  /* Reduce gap on mobile for better fit */
     }
 
     .center-option {
-        width: 100%;  /* Full width on mobile */
+        width: 50%;  /* Keep center option at half width */
+    }
+
+    /* Adjust image height for better mobile viewing */
+    .image-option img {
+        height: 150px;  /* Slightly smaller images on mobile */
     }
 }
 

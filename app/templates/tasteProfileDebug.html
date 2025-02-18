@@ -138,10 +138,10 @@
         </div>
 
         <div class="debug-section">
-            <div class="debug-title">Dining Preferences</div>
+            <div class="debug-title">Beverage Preferences</div>
             <div class="debug-item">
-                <span class="debug-label">Preferred Atmosphere:</span>
-                <span class="debug-value">{{ session.get('taste_profile_step9', {}).get('atmosphere', 'Not set') }}</span>
+                <span class="debug-label">Selected:</span>
+                <span class="debug-value">{{ session.get('taste_profile_step8', {}).get('beverages', [])|join(', ') or 'None selected' }}</span>
             </div>
         </div>
 

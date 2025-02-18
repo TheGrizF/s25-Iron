@@ -28,11 +28,15 @@ body {
 
 .logo {
     text-align: center;
-    margin: 80px 0 20px;
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .logo img {
-    max-width: 200px;
+    width: 400px;
+    height: auto;
 }
 
 .footer {
@@ -75,16 +79,107 @@ body {
     margin-bottom: 4px;
 }
 
+/* Common form styles */
+.form-group {
+    width: 100%;  /* Changed back to 100% */
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--gray-medium);
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: var(--burgundy-main);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--burgundy-main-rgb), 0.1);
+}
+
+/* Flash message styles */
+.flash-message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    width: 60%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.flash-message.error {
+    background-color: #ffdddd;
+    color: #d8000c;
+    border: 1px solid #d8000c;
+}
+
+.flash-message.success {
+    background-color: #ddffdd;
+    color: #006400;
+    border: 1px solid #006400;
+}
+
+/* Login specific styles */
+.login-form {
+    width: 320px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Taste Profile specific styles */
+.taste-profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.intro-section {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Button styles */
+.button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* General button styles - needed for database and other pages */
 button {
     background-color: var(--burgundy-main);
     color: var(--white);
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 10px 20px;  /* Default padding */
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: var(--burgundy-light);
+}
+
+/* Login button styles */
+.login-form button[type="submit"] {
+    width: 200px;
+    padding: 12px 15px;
+    font-size: 16px;
+}
+
+/* Taste Profile button styles */
+.submit-btn {
+    width: 200px;
+    padding: 8px 15px;  /* Slimmer padding */
+    font-size: 16px;
+    margin: 20px auto;
+    display: inline-block;  /* Ensure proper margin handling */
 } 
