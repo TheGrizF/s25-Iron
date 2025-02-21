@@ -1,50 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add User</title>
-    <style>
-        .flash-message {
-            padding: 10px;
-            margin-bottom: 15px auto;
-            border-radius: 5px;
-            width: 60%;
-            max-width: 300px;
-            text-align: center;
-        }
-        .flash-message.error {
-            background-color: #ffdddd;
-            color: #d8000c;
-            border: 1px solid #d8000c;
-        }
-    </style>
-</head>
-<body>
-    <h1>Add User</h1>
+{% extends "base.html" %}
 
-    <!-- Flash Message -->
-     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="flash-message {{ category }}">{{ message }}</div><br>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+{% block title %}Add User - TasteBuddies{% endblock %}
 
-    <form action="{{ url_for('auth.add_user') }}" method="post">
-        <label for="firstName">First Name:</label><br>
-        <input type="text" id="firstName" name="firstName" required><br><br>
+{% block content %}
+<div class="taste-profile-container">
+    <h1>Create Your Account</h1>
+    <div class="intro-section">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-        <label for="lastName">Last Name:</label><br>
-        <input type="text" id="lastName" name="lastName" required><br><br>
+        <form action="{{ url_for('auth.add_user') }}" method="post">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
 
-        <button type="submit">Submit</button>
-    </form>
-    <br>
-    <a href="{{ url_for('auth.index') }}">Go Back to Homepage</a>
-</body>
-</html>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="submit-btn">Create Account</button>
+            </div>
+        </form>
+
+        <p class="profile-info">
+            Already have an account? <a href="{{ url_for('auth.index') }}" style="color: var(--burgundy-main);">Login here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %}
