@@ -110,23 +110,34 @@ h2 {
 .button-group {
     display: flex;
     gap: 15px;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
-.done-btn {
-    background-color: var(--burgundy-main);
+.button-group .done-btn,
+.button-group .submit-btn {
+    width: auto;  /* Override the 100% width */
+    margin: 0;    /* Override the default margin */
+    padding: 10px 30px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;  /* Override block display */
 }
 
-.done-btn:hover {
-    background-color: var(--burgundy-light);
-}
-
-.submit-btn:last-child {
-    background-color: var(--slate-light);
-}
-
-.submit-btn:last-child:hover {
+.button-group .done-btn {
     background-color: var(--slate-dark);
+    color: white;
+    font-size: 1.2em;  /* Make "Done" text bigger */
+}
+
+.button-group .submit-btn {
+    background-color: var(--burgundy-main);
+    color: white;
+}
+
+/* Keep existing submit-btn styles for other pages */
+.submit-btn:not(.button-group .submit-btn) {
+    /* existing submit-btn styles remain unchanged */
 }
 
 @media (max-width: 768px) {
