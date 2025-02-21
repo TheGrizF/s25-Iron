@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+
 :root {
     /* Primary colors */
     --yellow-main: #F4B942;      /* Keep existing yellow */
@@ -37,6 +39,39 @@ body {
 .logo img {
     width: 400px;
     height: auto;
+}
+
+.small-logo img{
+    width: 15%;
+    max: width 50px;
+    height:auto;
+}
+
+.small-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+}
+
+.small-logo .logo-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.small-logo h1 {
+    font-family: 'Comfortaa', cursive;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    margin-left: 10px; 
+}
+
+h1 {
+    font-family: 'Comfortaa', cursive;
+    text-align: center;
 }
 
 .footer {
@@ -151,6 +186,14 @@ body {
 .button-container {
     text-align: center;
     margin: 20px 0;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between; /* Space between buttons */
+    gap: 10px; /* Optional: Adjusts spacing between buttons */
+    max-width: 300px; /* Optional: limit the width of the buttons group */
+    margin: 0 auto;  /* Optional: Centers the button group */
 }
 
 /* General button styles - needed for database and other pages */
