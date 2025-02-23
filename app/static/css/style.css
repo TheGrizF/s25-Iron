@@ -43,7 +43,7 @@ body {
 
 .small-logo img{
     width: 15%;
-    max: width 50px;
+    max-height: 40px;
     height:auto;
 }
 

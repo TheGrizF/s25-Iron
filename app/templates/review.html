@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/review.css') }}">
+</head>
+<body>
+    <div class="greeting">
+        Hi <span> {{ user.firstName }}</span>,<br>
+        how was your experience?
+    </div>
+
+    <!--Review Form Start-->
+    <form action="/review" method="POST"> <!--Will need more involvement later-->
+        <div class="rating-container">
+            <div class="rating-option">
+                <div class="rating-circle"></div>
+                <img src="{{ url_for('static', filename='images/review/puke.png') }}" alt="Disgusting">
+            </div>
+            <div class="rating-option">
+                <div class="rating-circle"></div>
+                <img src="{{ url_for('static', filename='images/review/gross.png') }}" alt="Difficult to eat">
+            </div>
+            <div class="rating-option">
+                <div class="rating-circle"></div>
+                <img src="{{ url_for('static', filename='images/review/neutral.png') }}" alt="Neutral">
+            </div>
+            <div class="rating-option">
+                <div class="rating-circle"></div>
+                <img src="{{ url_for('static', filename='images/review/smile.png') }}" alt="Good">
+            </div>
+            <div class="rating-option">
+                <div class="rating-circle"></div>
+                <img src="{{ url_for('static', filename='images/review/yummy.png') }}" alt="Yummy">
+            </div>
+        </div>
+
+        <button class="expand-button" id="tell-more">Tell us more</button>
+
+        <div class="expandable-list" id="categories">
+            <div class="list-item">
+                <div class="list-header">
+                    <span class="arrow">▶</span>
+                    <span>Dish</span>
+                </div>
+                <div class="list-content">
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/spicy.png') }}" alt="Spicy"> Spicy
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="spicy" value="1">
+                            <input type="radio" name="spicy" value="2">
+                            <input type="radio" name="spicy" value="3">
+                            <input type="radio" name="spicy" value="4">
+                            <input type="radio" name="spicy" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/salt.png') }}" alt="Salty"> Salty
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="salty" value="1">
+                            <input type="radio" name="salty" value="2">
+                            <input type="radio" name="salty" value="3">
+                            <input type="radio" name="salty" value="4">
+                            <input type="radio" name="salty" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/sweet.png') }}" alt="Sweet"> Sweet
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="sweet" value="1">
+                            <input type="radio" name="sweet" value="2">
+                            <input type="radio" name="sweet" value="3">
+                            <input type="radio" name="sweet" value="4">
+                            <input type="radio" name="sweet" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/fresh.png') }}" alt="Fresh"> Fresh
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="fresh" value="1">
+                            <input type="radio" name="fresh" value="2">
+                            <input type="radio" name="fresh" value="3">
+                            <input type="radio" name="fresh" value="4">
+                            <input type="radio" name="fresh" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/presentation.png') }}" alt="Presentation"> Presentation
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="presentation" value="1">
+                            <input type="radio" name="presentation" value="2">
+                            <input type="radio" name="presentation" value="3">
+                            <input type="radio" name="presentation" value="4">
+                            <input type="radio" name="presentation" value="5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-item">
+                <div class="list-header">
+                    <span class="arrow">▶</span>
+                    <span>Staff</span>
+                </div>
+                <div class="list-content">
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/speed.png') }}" alt="Friendly"> Friendly
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="friendly" value="1">
+                            <input type="radio" name="friendly" value="2">
+                            <input type="radio" name="friendly" value="3">
+                            <input type="radio" name="friendly" value="4">
+                            <input type="radio" name="friendly" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/speed.png') }}" alt="Speed"> Speed
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="speed" value="1">
+                            <input type="radio" name="speed" value="2">
+                            <input type="radio" name="speed" value="3">
+                            <input type="radio" name="speed" value="4">
+                            <input type="radio" name="speed" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/attentive.png') }}" alt="attentive"> Attentive
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="friendly" value="1">
+                            <input type="radio" name="friendly" value="2">
+                            <input type="radio" name="friendly" value="3">
+                            <input type="radio" name="friendly" value="4">
+                            <input type="radio" name="friendly" value="5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-item">
+                <div class="list-header">
+                    <span class="arrow">▶</span>
+                    <span>Atmosphere</span>
+                </div>
+                <div class="list-content">
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/clean.png') }}" alt="Cleanliness"> Cleanliness
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="cleanliness" value="1">
+                            <input type="radio" name="cleanliness" value="2">
+                            <input type="radio" name="cleanliness" value="3">
+                            <input type="radio" name="cleanliness" value="4">
+                            <input type="radio" name="cleanliness" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/ambiance.png') }}" alt="Ambiance"> Ambiance
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="ambiance" value="1">
+                            <input type="radio" name="ambiance" value="2">
+                            <input type="radio" name="ambiance" value="3">
+                            <input type="radio" name="ambiance" value="4">
+                            <input type="radio" name="ambiance" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/comfort.png') }}" alt="Comfort"> Comfort
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="comfort" value="1">
+                            <input type="radio" name="comfort" value="2">
+                            <input type="radio" name="comfort" value="3">
+                            <input type="radio" name="comfort" value="4">
+                            <input type="radio" name="comfort" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/expense.png') }}" alt="Expense"> Expense
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="expense" value="1">
+                            <input type="radio" name="expense" value="2">
+                            <input type="radio" name="expense" value="3">
+                            <input type="radio" name="expense" value="4">
+                            <input type="radio" name="expense" value="5">
+                        </div>
+                    </div>
+                    <div class="attribute-row">
+                        <div class="attribute-label">
+                            <img src="{{ url_for('static', filename='images/review/accessibility.png') }}" alt="Accessibility"> Accessibility
+                        </div>
+                        <div class="rating-stars">
+                            <input type="radio" name="accessibility" value="1">
+                            <input type="radio" name="accessibility" value="2">
+                            <input type="radio" name="accessibility" value="3">
+                            <input type="radio" name="accessibility" value="4">
+                            <input type="radio" name="accessibility" value="5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="expand-button" id="final-thoughts">Final Thoughts</button>
+        <textarea class="text-area" placeholder="Share your thoughts..."></textarea>
+
+        <div class="bottom-buttons">
+            <button class="bottom-button">Skip</button>
+            <button class="bottom-button">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        // Handle rating selection
+        document.querySelectorAll('.rating-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.rating-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+
+        // Handle "Tell us more" button
+        document.getElementById('tell-more').addEventListener('click', function() {
+            event.preventDefault();
+            this.style.backgroundColor = 'var(--dark-grey)';
+            document.getElementById('categories').style.display = 'block';
+            document.getElementById('final-thoughts').style.display = 'block';
+        });
+
+        // Handle expandable lists
+        document.querySelectorAll('.list-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const arrow = header.querySelector('.arrow');
+                content.classList.toggle('expanded');
+                arrow.textContent = content.classList.contains('expanded') ? '▼' : '▶';
+            });
+        });
+
+        // Handle "Final Thoughts" button
+        document.getElementById('final-thoughts').addEventListener('click', function() {
+            event.preventDefault();
+            this.style.backgroundColor = 'var(--dark-grey)';
+            document.querySelector('.text-area').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
