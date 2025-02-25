@@ -7,7 +7,7 @@
 .search-header {
     position: sticky;
     top: 0;
-    background: var(--white);
+    background: transparent;
     padding: 15px 0;
     z-index: 100;
 }
@@ -15,6 +15,9 @@
 .search-bar {
     position: relative;
     margin: 15px 0;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
 }
 
 .search-bar input {

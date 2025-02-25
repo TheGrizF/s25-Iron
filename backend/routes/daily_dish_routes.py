@@ -18,3 +18,8 @@ def restaurants():
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
     return render_template('restaurant_detail.html')
+
+@daily_dish_bp.route('/review', methods=['GET', 'POST'])
+def review():
+    user = {'firstName': 'Person-I-Know'} #Umm, don't know how to connect it with db right now
+    return render_template('review.html', user = user)

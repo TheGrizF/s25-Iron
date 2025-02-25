@@ -8,11 +8,20 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    {% if request.endpoint in ['index', 'auth.addUser'] %}
+    <!-- Big Logo for Login Screen -->
     <div class="logo">
-        <a href="{{ url_for('daily_dish.daily_dish') }}">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TasteBuddies Logo">
-        </a>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TasteBuddies Logo">
     </div>
+    {% else %}
+        <!-- Small Logo for Other Pages -->
+        <div class="small-logo">
+            <a href="{{ url_for('daily_dish.daily_dish') }}" class="logo-link">
+                <img src="{{ url_for('static', filename='images/small_logo.png') }}" alt="TasteBuddies Small Logo">
+                <h1>TasteBuddies</h1>
+            </a>
+        </div>
+    {% endif %}
     
     {% block content %}{% endblock %}
     

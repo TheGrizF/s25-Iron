@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (response.ok) {
-                    window.location.href = '/taste-profile/step9';  // Changed from /profile to next step
+                    window.location.href = '/taste-profile/step10';  // Changed from step9 to step10
                 } else {
                     throw new Error('Failed to save bitter preference');
                 }
@@ -251,32 +251,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    if (document.getElementById('atmospherePreferenceForm')) {
-        document.getElementById('atmospherePreferenceForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const selectedValue = document.querySelector('input[name="atmospherePreference"]:checked').value;
-            
-            try {
-                const response = await fetch('/api/taste-profile/step9', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ atmosphere: selectedValue })
-                });
-
-                if (response.ok) {
-                    window.location.href = '/taste-profile/step10';  // Changed from /profile to next step
-                } else {
-                    throw new Error('Failed to save atmosphere preference');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to save preference. Please try again.');
-            }
-        });
-    }
+    // if (document.getElementById('atmospherePreferenceForm')) {
+    //     document.getElementById('atmospherePreferenceForm').addEventListener('submit', async (e) => {
+    //         ... entire block ...
+    //     });
+    // }
 
     if (document.getElementById('cuisinePreferenceForm')) {
         // Update slider values in real-time
@@ -346,4 +325,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-}); 
+});
+
+// Add this function after the DOMContentLoaded event listener
+async function submitBasicProfile() {
+    const favoriteRestaurant = document.getElementById('favoriteRestaurant').value;
+    const favoriteDish = document.getElementById('favoriteDish').value;
+    const tryNewElement = document.querySelector('input[name="tryNew"]:checked');
+    
+    if (!favoriteRestaurant || !favoriteDish || !tryNewElement) {
+        alert('Please fill in all required fields');
+        return;
+    }
+
+    const formData = {
+        favoriteRestaurant,
+        favoriteDish,
+        tryNew: tryNewElement.value,
+        basicProfileOnly: true
+    };
+    
+    try {
+        const response = await fetch('/api/taste-profile/step1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            window.location.href = '/profile';
+        } else {
+            throw new Error('Failed to save basic profile');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to save preferences. Please try again.');
+    }
+} 
