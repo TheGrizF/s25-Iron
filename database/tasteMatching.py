@@ -50,3 +50,4 @@ def updateTasteComparisons(currID):
             db.session.add(newEntry)
     
     db.session.commit()
+    

@@ -62,6 +62,7 @@ def searchUser():
     if len(search) > 1:
        first_Name = search[0]  
        last_Name  = search[1] 
+    
     user = (User.query.filter_by(firstName=first_Name,lastName=last_Name).first())
     if user:
         if user.userID == current_user:
@@ -70,8 +71,9 @@ def searchUser():
             return redirect(url_for('profile.viewUserProfile',user_id=user.userID))
     else:
        flash("No user found")
-       return redirect(url_for('daily_dish.TasteBuds'))
-        
+    return redirect(url_for('daily_dish.TasteBuds'))
+    
+       
 @auth_bp.route('/addFriend/<user_id>', methods=['POST','GET'])
 def addFriend(user_id):
     user = session.get('user_id')
@@ -82,7 +84,7 @@ def addFriend(user_id):
     if exists:
         flash("Buddy already added")
     else:
-        new_friend = TasteBuddies(userID=user, buddyID=user_id,dateAdded=datetime.now())
+        new_friend = TasteBuddies(userID=user, buddyID=user_id, dateAdded=datetime.now())
         db.session.add(new_friend)
         db.session.commit()
         flash("Buddy Added")

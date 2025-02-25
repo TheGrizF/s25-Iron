@@ -2,18 +2,13 @@
 content %}
 <h2>{{ user.firstName }} {{ user.lastName }}!</h2>
 <p>Email: {{ user.email }}</p>
-   
 
-
- <form action="{{url_for('auth.addFriend',user_id=user.userID)}}" method="post">
+<form action="{{url_for('auth.addFriend',user_id=user.userID)}}" method="post">
   <button type="submit">Add Buddy</button>
- </form>
- <!-- Flash Message for Friend added or Already Friends -->
-   {% with messages = get_flashed_messages(with_categories=true) %}
-   {% if messages %}
-       {% for category, message in messages %}
-           <div class="flash-message {{ category }}">{{ message }}</div><br>
-       {% endfor %}
-   {% endif %}
-{% endwith %}
-{% endblock %}
+</form>
+<!-- Flash Message for Friend added or Already Friends -->
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
+<div class="flash-message {{ category }}">{{ message }}</div>
+<br />
+{% endfor %} {% endif %} {% endwith %} {% endblock %}

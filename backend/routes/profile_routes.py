@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
-from database.models import User, TasteProfile, TasteComparison
+from database.models import User, TasteProfile, TasteComparison, TasteBuddies
 from database.tasteMatching import updateTasteComparisons
 from database import db
 import json
@@ -14,7 +14,15 @@ def view_profile():
         return redirect(url_for('auth.index'))
     
     user = User.query.get(user_id)
-    return render_template('profile.html', user=user)
+    #fetch information on friends
+    friendsList = db.session.query(TasteBuddies, User).join(User, TasteBuddies.buddyID == User.userID).filter(TasteBuddies.userID==user_id).all()
+    friendsData = [{
+        'buddyID': friend.User.userID,
+        'firstName': friend.User.firstName,
+        'lastName' : friend.User.lastName,
+    } for friend in friendsList]
+
+    return render_template('profile.html', user=user, friendsList=friendsData)
 
 
 @profile_bp.route('/userProfile/<user_id>')

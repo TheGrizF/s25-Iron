@@ -10,11 +10,11 @@
         <p>Your email: {{ user.email }}</p>
         <p>Explore your taste matches and reviews.</p>
 
-        <div class="button-group">
+       <div class="button-group">
             <a href="{{ url_for('profile.matches_page') }}">
                 <button class="btn-matches">View Taste Matches</button>
             </a>
-        </div>
+        </div> 
         
         <p></p>
 
@@ -41,4 +41,10 @@ function confirmDeletion(email) {
     return confirm(`Are you sure? Deleting ${email} can't be undone.`);
 }
 </script>
+
+  <h2> Your Friends </h2>
+  {% for friend in friendsList %}
+     <li>{{friend.firstName}} {{friend.lastName}}</li>
+  {% endfor %}
+
 {% endblock %}
