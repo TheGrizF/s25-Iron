@@ -4,6 +4,12 @@
 <h2>Welcome, {{ user.firstName }} {{ user.lastName }}!</h2>
 <p>Your email: {{ user.email }}</p>
 <p>Explore your taste matches and reviews.</p>
+<a href="{{ url_for('profile.matches_page') }}">
+    <button class="match-btn">View TasteBuddies!</button>
+</a>
+
+
+
 <p><a href="{{ url_for('auth.logout') }}">
     <button class="logout-btn">Logout</button>
 </a></p>

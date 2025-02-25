@@ -1,1 +1,2 @@
 FLASK_APP=tastebuddies.py
+FLASK_ENV=development

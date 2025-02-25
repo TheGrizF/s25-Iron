@@ -4,6 +4,7 @@ from database import db
 from backend.routes.auth_routes import auth_bp
 from backend.routes.profile_routes import profile_bp
 from backend.routes.daily_dish_routes import daily_dish_bp
+from database.tasteMatching import updateAllTasteComparisons
 from flask_session import Session
 from datetime import timedelta
 
@@ -34,7 +35,8 @@ def create_app():
 
     with app.app_context():
         from database.database_setup import init_db
-        init_db()  # run setup inside app context to avoid circular import
+        init_db()
+        updateAllTasteComparisons()
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
