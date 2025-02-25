@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from database.models import User
+from database.models import User,TasteBuddies
 from database import db
+from datetime import datetime
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -55,15 +56,38 @@ def logout():
 @auth_bp.route('/TasteBuds', methods=['GET','POST'])
 def searchUser():
     userName = request.form['userName']
+    current_user = session.get('user_id')
     
-    user = (User.query.filter_by(firstName=userName).first()) or (User.query.filter_by(email=userName).first())
-
+    search = userName.split()
+    if len(search) > 1:
+       first_Name = search[0]  
+       last_Name  = search[1] 
+    user = (User.query.filter_by(firstName=first_Name,lastName=last_Name).first())
     if user:
-       return redirect(url_for('profile.viewUserProfile',user_id=user.userID))
+        if user.userID == current_user:
+            return redirect(url_for('profile.view_profile'))
+        else:
+            return redirect(url_for('profile.viewUserProfile',user_id=user.userID))
     else:
        flash("No user found")
        return redirect(url_for('daily_dish.TasteBuds'))
         
+@auth_bp.route('/addFriend/<user_id>', methods=['POST','GET'])
+def addFriend(user_id):
+    user = session.get('user_id')
+
+    #Check if already Friends
+    exists = TasteBuddies.query.filter_by(userID=user,buddyID=user_id).first()
+    
+    if exists:
+        flash("Buddy already added")
+    else:
+        new_friend = TasteBuddies(userID=user, buddyID=user_id,dateAdded=datetime.now())
+        db.session.add(new_friend)
+        db.session.commit()
+        flash("Buddy Added")
+    return redirect(url_for('profile.viewUserProfile',user_id=user_id))
+
 
 @auth_bp.route('/database')
 def database():

@@ -1,7 +1,19 @@
-{% extends 'base.html' %}
-{% block title %}Profile{% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% block title %}Profile{% endblock %} {% block
+content %}
 <h2>{{ user.firstName }} {{ user.lastName }}!</h2>
 <p>Email: {{ user.email }}</p>
-<button type="submit"> Add as TasteBuddie </button>
+   
+
+
+ <form action="{{url_for('auth.addFriend',user_id=user.userID)}}" method="post">
+  <button type="submit">Add Buddy</button>
+ </form>
+ <!-- Flash Message for Friend added or Already Friends -->
+   {% with messages = get_flashed_messages(with_categories=true) %}
+   {% if messages %}
+       {% for category, message in messages %}
+           <div class="flash-message {{ category }}">{{ message }}</div><br>
+       {% endfor %}
+   {% endif %}
+{% endwith %}
 {% endblock %}
