@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Taste Matches{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/database.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="database-container">
+    <h1 class="database-title">{{ user_name }}'s Taste Matches</h1>
+
+    <div class="table-section">
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Percent Match</th>
+                    </tr>
+                </thead>
+                <tbody id="matchesTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <a href="{{ url_for('profile.view_profile') }}">
+            <button>Back to Profile</button>
+        </a>
+    </div>
+</div>
+
+<script>
+fetch('/api/taste-profile/matches')
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            let tableBody = document.getElementById('matchesTableBody');
+
+            if (data.matches.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='2'>No matches found.</td></tr>";
+            } else {
+                data.matches.forEach(match => {
+                    let matchPercent = ((24 - match.comparisonNum) / 24 * 100).toFixed(1);
+                    let row = document.createElement('tr');
+                    row.innerHTML = `<td>${match.name}</td><td>${matchPercent}%</td>`;
+                    tableBody.appendChild(row);
+                });
+            }
+        } else {
+            console.error("Error fetching matches:", data.message);
+        }
+    })
+    .catch(error => console.error("Request failed:", error));
+</script>
+
+{% endblock %}

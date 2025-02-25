@@ -100,6 +100,46 @@ h2 {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+.profile-info {
+    text-align: center;
+    color: var(--slate-dark);
+    margin: 20px 0;
+    font-style: italic;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.button-group .done-btn,
+.button-group .submit-btn {
+    width: auto;  /* Override the 100% width */
+    margin: 0;    /* Override the default margin */
+    padding: 10px 30px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;  /* Override block display */
+}
+
+.button-group .done-btn {
+    background-color: var(--slate-dark);
+    color: white;
+    font-size: 1.2em;  /* Make "Done" text bigger */
+}
+
+.button-group .submit-btn {
+    background-color: var(--burgundy-main);
+    color: white;
+}
+
+/* Keep existing submit-btn styles for other pages */
+.submit-btn:not(.button-group .submit-btn) {
+    /* existing submit-btn styles remain unchanged */
+}
+
 @media (max-width: 768px) {
     .taste-profile-container {
         padding: 20px;
@@ -255,17 +295,17 @@ select:hover {
 /* Update the image grid styles */
 .image-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* Always show 2 columns */
+    grid-template-columns: repeat(2, 1fr);  /* Always 2 columns */
     gap: 20px;
     padding: 20px;
-    max-width: 800px;  /* Increase max width to allow more space */
+    max-width: 800px;
     margin: 0 auto;
 }
 
-/* Add styles for the centered option */
+/* Center option styling */
 .center-option {
-    grid-column: 1 / -1;
-    width: 50%;  /* Make center option half width */
+    grid-column: 1 / -1;  /* Span both columns */
+    width: 50%;
     margin: 0 auto;
 }
 
@@ -317,13 +357,18 @@ select:hover {
     }
 
     .image-grid {
-        grid-template-columns: 1fr;  /* Single column on mobile */
+        grid-template-columns: repeat(2, 1fr);  /* Keep 2 columns on mobile */
         padding: 10px;
-        gap: 15px;
+        gap: 10px;  /* Reduce gap on mobile for better fit */
     }
 
     .center-option {
-        width: 100%;  /* Full width on mobile */
+        width: 50%;  /* Keep center option at half width */
+    }
+
+    /* Adjust image height for better mobile viewing */
+    .image-option img {
+        height: 150px;  /* Slightly smaller images on mobile */
     }
 }
 

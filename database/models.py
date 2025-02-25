@@ -98,3 +98,12 @@ class OperatingHours(db.Model):
     daysOfWeek = db.Column(db.String(62))
     openTime = db.Column(db.Time)
     closeTime = db.Column(db.Time)
+
+
+class TasteComparison(db.Model):
+    matchesID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    compareFrom = db.Column(db.Integer, db.ForeignKey('user.userID'), nullable=False)
+    compareTo = db.Column(db.Integer, db.ForeignKey('user.userID'), nullable=False)
+    comparisonNum = db.Column(db.Integer, nullable=False)
+
+    matches = db.relationship('User', foreign_keys=[compareTo], backref='reverse_match')

@@ -1,21 +1,44 @@
 {% extends 'base.html' %}
-{% block title %}Profile{% endblock %}
-{% block content %}
-<h2>Welcome, {{ user.firstName }} {{ user.lastName }}!</h2>
-<p>Your email: {{ user.email }}</p>
-<p>Explore your taste matches and reviews.</p>
-<p><a href="{{ url_for('auth.logout') }}">
-    <button class="logout-btn">Logout</button>
-</a></p>
 
-<form action="{{ url_for('profile.delete_profile') }}" method="POST" 
-      onsubmit="return confirmDeletion('{{ user.email }}');">
-    <button type="submit" class="delete-btn">Delete Profile</button>
-</form>
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<div class="taste-profile-container">
+    <h1>Welcome, {{ user.firstName }} {{ user.lastName }}!</h1>
+    <div class="intro-section">
+        <p>Your email: {{ user.email }}</p>
+        <p>Explore your taste matches and reviews.</p>
+
+        <div class="button-group">
+            <a href="{{ url_for('profile.matches_page') }}">
+                <button class="btn-matches">View Taste Matches</button>
+            </a>
+        </div>
+        
+        <p></p>
+
+        <div class="button-group">
+            <a href="{{ url_for('auth.logout') }}">
+                <button class="logout-btn">Logout</button>
+            </a>
+        </div>
+
+        <p></p>
+
+        <form action="{{ url_for('profile.delete_profile') }}" method="POST" 
+            onsubmit="return confirmDeletion('{{ user.email }}');">
+            <div class="button-group">
+                <button type="submit" class="delete-btn">Delete Profile</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
+
 function confirmDeletion(email) {
-    return confirm(`Are  you sure? Deleting ${email} can't be undone.`);
+    return confirm(`Are you sure? Deleting ${email} can't be undone.`);
 }
 </script>
 {% endblock %}

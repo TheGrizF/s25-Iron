@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
-from database.models import User, TasteProfile
+from database.models import User, TasteProfile, TasteComparison
+from database.tasteMatching import updateTasteComparisons
 from database import db
 import json
 
@@ -251,15 +252,19 @@ def save_taste_profile():
         }
 
         taste_profile.dietaryRestrictions = json.dumps(diet_allergy)
-        taste_profile.sweet = data.get('sweet', 0)
-        taste_profile.spicy = data.get('spicy', 0)
-        taste_profile.sour = data.get('sour', 0)
-        taste_profile.bitter = data.get('bitter', 0)
-        taste_profile.umami = data.get('umami', 0)
-        taste_profile.savory = data.get('savory', 0)
+        taste_profile.sweet = data.get('sweet', 3)
+        taste_profile.spicy = data.get('spicy', 3)
+        taste_profile.sour = data.get('sour', 3)
+        taste_profile.bitter = data.get('bitter', 3)
+        taste_profile.umami = data.get('umami', 3)
+        taste_profile.savory = data.get('savory', 3)
 
         db.session.commit()
 
+        # trigger taste matching
+        updateTasteComparisons(user_id)
+
+        # Clear data
         for i in range(1, 12):
             session.pop(f'taste_profile_step{i}', None)
         flash('Taste Profile Saved!', 'success')
@@ -267,4 +272,41 @@ def save_taste_profile():
     
     except Exception as e:
         db.session.rollback()
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+    
+@profile_bp.route('/matches', methods=['GET'])
+def matches_page():
+    try:
+        user_id = session.get('user_id')
+        user = User.query.get(user_id)
+
+        return render_template('tasteMatches.html', user_name=f"{user.firstName} {user.lastName}")
+    except Exception as e:
+        print(f"Error in matches_page: {e}")
+        return render_template("matches.html", user_name="Your")
+
+@profile_bp.route('/api/taste-profile/matches', methods=['GET'])
+def get_user_matches():
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
+
+        matches = db.session.query(
+            TasteComparison.compareTo,
+            User.firstName,
+            User.lastName,
+            TasteComparison.comparisonNum
+        ).join(User, User.userID == TasteComparison.compareTo).filter(
+            TasteComparison.compareFrom == user_id
+        ).order_by(TasteComparison.comparisonNum).all()
+
+        results = [{"userID": match.compareTo, 
+                    "name": f"{match.firstName} {match.lastName}",
+                    "comparisonNum": match.comparisonNum} 
+                    for match in matches]
+
+        return jsonify({'status': 'success', 'matches': results}), 200
+
+    except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500

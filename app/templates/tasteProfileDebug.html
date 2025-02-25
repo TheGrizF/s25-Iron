@@ -138,14 +138,6 @@
         </div>
 
         <div class="debug-section">
-            <div class="debug-title">Dining Preferences</div>
-            <div class="debug-item">
-                <span class="debug-label">Preferred Atmosphere:</span>
-                <span class="debug-value">{{ session.get('taste_profile_step9', {}).get('atmosphere', 'Not set') }}</span>
-            </div>
-        </div>
-
-        <div class="debug-section">
             <div class="debug-title">Cuisine Ratings (1-5 scale)</div>
             {% for cuisine, rating in session.get('taste_profile_step10', {}).get('cuisines', {}).items() %}
             <div class="debug-item">
