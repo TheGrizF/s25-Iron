@@ -11,6 +11,14 @@
         <p>Explore your taste matches and reviews.</p>
 
         <div class="button-group">
+            <a href="{{ url_for('profile.matches_page') }}">
+                <button class="btn-matches">View Taste Matches</button>
+            </a>
+        </div>
+        
+        <p></p>
+
+        <div class="button-group">
             <a href="{{ url_for('auth.logout') }}">
                 <button class="logout-btn">Logout</button>
             </a>

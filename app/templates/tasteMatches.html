@@ -15,7 +15,6 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>User ID</th>
                         <th>Name</th>
                         <th>Percent Match</th>
                     </tr>
@@ -41,12 +40,12 @@ fetch('/api/taste-profile/matches')
             let tableBody = document.getElementById('matchesTableBody');
 
             if (data.matches.length === 0) {
-                tableBody.innerHTML = "<tr><td colspan='3'>No matches found.</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='2'>No matches found.</td></tr>";
             } else {
                 data.matches.forEach(match => {
                     let matchPercent = ((24 - match.comparisonNum) / 24 * 100).toFixed(1);
                     let row = document.createElement('tr');
-                    row.innerHTML = `<td>${match.userID}</td><td>${match.name}</td><td>${matchPercent}%</td>`;
+                    row.innerHTML = `<td>${match.name}</td><td>${matchPercent}%</td>`;
                     tableBody.appendChild(row);
                 });
             }
