@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from sqlalchemy import func
 from database.models import User,TasteBuddies
 from database import db
 from datetime import datetime
@@ -55,15 +56,33 @@ def logout():
 
 @auth_bp.route('/TasteBuds', methods=['GET','POST'])
 def searchUser():
-    userName = request.form['userName']
+    userName = request.form.get('userName', "").strip()
     current_user = session.get('user_id')
     
+    if not userName:
+        flash("Enter a name or email to find your buddy")
+        return redirect(url_for('daily_dish.TasteBuds'))
+
     search = userName.split()
+
+    #default values
+    first_Name, last_Name = None, None
+    if len(search) == 1:
+        first_Name = search[0]
     if len(search) > 1:
        first_Name = search[0]  
        last_Name  = search[1] 
     
-    user = (User.query.filter_by(firstName=first_Name,lastName=last_Name).first())
+
+    if "@" in userName:     #check for email - Case insensitive
+        user = User.query.filter(func.lower(User.email) == userName.lower()).first()
+    else:
+        #case insensitive by first and last (if given)
+        matches = User.query.filter(func.lower(User.firstName) == first_Name.lower())
+        if last_Name:
+            matches = matches.filter(func.lower(User.lastName) == last_Name.lower())
+        user = matches.first()
+
     if user:
         if user.userID == current_user:
             return redirect(url_for('profile.view_profile'))

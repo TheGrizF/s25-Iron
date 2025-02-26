@@ -6,6 +6,13 @@ content %}
 <form action="{{url_for('auth.addFriend',user_id=user.userID)}}" method="post">
   <button type="submit">Add Buddy</button>
 </form>
+
+<p>
+  <a href="{{ url_for('daily_dish.TasteBuds') }}">
+      <button>Go Back</button>
+  </a>
+</p>
+
 <!-- Flash Message for Friend added or Already Friends -->
 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
 %} {% for category, message in messages %}

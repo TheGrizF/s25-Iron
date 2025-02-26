@@ -56,7 +56,7 @@
         "sour": 1,
         "bitter": 4,
         "umami": 3,
-        "savory": 6,
+        "savory": 5,
         "cuisineID": 4
     },
     {
@@ -131,7 +131,7 @@
         "sour": 5,
         "bitter": 1,
         "umami": 2,
-        "savory": 6,
+        "savory": 5,
         "cuisineID": 9
     },
     {

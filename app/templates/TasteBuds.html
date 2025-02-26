@@ -25,13 +25,18 @@ extra_css %}
       action="{{ url_for('auth.searchUser')}}"
       method="post"
     >
-      <i class="fas fa-magnifying-glass"></i>
-      <input
-        type="text"
-        name="userName"
-        id="userName"
-        placeholder="Find a buddy"
-      />
+      <div class="search-container">
+        <i class="fas fa-magnifying-glass"></i>
+        <input
+          type="text"
+          name="userName"
+          id="userName"
+          placeholder="Find a buddy"
+        >
+        <button
+          type="submit"
+          class="search-btn">Search</button>
+      </div>
     </form>
   </div>
 

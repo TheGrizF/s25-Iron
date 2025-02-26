@@ -13,12 +13,21 @@
 }
 
 .search-bar {
+  display: flex;
+  max-width: 300px;
+  padding: 8px;
   position: relative;
   margin: 20px 0;
 }
 
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
 .search-bar input {
   width: 100%;
+  max-width: 250px;
   padding: 12px 40px;
   border: 1px solid var(--gray-medium);
   border-radius: 25px;
