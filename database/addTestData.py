@@ -4,70 +4,129 @@ import json
 
 def insert_test_data():
     print("inserting test data into the database.")
-    
+
     # connect to SQLite database
     conn = sqlite3.connect('database/tastebuddies.db')
     cursor = conn.cursor()
-    
+
     # dictionary of csv file paths
     csv_files = {
-        'user': 'database/databaseTestData/users.csv',
-        'cuisine': 'database/databaseTestData/cuisines.csv',
-        'dish': 'database/databaseTestData/dishes.csv',
-        'restaurant': 'database/databaseTestData/restaurants.csv',
-        'review': 'database/databaseTestData/reviews.csv',
-        'saved_dishes': 'database/databaseTestData/saved_dishes.csv',
-        'saved_restaurants': 'database/databaseTestData/saved_restaurants.csv',
-        'taste_buddies': 'database/databaseTestData/taste_buddies.csv',
-        'operating_hours': 'database/databaseTestData/operating_hours.csv',
-        'menu': 'database/databaseTestData/menus.csv'
+        'user': 'database/databaseTestData/user.csv',
+        'cuisine': 'database/databaseTestData/cuisine.csv',
+        'dish': 'database/databaseTestData/dish.csv',
+        'review': 'database/databaseTestData/review.csv',
+        'saved_dishes': 'database/databaseTestData/savedDishes.csv',
+        'saved_restaurants': 'database/databaseTestData/savedRestaurants.csv',
+        'operating_hours': 'database/databaseTestData/operatingHours.csv',
+        'menu': 'database/databaseTestData/menu.csv',
+        'menu_dish_junction': 'database/databaseTestData/menuDishJunction.csv',
+        'cuisine_user_junction': 'database/databaseTestData/cuisineUserJunction.csv',
+        'live_update': 'database/databaseTestData/liveUpdate.csv',
+        'friends': 'database/databaseTestData/friends.csv'
     }
-    
-    # loop through the csv files and insert data
-    for table, file_path in csv_files.items():
-        with open(file_path, 'r', encoding='utf-8') as file:
-            csv_reader = csv.reader(file)
-            headers = next(csv_reader)  # skip the header row
-            
-            placeholders = ', '.join(['?' for _ in headers])  # dynamic sql entries
-            query = f"INSERT INTO {table} ({', '.join(headers)}) VALUES ({placeholders})"
-            
-            for row in csv_reader:
-                cursor.execute(query, row)
 
-    # handle taste_profiles.json separately
-    json_file = 'database/databaseTestData/taste_profiles.json'
-    
-    with open(json_file, 'r', encoding='utf-8') as file:
-        taste_profiles = json.load(file)  # load json data
+    json_files = {
+        'taste_profile': 'database/databaseTestData/tasteProfile.json',
+        'restaurant': 'database/databaseTestData/restaurant.json',
+        'dish_taste_profile': 'database/databaseTestData/dishTasteProfile.json'
+    }
 
-        for entry in taste_profiles:
-            # convert dietaryRestrictions json object to a string before inserting
-            dietary_restrictions = json.dumps(entry["dietaryRestrictions"])
+    try:
+        # loop through the csv files and insert data
+        for table, file_path in csv_files.items():
+            try:
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    csv_reader = csv.reader(file)
+                    headers = next(csv_reader)  # skip the header row
+                    
+                    placeholders = ', '.join(['?' for _ in headers])  # dynamic sql entries
+                    query = f"INSERT INTO {table} ({', '.join(headers)}) VALUES ({placeholders})"
 
-            cursor.execute("""
-                INSERT INTO taste_profile (tasteProfileID, userID, dietaryRestrictions, sweet, spicy, sour, bitter, umami, savory, cuisineID)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                entry["tasteProfileID"],
-                entry["userID"],
-                dietary_restrictions,
-                entry["sweet"],
-                entry["spicy"],
-                entry["sour"],
-                entry["bitter"],
-                entry["umami"],
-                entry["savory"],
-                entry["cuisineID"]
-            ))
+                    cursor.executemany(query, csv_reader)  # batch insert
+            except FileNotFoundError:
+                print(f"Warning: {file_path} not found, skipping...")
+            except Exception as e:
+                print(f"Error inserting data into {table}: {e}")
 
-    # commit the transaction
-    conn.commit()
-    
-    # close the connection
-    conn.close()
-    
-    print("data successfully inserted into all tables.")
+        # loop through the json files and insert data
+        for table, file_path in json_files.items():
+            try:
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    json_data = json.load(file)  # load json data
+
+                    for entry in json_data:
+                        if table == "taste_profile":
+                            restrictions = json.dumps(entry["restrictions"])
+
+                            cursor.execute(
+                                "INSERT INTO taste_profile (taste_profile_id, user_id, restrictions, sweet, spicy, sour, bitter, umami, savory) "
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                (
+                                    entry["taste_profile_id"],
+                                    entry["user_id"],
+                                    restrictions,
+                                    entry["sweet"],
+                                    entry["savory"],
+                                    entry["sour"],
+                                    entry["bitter"],
+                                    entry["spicy"],
+                                    entry["umami"],
+                                )
+                            )
+                        
+                        elif table == "restaurant":
+                            restrictions = json.dumps(entry["restrictions"])
+
+                            cursor.execute(
+                                "INSERT INTO restaurant (restaurant_id, restaurant_name, restrictions, location, rating_average, phone_number, clean_average, busy_average) "
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                                (
+                                    entry["restaurant_id"],
+                                    entry["restaurant_name"],
+                                    restrictions,
+                                    entry["location"],
+                                    entry["rating_average"],
+                                    entry["phone_number"],
+                                    entry["clean_average"],
+                                    entry["busy_average"]
+                                )
+                            )
+
+                        elif table == "dish_taste_profile":
+                            restrictions = json.dumps(entry["restrictions"])
+
+                            cursor.execute(
+                                "INSERT INTO dish_taste_profile (dish_taste_profile_id, dish_id, cuisine, restrictions, sweet, spicy, sour, bitter, umami, savory) "
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                (
+                                    entry["dish_taste_profile_id"],
+                                    entry["dish_id"],
+                                    entry["cuisine"],
+                                    restrictions,
+                                    entry["sweet"],
+                                    entry["spicy"],
+                                    entry["sour"],
+                                    entry["bitter"],
+                                    entry["umami"],
+                                    entry["savory"]
+                                )
+                            )
+            except FileNotFoundError:
+                print(f"Warning: {file_path} not found, skipping {table}...")
+            except Exception as e:
+                print(f"Error inserting data into {table}: {e}")
+
+        # Commit the inserted data
+        conn.commit()
+
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+    finally:
+        # close the connection
+        conn.close()
+        print("data successfully inserted into all tables.")
 
 # only run if executed directly
 if __name__ == "__main__":
