@@ -1,27 +1,28 @@
-from database.models import TasteProfile, TasteComparison
+from database.models.taste_profiles import tasteProfile
+from database.models.user import tasteComparisons
 from database import db
 
 def updateAllTasteComparisons():
-    allUsers = TasteProfile.query.with_entities(TasteProfile.userID).all()
+    allUsers = tasteProfile.query.with_entities(tasteProfile.user_id).all()
 
     for user in allUsers:
-        updateTasteComparisons(user.userID)
+        updateTasteComparisons(user.user_id)
     
     print("Taste Comparisons initialized")
 
 def updateTasteComparisons(currID):
     # Get user and make sure user exists
-    currUser = TasteProfile.query.filter_by(userID=currID).first()
+    currUser = tasteProfile.query.filter_by(user_id=currID).first()
     if not currUser:
         return
     
     # Get all other users to compare with
-    otherUsers = TasteProfile.query.filter(TasteProfile.userID != currID).all()
+    otherUsers = tasteProfile.query.filter(tasteProfile.user_id != currID).all()
 
     # Iterate through and get differences
     # Consider weighted differences.  If > 2, add more?
     for nextUser in otherUsers:
-        compareToID = nextUser.userID
+        compareToID = nextUser.user_id
 
         values = [
             abs(currUser.sweet - nextUser.sweet),
@@ -37,15 +38,15 @@ def updateTasteComparisons(currID):
 
         # Add to table, check if comparison already exists and update
 
-        exists = TasteComparison.query.filter_by(compareFrom=currID, compareTo=compareToID).first()
+        exists = tasteComparisons.query.filter_by(compare_from=currID, compare_to=compareToID).first()
 
         if exists:
-            exists.comparisonNum = totalTaste
+            exists.comparison_num = totalTaste
         else:
-            newEntry = TasteComparison(
-                compareFrom = currID,
-                compareTo = compareToID,
-                comparisonNum = totalTaste
+            newEntry = tasteComparisons(
+                compare_from = currID,
+                compare_to = compareToID,
+                comparison_num = totalTaste
             )
             db.session.add(newEntry)
     
