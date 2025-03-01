@@ -1,5 +1,9 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
-from database.models import User, TasteProfile, TasteComparison, TasteBuddies
+from database.models.dish import dish, menu, menuDishJunction
+from database.models.restaurant import restaurant, operatingHours, liveUpdate
+from database.models.review import review
+from database.models.taste_profiles import tasteProfile, dishTasteProfile
+from database.models.user import user, tasteComparisons, cuisine, cuisineUserJunction, friends, savedDishes, savedRestaurants
 from database.tasteMatching import updateTasteComparisons
 from database import db
 import json
@@ -13,39 +17,57 @@ def view_profile():
         flash('Log in to view profile.', 'error')
         return redirect(url_for('auth.index'))
     
-    user = User.query.get(user_id)
+    selected_user = user.query.get(user_id)
     #fetch information on friends
-    friendsList = db.session.query(TasteBuddies, User).join(User, TasteBuddies.buddyID == User.userID).filter(TasteBuddies.userID==user_id).all()
+    friendsList = db.session.query(friends, user).join(user, friends.buddy_id == user.user_id).filter(friends.user_id==user_id).all()
     friendsData = [{
-        'buddyID': friend.User.userID,
-        'firstName': friend.User.firstName,
-        'lastName' : friend.User.lastName,
+        'buddy_id': friend.user.user_id,
+        'first_name': friend.user.first_name,
+        'last_name' : friend.user.last_name,
     } for friend in friendsList]
 
-    return render_template('profile.html', user=user, friendsList=friendsData)
+    return render_template('profile.html', user=selected_user, friendsList=friendsData)
 
 
 @profile_bp.route('/userProfile/<user_id>')
 def viewUserProfile(user_id):
-    user = User.query.get(user_id)
-    return render_template('userProfile.html', user=user)
-
+    selected_user = user.query.get(user_id)
+    return render_template('userProfile.html', user=selected_user)
 @profile_bp.route('/delete_profile', methods=['POST'])
 def delete_profile():
     user_id = session.get('user_id')
+
     if not user_id:
         flash('You are not logged in.', 'error')
         return redirect(url_for('auth.index'))
     
-    user = User.query.get(user_id)
-    if user:
-        db.session.delete(user)
+    selected_user = user.query.get(user_id)
+
+    if not selected_user:
+        flash('User not found.', 'error')
+        return redirect(url_for('auth.index'))
+
+    try:
+        # Delete related data first
+        db.session.query(friends).filter((friends.user_id == user_id) | (friends.buddy_id == user_id)).delete(synchronize_session=False)
+        db.session.query(savedDishes).filter(savedDishes.user_id == user_id).delete(synchronize_session=False)
+        db.session.query(savedRestaurants).filter(savedRestaurants.user_id == user_id).delete(synchronize_session=False)
+        db.session.query(review).filter(review.user_id == user_id).delete(synchronize_session=False)
+        db.session.query(tasteProfile).filter(tasteProfile.user_id == user_id).delete(synchronize_session=False)
+        db.session.query(tasteComparisons).filter(
+            (tasteComparisons.compare_from == user_id) | (tasteComparisons.compare_to == user_id)
+        ).delete(synchronize_session=False)
+
+        # Now delete the user
+        db.session.delete(selected_user)
         db.session.commit()
         session.clear()
         flash('Profile successfully deleted.', 'success')
-    else:
-        flash('User not found?', 'error')
-    
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting profile: {str(e)}', 'error')
+
     return redirect(url_for('auth.index'))
 
 @profile_bp.route('/taste-profile', methods=['GET', 'POST'])
@@ -232,40 +254,40 @@ def save_taste_profile():
 
         user_id = session.get('user_id')
         if not user_id:
-            return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
+            return jsonify({'status': 'error', 'message': 'user not logged in'}), 401
 
         data = {}
         for i in range(1, 12):
             key = f'taste_profile_step{i}'
             data.update(session.get(key, {}))
 
-        user = User.query.get(user_id)
+        selected_user = user.query.get(user_id)
 
-        if not user:
-            return jsonify({'status': 'error', 'message': 'User not found'}), 404
+        if not selected_user:
+            return jsonify({'status': 'error', 'message': 'user not found'}), 404
 
-        taste_profile = user.taste_profile
+        taste_profile = selected_user.taste_profile
         
         if not taste_profile:
-            taste_profile = TasteProfile(userID=user_id)
-            user.taste_profile = taste_profile
+            taste_profile = tasteProfile(user_id=user_id)
+            user.taste_profile = tasteProfile
             db.session.add(taste_profile)
         else:
-            taste_profile.userID = user_id
+            taste_profile.user_id = user_id
 
         # Add allergies to Dietary Restrictions
         diet_allergy = {
-            "dietaryRestrictions": data.get('diets', []),
+            "restrictions": data.get('diets', []),
             "allergies": data.get('allergens', [])
         }
 
-        taste_profile.dietaryRestrictions = json.dumps(diet_allergy)
+        taste_profile.restrictions = json.dumps(diet_allergy)
         taste_profile.sweet = data.get('sweet', 3)
-        taste_profile.spicy = data.get('spicy', 3)
+        taste_profile.savory = data.get('savory', 3)
         taste_profile.sour = data.get('sour', 3)
         taste_profile.bitter = data.get('bitter', 3)
+        taste_profile.spicy = data.get('spicy', 3)
         taste_profile.umami = data.get('umami', 3)
-        taste_profile.savory = data.get('savory', 3)
 
         db.session.commit()
 
@@ -286,9 +308,12 @@ def save_taste_profile():
 def matches_page():
     try:
         user_id = session.get('user_id')
-        user = User.query.get(user_id)
+        selected_user = user.query.get(user_id)
 
-        return render_template('tasteMatches.html', user_name=f"{user.firstName} {user.lastName}")
+        if selected_user:
+            return render_template('tasteMatches.html', user_name=f"{selected_user.first_name} {selected_user.last_name}")
+        else:
+            return render_template("matches.html", user_name="Your")
     except Exception as e:
         print(f"Error in matches_page: {e}")
         return render_template("matches.html", user_name="Your")
@@ -298,20 +323,20 @@ def get_user_matches():
     try:
         user_id = session.get('user_id')
         if not user_id:
-            return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
+            return jsonify({'status': 'error', 'message': 'user not logged in'}), 401
 
         matches = db.session.query(
-            TasteComparison.compareTo,
-            User.firstName,
-            User.lastName,
-            TasteComparison.comparisonNum
-        ).join(User, User.userID == TasteComparison.compareTo).filter(
-            TasteComparison.compareFrom == user_id
-        ).order_by(TasteComparison.comparisonNum).all()
+            tasteComparisons.compare_to,
+            user.first_name,
+            user.last_name,
+            tasteComparisons.comparison_num
+        ).join(user, user.user_id == tasteComparisons.compare_to).filter(
+            tasteComparisons.compare_from == user_id
+        ).order_by(tasteComparisons.comparison_num).all()
 
-        results = [{"userID": match.compareTo, 
-                    "name": f"{match.firstName} {match.lastName}",
-                    "comparisonNum": match.comparisonNum} 
+        results = [{"user_id": match.compare_to, 
+                    "name": f"{match.first_name} {match.last_name}",
+                    "comparison_num": match.comparison_num} 
                     for match in matches]
 
         return jsonify({'status': 'success', 'matches': results}), 200

@@ -1,0 +1,11 @@
+user_id,first_name,last_name,email,password_hash,user_role
+1,Grant,Fitch,grant@tastebuddies.com,tastebuddies,admin
+2,Colette,Woods,colette@tastebuddies.com,tastebuddies,user
+3,Oronde',Brown,oronde@tastebuddies.com,tastebuddies,user
+4,Ashley,Barasebwa,ashley@tastebuddies.com,tastebuddies,user
+5,Ben,Nissley,ben@tastebuddies.com,tastebuddies,user
+6,NATE,Donald,NATE@tastebuddies.com,tastebuddies,user
+7,Janek,Hannond,jhannond6@ca.gov,tastebuddies,user
+8,Garrott,Delacote,gdelacote7@drupal.org,tastebuddies,user
+9,Hershel,Matschke,hmatschke8@archive.org,tastebuddies,user
+10,Gertruda,Drake,gdrake9@woothemes.com,tastebuddies,user

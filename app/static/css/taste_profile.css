@@ -551,3 +551,13 @@ select:hover {
     padding: 10px;
     background-color: #ffffff;
 } 
+
+@media (max-width: 768px) {
+    .taste-profile-container {
+        padding-bottom: 100px; /* Adds extra space at the bottom */
+    }
+
+    .confirm-btn {
+        margin-bottom: 80px; /* Pushes the button above the nav bar */
+    }
+}

@@ -1,0 +1,11 @@
+dish_id,dish_name,description,featured,available
+1,Spaghetti Carbonara,Classic Italian pasta with creamy sauce,True,True
+2,Chicken Biryani,Spiced rice dish with tender chicken,False,True
+3,Sushi Platter,Assorted fresh sushi rolls,True,False
+4,Margarita Pizza,"Thin-crust pizza with tomato, basil, and mozzarella",True,True
+5,Beef Tacos,Mexican-style beef tacos with salsa,False,True
+6,Pad Thai,Thai noodle dish with shrimp and peanuts,True,False
+7,Caesar Salad,"Romaine lettuce, parmesan, croutons, and dressing",False,True
+8,Butter Chicken,Indian curry with butter and cream,True,True
+9,Grilled Salmon,Grilled salmon with lemon butter,False,False
+10,Vegan Buddha Bowl,Healthy bowl with quinoa and veggies,True,True

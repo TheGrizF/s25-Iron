@@ -43,7 +43,7 @@ fetch('/api/taste-profile/matches')
                 tableBody.innerHTML = "<tr><td colspan='2'>No matches found.</td></tr>";
             } else {
                 data.matches.forEach(match => {
-                    let matchPercent = ((24 - match.comparisonNum) / 24 * 100).toFixed(1);
+                    let matchPercent = ((24 - match.comparison_num) / 24 * 100).toFixed(1);
                     let row = document.createElement('tr');
                     row.innerHTML = `<td>${match.name}</td><td>${matchPercent}%</td>`;
                     tableBody.appendChild(row);

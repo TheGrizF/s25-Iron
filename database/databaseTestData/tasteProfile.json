@@ -1,0 +1,112 @@
+[
+    {
+        "taste_profile_id": 1,
+        "user_id": 1,
+        "restrictions": "{\"dietaryRestrictions\": [\"vegan\", \"keto\", \"kosher\"], \"allergies\": [\"fish\", \"treenuts\", \"sesame\"]}",
+        "sweet": 4,
+        "spicy": 3,
+        "sour": 2,
+        "bitter": 1,
+        "umami": 5,
+        "savory": 4
+    },
+    {
+        "taste_profile_id": 2,
+        "user_id": 2,
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"None\"]}",
+        "sweet": 5,
+        "spicy": 2,
+        "sour": 3,
+        "bitter": 2,
+        "umami": 4,
+        "savory": 5
+    },
+    {
+        "taste_profile_id": 3,
+        "user_id": 3,
+        "restrictions": "{\"dietaryRestrictions\": [\"keto\", \"kosher\"], \"allergies\": [\"fish\", \"sesame\"]}",
+        "sweet": 3,
+        "spicy": 1,
+        "sour": 3,
+        "bitter": 3,
+        "umami": 3,
+        "savory": 3
+    },
+    {
+        "taste_profile_id": 4,
+        "user_id": 4,
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"None\"]}",
+        "sweet": 2,
+        "spicy": 5,
+        "sour": 1,
+        "bitter": 4,
+        "umami": 3,
+        "savory": 5
+    },
+    {
+        "taste_profile_id": 5,
+        "user_id": 5,
+        "restrictions": "{\"dietaryRestrictions\": [\"Kosher\"], \"allergies\": [\"fish\", \"treenuts\", \"sesame\"]}",
+        "sweet": 1,
+        "spicy": 2,
+        "sour": 4,
+        "bitter": 5,
+        "umami": 2,
+        "savory": 3
+    },
+    {
+        "taste_profile_id": 6,
+        "user_id": 6,
+        "restrictions": "{\"dietaryRestrictions\": [\"Halal\"], \"allergies\": [\"None\"]}",
+        "sweet": 3,
+        "spicy": 3,
+        "sour": 2,
+        "bitter": 2,
+        "umami": 4,
+        "savory": 4
+    },
+    {
+        "taste_profile_id": 7,
+        "user_id": 7,
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"None\"]}",
+        "sweet": 5,
+        "spicy": 1,
+        "sour": 3,
+        "bitter": 4,
+        "umami": 2,
+        "savory": 5
+    },
+    {
+        "taste_profile_id": 8,
+        "user_id": 8,
+        "restrictions": "{\"dietaryRestrictions\": [\"Lactose-Free\"], \"allergies\": [\"fish\", \"treenuts\", \"sesame\"]}",
+        "sweet": 4,
+        "spicy": 3,
+        "sour": 2,
+        "bitter": 1,
+        "umami": 5,
+        "savory": 3
+    },
+    {
+        "taste_profile_id": 9,
+        "user_id": 9,
+        "restrictions": "{\"dietaryRestrictions\": [\"Low-Carb\"], \"allergies\": [\"fish\", \"treenuts\", \"sesame\"]}",
+        "sweet": 3,
+        "spicy": 4,
+        "sour": 5,
+        "bitter": 1,
+        "umami": 2,
+        "savory": 5
+    },
+    {
+        "taste_profile_id": 10,
+        "user_id": 10,
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"None\"]}",
+        "sweet": 2,
+        "spicy": 3,
+        "sour": 4,
+        "bitter": 5,
+        "umami": 1,
+        "savory": 2
+    }
+]
