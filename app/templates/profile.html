@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="taste-profile-container">
-    <h1>Welcome, {{ user.firstName }} {{ user.lastName }}!</h1>
+    <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
     <div class="intro-section">
         <p>Your email: {{ user.email }}</p>
         <p>Explore your taste matches and reviews.</p>
@@ -44,7 +44,7 @@ function confirmDeletion(email) {
 
   <h2> Your Friends </h2>
   {% for friend in friendsList %}
-     <li>{{friend.firstName}} {{friend.lastName}}</li>
+     <li>{{friend.first_name}} {{friend.last_name}}</li>
   {% endfor %}
 
 {% endblock %}

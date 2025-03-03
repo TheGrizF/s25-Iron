@@ -1,0 +1,11 @@
+live_update_id,restaurant_id,update_type,update_value
+1,1,busy_level,3
+2,2,cleanliness,4
+3,3,special_offer,1
+4,4,busy_level,5
+5,5,event,2
+6,6,cleanliness,3
+7,7,busy_level,4
+8,8,special_offer,1
+9,9,event,2
+10,10,cleanliness,5

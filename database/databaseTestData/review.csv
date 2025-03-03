@@ -1,0 +1,11 @@
+review_id,user_id,restaurant_id,dish_id,rating,content,image_path
+1,1,1,1,5,Amazing dish!,review1.jpg
+2,2,2,2,4,Loved the flavors.,review2.jpg
+3,3,3,3,5,Perfectly cooked!,review3.jpg
+4,4,4,4,3,Not my favorite.,
+5,5,5,5,4,Would try again.,review5.jpg
+6,6,6,6,5,Highly recommend!,review6.jpg
+7,7,7,7,2,Too spicy for me.,
+8,8,8,8,4,Great taste and texture.,review8.jpg
+9,9,9,9,3,A bit salty.,review9.jpg
+10,10,10,10,5,Fantastic experience!,review10.jpg

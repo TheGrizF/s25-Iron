@@ -1,0 +1,122 @@
+[
+    {
+        "dish_taste_profile_id": 1,
+        "dish_id": 1,
+        "cuisine": "Italian",
+        "restrictions": "{\"dietaryRestrictions\": [\"vegetarian\"], \"allergies\": [\"gluten\"]}",
+        "sweet": 3,
+        "spicy": 2,
+        "sour": 1,
+        "bitter": 4,
+        "umami": 5,
+        "savory": 3
+    },
+    {
+        "dish_taste_profile_id": 2,
+        "dish_id": 2,
+        "cuisine": "Indian",
+        "restrictions": "{\"dietaryRestrictions\": [\"halal\"], \"allergies\": [\"nuts\"]}",
+        "sweet": 5,
+        "spicy": 4,
+        "sour": 3,
+        "bitter": 2,
+        "umami": 4,
+        "savory": 2
+    },
+    {
+        "dish_taste_profile_id": 3,
+        "dish_id": 3,
+        "cuisine": "Japanese",
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"shellfish\"]}",
+        "sweet": 4,
+        "spicy": 1,
+        "sour": 5,
+        "bitter": 3,
+        "umami": 3,
+        "savory": 5
+    },
+    {
+        "dish_taste_profile_id": 4,
+        "dish_id": 4,
+        "cuisine": "American",
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"dairy\"]}",
+        "sweet": 2,
+        "spicy": 3,
+        "sour": 4,
+        "bitter": 5,
+        "umami": 2,
+        "savory": 4
+    },
+    {
+        "dish_taste_profile_id": 5,
+        "dish_id": 5,
+        "cuisine": "Mexican",
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"peanuts\"]}",
+        "sweet": 3,
+        "spicy": 5,
+        "sour": 2,
+        "bitter": 1,
+        "umami": 5,
+        "savory": 1
+    },
+    {
+        "dish_taste_profile_id": 6,
+        "dish_id": 6,
+        "cuisine": "Thai",
+        "restrictions": "{\"dietaryRestrictions\": [\"vegetarian\"], \"allergies\": [\"soy\"]}",
+        "sweet": 4,
+        "spicy": 4,
+        "sour": 3,
+        "bitter": 3,
+        "umami": 4,
+        "savory": 3
+    },
+    {
+        "dish_taste_profile_id": 7,
+        "dish_id": 7,
+        "cuisine": "Mediterranean",
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"treenuts\"]}",
+        "sweet": 5,
+        "spicy": 2,
+        "sour": 4,
+        "bitter": 2,
+        "umami": 3,
+        "savory": 5
+    },
+    {
+        "dish_taste_profile_id": 8,
+        "dish_id": 8,
+        "cuisine": "Indian",
+        "restrictions": "{\"dietaryRestrictions\": [\"halal\"], \"allergies\": [\"None\"]}",
+        "sweet": 3,
+        "spicy": 1,
+        "sour": 5,
+        "bitter": 4,
+        "umami": 1,
+        "savory": 2
+    },
+    {
+        "dish_taste_profile_id": 9,
+        "dish_id": 9,
+        "cuisine": "Seafood",
+        "restrictions": "{\"dietaryRestrictions\": [\"None\"], \"allergies\": [\"fish\"]}",
+        "sweet": 2,
+        "spicy": 3,
+        "sour": 1,
+        "bitter": 5,
+        "umami": 2,
+        "savory": 4
+    },
+    {
+        "dish_taste_profile_id": 10,
+        "dish_id": 10,
+        "cuisine": "Vegan",
+        "restrictions": "{\"dietaryRestrictions\": [\"vegan\"], \"allergies\": [\"None\"]}",
+        "sweet": 5,
+        "spicy": 2,
+        "sour": 2,
+        "bitter": 3,
+        "umami": 5,
+        "savory": 3
+    }
+]
