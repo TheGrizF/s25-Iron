@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from sqlalchemy import func
+from backend.utils import normalize_email
 from database import db
 from database.models.user import friends, user
 import tastebuddies
@@ -19,7 +20,7 @@ def add_user_page():
 def add_user():
     first_name = request.form.get("first_name")
     last_name = request.form.get("last_name")
-    email = request.form.get("email")
+    email = normalize_email(request.form.get("email"))
 
     if not first_name or not last_name or not email:
         flash("Missing required fields.", "error")
@@ -40,10 +41,10 @@ def add_user():
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    email = request.form.get("email")
+    email = normalize_email(request.form.get("email"))
     password = request.form.get("password")
 
-    selected_user = user.query.filter_by(email=email).first()
+    selected_user = user.query.filter(func.lower(user.email) == email.lower()).first()
 
     if selected_user:
         session["user_id"] = selected_user.user_id
@@ -79,6 +80,7 @@ def searchUser():
 
     # Check for email - Case insensitive
     if "@" in userName:
+        normalize_userName = normalize_email(userName)
         found_user = user.query.filter(func.lower(user.email) == userName.lower()).first()
     else:
         # Case insensitive search by first and last name
