@@ -3,7 +3,7 @@ from database.models.dish import dish, menu, menuDishJunction
 from database.models.restaurant import restaurant, operatingHours, liveUpdate
 from database.models.review import review
 from database.models.taste_profiles import tasteProfile, dishTasteProfile
-from database.models.user import user, tasteComparisons, cuisine, cuisineUserJunction, friends, savedDishes, savedRestaurants
+from database.models.user import user, tasteComparisons, cuisine, cuisineUserJunction, friends, savedDishes, savedRestaurants, user_allergen, user_restriction
 from database.tasteMatching import updateTasteComparisons
 from database import db
 import json
@@ -237,7 +237,6 @@ def save_taste_profile_step11():
 @profile_bp.route('/api/taste-profile/save', methods=['POST'])
 def save_taste_profile():
     try:
-
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({'status': 'error', 'message': 'user not logged in'}), 401
@@ -260,7 +259,30 @@ def save_taste_profile():
             db.session.add(taste_profile)
         else:
             taste_profile.user_id = user_id
+        
+        # Clear existing allergens and restrictions
+        db.session.query(user_allergen).filter_by(user_id=user_id).delete()
+        db.session.query(user_restriction).filter_by(user_id=user_id).delete()
 
+        # Add new allergens
+        for allergen in data.get('allergens', []):
+            print(allergen)
+            new_allergen = user_allergen(user_id=user_id, allergen=allergen)
+            db.session.add(new_allergen)
+
+        # Add other allergens
+        other_allergy = data.get('otherAllergy')
+        if other_allergy:
+            print(other_allergy)
+            new_allergen = user_allergen(user_id=user_id, allergen=other_allergy)
+            db.session.add(new_allergen)
+
+        # Add new restrictions
+        for restriction in data.get('diets', []):
+            print(restriction)
+            new_restriction = user_restriction(user_id=user_id, restriction=restriction)
+            db.session.add(new_restriction)
+            
         taste_profile.sweet = data.get('sweet', 3)
         taste_profile.savory = data.get('savory', 3)
         taste_profile.sour = data.get('sour', 3)
@@ -281,6 +303,7 @@ def save_taste_profile():
     
     except Exception as e:
         db.session.rollback()
+        print(f"Error in save_taste_profile: {str(e)}")  # Add this line to log the error
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 @profile_bp.route('/matches', methods=['GET'])
