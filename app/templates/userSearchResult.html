@@ -1,6 +1,17 @@
 {% extends 'base.html' %} {% block title %}Profile{% endblock %} {% block
 content %}
 <h2>{{ user.first_name }} {{ user.last_name }}!</h2>
+<div class="profile-icon">
+  {% if user.icon_path %}
+      <img src="{{ url_for('static', filename=user.icon_path) }}" 
+           alt="It's You!"
+           style="width: 150px; height: 150px;">
+  {% else %}
+      <img src="{{ url_for('static', filename='images\profile_icons\default1.png') }}" 
+           alt="Default Icon"
+           style="width: 150px; height: 150px">
+  {% endif %}
+</div>
 <p>Email: {{ user.email }}</p>
 
 <form action="{{ url_for('auth.addFriend', user_id=user.user_id) }}" method="post">

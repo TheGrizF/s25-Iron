@@ -25,10 +25,10 @@ def view_profile():
     return render_template('profile.html', user=selected_user, friendsList=friendsList)
 
 
-@profile_bp.route('/userProfile/<user_id>')
-def viewUserProfile(user_id):
+@profile_bp.route('/userSearchResult/<user_id>')
+def viewUserSearchResults(user_id):
     selected_user = user.query.get(user_id)
-    return render_template('userProfile.html', user=selected_user)
+    return render_template('userSearchResult.html', user=selected_user)
 
 @profile_bp.route('/delete_profile', methods=['POST'])
 def delete_profile():
