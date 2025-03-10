@@ -40,24 +40,25 @@
     </div>
 
     <div class="restaurants-list">
-        <a href="{{ url_for('daily_dish.restaurant_detail', id='norms-corner') }}" class="restaurant-card">
+        <a href="{{ url_for('daily_dish.restaurant_detail', restaurant_id=restaurant.id) }}" class="restaurant-card">
             <img src="{{ url_for('static', filename='images/pasta.jpg') }}" alt="Norm's Corner">
             <div class="restaurant-info">
-                <h3>Norm's Corner</h3>
-                <p class="description">Eclectic food, East meets West</p>
-                <p class="details">open lunch and dinner</p>
-                <p class="address">84 Beacon Street 2.3 miles</p>
+                <h2>{{ restaurant.name }} </h2>
+                <p class="description">{{ restaurant.cuisine }}</p>
+                <p class="details">restaurant.detail</p>
+                <p class="address">{{ restaurant address }} </p>
                 <div class="tags">
                     <span class="tag">Free Wifi</span>
                     <span class="tag">Pet Friendly</span>
                 </div>
                 <div class="status">
-                    <span class="match">94% match</span>
-                    <span class="busy">Busy right now</span>
+                    <span class="match">{{ restaurant.match_percentage }} % </span> <!--presuming it will have something like this to pull, not sure-->
+                    <span class="busy">Busy right now</span> <!-- Maybe something random here to pull from to pretend dynamic -->
                 </div>
             </div>
         </a>
         <!-- Add more restaurant cards as needed -->
+       
     </div>
 </div>
 {% endblock %} 
