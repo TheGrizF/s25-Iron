@@ -1,0 +1,28 @@
+restriction_id,dish_id,restriction
+1,4,gluten-free
+2,5,vegan
+3,7,gluten-free
+4,10,vegitarian
+5,12,gluten-free
+6,15,vegitarian
+7,16,gluten-free
+8,29,vegan
+9,32,vegan
+10,33,vegan
+11,34,vegan
+12,35,vegan
+13,36,vegitarian
+14,37,vegan
+15,40,vegan
+16,41,vegan
+17,42,vegetarian
+18,47,vegitarian
+19,66,gluten free
+20,76,vegetarian
+21,82,vegan
+22,84,vegan
+23,87,vegetarian
+24,90,vegitarian
+25,93,gluten free
+26,93,vegan
+27,94,vegitarian

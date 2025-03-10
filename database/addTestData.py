@@ -25,7 +25,9 @@ def insert_test_data():
         'friends': 'database/databaseTestData/friends.csv',
         'dish_taste_profile': 'database/databaseTestData/dish_taste_profile.csv',
         'taste_profile': 'database/databaseTestData/user_taste_profile.csv',
-        'restaurant': 'database/databaseTestData/restaurant.csv'
+        'restaurant': 'database/databaseTestData/restaurant.csv',
+        'dish_restriction': 'database/databaseTestData/dish_restrictions.csv',
+        'dish_allergen': 'database/databaseTestData/dish_allergies.csv'
 
     }
 
