@@ -9,6 +9,7 @@ class user(db.Model):
     last_name = Column(Text, nullable=False)
     email = Column(Text, nullable=False, unique=True)
     user_role = Column(Text, nullable=False, default="user")
+    icon_path = Column(Text, nullable=True, default="app/static/images/profile_icons/default1.png")
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     cuisines = relationship("cuisineUserJunction", back_populates="user")

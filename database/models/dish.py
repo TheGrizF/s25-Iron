@@ -9,6 +9,7 @@ class dish(db.Model):
     dish_name = Column(Text, nullable=False)
     featured = Column(Boolean, nullable=True, default=True)
     available = Column(Boolean, nullable=True, default=False)
+    image_path = Column(Text, nullable=True, default="app/static/images/dishes/default.jpg")
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     taste_profiles = relationship("dishTasteProfile", back_populates="dish")
