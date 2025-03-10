@@ -6,6 +6,19 @@
 
 <div class="taste-profile-container">
     <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
+    
+    <div class="profile-icon">
+        {% if user.icon_path %}
+            <img src="{{ url_for('static', filename=user.icon_path) }}" 
+                 alt="It's You!"
+                 style="width: 150px; height: 150px;">
+        {% else %}
+            <img src="{{ url_for('static', filename='images\profile_icons\default1.png') }}" 
+                 alt="Default Icon"
+                 style="width: 150px; height: 150px">
+        {% endif %}
+    </div>
+
     <div class="intro-section">
         <p>Your email: {{ user.email }}</p>
         <p>Explore your taste matches and reviews.</p>
@@ -32,8 +45,25 @@
                 <button type="submit" class="delete-btn">Delete Profile</button>
             </div>
         </form>
+
+        <h2>Your Friends</h2>
+        {% for friend in friendsList %}
+            {% if friend.icon_path %}
+                <img src="{{ url_for('static', filename=friend.icon_path) }}" 
+                     alt="It's You!"
+                     style="width: 25px; height: 25px;">
+            {% else %}
+                <img src="{{ url_for('static', filename='images\profile_icons\default1.png') }}" 
+                     alt="Unknown"
+                     style="width: 25px; height: 25px">
+            {% endif %}
+            <span class="friend-name">{{ friend.first_name }} {{ friend.last_name }}</span>
+            <br>
+        {% endfor %}
+        
     </div>
 </div>
+
 
 <script>
 
@@ -41,10 +71,5 @@ function confirmDeletion(email) {
     return confirm(`Are you sure? Deleting ${email} can't be undone.`);
 }
 </script>
-
-  <h2> Your Friends </h2>
-  {% for friend in friendsList %}
-     <li>{{friend.first_name}} {{friend.last_name}}</li>
-  {% endfor %}
 
 {% endblock %}

@@ -5,8 +5,7 @@ from database import db
 class tasteProfile(db.Model):
     __tablename__ = "taste_profile"
     taste_profile_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"), unique=True, nullable=False)
-    restrictions = Column(Text, nullable=True)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), unique=True, nullable=False)
     sweet = Column(SmallInteger, nullable=True)
     savory = Column(SmallInteger, nullable=True)
     sour = Column(SmallInteger, nullable=True)
@@ -28,16 +27,15 @@ class tasteProfile(db.Model):
 class dishTasteProfile(db.Model):
     __tablename__ = "dish_taste_profile"
     dish_taste_profile_id = Column(Integer, primary_key=True, autoincrement=True)
-    dish_id = Column(Integer, ForeignKey("dish.dish_id"), unique=True, nullable=False)
-    cuisine = Column(Text, nullable=True)
-    restrictions = Column(Text, nullable=True)
+    dish_id = Column(Integer, ForeignKey("dish.dish_id", ondelete="CASCADE"), unique=True, nullable=False)
+    cuisine = Column(SmallInteger, nullable=True)
     sweet = Column(SmallInteger, nullable=True)
     savory = Column(SmallInteger, nullable=True)
     sour = Column(SmallInteger, nullable=True)
     bitter = Column(SmallInteger, nullable=True)
     spicy = Column(SmallInteger, nullable=True)
     umami = Column(SmallInteger, nullable=True)
-    created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())  # Track creation time
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     dish = relationship("dish", back_populates="taste_profiles")
 

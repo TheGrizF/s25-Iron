@@ -52,7 +52,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const dietaryForm = document.getElementById('dietaryForm');
-    
+    const otherAllergyInput = document.getElementById('otherAllergy');
+    const addOtherAllergyButton = document.getElementById('addOtherAllergy');
+    const otherAllergyList = document.getElementById('otherAllergyList');
+    let otherAllergies = [];
+
+    if (addOtherAllergyButton && otherAllergyInput && otherAllergyList) {
+        addOtherAllergyButton.addEventListener('click', () => {
+            const allergy = otherAllergyInput.value.trim();
+            if (allergy) {
+                otherAllergies.push(allergy);
+                const allergyItem = document.createElement('div');
+                allergyItem.textContent = allergy;
+                otherAllergyList.appendChild(allergyItem);
+                otherAllergyInput.value = '';
+            }
+        });
+    }
+
     if (dietaryForm) {
         dietaryForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -64,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const formData = {
                 allergens: allergens,
-                otherAllergy: document.getElementById('otherAllergy').value,
+                otherAllergies: otherAllergies, // Update this line
                 diets: diets
             };
 
@@ -363,4 +380,4 @@ async function submitBasicProfile() {
         console.error('Error:', error);
         alert('Failed to save preferences. Please try again.');
     }
-} 
+}

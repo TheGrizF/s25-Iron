@@ -93,7 +93,7 @@ def searchUser():
         if found_user.user_id == current_user_id:
             return redirect(url_for('profile.view_profile'))
         else:
-            return redirect(url_for('profile.viewUserProfile', user_id=found_user.user_id))
+            return redirect(url_for('profile.viewUserSearchResults', user_id=found_user.user_id))
 
     flash("No user found")
     return redirect(url_for('daily_dish.TasteBuds'))
@@ -118,7 +118,7 @@ def addFriend(user_id):
         db.session.commit()
         flash("Buddy added", "success")
 
-    return redirect(url_for('profile.viewUserProfile', user_id=user_id))
+    return redirect(url_for('profile.viewUserSearchResults', user_id=user_id))
 
 @auth_bp.route('/database')
 def database():

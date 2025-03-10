@@ -1,0 +1,102 @@
+[
+    {
+        "restaurant_id": 1,
+        "restaurant_name": "Freemason Abbey Restaurant",
+        "restrictions": "",
+        "location": "Norfolk, VA",
+        "rating_average": 4.5,
+        "phone_number": "757-555-1234",
+        "clean_average": 4.5,
+        "busy_average": 3.5
+    },
+    {
+        "restaurant_id": 2,
+        "restaurant_name": "High Side",
+        "restrictions": "",
+        "location": "Suffolk, VA",
+        "rating_average": 4.9,
+        "phone_number": "948-555-5678",
+        "clean_average": 4.5,
+        "busy_average": 4.3
+    },
+    {
+        "restaurant_id": 3,
+        "restaurant_name": "Koshi",
+        "restrictions": "",
+        "location": "Norfolk, VA",
+        "rating_average": 5,
+        "phone_number": "757-555-9876",
+        "clean_average": 4.8,
+        "busy_average": 4.0
+    },
+    {
+        "restaurant_id": 4,
+        "restaurant_name": "Tida Thai",
+        "restrictions": "",
+        "location": "Norfolk, VA",
+        "rating_average": 4,
+        "phone_number": "757-555-4321",
+        "clean_average": 4.3,
+        "busy_average": 3.8
+    },
+    {
+        "restaurant_id": 5,
+        "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+        "restrictions": "",
+        "location": "Norfolk, VA",
+        "rating_average": 3,
+        "phone_number": "757-555-6789",
+        "clean_average": 3.9,
+        "busy_average": 4.5
+    },
+    {
+        "restaurant_id": 6,
+        "restaurant_name": "PJay's Kitchen",
+        "restrictions": "",
+        "location": "Suffolk, VA",
+        "rating_average": 5,
+        "phone_number": "757-555-3456",
+        "clean_average": 4.7,
+        "busy_average": 3.6
+    },
+    {
+        "restaurant_id": 7,
+        "restaurant_name": "Luce",
+        "restrictions": "",
+        "location": "Suffolk, VA",
+        "rating_average": 4,
+        "phone_number": "757-555-9012",
+        "clean_average": 4.4,
+        "busy_average": 3.9
+    },
+    {
+        "restaurant_id": 8,
+        "restaurant_name": "Los Cuates Taqueria",
+        "restrictions": "",
+        "location": "Virginia Beach, VA",
+        "rating_average": 4,
+        "phone_number": "948-555-2345",
+        "clean_average": 4.2,
+        "busy_average": 4.2
+    },
+    {
+        "restaurant_id": 9,
+        "restaurant_name": "The Stockpot",
+        "restrictions": "",
+        "location": "Norfolk, VA",
+        "rating_average": 5,
+        "phone_number": "948-555-7890",
+        "clean_average": 4.9,
+        "busy_average": 3.7
+    },
+    {
+        "restaurant_id": 10,
+        "restaurant_name": "Azar's Mediterranean Grill",
+        "restrictions": "",
+        "location": "Virginia Beach, VA",
+        "rating_average": 5,
+        "phone_number": "948-555-1111",
+        "clean_average": 4.6,
+        "busy_average": 3.8
+    }
+]

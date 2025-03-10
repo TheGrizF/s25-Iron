@@ -22,13 +22,19 @@ def insert_test_data():
         'menu_dish_junction': 'database/databaseTestData/menuDishJunction.csv',
         'cuisine_user_junction': 'database/databaseTestData/cuisineUserJunction.csv',
         'live_update': 'database/databaseTestData/liveUpdate.csv',
-        'friends': 'database/databaseTestData/friends.csv'
+        'friends': 'database/databaseTestData/friends.csv',
+        'dish_taste_profile': 'database/databaseTestData/dish_taste_profile.csv',
+        'taste_profile': 'database/databaseTestData/user_taste_profile.csv',
+        'restaurant': 'database/databaseTestData/restaurant.csv',
+        'dish_restriction': 'database/databaseTestData/dish_restrictions.csv',
+        'dish_allergen': 'database/databaseTestData/dish_allergies.csv'
+
     }
 
     json_files = {
-        'taste_profile': 'database/databaseTestData/tasteProfile.json',
-        'restaurant': 'database/databaseTestData/restaurant.json',
-        'dish_taste_profile': 'database/databaseTestData/dishTasteProfile.json'
+        #'taste_profile': 'database/databaseTestData/tasteProfile.json',
+        #'restaurant': 'database/databaseTestData/restaurant.json',
+        #'dish_taste_profile': 'database/databaseTestData/dishTasteProfile.json'
     }
 
     try:

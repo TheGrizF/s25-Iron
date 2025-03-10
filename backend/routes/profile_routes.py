@@ -3,7 +3,7 @@ from database.models.dish import dish, menu, menuDishJunction
 from database.models.restaurant import restaurant, operatingHours, liveUpdate
 from database.models.review import review
 from database.models.taste_profiles import tasteProfile, dishTasteProfile
-from database.models.user import user, tasteComparisons, cuisine, cuisineUserJunction, friends, savedDishes, savedRestaurants
+from database.models.user import user, tasteComparisons, cuisine, cuisineUserJunction, friends, savedDishes, savedRestaurants, user_allergen, user_restriction
 from database.tasteMatching import updateTasteComparisons
 from database import db
 import json
@@ -18,21 +18,17 @@ def view_profile():
         return redirect(url_for('auth.index'))
     
     selected_user = user.query.get(user_id)
+
     #fetch information on friends
-    friendsList = db.session.query(friends, user).join(user, friends.buddy_id == user.user_id).filter(friends.user_id==user_id).all()
-    friendsData = [{
-        'buddy_id': friend.user.user_id,
-        'first_name': friend.user.first_name,
-        'last_name' : friend.user.last_name,
-    } for friend in friendsList]
+    friendsList = db.session.query(user).join(friends, friends.buddy_id == user.user_id).filter(friends.user_id==user_id).all()
 
-    return render_template('profile.html', user=selected_user, friendsList=friendsData)
+    return render_template('profile.html', user=selected_user, friendsList=friendsList)
 
 
-@profile_bp.route('/userProfile/<user_id>')
-def viewUserProfile(user_id):
+@profile_bp.route('/userSearchResult/<user_id>')
+def viewUserSearchResults(user_id):
     selected_user = user.query.get(user_id)
-    return render_template('userProfile.html', user=selected_user)
+    return render_template('userSearchResult.html', user=selected_user)
 
 @profile_bp.route('/delete_profile', methods=['POST'])
 def delete_profile():
@@ -49,17 +45,6 @@ def delete_profile():
         return redirect(url_for('auth.index'))
 
     try:
-        # Delete related data first
-        db.session.query(friends).filter((friends.user_id == user_id) | (friends.buddy_id == user_id)).delete(synchronize_session=False)
-        db.session.query(savedDishes).filter(savedDishes.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(savedRestaurants).filter(savedRestaurants.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(review).filter(review.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(tasteProfile).filter(tasteProfile.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(tasteComparisons).filter((tasteComparisons.compare_from == user_id) | (tasteComparisons.compare_to == user_id)).delete(synchronize_session=False)
-        db.session.query(cuisineUserJunction).filter(cuisineUserJunction.user_id == user_id).delete(synchronize_session=False)
-
-
-        # Now delete the user
         db.session.delete(selected_user)
         db.session.commit()
         session.clear()
@@ -252,7 +237,6 @@ def save_taste_profile_step11():
 @profile_bp.route('/api/taste-profile/save', methods=['POST'])
 def save_taste_profile():
     try:
-
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({'status': 'error', 'message': 'user not logged in'}), 401
@@ -271,18 +255,35 @@ def save_taste_profile():
         
         if not taste_profile:
             taste_profile = tasteProfile(user_id=user_id)
-            user.taste_profile = tasteProfile
+            selected_user.taste_profile = taste_profile
             db.session.add(taste_profile)
         else:
             taste_profile.user_id = user_id
+        
+        # Clear existing allergens and restrictions
+        db.session.query(user_allergen).filter_by(user_id=user_id).delete()
+        db.session.query(user_restriction).filter_by(user_id=user_id).delete()
 
-        # Add allergies to Dietary Restrictions
-        diet_allergy = {
-            "restrictions": data.get('diets', []),
-            "allergies": data.get('allergens', [])
-        }
+        # Add new allergens
+        for allergen in data.get('allergens', []):
+            print(allergen)
+            new_allergen = user_allergen(user_id=user_id, allergen=allergen)
+            db.session.add(new_allergen)
 
-        taste_profile.restrictions = json.dumps(diet_allergy)
+        # Add other allergens
+        other_allergies = data.get('otherAllergies', [])
+        for other_allergy in other_allergies:
+            other_allergy = other_allergy.lower()  # Convert to lowercase
+            print(other_allergy)
+            new_allergen = user_allergen(user_id=user_id, allergen=other_allergy)
+            db.session.add(new_allergen)
+
+        # Add new restrictions
+        for restriction in data.get('diets', []):
+            print(restriction)
+            new_restriction = user_restriction(user_id=user_id, restriction=restriction)
+            db.session.add(new_restriction)
+            
         taste_profile.sweet = data.get('sweet', 3)
         taste_profile.savory = data.get('savory', 3)
         taste_profile.sour = data.get('sour', 3)
@@ -303,6 +304,7 @@ def save_taste_profile():
     
     except Exception as e:
         db.session.rollback()
+        print(f"Error in save_taste_profile: {str(e)}")  # Add this line to log the error
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 @profile_bp.route('/matches', methods=['GET'])
