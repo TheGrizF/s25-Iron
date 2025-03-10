@@ -61,10 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 .map(cb => cb.value);
             const diets = Array.from(document.querySelectorAll('input[name="diets"]:checked'))
                 .map(cb => cb.value);
+            const otherAllergy = document.getElementById('otherAllergy').value; // Fix this line
             
             const formData = {
                 allergens: allergens,
-                otherAllergy: document.getElementById('otherAllergy').value,
+                otherAllergy: otherAllergy, // Fix this line
                 diets: diets
             };
 
