@@ -49,17 +49,6 @@ def delete_profile():
         return redirect(url_for('auth.index'))
 
     try:
-        # Delete related data first
-        db.session.query(friends).filter((friends.user_id == user_id) | (friends.buddy_id == user_id)).delete(synchronize_session=False)
-        db.session.query(savedDishes).filter(savedDishes.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(savedRestaurants).filter(savedRestaurants.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(review).filter(review.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(tasteProfile).filter(tasteProfile.user_id == user_id).delete(synchronize_session=False)
-        db.session.query(tasteComparisons).filter((tasteComparisons.compare_from == user_id) | (tasteComparisons.compare_to == user_id)).delete(synchronize_session=False)
-        db.session.query(cuisineUserJunction).filter(cuisineUserJunction.user_id == user_id).delete(synchronize_session=False)
-
-
-        # Now delete the user
         db.session.delete(selected_user)
         db.session.commit()
         session.clear()
@@ -271,18 +260,11 @@ def save_taste_profile():
         
         if not taste_profile:
             taste_profile = tasteProfile(user_id=user_id)
-            user.taste_profile = tasteProfile
+            selected_user.taste_profile = taste_profile
             db.session.add(taste_profile)
         else:
             taste_profile.user_id = user_id
 
-        # Add allergies to Dietary Restrictions
-        diet_allergy = {
-            "restrictions": data.get('diets', []),
-            "allergies": data.get('allergens', [])
-        }
-
-        taste_profile.restrictions = json.dumps(diet_allergy)
         taste_profile.sweet = data.get('sweet', 3)
         taste_profile.savory = data.get('savory', 3)
         taste_profile.sour = data.get('sour', 3)

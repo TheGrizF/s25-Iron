@@ -12,16 +12,18 @@ class user(db.Model):
     icon_path = Column(Text, nullable=True, default="app/static/images/profile_icons/default1.png")
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
-    cuisines = relationship("cuisineUserJunction", back_populates="user")
-    taste_profile = relationship("tasteProfile", uselist=False, back_populates="user")
-    reviews = relationship("review", back_populates="user")
-    saved_dishes = relationship("savedDishes", back_populates="user")
-    saved_restaurants = relationship("savedRestaurants", back_populates="user")
+    cuisines = relationship("cuisineUserJunction", back_populates="user", cascade="all, delete-orphan")
+    taste_profile = relationship("tasteProfile", uselist=False, back_populates="user", cascade="all, delete-orphan")
+    reviews = relationship("review", back_populates="user", cascade="all, delete-orphan")
+    saved_dishes = relationship("savedDishes", back_populates="user", cascade="all, delete-orphan")
+    saved_restaurants = relationship("savedRestaurants", back_populates="user", cascade="all, delete-orphan")
+    user_allergens = relationship("user_allergen", back_populates="user", cascade="all, delete-orphan")
+    user_restrictions = relationship("user_restriction", back_populates="user", cascade="all, delete-orphan")
 
-    friends = relationship("friends", foreign_keys="[friends.user_id]", back_populates="user")
-    buddies = relationship("friends", foreign_keys="[friends.buddy_id]", back_populates="buddy")
-    taste_comparisons = relationship("tasteComparisons", foreign_keys="[tasteComparisons.compare_from]", back_populates="user_from")
-    compared_to = relationship("tasteComparisons", foreign_keys="[tasteComparisons.compare_to]", back_populates="user_to")
+    friends = relationship("friends", foreign_keys="[friends.user_id]", back_populates="user", cascade="all, delete-orphan")
+    buddies = relationship("friends", foreign_keys="[friends.buddy_id]", back_populates="buddy", cascade="all, delete-orphan")
+    taste_comparisons = relationship("tasteComparisons", foreign_keys="[tasteComparisons.compare_from]", back_populates="user_from", cascade="all, delete-orphan")
+    compared_to = relationship("tasteComparisons", foreign_keys="[tasteComparisons.compare_to]", back_populates="user_to", cascade="all, delete-orphan")
 
     __table_args__ = (
         CheckConstraint("user_role IN ('admin', 'user', 'moderator')", name="valid_user_role"),
@@ -30,8 +32,8 @@ class user(db.Model):
 class tasteComparisons(db.Model):
     __tablename__ = "taste_comparisons"
     matches_id = Column(Integer, primary_key=True, autoincrement=True)
-    compare_from = Column(Integer, ForeignKey("user.user_id"), nullable=False)
-    compare_to = Column(Integer, ForeignKey("user.user_id"), nullable=False)
+    compare_from = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    compare_to = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
     comparison_num = Column(Integer, nullable=False)
 
     user_from = relationship("user", foreign_keys=[compare_from], back_populates="taste_comparisons")
@@ -47,13 +49,13 @@ class cuisine(db.Model):
     cuisine_id = Column(Integer, primary_key=True, autoincrement=True)
     cuisine_name = Column(Text, nullable=False, unique=True)
 
-    users = relationship("cuisineUserJunction", back_populates="cuisine")
+    users = relationship("cuisineUserJunction", back_populates="cuisine", cascade="all, delete-orphan")
 
 class cuisineUserJunction(db.Model):
     __tablename__ = "cuisine_user_junction"
     cuisine_user_junction_id = Column(Integer, primary_key=True, autoincrement=True)
-    cuisine_id = Column(Integer, ForeignKey("cuisine.cuisine_id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
+    cuisine_id = Column(Integer, ForeignKey("cuisine.cuisine_id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
     preference_level = Column(SmallInteger, nullable=True)
 
     cuisine = relationship("cuisine", back_populates="users")
@@ -64,9 +66,9 @@ class cuisineUserJunction(db.Model):
 class friends(db.Model):
     __tablename__ = "friends"
     friends_list_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
-    buddy_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
-    date_added = Column(TIMESTAMP, nullable=False, server_default=func.now(), onupdate=func.now())  # Auto timestamp
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    buddy_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    date_added = Column(TIMESTAMP, nullable=False, server_default=func.now(), onupdate=func.now())  # auto timestamp
     status = Column(Text, nullable=False)
 
     user = relationship("user", foreign_keys=[user_id], back_populates="friends")
@@ -80,8 +82,8 @@ class friends(db.Model):
 class savedDishes(db.Model):
     __tablename__ = "saved_dishes"
     saved_dishes_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
-    dish_id = Column(Integer, ForeignKey("dish.dish_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    dish_id = Column(Integer, ForeignKey("dish.dish_id", ondelete="CASCADE"), nullable=False)
     date_saved = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     user = relationship("user", back_populates="saved_dishes")
@@ -90,9 +92,25 @@ class savedDishes(db.Model):
 class savedRestaurants(db.Model):
     __tablename__ = "saved_restaurants"
     saved_restaurants_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
-    restaurant_id = Column(Integer, ForeignKey("restaurant.restaurant_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    restaurant_id = Column(Integer, ForeignKey("restaurant.restaurant_id", ondelete="CASCADE"), nullable=False)
     date_saved = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     user = relationship("user", back_populates="saved_restaurants")
     restaurant = relationship("restaurant", back_populates="saved_restaurants")
+
+class user_allergen(db.Model):
+    __tablename__ = "user_allergen"
+    allergen_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    allergen = Column(Text, nullable=False)
+
+    user = relationship("user", back_populates="user_allergens")
+
+class user_restriction(db.Model):
+    __tablename__ = "user_restriction"
+    restriction_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    restriction = Column(Text, nullable=False)
+
+    user = relationship("user", back_populates="user_restrictions")

@@ -363,4 +363,4 @@ async function submitBasicProfile() {
         console.error('Error:', error);
         alert('Failed to save preferences. Please try again.');
     }
-} 
+}
