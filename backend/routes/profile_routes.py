@@ -271,8 +271,9 @@ def save_taste_profile():
             db.session.add(new_allergen)
 
         # Add other allergens
-        other_allergy = data.get('otherAllergy')
-        if other_allergy:
+        other_allergies = data.get('otherAllergies', [])
+        for other_allergy in other_allergies:
+            other_allergy = other_allergy.lower()  # Convert to lowercase
             print(other_allergy)
             new_allergen = user_allergen(user_id=user_id, allergen=other_allergy)
             db.session.add(new_allergen)

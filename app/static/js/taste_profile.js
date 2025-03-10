@@ -52,7 +52,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const dietaryForm = document.getElementById('dietaryForm');
-    
+    const otherAllergyInput = document.getElementById('otherAllergy');
+    const addOtherAllergyButton = document.getElementById('addOtherAllergy');
+    const otherAllergyList = document.getElementById('otherAllergyList');
+    let otherAllergies = [];
+
+    if (addOtherAllergyButton && otherAllergyInput && otherAllergyList) {
+        addOtherAllergyButton.addEventListener('click', () => {
+            const allergy = otherAllergyInput.value.trim();
+            if (allergy) {
+                otherAllergies.push(allergy);
+                const allergyItem = document.createElement('div');
+                allergyItem.textContent = allergy;
+                otherAllergyList.appendChild(allergyItem);
+                otherAllergyInput.value = '';
+            }
+        });
+    }
+
     if (dietaryForm) {
         dietaryForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -61,11 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 .map(cb => cb.value);
             const diets = Array.from(document.querySelectorAll('input[name="diets"]:checked'))
                 .map(cb => cb.value);
-            const otherAllergy = document.getElementById('otherAllergy').value; // Fix this line
             
             const formData = {
                 allergens: allergens,
-                otherAllergy: otherAllergy, // Fix this line
+                otherAllergies: otherAllergies, // Update this line
                 diets: diets
             };
 
