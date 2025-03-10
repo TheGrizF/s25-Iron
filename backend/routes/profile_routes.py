@@ -18,15 +18,11 @@ def view_profile():
         return redirect(url_for('auth.index'))
     
     selected_user = user.query.get(user_id)
-    #fetch information on friends
-    friendsList = db.session.query(friends, user).join(user, friends.buddy_id == user.user_id).filter(friends.user_id==user_id).all()
-    friendsData = [{
-        'buddy_id': friend.user.user_id,
-        'first_name': friend.user.first_name,
-        'last_name' : friend.user.last_name,
-    } for friend in friendsList]
 
-    return render_template('profile.html', user=selected_user, friendsList=friendsData)
+    #fetch information on friends
+    friendsList = db.session.query(user).join(friends, friends.buddy_id == user.user_id).filter(friends.user_id==user_id).all()
+
+    return render_template('profile.html', user=selected_user, friendsList=friendsList)
 
 
 @profile_bp.route('/userProfile/<user_id>')

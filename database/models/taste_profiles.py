@@ -28,6 +28,7 @@ class dishTasteProfile(db.Model):
     __tablename__ = "dish_taste_profile"
     dish_taste_profile_id = Column(Integer, primary_key=True, autoincrement=True)
     dish_id = Column(Integer, ForeignKey("dish.dish_id", ondelete="CASCADE"), unique=True, nullable=False)
+    cuisine = Column(SmallInteger, nullable=True)
     sweet = Column(SmallInteger, nullable=True)
     savory = Column(SmallInteger, nullable=True)
     sour = Column(SmallInteger, nullable=True)

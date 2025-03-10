@@ -11,6 +11,8 @@ class restaurant(db.Model):
     phone_number = Column(Text, nullable=True) # could validate with a regular expression but sqlite does not support so validate before entry
     clean_average = Column(DECIMAL(5, 1), nullable=True)
     busy_average = Column(DECIMAL(5, 1), nullable=True)
+    image_path = Column(Text, nullable=True, default="images/restaurant/default.jpg")
+    description = Column(Text, nullable=True)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     operating_hours = relationship("operatingHours", back_populates="restaurant", cascade="all, delete-orphan")

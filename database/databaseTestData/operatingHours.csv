@@ -10,8 +10,8 @@ operating_hour_id,restaurant_id,days_of_week,open_time,close_time
 9,5,Thursday-Sunday,12:00:00,22:30:00
 10,6,Monday-Thursday,11:00:00,19:00:00
 11,6,Friday-Saturday,11:00:00,22:30:00
-11,6,Sunday,12:00:00,19:00:00
-12,7,Monday-Saturday,16:45:00,00:00:00
-13,8,Monday-Sunday,11:00:00,22:00:00
-14,9,Monday-Sunday,07:00:00,15:00:00
-15,10,Monday-Saturday,10:30:00,19:00:00
+12,6,Sunday,12:00:00,19:00:00
+13,7,Monday-Saturday,16:45:00,00:00:00
+14,8,Monday-Sunday,11:00:00,22:00:00
+15,9,Monday-Sunday,07:00:00,15:00:00
+16,10,Monday-Saturday,10:30:00,19:00:00
