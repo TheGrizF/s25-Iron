@@ -50,7 +50,7 @@ class liveUpdate(db.Model):
 # function to update averages
 def update_averages(mapper, connection, target):
     if target.update_type == 'cleanliness':
-        avg_query = select([func.avg(liveUpdate.update_value)]).where(
+        avg_query = select(func.avg(liveUpdate.update_value)).where(
             liveUpdate.restaurant_id == target.restaurant_id,
             liveUpdate.update_type == 'cleanliness'
         )
@@ -60,8 +60,9 @@ def update_averages(mapper, connection, target):
                 restaurant.restaurant_id == target.restaurant_id
             ).values(clean_average=avg_cleanliness)
         )
+
     elif target.update_type == 'busy_level':
-        avg_query = select([func.avg(liveUpdate.update_value)]).where(
+        avg_query = select(func.avg(liveUpdate.update_value)).where(
             liveUpdate.restaurant_id == target.restaurant_id,
             liveUpdate.update_type == 'busy_level'
         )
