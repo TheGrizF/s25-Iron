@@ -27,7 +27,7 @@ def create_app():
     # run taste comparison updates
     with app.app_context():
         updateAllTasteComparisons()
-        recs = get_dish_recommendations(user_id=12)
+        recs = get_dish_recommendations(user_id=1)
         print('dishes:', recs)
 
     # register Blueprints

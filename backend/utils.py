@@ -10,6 +10,7 @@ from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction
 from database.models.restaurant import restaurant
 
+
 """
 Method to determine a list of dishes with appropriate score
 :param user_id: user_id to get curated list of dishes to try
@@ -98,12 +99,13 @@ def get_dish_recommendations(user_id):
             .scalar()
         ) or None
 
-        bud_score = 1 - (comparison_num / 24)
-        review_score = bud_review / 5
+        # Normalize scores (0 to 1)
+        bud_score = 1 - (comparison_num / 24)  # Adjust this if we change how tastebuddy score is determined
+        review_score = bud_review / 5   
         avg_review = avg_rating / 5
         cuisine_score = user_cuisine_list.get(dish_cuisine, 0) / 5 # Will be a 5 if it is in there, 0 if it is not, result 1 or 0
 
-        # Weighted?
+        # Apply weights and turn to percent
         dish_score = round((
             (bud_score     * 0.55) +
             (review_score  * 0.25) +
@@ -113,6 +115,7 @@ def get_dish_recommendations(user_id):
 
         scored_matches.append((dish_id, bud_id, dish_score))
 
+    # Sort list based on score, descending and return
     scored_matches.sort(key=lambda x: x[2], reverse=True)
     return scored_matches
 
