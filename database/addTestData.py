@@ -21,11 +21,11 @@ def insert_test_data():
         'menu': 'database/databaseTestData/menu.csv',
         'menu_dish_junction': 'database/databaseTestData/menuDishJunction.csv',
         'cuisine_user_junction': 'database/databaseTestData/cuisineUserJunction.csv',
+        'restaurant': 'database/databaseTestData/restaurant.csv',
         'live_update': 'database/databaseTestData/liveUpdate.csv',
         'friends': 'database/databaseTestData/friends.csv',
         'dish_taste_profile': 'database/databaseTestData/dish_taste_profile.csv',
         'taste_profile': 'database/databaseTestData/user_taste_profile.csv',
-        'restaurant': 'database/databaseTestData/restaurant.csv',
         'dish_restriction': 'database/databaseTestData/dish_restrictions.csv',
         'dish_allergen': 'database/databaseTestData/dish_allergies.csv'
 
@@ -121,6 +121,26 @@ def insert_test_data():
                 print(f"Warning: {file_path} not found, skipping {table}...")
             except Exception as e:
                 print(f"Error inserting data into {table}: {e}")
+
+        cursor.execute("""
+            UPDATE restaurant 
+            SET clean_average = (
+                SELECT AVG(update_value) 
+                FROM live_update 
+                WHERE live_update.restaurant_id = restaurant.restaurant_id 
+                AND update_type = 'cleanliness'
+            )
+        """)
+
+        cursor.execute("""
+            UPDATE restaurant 
+            SET busy_average = (
+                SELECT AVG(update_value) 
+                FROM live_update 
+                WHERE live_update.restaurant_id = restaurant.restaurant_id 
+                AND update_type = 'busy_level'
+            )
+        """)
 
         # Commit the inserted data
         conn.commit()

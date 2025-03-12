@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Dish Recommendations{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/database.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="database-container">
+    <h1 class="database-title">{{ user_name }}'s Dish Recommendations </h1>
+
+    <div class="table-section">
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Dish</th>
+                        <th>From</th>
+                        <th>Match</th>
+                    </tr>
+                </thead>
+                <tbody id="dishMatchesTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <a href="{{ url_for('profile.view_profile') }}">
+            <button>Back to Profile</button>
+        </a>
+    </div>
+</div>
+
+<script>
+fetch('/api/dish-matches')
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            let tableBody = document.getElementById('dishMatchesTableBody');
+
+            if (data.matches.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='2'>No Recommendations Found.</td></tr>";
+            } else {
+                data.matches.forEach(match => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                    <td>${match.dish_name}</td>
+                    <td>${match.buddy_name}</td>
+                    <td>${match.match_percent}</td>`;
+                    tableBody.appendChild(row);
+                });
+            }
+        } else {
+            console.error("Error fetching matches:", data.message);
+        }
+    })
+    .catch(error => console.error("Request failed:", error));
+</script>
+
+{% endblock %}
