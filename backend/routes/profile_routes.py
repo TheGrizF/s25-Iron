@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
+from backend.utils import get_dish_recommendations
 from database.models.dish import dish, menu, menuDishJunction
 from database.models.restaurant import restaurant, operatingHours, liveUpdate
 from database.models.review import review
@@ -316,10 +317,10 @@ def matches_page():
         if selected_user:
             return render_template('tasteMatches.html', user_name=f"{selected_user.first_name} {selected_user.last_name}")
         else:
-            return render_template("matches.html", user_name="Your")
+            return render_template("tasteMatches.html", user_name="Your")
     except Exception as e:
         print(f"Error in matches_page: {e}")
-        return render_template("matches.html", user_name="Your")
+        return render_template("tasteMatches.html", user_name="Your")
 
 @profile_bp.route('/api/taste-profile/matches', methods=['GET'])
 def get_user_matches():
@@ -346,3 +347,41 @@ def get_user_matches():
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@profile_bp.route('/dish-matches', methods=['GET'])
+def dish_match_page():
+    try:
+        user_id = session.get('user_id')
+        selected_user = user.query.get(user_id)
+
+        if selected_user:
+            return render_template('dishMatches.html', user_name=f"{selected_user.first_name} {selected_user.last_name}")
+        else:
+            return render_template("dishMatches.html", user_name="Your")
+    except Exception as e:
+        print(f"Error in dish_matches_page: {e}")
+        return render_template("dishMatches.html", user_name="Your")
+    
+    
+@profile_bp.route('/api/dish-matches', methods=['GET'])
+def api_dish_matches():
+    user_id = session.get('user_id')
+
+    if not user_id:
+            return jsonify({'status': 'error', 'message': 'user not logged in'}), 401
+    
+    recommended_dishes = get_dish_recommendations(user_id)
+
+    results = []
+    for dish_id, buddy_id, match_percent in recommended_dishes:
+        dish_info = db.session.query(dish.dish_name).filter(dish.dish_id == dish_id).first()
+        buddy_info = db.session.query(user.first_name, user.last_name).filter(user.user_id == buddy_id).first()
+
+        results.append({
+            'dish_id': dish_id,
+            'dish_name': dish_info.dish_name,
+            'buddy_name': f"{buddy_info.first_name} {buddy_info.last_name}",
+            'match_percent': match_percent
+        })
+
+    return jsonify({'status': 'success', 'matches': results})
