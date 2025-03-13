@@ -65,6 +65,7 @@ def restaurant_detail(restaurant_id):
         "clean": this_restaurant.clean_average,
         "description": this_restaurant.description,
         "image_path": this_restaurant.image_path,
+        "address": this_restaurant.location,
         "phone": this_restaurant.phone_number,
         "hours": this_restaurant.operating_hours, #this one might not work right...
     }
