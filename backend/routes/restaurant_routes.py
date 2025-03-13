@@ -56,6 +56,7 @@ def restaurant_detail(restaurant_id):
 
     restaurant_info = {
         "restaurant_id": this_restaurant.restaurant_id,
+        "name": this_restaurant.restaurant_name,
         "rating": this_restaurant.rating_average,
         "busy": this_restaurant.busy_average,
         "clean": this_restaurant.clean_average,

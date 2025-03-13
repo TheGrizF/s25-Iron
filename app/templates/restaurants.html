@@ -40,11 +40,12 @@
     </div>
 
     <div class="restaurants-list">
-        <a href="{{ url_for('daily_dish.restaurant_detail', restaurant_id=restaurant.id) }}" class="restaurant-card">
-            <img src="{{ url_for('static', filename='images/pasta.jpg') }}" alt="Norm's Corner">
+        {% for restaurant in restaurants %}
+        <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=restaurant.restaurant_id) }}" class="restaurant-card">
+            <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="{{ restaurant.restaurant_name}}">
             <div class="restaurant-info">
-                <h2>{{ restaurant.name }} </h2>
-                <p class="description">{{ restaurant.cuisine }}</p>
+                <h2>{{ restaurant.restaurant_name }} </h2>
+                <p class="description">{{ restaurant.restaurandescription }}</p>
                 <p class="details">restaurant.detail</p>
                 <p class="address">{{ restaurant address }} </p>
                 <div class="tags">
