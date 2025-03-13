@@ -124,6 +124,10 @@
     font-size: 14px;
 }
 
+br {
+    margin-bottom: 5px; 
+}
+
 @media (max-width: 768px) {
     .restaurants-container {
         padding: 15px;
