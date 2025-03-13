@@ -6,6 +6,11 @@ from backend.utils import get_dish_recommendations
 
 restaurant_bp = Blueprint('restaurant', __name__)
 
+@restaurant_bp.route("/restaurants")
+def restaurants():
+    all_restaurants = db.session.query(restaurant).all()
+    return render_template("restaurants.html", restaurants=all_restaurants)
+
 @restaurant_bp.route("/restaurant/<int:restaurant_id>")
 def restaurant_detail(restaurant_id):
 
@@ -18,16 +23,14 @@ def restaurant_detail(restaurant_id):
         return "Restaurant not found", 404
     
     # Get dishes at the restaurant
-    restaurant_dishes = (
-        db.session.query(dish)
+    restaurant_dishes = {
+        d[0] for d in db.session.query(dish.dish_id)
         .join(menuDishJunction, dish.dish_id == menuDishJunction.dish_id)
         .join(menu, menu.menu_id == menuDishJunction.menu_id)
         .filter(menu.restaurant_id == restaurant_id)
         .all()
-    )
-    # List to Set
-    restaurant_dishes = {d[0] for d in restaurant_dishes}
-
+    }
+    
     # Get list of user dish percentages
     user_dish_matches = get_dish_recommendations(user_id)  # [0] = dish_id, [1] = buddy_id, [2] = % match
 
@@ -36,7 +39,7 @@ def restaurant_detail(restaurant_id):
 
     # Run some query to get data
     dish_data = {
-        d.dish_id: dishes_with_match
+        d.dish_id: d
         for d in db.session.query(dish).filter(dish.dish_id.in_(matched_dishes)).all()
     }
 
@@ -45,7 +48,7 @@ def restaurant_detail(restaurant_id):
         {
             "dish_id": d[0],
             "name": dish_data[d[0]].dish_name,
-            "price:": dish_data[d[0]].price,
+            "price": dish_data[d[0]].price,
             "image_url": dish_data[d[0]].image_path,
             "match_percentage": d[2],
             "available": dish_data[d[0]].available,
