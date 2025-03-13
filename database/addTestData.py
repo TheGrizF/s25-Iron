@@ -84,8 +84,8 @@ def insert_test_data():
                             restrictions = json.dumps(entry["restrictions"])
 
                             cursor.execute(
-                                "INSERT INTO restaurant (restaurant_id, restaurant_name, restrictions, location, rating_average, phone_number, clean_average, busy_average) "
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                                "INSERT INTO restaurant (restaurant_id, restaurant_name, restrictions, location, rating_average, phone_number, image_path, cuisine, opening_hours, address, description, clean_average, busy_average) "
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ?, ?)",
                                 (
                                     entry["restaurant_id"],
                                     entry["restaurant_name"],
@@ -93,6 +93,11 @@ def insert_test_data():
                                     entry["location"],
                                     entry["rating_average"],
                                     entry["phone_number"],
+                                    entry["image_path"],
+                                    entry["cuisine"],
+                                    entry["opening_hours"],
+                                    entry["address"],
+                                    entry["description"],
                                     entry["clean_average"],
                                     entry["busy_average"]
                                 )

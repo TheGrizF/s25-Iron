@@ -47,7 +47,7 @@
                 <h2>{{ restaurant.restaurant_name }} </h2>
                 <p class="description">{{ restaurant.restaurandescription }}</p>
                 <p class="details">restaurant.detail</p>
-                <p class="address">{{ restaurant address }} </p>
+                <p class="address">{{ restaurant.address }} </p>
                 <div class="tags">
                     <span class="tag">Free Wifi</span>
                     <span class="tag">Pet Friendly</span>
@@ -58,6 +58,7 @@
                 </div>
             </div>
         </a>
+        {% endfor %}
         <!-- Add more restaurant cards as needed -->
        
     </div>
