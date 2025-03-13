@@ -32,25 +32,25 @@ def get_dish_recommendations(user_id):
     user_dietary_list = {r[0].lower() for r in user_dietary}
     user_cuisine_list = {c.cuisine_id: c.preference_level for c in user_cuisine}
 
-    # Get top 6 taste matches
+    # Get top 6 taste matches  --- commented out limit, get them all?
     taste_bud_query = (
         db.session.query(tasteComparisons.compare_to, tasteComparisons.comparison_num)
         .filter(tasteComparisons.compare_from == user_id)
         .order_by(tasteComparisons.comparison_num.asc())
-        .limit(10)
+        #.limit(10)
         .all()
     )
     # t[0]:t[1] => buddy_id & comparison_num
     taste_bud_id = {t[0]: t[1] for t in taste_bud_query}
 
-    # Top 3 dishes from each match
+    # Top 3 dishes from each match  --- commented out, get them all?
     unique_dishes = {}
     for bud_id, comparison_num in taste_bud_id.items():
         best_dish_query = (
             db.session.query(review.dish_id, review.rating)
             .filter(review.user_id == bud_id)
             .order_by(review.rating.desc())
-            .limit(3)
+            #.limit(3)
             .all()
         )
 

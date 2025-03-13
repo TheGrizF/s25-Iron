@@ -1,100 +1,100 @@
-dish_id,dish_name,description,featured,available,image_path
-1,She Crab Soup,Seasoned blend of lump crab meat and cream with sherry,True,True,images/dishes/freemason/she_crab_soup.jpg
-2,Roast Prime Rib Au Jus,"Top Quality Certified Angus Prime Rib of Beef slow roasted and served with au jus, smashed potatoes and vegetable medley",False,False,images/dishes/freemason/roast_prime_rib_aus_jus.jpg
-3,Seafood Fantasia,"Shrimp and sea scallops sautéed with peppers, onions and Parmesan tossed with linguini in a white wine Old Bay cream sauce",True,True,images/dishes/freemason/seafood_fantasia.jpg
-4,Grilled Filet Mignon,"8 oz. beef tenderloin served with smashed potatoes and grilled asparagus, accompanied by a rosemary demi-glace",False,True,images/dishes/freemason/grilled_filet_mignon.jpg
-5,Vegetable Penne,"Peppers, onions, broccoli, mushrooms and spinach sautéed and tossed in a smoked Gouda cream sauce with penne",False,True,images/dishes/freemason/vegetable_penne.jpg
-6,Riverside Salmon,"Grilled and brushed with an Asian barbecue glaze, served over rice pilaf and vegetable medley",False,False,images/dishes/freemason/riverside_salmon.jpg
-7,Broiled Seafood Platter,"Shrimp, scallops, and flounder seasoned and broiled, served with rice pilaf and asparagus",False,True,images/dishes/freemason/broiled_seafood_platter.jpg
-8,French Onion Soup,Topped with a crostini and swiss cheese,False,True,images/dishes/freemason/french_onion_soup.jpg
-9,Chicken Abbey Garden salad,"Grilled Chicken, romaine lettuce, garden vegetables, Cheddar cheese and homemade croutons",False,True,images/dishes/freemason/chicken_abbey_garden_salad.jpg
-10,Fried Green Tomatoes,"Beer battered and fried, topped with a goat cheese crumble and balsamic drizzle",False,True,images/dishes/freemason/fried_green_tomatoes.jpg
-11,Three Cup Chicken Wings,"Soy sauce, rice wine, and seasame oil.  Garnished with Thai basil and Thai chili pepper.",False,False,images/dishes/highside/three_cup_wings.jpg
-12,Malaysian Chicken Satay,Grilled chicken skewers served with peanut sauce and cucumbers,False,True,images/dishes/highside/chicken_satay.jpg
-13,Beef Noodle Soup,"Wheat noodles, braised beef with Sichuan spices, bok choy and pickled mustard green.",True,True,images/dishes/highside/beef_soup.jpg
-14,Garlic Noodles with Shrimps,"Egg noodles with garlic butter, parmesan cheese, scallion and grilled jumbo shrimps.",False,True,images/dishes/highside/garlic_noodles.jpg
-15,Spicy Dan Dan Noodles with Tofu,"Mala chili oil, seasame & peanut sauce, fried shallot, scallion and cilantro with fried tofu.",False,True,images/dishes/highside/spicy_noodles.jpg
-16,Crispy Pork Belly,Deep fried pork belly served with pickled daikon & carrot and chili-garlic lime sauce,True,False,images/dishes/highside/crispy_pork.jpg
-17,Braised Pork Belly over Rice,Served over rice with a braised egg and pickled radish.,False,True,images/dishes/highside/porkbelly_rice.jpg
-18,Flaming Salmon Belly,"Salmon belly nigiri, avocado, scallion flambed with vodka.",False,True,images/dishes/koshi/flaming_salmon_belly.jpg
-19,Tuna or Salmon carpaccio,"Tuna or salmon with pepper, sesame oil, fuji apple, scallions served with ponzu sauce",False,True,images/dishes/koshi/tuna_or_salmon_carpaccio.jpg
-20,Sashimi Deluxe,Chef choice of 15 pcs assorted sashimi.,False,True,images/dishes/koshi/sashimi_deluxe.jpg
-21,Tuna Ringo,"Tuna, scallion, avocado, fuji apple, crab wrapped with daikon with apple puree and goat cheese",False,True,images/dishes/koshi/tuna_ringo.jpg
-22,Aburi Zushi,"Seared salmon nigiri with scallions, pickled ginger and eel sauce.",False,False,images/dishes/koshi/aburi_zushi.jpg
-23,April Roll,"Avocado and cucumber roll topped with salmon, diced mango with mango sauce.",False,True,images/dishes/koshi/april_roll.jpg
-24,Scallop Ninja Roll,"Spicy tuna and shrimp tempura topped with torched scallop, shrimp, butter and eel sauce.",True,True,images/dishes/koshi/scallop_ninja_roll.jpg
-25,Summer Breeze,"Tuna, salmon, rock fish, crab stick, avocado, cucumber, masago, scallion with sweet vinegar wrapped in daikon.",False,True,images/dishes/azars/azars_lentil_soup.png
-26,Foxy Roll,"Crab salad and avocado roll topped with tuna, salmon, jalapeno, sriracha, and apple puree.",False,True,images/dishes/koshi/foxy_roll.jpg
-27,Adam's Apple Roll,"Salmon tartar and apple topped with salmon, avocado and spicy mayo.",False,False,images/dishes/koshi/adams_apple_roll.jpg
-28,Tida Thai Sampler,"With 2 shrimp bikini, 2 crab rangoon, 3 dumplings, 4 calamari, 2 spring rolls, 4 fried tofu served with an assortment of sauce",True,True,images/dishes/tida_thai/tida_thai_sampler.jpg
-29,Red Curry (spicy),"Traditional style red curry in coconut milk, bamboo shoot, green peas, bellpepper, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",False,True,images/dishes/tida_thai/red_curry.jpg
-30,Roasted Duck Kapaw (spicy),"Half roasted duck topped with mince chicken, chili garlic sauce & fresh basil leaves",True,True,images/dishes/tida_thai/roasted_duck_kapaw.jpg
-31,Whole Red Snapper,"Choice of: chili garlic sauce (spicy) fresh basil, garlic, bell pepper … OR black bean sauce mushroom, ginger, celery, carrot, onion, and scallion",False,True,images/dishes/tida_thai/whole_red_snapper.jpg
-32,Pad Thai,"Stir fried thin rice noodle with bean sprout, scallion, peanut, and egg (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",False,False,images/dishes/tida_thai/pad_thai.jpg
-33,Drunken Noodles (spicy) / Pad Kee Mao,"Stir-fried flat noodle, onion, scallion, tomatoes, chili, garlic, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",False,True,images/dishes/tida_thai/drunken_noodles.jpg
-34,Matsaman Curry (spicy),"Matsaman curry in coconut milk, potatoes, onion, pineapple and rosted peanut (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",False,True,images/dishes/tida_thai/matsaman_curry.jpg
-35,Green Curry (spicy),"Traditional style green curry in coconut milk, bamboo shoot, green peas, bell pepper, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",False,True,images/dishes/tida_thai/green_curry.jpg
-36,Thai Fried Rice,"Traditional Thai fried rice with onion, scallion, tomatoes, green peas, carrot and egg (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",False,True,images/dishes/tida_thai/thai_fried_rice.jpg
-37,Pad See Eaw,"Stir-fried flat noodle, brocoli, carrot and egg with chef's special sauce (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",False,False,images/dishes/tida_thai/pad_see_eaw.jpg
-38,Chicken Tikka Masala,"Marinated chicken (milk cream with flavored spices) cooked in tomato and onion sauce with fenugreek, cilantro and cardamom",False,True,images/dishes/punjabi/chicken_tikka_masala.png
-39,Butter Chicken,Type of curry made from chicken with a spiced tomato and butter(makhan) sauce,True,True,images/dishes/punjabi/butter_chicken.png
-40,Punjabi Platter,"A combination of samosa, pakora (vegetable and paneer)",False,True,images/dishes/punjabi/punjabi_platter.png
-41,Vegetable Biryani,"Mix vegetables cooked with steamed basmati rice and flavored with yougurt, saffron, cardamom and spices served with yogurt garnished with cucumber and spices.",True,True,images/dishes/punjabi/vegetable_biryani.png
-42,Palak Paneer,"Spinach, onion gravy cooked with homemade paneer",False,False,images/dishes/punjabi/palak_paneer.png
-43,Tandoori Chicken,Roasted chicken marinated in yogurt and generously spiced,False,True,images/dishes/punjabi/tandoori_chicken.png
-44,Mutton Boti Kebab,a delicious North Indian / Mughlai dish where succulent and tender lamb pieces are marinated and grilled to perfection,False,True,images/dishes/punjabi/mutton_boti_kebab.png
-45,Shrimp Chicken Zafrani,"a mild, delicate, aromatic curry infused with saffron, cardamom and fennel, in a sauce with added tamarind, cream, and fresh coriander",True,True,images/dishes/punjabi/shrimp_chicken_zafrani.png
-46,Makhani Butter Paneer,Jumbo shrimp And chicken breast in a saffron-ginger marinade,False,True,images/dishes/punjabi/makhani_butter_paneer.png
-47,Sabji Jalfrezi,"Seasonal vegetables cooked in tomato, ginger and garlic sauce infused with peppercorns.",False,False,images/dishes/punjabi/sabji_jalfrezi.png
-48,Shrimp Po Boy,"Indulge in a seafood delight with our Shrimp Po' Boy. Plump fried shrimp nestled in a crusty French baguette served with spring mix, tomatoes and our house made Chesapeake Cocktail sauce.",False,True,images/dishes/pjays/shrimp_po_boy.jpg
-49,Wing station,"Experience our lightly breaded chicken wings, perfectly seasoned and fried to a delightful crunch. Available in 6-piece or 12-piece servings, these wings are perfect for any occasion. Choose from a variety of mouthwatering sauces: Sweet Red Chili, Buffalo, PJK Dry Rub, Garlic Parmesan, Garlic Buffalo, Hot Buffalo, Lemon Pepper or our signature Mumbo Sauce. **1 flavor per 6 wings**",False,True,images/dishes/pjays/wing_station.jpg
-50,Fried Catfish Basket,"Indulge in the Southern comfort of our Fried Catfish Basket. Savor the golden perfection of tender catfish fillets, delicately coated and fried to crispy perfection. Accompanied by a generous serving of crispy fries, this basket is a delightful symphony of textures and flavors. Immerse yourself in the savory crunch of the catfish paired with the comforting warmth of the fries, creating a satisfying and classic culinary experience that will transport you to the heart of Southern hospitality.",True,True,images/dishes/pjays/fried_catfish_basket.jpg
-51,Rasta Pasta,"Savor the rhythm of the Caribbean with our Rasta Pasta. Al dente pasta meets creamy jerk sauce, harmonized with vibrant bell peppers, and red onions. For an additional charge, you can add your choice of grilled jerk-spiced chicken, shrimp or pulled oxtail or a combination of chicken and shrimp. It's a flavorful celebration on your plate, Jamaican style.",False,True,images/dishes/pjays/rasta_pasta1.jpg
-52,Pulled Oxtail Taco,"Overnight braised pulled oxtail with balsamic onion jam and crispy onions is a tantalizing culinary creation that combines rich, savory flavors and diverse textures.",True,False,images/dishes/pjays/pulled_oxtail_taco.jpg
-53,PJK Chicken Sandwich,"Deep fried chicken breast, tomato, lettuce ,Ranch and Mumbo sauce in between a toasted brioche bun.",False,True,images/dishes/pjays/pkj_chicken_sandwich.jpg
-54,Chicken Tenders Basket,"Satisfy your cravings with our Chicken Tender Basket. Enjoy golden-brown, crispy chicken tenders, perfectly seasoned and fried to perfection. Served with two sides and two hushpuppies, this basket delivers a delightful combination of crunchy exterior and tender, flavorful chicken.",False,True,images/dishes/pjays/chicken_tenders_basket.jpg
-55,Shrimp or Fish & Grits,"Savor the South with our Fish & Grits or Shrimp & Grits. Choose between golden-fried fish or succulent fried shrimp, perfectly paired with creamy grits and draped in our zesty turkey sausage Cajun cream sauce. Each bite delivers a harmonious blend of flavors, bringing you a taste of true Southern comfort.",False,True,images/dishes/pjays/fish_and_grits.jpg
-56,Fried Oysters Basket,"Experience homestyle comfort with our Breaded Fried Oyster Basket. Indulge in plump oysters, coated in a classic homestyle breading and fried to a perfect golden brown. Served with two sides, this basket combines the crispy satisfaction of the breading with the succulent tenderness of the oysters.",False,True,images/dishes/pjays/fried_oyster_basket.jpg
-57,Battered Oyster Taco,"Experience the sea's finest with our Battered Oyster Taco. Crispy oysters, tender and flavorful, are nestled in a warm tortilla with zesty slaw and tangy aioli, creating a perfect harmony of textures and flavors. Dive into coastal bliss with this seafood sensation.",False,False,images/dishes/pjays/battered_oyster_taco.jpg
-58,Rib Eye,Melts directly in your face hole on contact!,False,True,images/dishes/luce/rib_eye.jpg
-59,Chicken Parmesean,"Pounded chicken, breaded and baked with fresh mozzarella and marinara.  Served over pasta",False,True,images/dishes/luce/chicken_parmesean.jpg
-60,"Jumbo prawn, halibut, and scallop","Jumbo prawn, hailbut and scallop simmered in white wine sage butter, broccolini, and oregano bread crumb",False,True,images/dishes/luce/jumbo_prawn.jpg
-61,Spaghetti Carbonara,Spaghetti tossed with bacon and onions in rich cream sauce,False,True,images/dishes/luce/carbonara.jpg
-62,Rib Eye Gnocchi,"24 hour brined prime prok rib eye, cremini and procini crema, herb toasted gnochhi, 10 year aged balsamic, white truffle spritz",True,False,images/dishes/luce/rib_eye_gnocchi.jpg
-63,Braciola di Carne,"Rolled beef tenderloin with prociutto, fontina and bread crumbs, topped off with cremini mushrooms, sundrid tomatoes...",False,True,images/dishes/luce/braciola_di_carne.jpg
-64,Spaghetti alle Vongole,"Whole baby clams, oregano, garlic, lemon, olive oil, grated Pecorino Romano.",False,True,images/dishes/luce/spaghetti_alle_vongole.jpg
-65,Pumpkin Gnocchi,"Rendered bacon, heirloom cherry tomatoes, sundried, girlled zucchini, smoked Gouda creama, pumpkin gnocchi",True,True,images/dishes/luce/pumpkin_gnocchi.jpg
-66,Ox Tail Ragu,"Simmered for hours, pairs well with wine",False,True,images/dishes/luce/ox_tail_ragu.jpg
-67,Veal Tenderloin,"Cast iron seared veal tenderloin with braised cremini mushrooms, roasted romensco and Veal demi.",False,False,images/dishes/luce/veal_tenderloin.jpg
-68,Paccheri,Paccheri pasta with Baccala and caramalized shallots. Simply delicious!,False,True,images/dishes/luce/paccheri.jpg
-69,Osso Bucco,"Prok shank slow braised in Barolo wine, served over roasted garlic and white truffle potatoes",True,True,images/dishes/luce/osso_bucco.jpg
-70,Menudo,Beef stomach in broth with red chili pepper base,True,True,images/dishes/los_cuates/menudo.jpg
-71,Caldo de Res,Oxtail beef soup,False,True,images/dishes/los_cuates/caldo_de_res.jpg
-72,Caldo 7 Mares,seven seafood soup,False,False,images/dishes/los_cuates/caldo_7_mares.jpg
-73,Taco salad,"Beans, meat, lettuce, tomatoes, sour cream, white crumbling cheese",False,True,images/dishes/los_cuates/taco_salad.jpg
-74,Shrimp Ceviche,"Shrimp lightly cooked with lime juice, tomatoes, onions, cucumber, cilantro, and avocado slices served with a side of tostadas",True,True,images/dishes/los_cuates/ceviche.jpg
-75,Nachos,"Nachos topped with refried beans, yellow cheese, pico de gallo, sour cream, and crumbled white cheese with a choice of steak or grilled chicken",False,True,images/dishes/los_cuates/nachos.jpg
-76,Quesadilla,"Queso or veggie.  Add pollo,carne, or camaron for extra.",False,True,images/dishes/los_cuates/quesadilla.jpg
-77,Mojara,"A fried queen tilapia fish served in a green cactus, shrimp, crab legs, crawfish, sauteed chicken and beef, and mexican sausage",False,False,images/dishes/los_cuates/Mojarra.jpg
-78,Tacos al Pastor,Seasoned Pork,True,True,images/dishes/los_cuates/tacos_al_pastor.jpg
-79,Enchiladas,Three chicken or beef enchiladas in green or red sauce,False,True,images/dishes/los_cuates/enchiladas.jpg
-80,OG Fried Rice,"Crispy basmati brown rice, carrot, red cabbage, red onion, kale, hormone-free chicken breast, tamari-ginger sauce, over easy eggs*, house kimchi, green onion. Add-ons: extra kimchi, avocado scoop, sub tofu crumble",False,True,images/dishes/stockpot/og_fried_rice.jpg
-81,Chifrijo Bowl,"Crispy pork carnitas, local vibrant greens, marinated black beans, pico de gallo, cotija, mango, avocado, baked corn tortilla chips, chimichuri dressing • Add-Ons: Poached Egg, Make it a wrap",False,True,images/dishes/stockpot/chifrijo_bowl.jpg
-82,BuiBowl,"Sauteed cauliflower florets, red pepper, chickpeas, kale, golden beets, heirloom tomatoes, black eyed pea hummus, pickled onios. • Add-Ons: Falafel, Feta, Hormone Free Chicken Breast, Organic Fresh Caught Salmon*.",False,False,images/dishes/stockpot/bui_bowl.jpg
-83,Anne's Chicken Noodle,"Tamari ginger chicken broth, shredded hormone-free chicken breast, soba noodles, pickled onions, green onion, kimchi, cilantro",False,True,images/dishes/stockpot/annes_chicken_noodle.jpg
-84,Avo Toast,"Two scoops of smashed avocado, local vibrant greens, pickled peppers, tomato, lime juice, sea salt, and house bread. Add-ons: poached egg*, bacon, side of kale appleslaw, puttanesca pasta salad",False,True,images/dishes/stockpot/avo_toast.jpg
-85,Classic Shoyu Ramen,"Shoyu tare, chicken & pork broth, pork belly, crispy pork, radish, nappa cabbage.",True,True,images/dishes/stockpot/shoyu_ramen.jpg
-86,Spicy Miso Ramen,"Spicy miso tare, chicken & pork broth, pork belly, crispy pork, bok choy, shiitake, chili oil.",False,True,images/dishes/stockpot/spicy_miso_ramen.jpg
-87,Veggie Ramen,"Mushroom broth, grilled tofu, pickled carrot/daikon, shiitakes, nappa cabbage, radish, charred kale, black garlic oil | Ask for vegan option.",False,False,images/dishes/stockpot/veggie_ramen.jpg
-88,Chicken Salad Toast,"wo herbed chicken salad scoops with Greek yogurt, aioli, celery, green onions, sunflower seeds, raisins, dijon, local vibrant greens, and house bread. Substitute: croissant $2.50 | Add-ons: avocado scoop, side of broccoli slaw",False,True,images/dishes/stockpot/chicken_salad_toast.jpg
-89,The Southender,"House pork sausage, pimento cheese, over easy egg*, rosemary biscuit, side of seasonal fruit, substitute: house turkey sausage",True,True,images/dishes/stockpot/the_southender.jpg
-90,Veggie Kebab Platter,Two skewers of Seasonal Vegetables seasoned with a blend of spices and a touch of sea salt. Grilled to perfection.,False,True,images/dishes/azars/veggie_kebab.png
-91,Originial Gyro,"Served with hummus, and a side of our delicious basmati rice.",False,True,images/dishes/azars/originial_gyro.png
-92,Chicken Kebab Platter,Chicken tender pieces marinated with a blend Garlic herb spice and a touch of sea salt. Grilled to perfection.,False,False,images/dishes/azars/chicken_kebab.png
-93,Azar's Lentil Soup,An old fashioned recipe made with wholesome green lentils and fresh vegetables.,False,True,images/dishes/azars/azars_lentil_soup.png
-94,Greek Entree Salad,"vegetables, hummus, and a side of our delicious basmati rice.",False,True,images/dishes/azars/greek_entree_salad.png
-95,My Big Fat Greek Burger,"Loaded with Mediterranean flavor! This seasoned ground beef patty is covered with our feta and mozzarella blend, banana peppers, kalamata olives, lettuce, tomato and tzatziki (Labané) sauce on a ciabatta bun",False,True,images/dishes/azars/my_big_fat_greek_burger.png
-96,Mousaaka Platter,"Seasoned grilled eggplant, layered lasagna style, with lean ground beef and tomato sauce. Finished with béchamel and a mozzarella and feta cheese blend. Baked to perfection and served with your choice of basmati rice or linguini pasta.",False,True,images/dishes/azars/mousaaka.png
-97,Lamb Shank Platter,A braised bone-in lamb shank topped with our own flavorful curry vegetable sauce and served with our hearty bulgur wheat pilaf. **May substitute Bulgur pilaf for basmati rice as a Gluten Free option,False,True,images/dishes/azars/lamb_shank.png
-98,Mediterranean Pizza,"Strips of grilled chicken breast, tomatoes, pitted sliced Kalamata olives and sliced banana peppers on our 11'' Zaatar crust topped with a mozzarella and feta blend and olive oil.",False,False,images/dishes/azars/mediterranean_pizza.png
-99,Beeef Shawarma Wrap,"Tender portions of grilled beef served with hummus, tomatoes, tahini, pickles, sumac and parsley.",True,True,images/dishes/azars/beef_shwarma.png
+dish_id,dish_name,description,featured,available,image_path,price
+1,She Crab Soup,Seasoned blend of lump crab meat and cream with sherry,TRUE,TRUE,images/dishes/freemason/she_crab_soup.jpg,10
+2,Roast Prime Rib Au Jus,"Top Quality Certified Angus Prime Rib of Beef slow roasted and served with au jus, smashed potatoes and vegetable medley",FALSE,FALSE,images/dishes/freemason/roast_prime_rib_aus_jus.jpg,30
+3,Seafood Fantasia,"Shrimp and sea scallops sautéed with peppers, onions and Parmesan tossed with linguini in a white wine Old Bay cream sauce",TRUE,TRUE,images/dishes/freemason/seafood_fantasia.jpg,24
+4,Grilled Filet Mignon,"8 oz. beef tenderloin served with smashed potatoes and grilled asparagus, accompanied by a rosemary demi-glace",FALSE,TRUE,images/dishes/freemason/grilled_filet_mignon.jpg,30
+5,Vegetable Penne,"Peppers, onions, broccoli, mushrooms and spinach sautéed and tossed in a smoked Gouda cream sauce with penne",FALSE,TRUE,images/dishes/freemason/vegetable_penne.jpg,14
+6,Riverside Salmon,"Grilled and brushed with an Asian barbecue glaze, served over rice pilaf and vegetable medley",FALSE,FALSE,images/dishes/freemason/riverside_salmon.jpg,25
+7,Broiled Seafood Platter,"Shrimp, scallops, and flounder seasoned and broiled, served with rice pilaf and asparagus",FALSE,TRUE,images/dishes/freemason/broiled_seafood_platter.jpg,33
+8,French Onion Soup,Topped with a crostini and swiss cheese,FALSE,TRUE,images/dishes/freemason/french_onion_soup.jpg,7
+9,Chicken Abbey Garden salad,"Grilled Chicken, romaine lettuce, garden vegetables, Cheddar cheese and homemade croutons",FALSE,TRUE,images/dishes/freemason/chicken_abbey_garden_salad.jpg,13
+10,Fried Green Tomatoes,"Beer battered and fried, topped with a goat cheese crumble and balsamic drizzle",FALSE,TRUE,images/dishes/freemason/fried_green_tomatoes.jpg,11
+11,Three Cup Chicken Wings,"Soy sauce, rice wine, and seasame oil.  Garnished with Thai basil and Thai chili pepper.",FALSE,FALSE,images/dishes/highside/three_cup_wings.jpg,14
+12,Malaysian Chicken Satay,Grilled chicken skewers served with peanut sauce and cucumbers,FALSE,TRUE,images/dishes/highside/chicken_satay.jpg,12
+13,Beef Noodle Soup,"Wheat noodles, braised beef with Sichuan spices, bok choy and pickled mustard green.",TRUE,TRUE,images/dishes/highside/beef_soup.jpg,15
+14,Garlic Noodles with Shrimps,"Egg noodles with garlic butter, parmesan cheese, scallion and grilled jumbo shrimps.",FALSE,TRUE,images/dishes/highside/garlic_noodles.jpg,16
+15,Spicy Dan Dan Noodles with Tofu,"Mala chili oil, seasame & peanut sauce, fried shallot, scallion and cilantro with fried tofu.",FALSE,TRUE,images/dishes/highside/spicy_noodles.jpg,11
+16,Crispy Pork Belly,Deep fried pork belly served with pickled daikon & carrot and chili-garlic lime sauce,TRUE,FALSE,images/dishes/highside/crispy_pork.jpg,12
+17,Braised Pork Belly over Rice,Served over rice with a braised egg and pickled radish.,FALSE,TRUE,images/dishes/highside/porkbelly_rice.jpg,11
+18,Flaming Salmon Belly,"Salmon belly nigiri, avocado, scallion flambed with vodka.",FALSE,TRUE,images/dishes/koshi/flaming_salmon_belly.jpg,10.95
+19,Tuna or Salmon carpaccio,"Tuna or salmon with pepper, sesame oil, fuji apple, scallions served with ponzu sauce",FALSE,TRUE,images/dishes/koshi/tuna_or_salmon_carpaccio.jpg,16.95
+20,Sashimi Deluxe,Chef choice of 15 pcs assorted sashimi.,FALSE,TRUE,images/dishes/koshi/sashimi_deluxe.jpg,36.95
+21,Tuna Ringo,"Tuna, scallion, avocado, fuji apple, crab wrapped with daikon with apple puree and goat cheese",FALSE,TRUE,images/dishes/koshi/tuna_ringo.jpg,15.95
+22,Aburi Zushi,"Seared salmon nigiri with scallions, pickled ginger and eel sauce.",FALSE,FALSE,images/dishes/koshi/aburi_zushi.jpg,15.95
+23,April Roll,"Avocado and cucumber roll topped with salmon, diced mango with mango sauce.",FALSE,TRUE,images/dishes/koshi/april_roll.jpg,14.95
+24,Scallop Ninja Roll,"Spicy tuna and shrimp tempura topped with torched scallop, shrimp, butter and eel sauce.",TRUE,TRUE,images/dishes/koshi/scallop_ninja_roll.jpg,19.95
+25,Summer Breeze,"Tuna, salmon, rock fish, crab stick, avocado, cucumber, masago, scallion with sweet vinegar wrapped in daikon.",FALSE,TRUE,images/dishes/azars/azars_lentil_soup.png,14.95
+26,Foxy Roll,"Crab salad and avocado roll topped with tuna, salmon, jalapeno, sriracha, and apple puree.",FALSE,TRUE,images/dishes/koshi/foxy_roll.jpg,18.95
+27,Adam's Apple Roll,"Salmon tartar and apple topped with salmon, avocado and spicy mayo.",FALSE,FALSE,images/dishes/koshi/adams_apple_roll.jpg,15.95
+28,Tida Thai Sampler,"With 2 shrimp bikini, 2 crab rangoon, 3 dumplings, 4 calamari, 2 spring rolls, 4 fried tofu served with an assortment of sauce",TRUE,TRUE,images/dishes/tida_thai/tida_thai_sampler.jpg,17.95
+29,Red Curry (spicy),"Traditional style red curry in coconut milk, bamboo shoot, green peas, bellpepper, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",FALSE,TRUE,images/dishes/tida_thai/red_curry.jpg,15.95
+30,Roasted Duck Kapaw (spicy),"Half roasted duck topped with mince chicken, chili garlic sauce & fresh basil leaves",TRUE,TRUE,images/dishes/tida_thai/roasted_duck_kapaw.jpg,27.95
+31,Whole Red Snapper,"Choice of: chili garlic sauce (spicy) fresh basil, garlic, bell pepper … OR black bean sauce mushroom, ginger, celery, carrot, onion, and scallion",FALSE,TRUE,images/dishes/tida_thai/whole_red_snapper.jpg,35.95
+32,Pad Thai,"Stir fried thin rice noodle with bean sprout, scallion, peanut, and egg (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",FALSE,FALSE,images/dishes/tida_thai/pad_thai.jpg,15.95
+33,Drunken Noodles (spicy) / Pad Kee Mao,"Stir-fried flat noodle, onion, scallion, tomatoes, chili, garlic, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",FALSE,TRUE,images/dishes/tida_thai/drunken_noodles.jpg,15.95
+34,Matsaman Curry (spicy),"Matsaman curry in coconut milk, potatoes, onion, pineapple and rosted peanut (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",FALSE,TRUE,images/dishes/tida_thai/matsaman_curry.jpg,15.95
+35,Green Curry (spicy),"Traditional style green curry in coconut milk, bamboo shoot, green peas, bell pepper, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",FALSE,TRUE,images/dishes/tida_thai/green_curry.jpg,15.95
+36,Thai Fried Rice,"Traditional Thai fried rice with onion, scallion, tomatoes, green peas, carrot and egg (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",FALSE,TRUE,images/dishes/tida_thai/thai_fried_rice.jpg,15.95
+37,Pad See Eaw,"Stir-fried flat noodle, brocoli, carrot and egg with chef's special sauce (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",FALSE,FALSE,images/dishes/tida_thai/pad_see_eaw.jpg,15.95
+38,Chicken Tikka Masala,"Marinated chicken (milk cream with flavored spices) cooked in tomato and onion sauce with fenugreek, cilantro and cardamom",FALSE,TRUE,images/dishes/punjabi/chicken_tikka_masala.png,20.99
+39,Butter Chicken,Type of curry made from chicken with a spiced tomato and butter(makhan) sauce,TRUE,TRUE,images/dishes/punjabi/butter_chicken.png,19.99
+40,Punjabi Platter,"A combination of samosa, pakora (vegetable and paneer)",FALSE,TRUE,images/dishes/punjabi/punjabi_platter.png,10.99
+41,Vegetable Biryani,"Mix vegetables cooked with steamed basmati rice and flavored with yougurt, saffron, cardamom and spices served with yogurt garnished with cucumber and spices.",TRUE,TRUE,images/dishes/punjabi/vegetable_biryani.png,16.99
+42,Palak Paneer,"Spinach, onion gravy cooked with homemade paneer",FALSE,FALSE,images/dishes/punjabi/palak_paneer.png,17.99
+43,Tandoori Chicken,Roasted chicken marinated in yogurt and generously spiced,FALSE,TRUE,images/dishes/punjabi/tandoori_chicken.png,18.99
+44,Mutton Boti Kebab,a delicious North Indian / Mughlai dish where succulent and tender lamb pieces are marinated and grilled to perfection,FALSE,TRUE,images/dishes/punjabi/mutton_boti_kebab.png,22.99
+45,Shrimp Chicken Zafrani,"a mild, delicate, aromatic curry infused with saffron, cardamom and fennel, in a sauce with added tamarind, cream, and fresh coriander",TRUE,TRUE,images/dishes/punjabi/shrimp_chicken_zafrani.png,20.99
+46,Makhani Butter Paneer,Jumbo shrimp And chicken breast in a saffron-ginger marinade,FALSE,TRUE,images/dishes/punjabi/makhani_butter_paneer.png,18.99
+47,Sabji Jalfrezi,"Seasonal vegetables cooked in tomato, ginger and garlic sauce infused with peppercorns.",FALSE,FALSE,images/dishes/punjabi/sabji_jalfrezi.png,14.99
+48,Shrimp Po Boy,"Indulge in a seafood delight with our Shrimp Po' Boy. Plump fried shrimp nestled in a crusty French baguette served with spring mix, tomatoes and our house made Chesapeake Cocktail sauce.",FALSE,TRUE,images/dishes/pjays/shrimp_po_boy.jpg,12.99
+49,Wing station,"Experience our lightly breaded chicken wings, perfectly seasoned and fried to a delightful crunch. Available in 6-piece or 12-piece servings, these wings are perfect for any occasion. Choose from a variety of mouthwatering sauces: Sweet Red Chili, Buffalo, PJK Dry Rub, Garlic Parmesan, Garlic Buffalo, Hot Buffalo, Lemon Pepper or our signature Mumbo Sauce. **1 flavor per 6 wings**",FALSE,TRUE,images/dishes/pjays/wing_station.jpg,10
+50,Fried Catfish Basket,"Indulge in the Southern comfort of our Fried Catfish Basket. Savor the golden perfection of tender catfish fillets, delicately coated and fried to crispy perfection. Accompanied by a generous serving of crispy fries, this basket is a delightful symphony of textures and flavors. Immerse yourself in the savory crunch of the catfish paired with the comforting warmth of the fries, creating a satisfying and classic culinary experience that will transport you to the heart of Southern hospitality.",TRUE,TRUE,images/dishes/pjays/fried_catfish_basket.jpg,16.99
+51,Rasta Pasta,"Savor the rhythm of the Caribbean with our Rasta Pasta. Al dente pasta meets creamy jerk sauce, harmonized with vibrant bell peppers, and red onions. For an additional charge, you can add your choice of grilled jerk-spiced chicken, shrimp or pulled oxtail or a combination of chicken and shrimp. It's a flavorful celebration on your plate, Jamaican style.",FALSE,TRUE,images/dishes/pjays/rasta_pasta1.jpg,14.99
+52,Pulled Oxtail Taco,"Overnight braised pulled oxtail with balsamic onion jam and crispy onions is a tantalizing culinary creation that combines rich, savory flavors and diverse textures.",TRUE,FALSE,images/dishes/pjays/pulled_oxtail_taco.jpg,7
+53,PJK Chicken Sandwich,"Deep fried chicken breast, tomato, lettuce ,Ranch and Mumbo sauce in between a toasted brioche bun.",FALSE,TRUE,images/dishes/pjays/pkj_chicken_sandwich.jpg,12
+54,Chicken Tenders Basket,"Satisfy your cravings with our Chicken Tender Basket. Enjoy golden-brown, crispy chicken tenders, perfectly seasoned and fried to perfection. Served with two sides and two hushpuppies, this basket delivers a delightful combination of crunchy exterior and tender, flavorful chicken.",FALSE,TRUE,images/dishes/pjays/chicken_tenders_basket.jpg,13.99
+55,Shrimp or Fish & Grits,"Savor the South with our Fish & Grits or Shrimp & Grits. Choose between golden-fried fish or succulent fried shrimp, perfectly paired with creamy grits and draped in our zesty turkey sausage Cajun cream sauce. Each bite delivers a harmonious blend of flavors, bringing you a taste of true Southern comfort.",FALSE,TRUE,images/dishes/pjays/fish_and_grits.jpg,20.99
+56,Fried Oysters Basket,"Experience homestyle comfort with our Breaded Fried Oyster Basket. Indulge in plump oysters, coated in a classic homestyle breading and fried to a perfect golden brown. Served with two sides, this basket combines the crispy satisfaction of the breading with the succulent tenderness of the oysters.",FALSE,TRUE,images/dishes/pjays/fried_oyster_basket.jpg,21.99
+57,Battered Oyster Taco,"Experience the sea's finest with our Battered Oyster Taco. Crispy oysters, tender and flavorful, are nestled in a warm tortilla with zesty slaw and tangy aioli, creating a perfect harmony of textures and flavors. Dive into coastal bliss with this seafood sensation.",FALSE,FALSE,images/dishes/pjays/battered_oyster_taco.jpg,6
+58,Rib Eye,Melts directly in your face hole on contact!,FALSE,TRUE,images/dishes/luce/rib_eye.jpg,34
+59,Chicken Parmesean,"Pounded chicken, breaded and baked with fresh mozzarella and marinara.  Served over pasta",FALSE,TRUE,images/dishes/luce/chicken_parmesean.jpg,20
+60,"Jumbo prawn, halibut, and scallop","Jumbo prawn, hailbut and scallop simmered in white wine sage butter, broccolini, and oregano bread crumb",FALSE,TRUE,images/dishes/luce/jumbo_prawn.jpg,30
+61,Spaghetti Carbonara,Spaghetti tossed with bacon and onions in rich cream sauce,FALSE,TRUE,images/dishes/luce/carbonara.jpg,18
+62,Rib Eye Gnocchi,"24 hour brined prime prok rib eye, cremini and procini crema, herb toasted gnochhi, 10 year aged balsamic, white truffle spritz",TRUE,FALSE,images/dishes/luce/rib_eye_gnocchi.jpg,40
+63,Braciola di Carne,"Rolled beef tenderloin with prociutto, fontina and bread crumbs, topped off with cremini mushrooms, sundrid tomatoes...",FALSE,TRUE,images/dishes/luce/braciola_di_carne.jpg,39
+64,Spaghetti alle Vongole,"Whole baby clams, oregano, garlic, lemon, olive oil, grated Pecorino Romano.",FALSE,TRUE,images/dishes/luce/spaghetti_alle_vongole.jpg,27
+65,Pumpkin Gnocchi,"Rendered bacon, heirloom cherry tomatoes, sundried, girlled zucchini, smoked Gouda creama, pumpkin gnocchi",TRUE,TRUE,images/dishes/luce/pumpkin_gnocchi.jpg,29
+66,Ox Tail Ragu,"Simmered for hours, pairs well with wine",FALSE,TRUE,images/dishes/luce/ox_tail_ragu.jpg,28
+67,Veal Tenderloin,"Cast iron seared veal tenderloin with braised cremini mushrooms, roasted romensco and Veal demi.",FALSE,FALSE,images/dishes/luce/veal_tenderloin.jpg,32
+68,Paccheri,Paccheri pasta with Baccala and caramalized shallots. Simply delicious!,FALSE,TRUE,images/dishes/luce/paccheri.jpg,27
+69,Osso Bucco,"Prok shank slow braised in Barolo wine, served over roasted garlic and white truffle potatoes",TRUE,TRUE,images/dishes/luce/osso_bucco.jpg,32
+70,Menudo,Beef stomach in broth with red chili pepper base,TRUE,TRUE,images/dishes/los_cuates/menudo.jpg,16.79
+71,Caldo de Res,Oxtail beef soup,FALSE,TRUE,images/dishes/los_cuates/caldo_de_res.jpg,24.14
+72,Caldo 7 Mares,seven seafood soup,FALSE,FALSE,images/dishes/los_cuates/caldo_7_mares.jpg,30.44
+73,Taco salad,"Beans, meat, lettuce, tomatoes, sour cream, white crumbling cheese",FALSE,TRUE,images/dishes/los_cuates/taco_salad.jpg,12.6
+74,Shrimp Ceviche,"Shrimp lightly cooked with lime juice, tomatoes, onions, cucumber, cilantro, and avocado slices served with a side of tostadas",TRUE,TRUE,images/dishes/los_cuates/ceviche.jpg,16.43
+75,Nachos,"Nachos topped with refried beans, yellow cheese, pico de gallo, sour cream, and crumbled white cheese with a choice of steak or grilled chicken",FALSE,TRUE,images/dishes/los_cuates/nachos.jpg,15.63
+76,Quesadilla,"Queso or veggie.  Add pollo,carne, or camaron for extra.",FALSE,TRUE,images/dishes/los_cuates/quesadilla.jpg,14.89
+77,Mojara,"A fried queen tilapia fish served in a green cactus, shrimp, crab legs, crawfish, sauteed chicken and beef, and mexican sausage",FALSE,FALSE,images/dishes/los_cuates/Mojarra.jpg,40.94
+78,Tacos al Pastor,Seasoned Pork,TRUE,TRUE,images/dishes/los_cuates/tacos_al_pastor.jpg,4
+79,Enchiladas,Three chicken or beef enchiladas in green or red sauce,FALSE,TRUE,images/dishes/los_cuates/enchiladas.jpg,14.69
+80,OG Fried Rice,"Crispy basmati brown rice, carrot, red cabbage, red onion, kale, hormone-free chicken breast, tamari-ginger sauce, over easy eggs*, house kimchi, green onion. Add-ons: extra kimchi, avocado scoop, sub tofu crumble",FALSE,TRUE,images/dishes/stockpot/og_fried_rice.jpg,14.65
+81,Chifrijo Bowl,"Crispy pork carnitas, local vibrant greens, marinated black beans, pico de gallo, cotija, mango, avocado, baked corn tortilla chips, chimichuri dressing • Add-Ons: Poached Egg, Make it a wrap",FALSE,TRUE,images/dishes/stockpot/chifrijo_bowl.jpg,16.75
+82,BuiBowl,"Sauteed cauliflower florets, red pepper, chickpeas, kale, golden beets, heirloom tomatoes, black eyed pea hummus, pickled onios. • Add-Ons: Falafel, Feta, Hormone Free Chicken Breast, Organic Fresh Caught Salmon*.",FALSE,FALSE,images/dishes/stockpot/bui_bowl.jpg,13.25
+83,Anne's Chicken Noodle,"Tamari ginger chicken broth, shredded hormone-free chicken breast, soba noodles, pickled onions, green onion, kimchi, cilantro",FALSE,TRUE,images/dishes/stockpot/annes_chicken_noodle.jpg,6.7
+84,Avo Toast,"Two scoops of smashed avocado, local vibrant greens, pickled peppers, tomato, lime juice, sea salt, and house bread. Add-ons: poached egg*, bacon, side of kale appleslaw, puttanesca pasta salad",FALSE,TRUE,images/dishes/stockpot/avo_toast.jpg,13.5
+85,Classic Shoyu Ramen,"Shoyu tare, chicken & pork broth, pork belly, crispy pork, radish, nappa cabbage.",TRUE,TRUE,images/dishes/stockpot/shoyu_ramen.jpg,18.75
+86,Spicy Miso Ramen,"Spicy miso tare, chicken & pork broth, pork belly, crispy pork, bok choy, shiitake, chili oil.",FALSE,TRUE,images/dishes/stockpot/spicy_miso_ramen.jpg,18.75
+87,Veggie Ramen,"Mushroom broth, grilled tofu, pickled carrot/daikon, shiitakes, nappa cabbage, radish, charred kale, black garlic oil | Ask for vegan option.",FALSE,FALSE,images/dishes/stockpot/veggie_ramen.jpg,18.75
+88,Chicken Salad Toast,"wo herbed chicken salad scoops with Greek yogurt, aioli, celery, green onions, sunflower seeds, raisins, dijon, local vibrant greens, and house bread. Substitute: croissant $2.50 | Add-ons: avocado scoop, side of broccoli slaw",FALSE,TRUE,images/dishes/stockpot/chicken_salad_toast.jpg,11.15
+89,The Southender,"House pork sausage, pimento cheese, over easy egg*, rosemary biscuit, side of seasonal fruit, substitute: house turkey sausage",TRUE,TRUE,images/dishes/stockpot/the_southender.jpg,13.35
+90,Veggie Kebab Platter,Two skewers of Seasonal Vegetables seasoned with a blend of spices and a touch of sea salt. Grilled to perfection.,FALSE,TRUE,images/dishes/azars/veggie_kebab.png,13
+91,Originial Gyro,"Served with hummus, and a side of our delicious basmati rice.",FALSE,TRUE,images/dishes/azars/originial_gyro.png,8
+92,Chicken Kebab Platter,Chicken tender pieces marinated with a blend Garlic herb spice and a touch of sea salt. Grilled to perfection.,FALSE,FALSE,images/dishes/azars/chicken_kebab.png,14
+93,Azar's Lentil Soup,An old fashioned recipe made with wholesome green lentils and fresh vegetables.,FALSE,TRUE,images/dishes/azars/azars_lentil_soup.png,7
+94,Greek Entree Salad,"vegetables, hummus, and a side of our delicious basmati rice.",FALSE,TRUE,images/dishes/azars/greek_entree_salad.png,14
+95,My Big Fat Greek Burger,"Loaded with Mediterranean flavor! This seasoned ground beef patty is covered with our feta and mozzarella blend, banana peppers, kalamata olives, lettuce, tomato and tzatziki (Labané) sauce on a ciabatta bun",FALSE,TRUE,images/dishes/azars/my_big_fat_greek_burger.png,14
+96,Mousaaka Platter,"Seasoned grilled eggplant, layered lasagna style, with lean ground beef and tomato sauce. Finished with béchamel and a mozzarella and feta cheese blend. Baked to perfection and served with your choice of basmati rice or linguini pasta.",FALSE,TRUE,images/dishes/azars/mousaaka.png,18
+97,Lamb Shank Platter,A braised bone-in lamb shank topped with our own flavorful curry vegetable sauce and served with our hearty bulgur wheat pilaf. **May substitute Bulgur pilaf for basmati rice as a Gluten Free option,FALSE,TRUE,images/dishes/azars/lamb_shank.png,22
+98,Mediterranean Pizza,"Strips of grilled chicken breast, tomatoes, pitted sliced Kalamata olives and sliced banana peppers on our 11'' Zaatar crust topped with a mozzarella and feta blend and olive oil.",FALSE,FALSE,images/dishes/azars/mediterranean_pizza.png,17
+99,Beeef Shawarma Wrap,"Tender portions of grilled beef served with hummus, tomatoes, tahini, pickles, sumac and parsley.",TRUE,TRUE,images/dishes/azars/beef_shwarma.png,9
