@@ -193,7 +193,7 @@ def get_restaurant_info(user_id, restaurant_id):
             "description": this_restaurant.description,
             "image_path": this_restaurant.image_path,
             "location": this_restaurant.location,
-            "phone": this_restaurant.phone_number,
+            "phone_number": this_restaurant.phone_number,
             "hours": hours_string, 
             "match_percentage": restaurant_match_percent,
             "dishes": restaurant_dishes,
