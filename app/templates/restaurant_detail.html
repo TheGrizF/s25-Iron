@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Norm's Corner{% endblock %}
+{% block title %}{{ restaurant.name }}r{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/restaurant_detail.css') }}">
@@ -9,16 +9,16 @@
 {% block content %}
 <div class="restaurant-detail">
     <div class="header-images">
-        <!--img src="{{ url_for('static', filename='images/restaurant-header.jpg') }}" alt="Restaurant ambiance" -->
+        <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="Restaurant ambiance" >
         <button class="back-button">
             <i class="fas fa-chevron-left"></i>
         </button>
     </div>
 
     <div class="restaurant-info">
-        <h1>Norm's Corner</h1>
+        <h2>{{ restaurant.restaurant_name }}</h2>
         <p class="category">Casual Dining</p>
-        <p class="hours">Open hours: {{ restaurant.open_hours }}</p>
+        <p class="hours">Open hours: {{ restaurant.hours | safe }}</p>
         <button class="update-button">
             Post Update <i class="fas fa-bullhorn"></i>
         </button>
@@ -28,17 +28,17 @@
         <h2>Recommended for You:</h2>
         <div class="dishes-grid">
             
-            <!--for loop for the dishes-->
-            {% for dish in restaurant.dishes %}
+            <!--for loop for the dishes, but only first two here-->
+            {% for dish in restaurant.dishes[:2] %}
             <div class="dish-card">
-                <img src="{{ dish.image_url }}" alt="dish.name">
+                <img src="{{ url_for('static', filename=dish.image_url) }}" alt="dish.name">
                 <div class="dish-info">
                     <h3>{{ dish.name }}</h3>
-                    <span class="match">{{dish.match_percentage}} </span>
+                    <span class="match">{{ dish.match_percentage }}% </span>
                     <p class="price">{{ dish. price }} USD/Each </p>
                 </div>
             </div>
-            {% endfor % }
+            {% endfor %}
 
         </div>
     </section>
@@ -49,7 +49,7 @@
             <button class="show-detail">Show Detail</button>
         </div>
         <p class="description">
-            {{ Restaurant.details }}
+            {{ restaurant.description }}
         </p>
     </section>
 </div>
