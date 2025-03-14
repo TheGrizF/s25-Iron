@@ -46,7 +46,7 @@
                 <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="{{ restaurant.restaurant_name}}">
                 <div class="restaurant-info">
                     <h2>{{ restaurant.restaurant_name }} </h2>
-                    <p class="hours">{{ restaurant.operating_hours }}</p>
+                    <p class="hours">{{ restaurant.hours | safe }}</p>
                     <p class="details">{{ restaurant.description }}</p>
                     <p class="address">{{ restaurant.location }} </div></p>
                     <div class="tags">

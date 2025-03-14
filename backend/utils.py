@@ -7,7 +7,7 @@ from database import db
 from database.models.taste_profiles import dishTasteProfile
 from database.models.user import cuisineUserJunction, user, user_allergen, user_restriction, tasteComparisons
 from database.models.review import review
-from database.models.dish import dish, dish_allergen, dish_restriction
+from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import restaurant
 
 
@@ -119,7 +119,89 @@ def get_dish_recommendations(user_id):
     scored_matches.sort(key=lambda x: x[2], reverse=True)
     return scored_matches
 
+"""
+Refactoring from restaurant routes.  Both restaurant and restaurant details require a collection of the restaurant
+information and ratings based off the user.  Three methods come from this refactor:
+get_restaurant_dish_scores - Returns a list of the dishes with scores for the user
+get_restaurant_info - Returns a list of the information on the restaurant, including a rating for the user based on their dish scores
+get_all_restaurant_info - calls get_restaurant_info on each restaurant id to get a full list of all the restaurants with their info
+"""
 
+def get_restaurant_dish_scores(user_id, restaurant_id):
+    
+    # Precondition check - user exists
+    if not user_id:
+        return []
+    
+    # Get dishes at the restaurant
+    restaurant_dishes = {
+        d[0] for d in db.session.query(dish.dish_id)
+        .join(menuDishJunction, dish.dish_id == menuDishJunction.dish_id)
+        .join(menu, menu.menu_id == menuDishJunction.menu_id)
+        .filter(menu.restaurant_id == restaurant_id)
+        .all()
+    }
+
+    # Get list of user dish percentages
+    user_dish_matches = get_dish_recommendations(user_id)  # [0] = dish_id, [1] = buddy_id, [2] = % match
+
+    # Filter list to combine the two
+    matched_dishes = [d[0] for d in user_dish_matches if d[0] in restaurant_dishes]
+
+    # Run some query to get data
+    dish_data = {
+        d.dish_id: d
+        for d in db.session.query(dish).filter(dish.dish_id.in_(matched_dishes)).all()
+    }
+
+    dishes_with_match = [
+        {
+            "dish_id": d[0],
+            "name": dish_data[d[0]].dish_name,
+            "price": dish_data[d[0]].price,
+            "image_url": dish_data[d[0]].image_path,
+            "match_percentage": d[2],
+            "available": dish_data[d[0]].available,
+            "featured": dish_data[d[0]].featured,
+        }
+        for d in user_dish_matches if d[0] in dish_data
+    ]
+
+    return sorted(dishes_with_match, key=lambda x: x["match_percentage"], reverse=True)
+
+def get_restaurant_info(user_id, restaurant_id):
+    this_restaurant: restaurant = restaurant.query.get(restaurant_id)
+    if not this_restaurant:
+        return None
+    
+    restaurant_dishes = get_restaurant_dish_scores(user_id, this_restaurant.restaurant_id)
+
+    matched_scores = [d["match_percentage"] for d in restaurant_dishes]
+    restaurant_match_percent = round(sum(matched_scores) / len(matched_scores), 1) if matched_scores else 0
+
+    hours_string = "<br>".join(
+        f"{entry.days_of_week}: {entry.open_time.strftime('%I:%M %p')} - {entry.close_time.strftime('%I:%M %p')}"
+        for entry in this_restaurant.operating_hours
+    )
+
+    return {
+            "restaurant_id": this_restaurant.restaurant_id,
+            "restaurant_name": this_restaurant.restaurant_name,
+            "rating": this_restaurant.rating_average,
+            "busy": this_restaurant.busy_average,
+            "clean": this_restaurant.clean_average,
+            "description": this_restaurant.description,
+            "image_path": this_restaurant.image_path,
+            "location": this_restaurant.location,
+            "phone": this_restaurant.phone_number,
+            "hours": hours_string, 
+            "match_percentage": restaurant_match_percent,
+            "dishes": restaurant_dishes,
+        }
+
+def get_all_restaurant_info(user_id):
+    all_restaurants = restaurant.query.all()
+    return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
 
 """
 Normalize email is used to remove dot indifference and '+' extensions
