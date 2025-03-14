@@ -10,15 +10,15 @@
 <div class="restaurant-detail">
     <div class="header-images">
         <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="Restaurant ambiance" >
-        <button class="back-button">
+        <button class="back-button" onclick="window.history.back()">
             <i class="fas fa-chevron-left"></i>
         </button>
     </div>
 
     <div class="restaurant-info">
         <h2>{{ restaurant.restaurant_name }}</h2>
-        <p class="category">Casual Dining</p>
-        <p class="hours">Open hours: {{ restaurant.hours | safe }}</p>
+        <!--p class="category">Casual Dining</p>-->
+        <p class="hours">Open hours: <br>{{ restaurant.hours | safe }}</p>
         <button class="update-button">
             Post Update <i class="fas fa-bullhorn"></i>
         </button>
@@ -51,6 +51,23 @@
         <p class="description">
             {{ restaurant.description }}
         </p>
+        <section class="contact">
+            <div class="separator"></div>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>    {{ restaurant.location }}</p>
+                </div>
+                <div class="separator"></div>
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <p>    {{ restaurant.phone_number }}</p>
+                </div>
+            </div>
+        </section>
+        
     </section>
+
+    
 </div>
 {% endblock %} 

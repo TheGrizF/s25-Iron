@@ -17,7 +17,7 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    background: rgba(255,255,255,0.9);
+    background: rgba(139, 137, 137, 0.9);
     border: none;
     width: 40px;
     height: 40px;
@@ -32,13 +32,25 @@
     padding: 20px;
     background: var(--white);
     position: relative;
+    display: block;
+    flex-direction: column;
+    justify-content: flex-start;
+   
+}
+
+.restaurant-info h2 {
+    margin: 0; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding-right: 124px; 
+    
 }
 
 .update-button {
     position: absolute;
     right: 20px;
     top: 20px;
-    background: var(--gray-light);
+    background: var(--burgundy-main);
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
@@ -96,3 +108,38 @@
     border: none;
     cursor: pointer;
 } 
+
+.contact {
+    margin-top: 0px;
+    padding: 20px;
+    padding-bottom: 50px;
+    
+    text-align: left;
+}
+
+.separator {
+    height: 1px;
+    background-color: #858585;
+    margin: 10px 0;
+    width: 100%; /* Doesn't extend to the edges */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-details {
+    color: var(--slate-light);
+}
+
+.contact-item {
+    display: flex;
+    justify-content: flex-start; /* Aligns items to the left */
+    align-items: center; /* Vertically centers the icon and text */
+    gap: 8px;
+    font-size: 14px;
+}
+
+.contact-item i {
+    font-size: 18px;
+    color: var(--slate-light);
+    padding-left: 5px;
+}
