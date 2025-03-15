@@ -361,8 +361,7 @@ def dish_match_page():
     except Exception as e:
         print(f"Error in dish_matches_page: {e}")
         return render_template("dishMatches.html", user_name="Your")
-    
-    
+       
 @profile_bp.route('/api/dish-matches', methods=['GET'])
 def api_dish_matches():
     user_id = session.get('user_id')

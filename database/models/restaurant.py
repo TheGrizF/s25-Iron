@@ -13,6 +13,7 @@ class restaurant(db.Model):
     busy_average = Column(DECIMAL(5, 1), nullable=True)
     image_path = Column(Text, nullable=True, default="images/restaurant/default.jpg")
     description = Column(Text, nullable=True)
+    cuisine = Column(Text, nullable=True)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     operating_hours = relationship("operatingHours", back_populates="restaurant", cascade="all, delete-orphan")
@@ -75,3 +76,4 @@ def update_averages(mapper, connection, target):
 
 # attach the event listener to the liveUpdate model
 event.listen(liveUpdate, 'after_insert', update_averages)
+

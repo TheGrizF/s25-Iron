@@ -1,11 +1,11 @@
 restriction_id,dish_id,restriction
-1,4,gluten-free
+1,4,glutenfree
 2,5,vegan
-3,7,gluten-free
+3,7,glutenfree
 4,10,vegitarian
-5,12,gluten-free
+5,12,glutenfree
 6,15,vegitarian
-7,16,gluten-free
+7,16,glutenfree
 8,29,vegan
 9,32,vegan
 10,33,vegan
@@ -17,12 +17,12 @@ restriction_id,dish_id,restriction
 16,41,vegan
 17,42,vegetarian
 18,47,vegitarian
-19,66,gluten free
+19,66,glutenfree
 20,76,vegetarian
 21,82,vegan
 22,84,vegan
 23,87,vegetarian
 24,90,vegitarian
-25,93,gluten free
+25,93,glutenfree
 26,93,vegan
 27,94,vegitarian

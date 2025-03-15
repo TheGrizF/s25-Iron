@@ -11,10 +11,6 @@ def daily_dish():
 def search():
     return render_template('search.html')
 
-@daily_dish_bp.route('/restaurants')
-def restaurants():
-    return render_template('restaurants.html')
-
 @daily_dish_bp.route('/TasteBuds.html')
 def TasteBuds():
     return render_template('TasteBuds.html')

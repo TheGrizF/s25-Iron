@@ -85,7 +85,7 @@ def insert_test_data():
 
                             cursor.execute(
                                 "INSERT INTO restaurant (restaurant_id, restaurant_name, restrictions, location, rating_average, phone_number, clean_average, busy_average) "
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, )",
                                 (
                                     entry["restaurant_id"],
                                     entry["restaurant_name"],
