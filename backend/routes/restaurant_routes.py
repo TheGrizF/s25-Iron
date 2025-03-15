@@ -16,6 +16,12 @@ def restaurants():
 
     sort_by = request.args.get('sort', 'match_percentage') #default is match percentage
     filter_by = request.args.get('filter','all')
+    
+    # Searching logic
+    search = request.args.get('search', "").lower()
+    exclude_words = {'the', 'a', 'and'}
+    searched_keywords = [word for word in search.split() if word not in exclude_words]
+
 
     
     # Sorting and filtering arguments
@@ -26,6 +32,16 @@ def restaurants():
         
     sorted_restaurants = sort_restaurants(filtered_restaurants, sort_by)
 
+    # Search logic continued to remain within filtered constraints
+    if searched_keywords:
+        sorted_restaurants = [
+            r for r in filtered_restaurants if any(
+                keyword in r['restaurant_name'].lower() or
+                keyword in r['cuisine'].lower() or
+                any(keyword in dish['name'].lower() for dish in r['dishes'])          
+                for keyword in searched_keywords
+            )
+        ]
 
     return render_template("restaurants.html", restaurants=sorted_restaurants)
 

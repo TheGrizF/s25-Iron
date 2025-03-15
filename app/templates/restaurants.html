@@ -8,11 +8,21 @@
 
 {% block content %}
 <div class="restaurants-container">
+    
     <div class="search-header">
-        <h1>Restaurants</h1>
+        <h1>Restaurants</h1>  
         <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search restaurants...">
+            <form id="search-form" method="get" action="{{ url_for('restaurant.restaurants') }}">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" name="search" placeholder="Search restaurants..." value="{{ request.args.get('search', '') }}">
+                
+                {% if request.args.get('filter') %}
+                <input type="hidden" name="filter" value="{{ request.args.get('filter') }}">
+                {% endif %}
+                {% if request.args.get('sort') %}
+                <input type="hidden" name="sort" value="{{ request.args.get('sort') }}">
+                {% endif %}
+            </form>
         </div>
     </div>
 
