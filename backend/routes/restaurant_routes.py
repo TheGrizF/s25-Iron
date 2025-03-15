@@ -31,3 +31,13 @@ def restaurant_detail(restaurant_id):
     
     sorted_dishes = get_restaurant_dish_scores(user_id, restaurant_id)
     return render_template("restaurant_detail.html", restaurant=restaurant_info, dishes=sorted_dishes)
+
+# function to truncate at comma, specifically for addresses
+def truncate_at_comma(text):
+    if ',' in text:
+        return text.split(',')[0]
+    return text
+
+@restaurant_bp.app_template_filter('truncate_at_comma')
+def register_truncate_filter(text):
+    return truncate_at_comma(text)

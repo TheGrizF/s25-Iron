@@ -46,6 +46,7 @@ body {
     width: 15%;
     max-height: 24px;
     height:auto;
+    margin-bottom: 0;
 }
 
 .small-logo {
@@ -53,6 +54,7 @@ body {
     align-items: center;
     gap: 10px;
     padding: 10px 20px;
+    margin-bottom: 0;
 }
 
 .small-logo .logo-link {
@@ -68,11 +70,14 @@ body {
     color: #333;
     margin: 0;
     margin-left: 10px; 
+    margin-bottom: 0;
 }
 
 h1 {
     font-family: 'Comfortaa', cursive;
     text-align: center;
+    margin-bottom: 5px;
+    margin-top:0px;
 }
 
 h2 {
