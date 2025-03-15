@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, request
 from database import db
 from database.models.restaurant import operatingHours, restaurant
 from database.models.dish import dish, menu, menuDishJunction
@@ -14,7 +14,18 @@ def restaurants():
     
     restaurant_info = get_all_restaurant_info(user_id)
 
-    sorted_restaurants = sorted(restaurant_info, key=lambda r: r["match_percentage"], reverse=True)
+    sort_by = request.args.get('sort', 'match_percentage') #default is match percentage
+    filter_by = request.args.get('filter','all')
+
+    
+    # Sorting and filtering arguments
+    filtered_restaurants = restaurant_info
+
+    if filter_by != 'all':
+        filtered_restaurants = [r for r in restaurant_info if r['cuisine'] == filter_by]
+        
+    sorted_restaurants = sort_restaurants(filtered_restaurants, sort_by)
+
 
     return render_template("restaurants.html", restaurants=sorted_restaurants)
 
@@ -32,12 +43,30 @@ def restaurant_detail(restaurant_id):
     sorted_dishes = get_restaurant_dish_scores(user_id, restaurant_id)
     return render_template("restaurant_detail.html", restaurant=restaurant_info, dishes=sorted_dishes)
 
+@restaurant_bp.app_template_filter('truncate_at_comma')
+def register_truncate_filter(text):
+    return truncate_at_comma(text)
+
+
 # function to truncate at comma, specifically for addresses
 def truncate_at_comma(text):
     if ',' in text:
         return text.split(',')[0]
     return text
 
-@restaurant_bp.app_template_filter('truncate_at_comma')
-def register_truncate_filter(text):
-    return truncate_at_comma(text)
+
+
+def sort_restaurants(filtered_restaurants, sort_by="match_percentage"):
+    """
+    Sorts the restaurants based on the selected criteria.
+    :param filtered_restaurants: List of restaurant information.
+    :param sort_by: The key to sort by (default is 'match_percentage').
+    :return: Sorted list of restaurants.
+    """
+    # Define the sort key
+    if sort_by == "match_percentage":
+        return sorted(filtered_restaurants, key=lambda r: r["match_percentage"], reverse=True)
+    elif sort_by == "name":
+        return sorted(filtered_restaurants, key=lambda r: r["restaurant_name"].lower()) 
+    else:
+        return filtered_restaurants 

@@ -195,17 +195,15 @@ def get_restaurant_info(user_id, restaurant_id):
             "location": this_restaurant.location,
             "phone_number": this_restaurant.phone_number,
             "hours": hours_string, 
+            "cuisine": this_restaurant.cuisine,
             "match_percentage": restaurant_match_percent,
             "dishes": restaurant_dishes,
+
         }
 
 def get_all_restaurant_info(user_id):
     all_restaurants = restaurant.query.all()
-    restaurant_info = []
-    for rest in all_restaurants:
-        restaurant_info.append(get_restaurant_info(user_id, rest.restaurant_id))
-
-    return sorted(restaurant_info, key=lambda x: x["match_percentage"], reverse=True)
+    return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
 
 """
 Normalize email is used to remove dot indifference and '+' extensions

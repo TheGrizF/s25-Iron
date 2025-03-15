@@ -16,27 +16,37 @@
         </div>
     </div>
 
-    <div class="filter-section">
-        <!--div class="filter-row">
-            <select class="filter-dropdown">
-                <option value="">Recommended</option>
-                <option value="rating">Highest Rated</option>
-                <option value="distance">Nearest</option>
-            </select>
-            <button class="smart-filter">Smart filter</button>
-        </div-->
-        
         <div class="filter-row">
-            <select class="filter-dropdown">
-                <option value="">Specialty</option>
-            </select>
-            <!--select class="filter-dropdown">
-                <option value="">Occasion</option>
-            </select-->
-            <select class="filter-dropdown">
-                <option value="">Time</option>
-            </select>
+            <!-- Sort Form -->
+            <form id="sort-form" method="get" action="{{ url_for('restaurant.restaurants') }}">
+                <select class="filter-dropdown" id="sort-by" name="sort" onchange="this.form.submit()">
+                    <option value="" {% if request.args.get('sort') == None or request.args.get('sort') == '' %} selected {% endif %}>Sort by:</option>
+                    <option value="match_percentage" {% if request.args.get('sort') == 'match_percentage' %} selected{% endif %}> Match Percentage </option>
+                    <option value="name" {% if request.args.get('sort') == 'name' %} selected{% endif %}>Name</option>
+                </select>
+
+                {% if request.args.get('filter') %}
+                <input type="hidden" name="filter" value="{{ request.args.get('filter') }}">
+                {% endif %}
+            </form>
+        
+            <!-- Filter Form -->
+            <form id="filter-form" method="get" action="{{ url_for('restaurant.restaurants') }}">
+                <select class="filter-dropdown" id="filter-by" name="filter" onchange="this.form.submit()">
+                    <option value="all" {% if request.args.get('filter') == 'all' %} selected{% endif %}>All</option>
+                    <option value="American" {% if request.args.get('filter') == 'American' %} selected{% endif %}>American</option>
+                    <option value="Asian" {% if request.args.get('filter') == 'Asian' %} selected{% endif %}>Asian</option>    
+                    <option value="Mediterranean" {% if request.args.get('filter') == 'Mediterranean' %} selected{% endif %}>Mediterranean</option>
+                    <option value="Mexican" {% if request.args.get('filter') == 'Mexican' %} selected{% endif %}>Mexican</option>
+                </select>
+                
+                {% if request.args.get('sort') %}
+                <input type="hidden" name="sort" value="{{ request.args.get('sort') }}">
+                {% endif %}
+            </form>
         </div>
+    
+
     </div>
 
     <div class="restaurants-list">

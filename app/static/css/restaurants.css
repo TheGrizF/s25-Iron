@@ -52,6 +52,18 @@
 .filter-dropdown {
     flex: 1;
     padding: 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+.filter-row form {
+    flex: 1;
+    display: flex; 
+}
+
+.filter-dropdown select {
+    flex: 1;
+    padding: 8px;
     border: 1px solid var(--gray-medium);
     border-radius: 5px;
 }
@@ -157,6 +169,7 @@
 .match {
     color: var(--burgundy-main);
     font-weight: bold;
+    font-size: 18px;
     display: block;
     margin-left: 3;
     text-align: left;
