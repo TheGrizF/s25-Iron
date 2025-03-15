@@ -84,13 +84,27 @@
     flex: 1;
 }
 
+.restaurant-info h2 {
+    margin: 0;
+    padding: 0px;
+    line-height: 1.2;
+    font-weight: normal;
+}
+
 .restaurant-info h3 {
-    margin: 0 0 5px;
+    margin-top: 0;
+    padding-top: 0;
     color: var(--slate-dark);
 }
 
-.description {
-    color: var(--slate-light);
+.restaurant-info p {
+    color: #858585;
+    margin-top: 5px;
+    margin-bottom: 5px
+}
+
+.description { /*not sure what this modifies now*/
+    color:  #858585;
     margin: 5px 0;
 }
 

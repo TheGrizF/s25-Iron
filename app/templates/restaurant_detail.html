@@ -34,8 +34,8 @@
                 <img src="{{ url_for('static', filename=dish.image_url) }}" alt="dish.name">
                 <div class="dish-info">
                     <h3>{{ dish.name }}</h3>
-                    <span class="match">{{ dish.match_percentage }}% </span>
-                    <p class="price">{{ dish. price }} USD/Each </p>
+                    <p class="dish-match">{{ dish.match_percentage }}% </span>
+                    <p class="dish-price">{{ dish. price }} USD/Each </p>
                 </div>
             </div>
             {% endfor %}
