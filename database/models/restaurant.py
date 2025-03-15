@@ -75,3 +75,4 @@ def update_averages(mapper, connection, target):
 
 # attach the event listener to the liveUpdate model
 event.listen(liveUpdate, 'after_insert', update_averages)
+

@@ -17,22 +17,22 @@
     </div>
 
     <div class="filter-section">
-        <div class="filter-row">
+        <!--div class="filter-row">
             <select class="filter-dropdown">
                 <option value="">Recommended</option>
                 <option value="rating">Highest Rated</option>
                 <option value="distance">Nearest</option>
             </select>
             <button class="smart-filter">Smart filter</button>
-        </div>
+        </div-->
         
         <div class="filter-row">
             <select class="filter-dropdown">
                 <option value="">Specialty</option>
             </select>
-            <select class="filter-dropdown">
+            <!--select class="filter-dropdown">
                 <option value="">Occasion</option>
-            </select>
+            </select-->
             <select class="filter-dropdown">
                 <option value="">Time</option>
             </select>
@@ -43,24 +43,35 @@
         {% if restaurants %}
             {% for restaurant in restaurants %}
             <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=restaurant.restaurant_id) }}" class="restaurant-card">
-                <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="{{ restaurant.restaurant_name}}">
+                <div class ="restaurant-image-container">
+                    <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="{{ restaurant.restaurant_name}}">
+                    <span class="match">{{ restaurant.match_percentage }}% match</span>
+                </div>
                 <div class="restaurant-info">
                     <h2>{{ restaurant.restaurant_name }} </h2>
-                    <p class="hours">{{ restaurant.hours | safe }}</p>
+                    <!--p class="hours">{{ restaurant.hours | safe }}</p-->
                     <p class="details">{{ restaurant.description }}</p>
-                    <p class="address">{{ restaurant.location }} </div></p>
+                    <div class = "restaurant-info-address">
+                        <p class="address">{{ restaurant.location|truncate_at_comma}} </p>
+                    </div>
                     <div class="tags">
                         <span class="tag">Free Wifi</span>
                         <span class="tag">Pet Friendly</span>
                     </div>
                     <div class="status">
-                        <span class="match">{{ restaurant.match_percentage }} % </span> <!--presuming it will have something like this to pull, not sure-->
-                        <span class="busy">Busy right now</span> <!-- Maybe something random here to pull from to pretend dynamic -->
+                        <span class="busy">
+                            <i class="fas fa-user"></i> 
+                            {% if restaurant.live_updates %}
+                                {{ restaurant.live_updates }}
+                            {% else %}
+                                No status updates reported
+                            {% endif %}
+                        </span> <!-- Maybe something random here to pull from to pretend dynamic -->
                     </div>
                 </div>
             </a>
             {% endfor %}
-        <!-- Add more restaurant cards as needed -->
+        <!-- Troubleshooting the database -->
         {% else %}
         <p>No restaurants available.</p>
         

@@ -14,7 +14,9 @@ def restaurants():
     
     restaurant_info = get_all_restaurant_info(user_id)
 
-    return render_template("restaurants.html", restaurants=restaurant_info)
+    sorted_restaurants = sorted(restaurant_info, key=lambda r: r["match_percentage"], reverse=True)
+
+    return render_template("restaurants.html", restaurants=sorted_restaurants)
 
 @restaurant_bp.route("/restaurant/<int:restaurant_id>")
 def restaurant_detail(restaurant_id):
@@ -29,3 +31,13 @@ def restaurant_detail(restaurant_id):
     
     sorted_dishes = get_restaurant_dish_scores(user_id, restaurant_id)
     return render_template("restaurant_detail.html", restaurant=restaurant_info, dishes=sorted_dishes)
+
+# function to truncate at comma, specifically for addresses
+def truncate_at_comma(text):
+    if ',' in text:
+        return text.split(',')[0]
+    return text
+
+@restaurant_bp.app_template_filter('truncate_at_comma')
+def register_truncate_filter(text):
+    return truncate_at_comma(text)
