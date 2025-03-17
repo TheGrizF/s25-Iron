@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, request
+from flask import Blueprint, json, render_template, session, request
 from database import db
 from database.models.restaurant import operatingHours, restaurant
 from database.models.dish import dish, menu, menuDishJunction
@@ -57,20 +57,39 @@ def restaurant_detail(restaurant_id):
         return "Restaurant not found", 404
     
     sorted_dishes = get_restaurant_dish_scores(user_id, restaurant_id)
+
+    session[f'restaurant_{restaurant_id}_dishes'] = json.dumps(sorted_dishes)  # store in flask session to reuse and limit db calls?
+
     return render_template("restaurant_detail.html", restaurant=restaurant_info, dishes=sorted_dishes)
+
+@restaurant_bp.route("/restaurant/<int:restaurant_id>/menu")
+def view_menu(restaurant_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        return "Not logged in", 404
+    
+    this_restaurant = restaurant.query.get(restaurant_id)
+    if not this_restaurant:
+        return "Restaurant not found", 404
+    
+    recall_dishes = session.get(f'restaurant_{restaurant_id}_dishes')
+    if recall_dishes:
+        sorted_dishes = json.loads(recall_dishes)
+    else:
+        print('storing dishes in json failed')
+        sorted_dishes = get_restaurant_dish_scores(user_id, restaurant_id)
+    
+    return render_template("view_menu.html", restaurant=this_restaurant, dishes=sorted_dishes)
 
 @restaurant_bp.app_template_filter('truncate_at_comma')
 def register_truncate_filter(text):
     return truncate_at_comma(text)
 
-
 # function to truncate at comma, specifically for addresses
 def truncate_at_comma(text):
     if ',' in text:
-        return text.split(',')[0]
+        return text.split(',')[1]
     return text
-
-
 
 def sort_restaurants(filtered_restaurants, sort_by="match_percentage"):
     """

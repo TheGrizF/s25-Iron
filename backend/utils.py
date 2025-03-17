@@ -59,6 +59,16 @@ def get_dish_recommendations(user_id):
             if dish_id not in unique_dishes or bud_review > unique_dishes[dish_id][2]:
                 unique_dishes[dish_id] = (bud_id, comparison_num, bud_review)
 
+    user_reviews = (
+        db.session.query(review.dish_id, review.rating)
+        .filter(review.user_id == user_id)
+        .all()
+    )
+    
+    for dish_id, user_review in user_reviews:
+        if dish_id not in unique_dishes or user_review > unique_dishes[dish_id][2]:
+            unique_dishes[dish_id] = (user_id, 0, user_review)
+
     dish_matches = []
     for dish_id, (bud_id, comparison_num, bud_review) in unique_dishes.items():
         dish_matches.append((dish_id, bud_id, comparison_num, bud_review))
