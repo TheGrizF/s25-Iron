@@ -48,7 +48,7 @@ def login():
 
     if selected_user:
         session["user_id"] = selected_user.user_id
-        return redirect(url_for("profile.view_profile"))
+        return redirect(url_for("daily_dish.daily_dish"))
     else:
         flash("Invalid email or password. Please try again.", "error")
         return redirect(url_for("auth.index"))
@@ -97,7 +97,6 @@ def searchUser():
 
     flash("No user found")
     return redirect(url_for('daily_dish.TasteBuds'))
-
 
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])
 def addFriend(user_id):

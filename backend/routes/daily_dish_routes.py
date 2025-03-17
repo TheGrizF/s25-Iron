@@ -1,11 +1,36 @@
 from flask import Blueprint, render_template
-
-
+from database import db
+from database.models.dish import dish
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
 @daily_dish_bp.route('/dailyDish')
 def daily_dish():
-    return render_template('dailyDish.html')
+    featured_dishes = get_featured_dishes()
+    return render_template('dailyDish.html', featured_dishes=featured_dishes)
+
+# Get Featured dishes from restaurants to display in carosel - sort by rating
+# top 10?
+def get_featured_dishes():
+    
+    print("called featured dishes")
+    featured = (
+        db.session.query(dish)
+        .filter(dish.featured.is_(True))
+        .all()
+    )
+    print(featured)
+    featured_dish_info = [
+        {
+            "dish_id": dish.dish_id,
+            "name": dish.dish_name,
+            "image": dish.image_path,
+            "restaurant": dish.menu_dishes[0].menu.restaurant.restaurant_name
+        }
+        for dish in featured
+    ]
+    print(featured_dish_info)
+
+    return featured_dish_info
 
 @daily_dish_bp.route('/search')
 def search():
