@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ restaurant.name }}r{% endblock %}
+{% block title %}{{ restaurant.restaurant_name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/restaurant_detail.css') }}">
@@ -46,7 +46,9 @@
     <section class="about">
         <div class="section-header">
             <h2>About the restaurant</h2>
-            <button class="show-detail">Show Detail</button>
+            <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
+                <button class="show-detail">Full Menu</button>
+            </a>
         </div>
         <p class="description">
             {{ restaurant.description }}
@@ -56,7 +58,11 @@
             <div class="contact-details">
                 <div class="contact-item">
                     <i class="fas fa-map-marker-alt"></i>
-                    <p>    {{ restaurant.location }}</p>
+                    <p>    
+                        {% for line in restaurant.location.split(",") %}
+                            {{ line.strip() }}<br>
+                        {% endfor %}
+                    </p>
                 </div>
                 <div class="separator"></div>
                 <div class="contact-item">

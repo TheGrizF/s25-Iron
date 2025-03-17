@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ restaurant.restaurant_name }} - Full Menu{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/restaurant_detail.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="restaurant-detail">
+    <div class="header-images">
+        <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="Restaurant ambiance" >
+        <button class="back-button" onclick="window.history.back()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+
+    <section class="full-menu">
+        <h2>{{ restaurant.restaurant_name }} - Full Menu</h2>
+        <div class="dishes-grid">
+            
+            <!--for loop for the dishes, but only first two here-->
+            {% for dish in dishes %}
+            <div class="dish-card">
+                <img src="{{ url_for('static', filename=dish.image_url) }}" alt="{{ dish.name }}">
+                <div class="dish-info">
+                    <h3>{{ dish.name }}</h3>
+                    <p class="dish-match">{{ dish.match_percentage }}% </span>
+                    <p class="dish-price">{{ dish. price }} USD/Each </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %} 
