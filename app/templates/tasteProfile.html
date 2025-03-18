@@ -1,68 +1,54 @@
-{% extends "base.html" %}
+{% extends "taste_profile_base.html" %}
 
-{% block title %}Taste Profile Creator{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
-{% endblock %}
-
-{% block content %}
-<div class="taste-profile-container">
-    <h1>Create Your Taste Profile</h1>
-    <div class="intro-section">
-        <h2>Tell us about Yourself!</h2>
-        <form id="tasteProfileForm">
-            <div class="form-group">
-                <label for="favoriteRestaurant">What's your favorite restaurant?</label>
-                <input type="text" 
-                       id="favoriteRestaurant" 
-                       name="favoriteRestaurant" 
-                       required>
+{% block taste_profile_content %}
+<h1>Create Your Taste Profile</h1>
+<div class="intro-section">
+    <h2>Tell us about Yourself!</h2>
+    <form id="tasteProfileForm">
+        <div class="form-group">
+            <label for="favoriteRestaurant">What's your favorite restaurant?</label>
+            <input type="text" 
+                   id="favoriteRestaurant" 
+                   name="favoriteRestaurant" 
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="favoriteDish">What's your favorite dish?</label>
+            <input type="text" 
+                   id="favoriteDish" 
+                   name="favoriteDish" 
+                   required>
+        </div>
+        <div class="form-group">
+            <label>Do you like to try new things?</label>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" 
+                           name="tryNew" 
+                           value="yes" 
+                           required>
+                    Yes
+                </label>
+                <label class="radio-label">
+                    <input type="radio" 
+                           name="tryNew" 
+                           value="no">
+                    No
+                </label>
             </div>
-            <div class="form-group">
-                <label for="favoriteDish">What's your favorite dish?</label>
-                <input type="text" 
-                       id="favoriteDish" 
-                       name="favoriteDish" 
-                       required>
-            </div>
-            <div class="form-group">
-                <label>Do you like to try new things?</label>
-                <div class="radio-group">
-                    <label class="radio-label">
-                        <input type="radio" 
-                               name="tryNew" 
-                               value="yes" 
-                               required>
-                        Yes
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" 
-                               name="tryNew" 
-                               value="no">
-                        No
-                    </label>
-                </div>
-            </div>
-            <div class="button-group">
-                <button type="button" onclick="submitStep(1, {
-                    favoriteRestaurant: document.getElementById('favoriteRestaurant').value,
-                    favoriteDish: document.getElementById('favoriteDish').value,
-                    tryNew: document.querySelector('input[name=\'tryNew\']:checked').value,
-                    basicProfileOnly: true
-                })" class="done-btn">Done</button>
-                <button type="submit" class="submit-btn">Continue</button>
-            </div>
-        </form>
-        <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
-            Otherwise, click "Done". You can always update your Taste Profile later.
-        </p>
-    </div>
+        </div>
+        <div class="button-group">
+            <button type="button" onclick="submitStep(1, {
+                favoriteRestaurant: document.getElementById('favoriteRestaurant').value,
+                favoriteDish: document.getElementById('favoriteDish').value,
+                tryNew: document.querySelector('input[name=\'tryNew\']:checked').value,
+                basicProfileOnly: true
+            })" class="done-btn">Done</button>
+            <button type="submit" class="submit-btn">Continue</button>
+        </div>
+    </form>
+    <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
+        Otherwise, click "Done". You can always update your Taste Profile later.
+    </p>
 </div>
-{% endblock %}
-
-{% block bottom_nav %}{% endblock %} 
+{% endblock %} 

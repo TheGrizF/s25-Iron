@@ -1,120 +1,97 @@
-{% extends "base.html" %}
+{% extends "taste_profile_base.html" %}
 
-{% block title %}Taste Profile - Dietary Preferences{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
-{% endblock %}
-
-{% block content %}
-<div class="taste-profile-container">
-    <h1>Create Your Taste Profile</h1>
-    <div class="intro-section">
-        <h2>Do you have any allergies or dietary restrictions?</h2>
-        <form id="dietaryForm">
-            <div class="form-group">
-                <label>Please select any allergens:</label>
-                <div class="checkbox-grid">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="dairy">
-                        Dairy
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="eggs">
-                        Eggs
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="fish">
-                        Fish
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="shellfish">
-                        Shellfish
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="treenuts">
-                        Tree nuts
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="peanuts">
-                        Peanuts
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="wheat">
-                        Wheat
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="soy">
-                        Soy
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="sesame">
-                        Sesame
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="allergens" value="gluten">
-                        Gluten
-                    </label>
-                </div>
-                
-                <div class="other-allergy">
-                    <input type="text" 
-                           id="otherAllergy" 
-                           name="otherAllergy" 
-                           placeholder="Other: Please specify">
-                    <button type="button" id="addOtherAllergy" class="add-btn">+</button>
-                </div>
-                <div id="otherAllergyList"></div>
+{% block taste_profile_content %}
+<h1>Create Your Taste Profile</h1>
+<div class="intro-section">
+    <h2>Do you have any allergies or dietary restrictions?</h2>
+    <form id="dietaryForm">
+        <div class="form-group">
+            <label>Please select any allergens:</label>
+            <div class="checkbox-grid">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="dairy">
+                    Dairy
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="eggs">
+                    Eggs
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="fish">
+                    Fish
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="shellfish">
+                    Shellfish
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="treenuts">
+                    Tree nuts
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="peanuts">
+                    Peanuts
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="wheat">
+                    Wheat
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="soy">
+                    Soy
+                </label>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Please select the diet(s) that pertains to you:</label>
-                <div class="checkbox-grid">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="diets" value="vegetarian">
-                        Vegetarian
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="diets" value="vegan">
-                        Vegan
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="diets" value="pescatarian">
-                        Pescatarian
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="diets" value="keto">
-                        Keto
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="diets" value="glutenfree">
-                        Gluten-free
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="diets" value="halal">
-                        Halal
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="diets" value="kosher">
-                        Kosher
-                    </label>
-                </div>
-            </div>
+        <div class="other-allergy">
+            <input type="text" 
+                   id="otherAllergy" 
+                   placeholder="Add other allergy">
+            <button type="button" onclick="addOtherAllergy()" class="add-btn">+</button>
+        </div>
+        <div id="otherAllergyList"></div>
 
-            <div class="button-group">
-                <button type="button" onclick="submitBasicProfile()" class="done-btn">Done</button>
-                <button type="submit" class="submit-btn">Continue</button>
+        <div class="form-group">
+            <label>Please select any dietary restrictions:</label>
+            <div class="checkbox-grid">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="restrictions" value="vegetarian">
+                    Vegetarian
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="restrictions" value="vegan">
+                    Vegan
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="restrictions" value="kosher">
+                    Kosher
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="restrictions" value="halal">
+                    Halal
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="restrictions" value="glutenfree">
+                    Gluten-free
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="restrictions" value="dairyfree">
+                    Dairy-free
+                </label>
             </div>
-        </form>
-        <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
-            Otherwise, click "Done". You can always update your Taste Profile later.
-        </p>
-    </div>
+        </div>
+        
+        <div class="button-group">
+            <button type="button" onclick="submitStep(2, {
+                allergens: Array.from(document.querySelectorAll('input[name=\'allergens\']:checked')).map(cb => cb.value),
+                restrictions: Array.from(document.querySelectorAll('input[name=\'restrictions\']:checked')).map(cb => cb.value),
+                otherAllergies: Array.from(document.querySelectorAll('.other-allergy-item')).map(item => item.textContent.trim())
+            })" class="done-btn">Done</button>
+            <button type="submit" class="submit-btn">Continue</button>
+        </div>
+    </form>
+    <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
+        Otherwise, click "Done". You can always update your Taste Profile later.
+    </p>
 </div>
 {% endblock %}
-
-{% block bottom_nav %}{% endblock %}

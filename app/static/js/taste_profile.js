@@ -402,3 +402,17 @@ async function submitStep(step, data) {
         alert('Failed to save preferences. Please try again.');
     }
 }
+
+function addOtherAllergy() {
+    const otherAllergyInput = document.getElementById('otherAllergy');
+    const otherAllergyList = document.getElementById('otherAllergyList');
+    
+    const allergy = otherAllergyInput.value.trim();
+    if (allergy) {
+        const allergyItem = document.createElement('div');
+        allergyItem.className = 'other-allergy-item';
+        allergyItem.textContent = allergy;
+        otherAllergyList.appendChild(allergyItem);
+        otherAllergyInput.value = '';
+    }
+}

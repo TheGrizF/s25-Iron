@@ -1,106 +1,100 @@
-{% extends "base.html" %}
+{% extends "taste_profile_base.html" %}
 
-{% block title %}Taste Profile - Condiment Preferences{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
-{% endblock %}
-
-{% block content %}
-<div class="taste-profile-container">
-    <h1>Create Your Taste Profile</h1>
-    <div class="intro-section">
-        <h2>When you dine out, which condiments do you reach for?</h2>
-        <form id="condimentPreferenceForm">
-            <div class="condiment-grid">
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="salt" 
-                           name="condiments" 
-                           value="salt">
-                    <label for="salt">Salt</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="oliveOil" 
-                           name="condiments" 
-                           value="oliveOil">
-                    <label for="oliveOil">Olive Oil</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="chiliOil" 
-                           name="condiments" 
-                           value="chiliOil">
-                    <label for="chiliOil">Chili Oil</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="pepper" 
-                           name="condiments" 
-                           value="pepper">
-                    <label for="pepper">Pepper</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="hotSauce" 
-                           name="condiments" 
-                           value="hotSauce">
-                    <label for="hotSauce">Hot Sauce</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="worcester" 
-                           name="condiments" 
-                           value="worcester">
-                    <label for="worcester">Worcester Sauce</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="maltVinegar" 
-                           name="condiments" 
-                           value="maltVinegar">
-                    <label for="maltVinegar">Malt Vinegar</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="soySauce" 
-                           name="condiments" 
-                           value="soySauce">
-                    <label for="soySauce">Soy Sauce</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="hoisin" 
-                           name="condiments" 
-                           value="hoisin">
-                    <label for="hoisin">Hoisin</label>
-                </div>
-
-                <div class="condiment-item">
-                    <input type="checkbox" 
-                           id="fishSauce" 
-                           name="condiments" 
-                           value="fishSauce">
-                    <label for="fishSauce">Fish Sauce</label>
-                </div>
+{% block taste_profile_content %}
+<h1>Create Your Taste Profile</h1>
+<div class="intro-section">
+    <h2>When you dine out, which condiments do you reach for?</h2>
+    <form id="condimentPreferenceForm">
+        <div class="condiment-grid">
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="salt" 
+                       name="condiments" 
+                       value="salt">
+                <label for="salt">Salt</label>
             </div>
-            <button type="submit" class="submit-btn">Complete Profile</button>
-        </form>
-    </div>
-</div>
-{% endblock %}
 
-{% block bottom_nav %}{% endblock %} 
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="oliveOil" 
+                       name="condiments" 
+                       value="oliveOil">
+                <label for="oliveOil">Olive Oil</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="chiliOil" 
+                       name="condiments" 
+                       value="chiliOil">
+                <label for="chiliOil">Chili Oil</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="pepper" 
+                       name="condiments" 
+                       value="pepper">
+                <label for="pepper">Pepper</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="hotSauce" 
+                       name="condiments" 
+                       value="hotSauce">
+                <label for="hotSauce">Hot Sauce</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="worcester" 
+                       name="condiments" 
+                       value="worcester">
+                <label for="worcester">Worcester Sauce</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="maltVinegar" 
+                       name="condiments" 
+                       value="maltVinegar">
+                <label for="maltVinegar">Malt Vinegar</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="soySauce" 
+                       name="condiments" 
+                       value="soySauce">
+                <label for="soySauce">Soy Sauce</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="hoisin" 
+                       name="condiments" 
+                       value="hoisin">
+                <label for="hoisin">Hoisin</label>
+            </div>
+
+            <div class="condiment-item">
+                <input type="checkbox" 
+                       id="fishSauce" 
+                       name="condiments" 
+                       value="fishSauce">
+                <label for="fishSauce">Fish Sauce</label>
+            </div>
+        </div>
+        <div class="button-group">
+            <button type="button" onclick="submitStep(11, {
+                condiments: Array.from(document.querySelectorAll('input[name=\'condiments\']:checked')).map(cb => cb.value)
+            })" class="done-btn">Done</button>
+            <button type="submit" class="submit-btn">Continue</button>
+        </div>
+    </form>
+    <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
+        Otherwise, click "Done". You can always update your Taste Profile later.
+    </p>
+</div>
+{% endblock %} 
