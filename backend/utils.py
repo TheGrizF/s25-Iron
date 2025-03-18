@@ -10,6 +10,54 @@ from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import restaurant
 
+# Get Featured dishes from restaurants to display in carosel - sort by rating
+# top 10?
+def get_featured_dishes():
+    
+    featured = (
+        db.session.query(dish)
+        .filter(dish.featured.is_(True))
+        .all()
+    )
+    
+    featured_dish_info = [
+        {
+            "dish_id": dish.dish_id,
+            "name": dish.dish_name,
+            "image": dish.image_path,
+            "restaurant": dish.menu_dishes[0].menu.restaurant.restaurant_name
+        }
+        for dish in featured
+    ]
+    
+    return featured_dish_info
+
+def get_daily_dishes(user_id, limit=10):
+    """
+    Get dishes with scores where the score didn't come from user reviews
+    should be dishes user hasn't tried yet
+    """
+
+    recommended = get_dish_recommendations(user_id)
+    
+    new_dishes = [dish for dish in recommended if dish[1] != user_id][:limit]
+
+    dish_ids = [dish[0] for dish in new_dishes]
+    dishes = {this_dish.dish_id: this_dish for this_dish in db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()}
+
+    daily_dishes = [
+        {
+            "dish_id": id,
+            "name": dishes[id].dish_name,
+            "image_path": dishes[id].image_path,
+            "restaurant": dishes[id].menu_dishes[0].menu.restaurant.restaurant_name,
+            "match_score": score,
+        }
+        for id, _, score in new_dishes if id in dishes
+    ]
+        
+
+    return daily_dishes
 
 """
 Method to determine a list of dishes with appropriate score
@@ -59,6 +107,7 @@ def get_dish_recommendations(user_id):
             if dish_id not in unique_dishes or bud_review > unique_dishes[dish_id][2]:
                 unique_dishes[dish_id] = (bud_id, comparison_num, bud_review)
 
+    # include users own reviews!
     user_reviews = (
         db.session.query(review.dish_id, review.rating)
         .filter(review.user_id == user_id)
@@ -136,7 +185,6 @@ get_restaurant_dish_scores - Returns a list of the dishes with scores for the us
 get_restaurant_info - Returns a list of the information on the restaurant, including a rating for the user based on their dish scores
 get_all_restaurant_info - calls get_restaurant_info on each restaurant id to get a full list of all the restaurants with their info
 """
-
 def get_restaurant_dish_scores(user_id, restaurant_id):
     
     # Precondition check - user exists

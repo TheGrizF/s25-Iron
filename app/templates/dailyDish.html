@@ -37,14 +37,14 @@
         <div class="side-column">
             <h2 class="section-title">Live Feed</h2>
             <section class="live-feed">
+                {% for dish in recommended_dishes %}
                 <div class="feed-item">
                     <div class="feed-header">
-                        <span class="username">g0ezm8</span>
-                        <span class="action">posted @ Bol A Punch</span>
+                        <span class="action">Recommended For You: {{ dish.match_score }}% match</span>
                     </div>
-                    <div class="feed-content">
-                        <p>86 escargot, I guess they all got away</p>
-                        <img src="{{ url_for('static', filename='images/escargot.jpg') }}" alt="Escargot dish">
+                    <div class="feed-content"> 
+                        <p>{{ dish.name }} @ {{ dish.restaurant }}%</p>
+                        <img src="{{ url_for('static', filename=dish.image_path) }}" alt="{{ dish.name }}">
                     </div>
                     <div class="feed-footer">
                         <span class="timestamp">5 minutes ago</span>
@@ -55,6 +55,7 @@
                         </div>
                     </div>
                 </div>
+                {% endfor %}
 
                 <div class="feed-item">
                     <div class="feed-header">
