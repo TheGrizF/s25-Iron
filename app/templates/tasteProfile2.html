@@ -62,9 +62,11 @@
                 </div>
                 
                 <div class="other-allergy">
-                    <label for="otherAllergy">Other: Please specify:</label>
-                    <input type="text" id="otherAllergy" name="otherAllergy">
-                    <button type="button" id="addOtherAllergy">Add</button>
+                    <input type="text" 
+                           id="otherAllergy" 
+                           name="otherAllergy" 
+                           placeholder="Other: Please specify">
+                    <button type="button" id="addOtherAllergy" class="add-btn">+</button>
                 </div>
                 <div id="otherAllergyList"></div>
             </div>
@@ -105,7 +107,7 @@
 
             <div class="button-group">
                 <button type="button" onclick="submitBasicProfile()" class="done-btn">Done</button>
-                <button type="submit" class="submit-btn">Continue with Taste Profile Setup</button>
+                <button type="submit" class="submit-btn">Continue</button>
             </div>
         </form>
         <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 

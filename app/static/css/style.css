@@ -211,8 +211,8 @@ button {
     background-color: var(--burgundy-main);
     color: var(--white);
     border: none;
-    padding: 10px 20px;  /* Default padding */
-    border-radius: 8px;
+    padding: 10px 20px;
+    border-radius: 4px;  /* More rectangular shape */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -229,10 +229,11 @@ button:hover {
 }
 
 /* Taste Profile button styles */
-.submit-btn {
+.submit-btn, .done-btn {
     width: 200px;
-    padding: 8px 15px;  /* Slimmer padding */
+    padding: 8px 15px;
     font-size: 16px;
     margin: 20px auto;
-    display: inline-block;  /* Ensure proper margin handling */
+    display: inline-block;
+    border-radius: 4px;  /* More rectangular shape */
 } 
