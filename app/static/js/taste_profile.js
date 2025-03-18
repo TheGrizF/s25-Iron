@@ -381,3 +381,24 @@ async function submitBasicProfile() {
         alert('Failed to save preferences. Please try again.');
     }
 }
+
+async function submitStep(step, data) {
+    try {
+        const response = await fetch(`/api/taste-profile/step${step}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            window.location.href = '/profile';  // Redirect to profile page
+        } else {
+            throw new Error(`Failed to save taste profile step ${step}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to save preferences. Please try again.');
+    }
+}

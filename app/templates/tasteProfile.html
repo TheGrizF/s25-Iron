@@ -48,8 +48,19 @@
                     </label>
                 </div>
             </div>
-            <button type="submit" class="submit-btn">Continue</button>
+            <div class="button-group">
+                <button type="button" onclick="submitStep(1, {
+                    favoriteRestaurant: document.getElementById('favoriteRestaurant').value,
+                    favoriteDish: document.getElementById('favoriteDish').value,
+                    tryNew: document.querySelector('input[name=\'tryNew\']:checked').value,
+                    basicProfileOnly: true
+                })" class="done-btn">Done</button>
+                <button type="submit" class="submit-btn">Continue</button>
+            </div>
         </form>
+        <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
+            Otherwise, click "Done". You can always update your Taste Profile later.
+        </p>
     </div>
 </div>
 {% endblock %}

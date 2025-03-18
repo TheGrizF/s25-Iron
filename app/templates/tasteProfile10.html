@@ -107,8 +107,21 @@
                            class="preference-slider">
                 </div>
             </div>
-            <button type="submit" class="submit-btn">Continue</button>
+            <div class="button-group">
+                <button type="button" onclick="submitStep(10, {
+                    italian: parseInt(document.getElementById('italian').value),
+                    japanese: parseInt(document.getElementById('japanese').value),
+                    french: parseInt(document.getElementById('french').value),
+                    american: parseInt(document.getElementById('american').value),
+                    spanish: parseInt(document.getElementById('spanish').value),
+                    mexican: parseInt(document.getElementById('mexican').value)
+                })" class="done-btn">Done</button>
+                <button type="submit" class="submit-btn">Continue</button>
+            </div>
         </form>
+        <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
+            Otherwise, click "Done". You can always update your Taste Profile later.
+        </p>
     </div>
 </div>
 {% endblock %}
