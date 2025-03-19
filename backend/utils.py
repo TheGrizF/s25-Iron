@@ -5,7 +5,7 @@ Keeps them organized so we can use them again if we need to.
 from sqlalchemy import func
 from database import db
 from database.models.taste_profiles import dishTasteProfile
-from database.models.user import cuisineUserJunction, user, user_allergen, user_restriction, tasteComparisons, friends
+from database.models.user import cuisineUserJunction, savedDishes, user, user_allergen, user_restriction, tasteComparisons, friends
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import restaurant
@@ -142,18 +142,46 @@ def get_friend_reviews(user_id, limit=5):
     
     return friend_reviews[:limit]
 
+def get_saved_dishes(user_id):
+    """
+    Compiles a list of the users saved dishes with oldest first
+    saved in dictionary containing:
+        -dish_name: name of dish they reviewed
+        -dish_id: dish id to link to dish page
+        -image: path to dish image
+        -retaurant_name: name of restaurant where dish is
+        -restaurant_id: to link to restaurant page
+        -date_saved: date user saved the dish
+    """
+    user_info = db.session.query(user).get(user_id)
 
+    if not user_info:
+        return []
+    
+    saved_dishes = []
+    for saved in user_info.saved_dishes:
+        user_dish = saved.dish
 
-"""
-Method to determine a list of dishes with appropriate score
-:param user_id: user_id to get curated list of dishes to try
-:return scored_matches: list of tuples containing (dish_id, tastebuddy_id, dish_score)
-    dish_id: id of the dish to recommend to user
-    bud_id: user_id of the taste match profile that reviewed dish
-    dish_score: % score based on average rating, taste buddy score, and cuisine match, 
-"""
+        saved_dishes.append({
+            "dish_id": user_dish.dish_id,
+            "dish_name": user_dish.dish_name,
+            "image": user_dish.image_path,
+            "restaurant_name": user_dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": user_dish.menu_dishes[0].menu.restaurant.restaurant_id,
+            "date_saved": saved.date_saved.strftime("%B %d, %Y"),
+        })
+    
+    return saved_dishes
+
 def get_dish_recommendations(user_id):
-
+    """
+    Method to determine a list of dishes with appropriate score
+    :param user_id: user_id to get curated list of dishes to try
+    :return scored_matches: list of tuples containing (dish_id, tastebuddy_id, dish_score)
+        dish_id: id of the dish to recommend to user
+        bud_id: user_id of the taste match profile that reviewed dish
+        dish_score: % score based on average rating, taste buddy score, and cuisine match, 
+    """
     # Get user info from db
     user_tp = db.session.query(user).filter(user.user_id == user_id).first()
     user_allergy = db.session.query(user_allergen.allergen).filter(user_allergen.user_id == user_id).all()

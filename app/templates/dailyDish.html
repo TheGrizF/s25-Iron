@@ -41,7 +41,10 @@
         <div class="side-column">
             <h2 class="section-title">Live Feed</h2>
             <section class="live-feed">
+                <!-- Makes a card depending on the item type -->
                 {% for item in feed_items %}
+
+                    <!-- Dish card for recommended dishes -->
                     {% if item.type == 'dish' %}
                         <div class="feed-item">
                             <div class="feed-header">
@@ -83,6 +86,8 @@
                                 </div>
                             </div>
                         </div>
+
+                    <!-- Review card for friends reviews -->
                     {% elif item.type == 'review' %}
                         <div class="feed-item">
                             <div class="feed-header">
@@ -116,6 +121,27 @@
 
                             </div>
                         </div>
+
+                    <!-- Saved card for dishes from saved list -->
+                    {% elif item.type == 'saved' %}
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="action">From Your Saved Dishes</span>
+                            </div>
+                            <div class="feed-content"> 
+                                <p>
+                                    {{ item.data.dish_name }} @ 
+                                    <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}">
+                                        {{ item.data.restaurant_name }}
+                                </a>
+                                </p>
+                                <img src="{{ url_for('static', filename=item.data.image) }}" alt="{{ item.data.dish_name }}">
+                            </div>
+                            <div class="feed-footer">
+                                <span class="timestamp">Saved on {{ item.data.date_saved }}</span>
+                            </div>
+                        </div>
+
                     {% endif %}
 
                 {% endfor %}
