@@ -292,20 +292,33 @@ def save_taste_profile():
         taste_profile.spicy = data.get('spicy', 3)
         taste_profile.umami = data.get('umami', 3)
 
+        # Clear existing cuisine preferences
+        db.session.query(cuisineUserJunction).filter_by(user_id=user_id).delete()
+
+        # Add new cuisine preferences
+        cuisine_preferences = data.get('cuisines', {})
+        for cuisine_name, preference_level in cuisine_preferences.items():
+            # Get or create cuisine
+            cuisine_obj = cuisine.query.filter_by(cuisine_name=cuisine_name.title()).first()
+            if not cuisine_obj:
+                cuisine_obj = cuisine(cuisine_name=cuisine_name.title())
+                db.session.add(cuisine_obj)
+                db.session.flush()  # Get the ID of the new cuisine
+
+            # Create cuisine preference junction
+            cuisine_pref = cuisineUserJunction(
+                user_id=user_id,
+                cuisine_id=cuisine_obj.cuisine_id,
+                preference_level=preference_level
+            )
+            db.session.add(cuisine_pref)
+
         db.session.commit()
-
-        # trigger taste matching
         updateTasteComparisons(user_id)
-
-        # Clear data
-        for i in range(1, 12):
-            session.pop(f'taste_profile_step{i}', None)
-        flash('Taste Profile Saved!', 'success')
         return jsonify({'status': 'success'})
-    
     except Exception as e:
+        print("Error:", str(e))
         db.session.rollback()
-        print(f"Error in save_taste_profile: {str(e)}")  # Add this line to log the error
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 @profile_bp.route('/matches', methods=['GET'])
