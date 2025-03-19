@@ -61,47 +61,47 @@ def delete_profile():
 def taste_profile():
     if request.method == 'POST':
         return redirect(url_for('profile.taste_profile_step2'))
-    return render_template('tasteProfile.html')
+    return render_template('tasteProfile.html', current_step=1)
 
 @profile_bp.route('/taste-profile/step2')
 def taste_profile_step2():
-    return render_template('tasteProfile2.html')
+    return render_template('tasteProfile2.html', current_step=2)
 
 @profile_bp.route('/taste-profile/step3')
 def taste_profile_step3():
-    return render_template('tasteProfile3.html')
+    return render_template('tasteProfile3.html', current_step=3)
 
 @profile_bp.route('/taste-profile/step4')
 def taste_profile_step4():
-    return render_template('tasteProfile4.html')
+    return render_template('tasteProfile4.html', current_step=4)
 
 @profile_bp.route('/taste-profile/step5')
 def taste_profile_step5():
-    return render_template('tasteProfile5.html')
+    return render_template('tasteProfile5.html', current_step=5)
 
 @profile_bp.route('/taste-profile/step6')
 def taste_profile_step6():
-    return render_template('tasteProfile6.html')
+    return render_template('tasteProfile6.html', current_step=6)
 
 @profile_bp.route('/taste-profile/step7')
 def taste_profile_step7():
-    return render_template('tasteProfile7.html')
+    return render_template('tasteProfile7.html', current_step=7)
 
 @profile_bp.route('/taste-profile/step8')
 def taste_profile_step8():
-    return render_template('tasteProfile8.html')
+    return render_template('tasteProfile8.html', current_step=8)
 
 @profile_bp.route('/taste-profile/step9')
 def taste_profile_step9():
-    return render_template('tasteProfile9.html')
+    return render_template('tasteProfile9.html', current_step=9)
 
 @profile_bp.route('/taste-profile/step10')
 def taste_profile_step10():
-    return render_template('tasteProfile10.html')
+    return render_template('tasteProfile10.html', current_step=10)
 
 @profile_bp.route('/taste-profile/step11')
 def taste_profile_step11():
-    return render_template('tasteProfile11.html')
+    return render_template('tasteProfile11.html', current_step=11)
 
 @profile_bp.route('/taste-profile/debug')
 def taste_profile_debug():

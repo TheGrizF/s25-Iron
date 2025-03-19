@@ -1,116 +1,115 @@
-{% extends "base.html" %}
+{% extends "taste_profile_base.html" %}
 
-{% block title %}Taste Profile - Cuisine Preferences{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
-{% endblock %}
-
-{% block content %}
-<div class="taste-profile-container">
-    <h1>Create Your Taste Profile</h1>
-    <div class="intro-section">
-        <h2>Rate these cuisines based on your preference</h2>
-        <form id="cuisinePreferenceForm">
-            <div class="cuisine-sliders">
-                <div class="cuisine-item">
-                    <div class="cuisine-header">
-                        <label for="italian">Italian</label>
-                        <span class="cuisine-desc">(pasta)</span>
-                        <span class="slider-value" id="italianValue">3</span>
-                    </div>
-                    <input type="range" 
-                           id="italian" 
-                           name="italian" 
-                           min="1" 
-                           max="5" 
-                           value="3" 
-                           class="preference-slider">
+{% block taste_profile_content %}
+<h1>Create Your Taste Profile</h1>
+<div class="intro-section">
+    <h2>Rate these cuisines based on your preference</h2>
+    <form id="cuisinePreferenceForm">
+        <div class="cuisine-sliders">
+            <div class="cuisine-item">
+                <div class="cuisine-header">
+                    <label for="italian">Italian</label>
+                    <span class="cuisine-desc">(pasta)</span>
+                    <span class="slider-value" id="italianValue">3</span>
                 </div>
-
-                <div class="cuisine-item">
-                    <div class="cuisine-header">
-                        <label for="japanese">Japanese</label>
-                        <span class="cuisine-desc">(sushi & ramen)</span>
-                        <span class="slider-value" id="japaneseValue">3</span>
-                    </div>
-                    <input type="range" 
-                           id="japanese" 
-                           name="japanese" 
-                           min="1" 
-                           max="5" 
-                           value="3" 
-                           class="preference-slider">
-                </div>
-
-                <div class="cuisine-item">
-                    <div class="cuisine-header">
-                        <label for="french">French</label>
-                        <span class="cuisine-desc">(kill me with butter)</span>
-                        <span class="slider-value" id="frenchValue">3</span>
-                    </div>
-                    <input type="range" 
-                           id="french" 
-                           name="french" 
-                           min="1" 
-                           max="5" 
-                           value="3" 
-                           class="preference-slider">
-                </div>
-
-                <div class="cuisine-item">
-                    <div class="cuisine-header">
-                        <label for="american">American</label>
-                        <span class="cuisine-desc">(burgers, steak)</span>
-                        <span class="slider-value" id="americanValue">3</span>
-                    </div>
-                    <input type="range" 
-                           id="american" 
-                           name="american" 
-                           min="1" 
-                           max="5" 
-                           value="3" 
-                           class="preference-slider">
-                </div>
-
-                <div class="cuisine-item">
-                    <div class="cuisine-header">
-                        <label for="spanish">Spanish</label>
-                        <span class="cuisine-desc">(paella)</span>
-                        <span class="slider-value" id="spanishValue">3</span>
-                    </div>
-                    <input type="range" 
-                           id="spanish" 
-                           name="spanish" 
-                           min="1" 
-                           max="5" 
-                           value="3" 
-                           class="preference-slider">
-                </div>
-
-                <div class="cuisine-item">
-                    <div class="cuisine-header">
-                        <label for="mexican">Mexican</label>
-                        <span class="cuisine-desc">(tacos)</span>
-                        <span class="slider-value" id="mexicanValue">3</span>
-                    </div>
-                    <input type="range" 
-                           id="mexican" 
-                           name="mexican" 
-                           min="1" 
-                           max="5" 
-                           value="3" 
-                           class="preference-slider">
-                </div>
+                <input type="range" 
+                       id="italian" 
+                       name="italian" 
+                       min="1" 
+                       max="5" 
+                       value="3" 
+                       class="preference-slider">
             </div>
-            <button type="submit" class="submit-btn">Continue</button>
-        </form>
-    </div>
-</div>
-{% endblock %}
 
-{% block bottom_nav %}{% endblock %} 
+            <div class="cuisine-item">
+                <div class="cuisine-header">
+                    <label for="japanese">Japanese</label>
+                    <span class="cuisine-desc">(sushi & ramen)</span>
+                    <span class="slider-value" id="japaneseValue">3</span>
+                </div>
+                <input type="range" 
+                       id="japanese" 
+                       name="japanese" 
+                       min="1" 
+                       max="5" 
+                       value="3" 
+                       class="preference-slider">
+            </div>
+
+            <div class="cuisine-item">
+                <div class="cuisine-header">
+                    <label for="french">French</label>
+                    <span class="cuisine-desc">(kill me with butter)</span>
+                    <span class="slider-value" id="frenchValue">3</span>
+                </div>
+                <input type="range" 
+                       id="french" 
+                       name="french" 
+                       min="1" 
+                       max="5" 
+                       value="3" 
+                       class="preference-slider">
+            </div>
+
+            <div class="cuisine-item">
+                <div class="cuisine-header">
+                    <label for="american">American</label>
+                    <span class="cuisine-desc">(burgers, steak)</span>
+                    <span class="slider-value" id="americanValue">3</span>
+                </div>
+                <input type="range" 
+                       id="american" 
+                       name="american" 
+                       min="1" 
+                       max="5" 
+                       value="3" 
+                       class="preference-slider">
+            </div>
+
+            <div class="cuisine-item">
+                <div class="cuisine-header">
+                    <label for="spanish">Spanish</label>
+                    <span class="cuisine-desc">(paella)</span>
+                    <span class="slider-value" id="spanishValue">3</span>
+                </div>
+                <input type="range" 
+                       id="spanish" 
+                       name="spanish" 
+                       min="1" 
+                       max="5" 
+                       value="3" 
+                       class="preference-slider">
+            </div>
+
+            <div class="cuisine-item">
+                <div class="cuisine-header">
+                    <label for="mexican">Mexican</label>
+                    <span class="cuisine-desc">(tacos)</span>
+                    <span class="slider-value" id="mexicanValue">3</span>
+                </div>
+                <input type="range" 
+                       id="mexican" 
+                       name="mexican" 
+                       min="1" 
+                       max="5" 
+                       value="3" 
+                       class="preference-slider">
+            </div>
+        </div>
+        <div class="button-group">
+            <button type="button" onclick="submitStep(10, {
+                italian: parseInt(document.getElementById('italian').value),
+                japanese: parseInt(document.getElementById('japanese').value),
+                french: parseInt(document.getElementById('french').value),
+                american: parseInt(document.getElementById('american').value),
+                spanish: parseInt(document.getElementById('spanish').value),
+                mexican: parseInt(document.getElementById('mexican').value)
+            })" class="done-btn">Done</button>
+            <button type="submit" class="submit-btn">Continue</button>
+        </div>
+    </form>
+    <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
+        Otherwise, click "Done". You can always update your Taste Profile later.
+    </p>
+</div>
+{% endblock %} 
