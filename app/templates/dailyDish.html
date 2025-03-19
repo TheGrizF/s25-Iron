@@ -23,7 +23,11 @@
                         {% for dish in featured_dishes %}
                         <div class="carousel-item">
                             <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.name }}">
-                            <div class="carousel-caption">{{ dish.name }} @ {{ dish.restaurant }}</div>
+                            <div class="carousel-caption">{{ dish.name }} @ 
+                                <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}">
+                                    {{ dish.restaurant }}
+                                </a>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -43,11 +47,21 @@
                         <span class="action">Recommended For You: {{ dish.match_score }}% match</span>
                     </div>
                     <div class="feed-content"> 
-                        <p>{{ dish.name }} @ {{ dish.restaurant }}%</p>
+                        <p>
+                            {{ dish.name }} @ 
+                            <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}">
+                                {{ dish.restaurant }}
+                            </a>
+                        </p>
                         <img src="{{ url_for('static', filename=dish.image_path) }}" alt="{{ dish.name }}">
                     </div>
+                    <div class="feed-content">
+                        <p>Your TasteBuddy {{ dish.buddy_name }}'s review</p>
+                        <img src="{{ url_for('static', filename=dish.buddy_icon) }}" alt="{{ dish.buddy_name }}">
+                        <p>{{ dish.review_content }}</p>
+                    </div>
                     <div class="feed-footer">
-                        <span class="timestamp">5 minutes ago</span>
+                        <span class="timestamp">{{ dish.time_stamp }}</span>
                         <div class="feed-actions">
                             <i class="far fa-star"></i>
                             <i class="fas fa-share"></i>
@@ -64,7 +78,7 @@
                     </div>
                     <div class="feed-content">
                         <p class="private-content">private</p>
-                        <img src="{{ url_for('static', filename='images/profile-dog.jpg') }}" alt="User profile" class="profile-pic">
+                        <img src="{{ url_for('static', filename='images/profile_icons/default2.png') }}" alt="User profile" class="profile-pic">
                     </div>
                     <div class="feed-footer">
                         <span class="timestamp">1 hour ago</span>

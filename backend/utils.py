@@ -25,7 +25,8 @@ def get_featured_dishes():
             "dish_id": dish.dish_id,
             "name": dish.dish_name,
             "image": dish.image_path,
-            "restaurant": dish.menu_dishes[0].menu.restaurant.restaurant_name
+            "restaurant": dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": dish.menu_dishes[0].menu.restaurant.restaurant_id,
         }
         for dish in featured
     ]
@@ -43,20 +44,45 @@ def get_daily_dishes(user_id, limit=10):
     new_dishes = [dish for dish in recommended if dish[1] != user_id][:limit]
 
     dish_ids = [dish[0] for dish in new_dishes]
-    dishes = {this_dish.dish_id: this_dish for this_dish in db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()}
+    dishes = {
+        this_dish.dish_id: this_dish 
+        for this_dish in db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()
+    }
 
+    reviews = (
+        db.session.query(review)
+        .filter(review.dish_id.in_(dishes.keys()), review.user_id != user_id)
+        .order_by(review.created_at.desc())
+        .distinct(review.dish_id)
+        .all()
+    )
+
+    buddy_reviews = {
+        rev.dish_id: {
+            "buddy_name": f"{rev.user.first_name} {rev.user.last_name}",
+            "buddy_icon": rev.user.icon_path,
+            "review_content": rev.content,
+            "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+        }
+        for rev in reviews
+    }
+    
     daily_dishes = [
         {
             "dish_id": id,
             "name": dishes[id].dish_name,
             "image_path": dishes[id].image_path,
             "restaurant": dishes[id].menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": dishes[id].menu_dishes[0].menu.restaurant.restaurant_id,
             "match_score": score,
+            "buddy_name": buddy_reviews[id]["buddy_name"],
+            "buddy_icon": buddy_reviews[id]["buddy_icon"],
+            "review_content": buddy_reviews[id]["review_content"],
+            "time_stamp": buddy_reviews[id]["time_stamp"]
         }
         for id, _, score in new_dishes if id in dishes
     ]
         
-
     return daily_dishes
 
 """

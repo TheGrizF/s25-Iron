@@ -48,7 +48,7 @@ def login():
 
     if selected_user:
         session["user_id"] = selected_user.user_id
-        return redirect(url_for("daily_dish.daily_dish"))
+        return redirect(url_for("profile.view_profile"))
     else:
         flash("Invalid email or password. Please try again.", "error")
         return redirect(url_for("auth.index"))

@@ -16,28 +16,6 @@ def daily_dish():
 
     return render_template('dailyDish.html', featured_dishes=featured_dishes, recommended_dishes=recommended_dishes)
 
-# Get Featured dishes from restaurants to display in carosel - sort by rating
-# top 10?
-def get_featured_dishes():
-    
-    featured = (
-        db.session.query(dish)
-        .filter(dish.featured.is_(True))
-        .all()
-    )
-    
-    featured_dish_info = [
-        {
-            "dish_id": dish.dish_id,
-            "name": dish.dish_name,
-            "image": dish.image_path,
-            "restaurant": dish.menu_dishes[0].menu.restaurant.restaurant_name
-        }
-        for dish in featured
-    ]
-    
-    return featured_dish_info
-
 @daily_dish_bp.route('/search')
 def search():
     return render_template('search.html')
