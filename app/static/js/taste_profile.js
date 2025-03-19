@@ -286,12 +286,16 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             const cuisinePreferences = {
-                italian: parseInt(document.getElementById('italian').value),
-                japanese: parseInt(document.getElementById('japanese').value),
-                french: parseInt(document.getElementById('french').value),
+                asian: parseInt(document.getElementById('asian').value),
                 american: parseInt(document.getElementById('american').value),
-                spanish: parseInt(document.getElementById('spanish').value),
-                mexican: parseInt(document.getElementById('mexican').value)
+                sushi: parseInt(document.getElementById('sushi').value),
+                thai: parseInt(document.getElementById('thai').value),
+                indian: parseInt(document.getElementById('indian').value),
+                southern: parseInt(document.getElementById('southern').value),
+                italian: parseInt(document.getElementById('italian').value),
+                mexican: parseInt(document.getElementById('mexican').value),
+                healthy: parseInt(document.getElementById('healthy').value),
+                mediterranean: parseInt(document.getElementById('mediterranean').value)
             };
             
             try {
@@ -304,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (response.ok) {
-                    window.location.href = '/taste-profile/step11';  // Changed from /profile to next step
+                    window.location.href = '/taste-profile/step11';
                 } else {
                     throw new Error('Failed to save cuisine preferences');
                 }
