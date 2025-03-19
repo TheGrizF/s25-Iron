@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session
 from database import db
 from database.models.dish import dish
-from backend.utils import get_featured_dishes, get_daily_dishes
+from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
 @daily_dish_bp.route('/dailyDish')
@@ -12,9 +12,18 @@ def daily_dish():
     
 
     featured_dishes = get_featured_dishes()
+
+    friend_reviews = get_friend_reviews(user_id, 10)
     recommended_dishes = get_daily_dishes(user_id, 10)
 
-    return render_template('dailyDish.html', featured_dishes=featured_dishes, recommended_dishes=recommended_dishes)
+    daily_dish_items = []
+    for i in range(max(len(friend_reviews), len(recommended_dishes))):
+        if i < len(recommended_dishes):
+            daily_dish_items.append({"type": "dish", "data": recommended_dishes[i]})
+        if i < len(friend_reviews):
+            daily_dish_items.append({"type": "review", "data": friend_reviews[i]})
+
+    return render_template('dailyDish.html', featured_dishes=featured_dishes, feed_items=daily_dish_items)
 
 @daily_dish_bp.route('/search')
 def search():

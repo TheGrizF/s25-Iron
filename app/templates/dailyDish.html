@@ -41,34 +41,83 @@
         <div class="side-column">
             <h2 class="section-title">Live Feed</h2>
             <section class="live-feed">
-                {% for dish in recommended_dishes %}
-                <div class="feed-item">
-                    <div class="feed-header">
-                        <span class="action">Recommended For You: {{ dish.match_score }}% match</span>
-                    </div>
-                    <div class="feed-content"> 
-                        <p>
-                            {{ dish.name }} @ 
-                            <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}">
-                                {{ dish.restaurant }}
-                            </a>
-                        </p>
-                        <img src="{{ url_for('static', filename=dish.image_path) }}" alt="{{ dish.name }}">
-                    </div>
-                    <div class="feed-content">
-                        <p>Your TasteBuddy {{ dish.buddy_name }}'s review</p>
-                        <img src="{{ url_for('static', filename=dish.buddy_icon) }}" alt="{{ dish.buddy_name }}">
-                        <p>{{ dish.review_content }}</p>
-                    </div>
-                    <div class="feed-footer">
-                        <span class="timestamp">{{ dish.time_stamp }}</span>
-                        <div class="feed-actions">
-                            <i class="far fa-star"></i>
-                            <i class="fas fa-share"></i>
-                            <i class="fas fa-ellipsis-h"></i>
+                {% for item in feed_items %}
+                    {% if item.type == 'dish' %}
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="action">Recommended For You: {{ item.data.match_score }}% match</span>
+                            </div>
+                            <div class="feed-content"> 
+                                <p>
+                                    {{ item.data.name }} @ 
+                                    <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}">
+                                        {{ item.data.restaurant }}
+                                </a>
+                                </p>
+                                <img src="{{ url_for('static', filename=item.data.image_path) }}" alt="{{ item.data.name }}">
+                            </div>
+                            <div class="feed-content">
+                                <p>Your TasteBuddy {{ item.data.buddy_name }}'s review</p>
+                                <img src="{{ url_for('static', filename=item.data.buddy_icon) }}" alt="{{ item.data.buddy_name }}" style="width: 75px; height: 75px">
+                                <div class="star-rating">
+                                    <span>Rated:</span>
+                                        {% set full = item.data.buddy_rating|int %}
+                                        {% set empty = 5 - full %}
+
+                                        {% for _ in range(full) %}
+                                            <i class = "fas fa-star"></i>
+                                        {% endfor %}
+                            
+                                        {% for _ in range(empty) %}
+                                            <i class = "far fa-star"></i>
+                                        {% endfor %}
+                                </div>
+                                <p>{{ item.data.review_content }}</p>
+                            </div>
+                            <div class="feed-footer">
+                                <span class="timestamp">{{ item.data.time_stamp }}</span>
+                                <div class="feed-actions">
+                                    <i class="far fa-star"></i>
+                                    <i class="fas fa-share"></i>
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    {% elif item.type == 'review' %}
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <span class="friend">Your friend {{ item.data.friend_name }} reviewed </span>
+                                <br>
+                                <span class="action">{{ item.data.dish_name }} @ 
+                                    <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}">
+                                        {{ item.data.restaurant_name }}
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="feed-content">
+                                <img src="{{ url_for('static', filename=item.data.friend_icon) }}" alt="{{ item.data.friend_name }}" style="width: 75px; height: 75px">
+                                    <div class="star-rating">
+                                        <span>Rated:</span>
+                                            {% set full = item.data.rating|int %}
+                                            {% set empty = 5 - full %}
+
+                                            {% for _ in range(full) %}
+                                                <i class = "fas fa-star"></i>
+                                            {% endfor %}
+                    
+                                            {% for _ in range(empty) %}
+                                                <i class = "far fa-star"></i>
+                                            {% endfor %}
+                                    </div>
+                                <p>{{ item.data.content }}</p>
+                            </div>
+                            <div class="feed-footer">
+                                <span class="timestamp">{{ item.data.time_stamp }}</span>
+
+                            </div>
+                        </div>
+                    {% endif %}
+
                 {% endfor %}
 
                 <div class="feed-item">
@@ -121,4 +170,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
 {% endblock %}

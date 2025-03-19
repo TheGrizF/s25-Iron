@@ -5,7 +5,7 @@ Keeps them organized so we can use them again if we need to.
 from sqlalchemy import func
 from database import db
 from database.models.taste_profiles import dishTasteProfile
-from database.models.user import cuisineUserJunction, user, user_allergen, user_restriction, tasteComparisons
+from database.models.user import cuisineUserJunction, user, user_allergen, user_restriction, tasteComparisons, friends
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import restaurant
@@ -63,6 +63,7 @@ def get_daily_dishes(user_id, limit=10):
             "buddy_icon": rev.user.icon_path,
             "review_content": rev.content,
             "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+            "rating": rev.rating,
         }
         for rev in reviews
     }
@@ -75,8 +76,10 @@ def get_daily_dishes(user_id, limit=10):
             "restaurant": dishes[id].menu_dishes[0].menu.restaurant.restaurant_name,
             "restaurant_id": dishes[id].menu_dishes[0].menu.restaurant.restaurant_id,
             "match_score": score,
+
             "buddy_name": buddy_reviews[id]["buddy_name"],
             "buddy_icon": buddy_reviews[id]["buddy_icon"],
+            "buddy_rating": buddy_reviews[id]["rating"],
             "review_content": buddy_reviews[id]["review_content"],
             "time_stamp": buddy_reviews[id]["time_stamp"]
         }
@@ -84,6 +87,62 @@ def get_daily_dishes(user_id, limit=10):
     ]
         
     return daily_dishes
+
+def get_friend_reviews(user_id, limit=5):
+    """
+    Gets a list of the recent reviews from the user's friends.
+    Dictionary return contains:
+    -friend_name: friends full name
+    -friend_icon: user icon of the friend
+    -dish_name: name of dish they reviewed
+    -dish_id: dish id to link to dish page
+    -retaurant_name: name of restaurant where dish is
+    -restaurant_id: to link to restaurant page
+    -content: the written review
+    -rating: the score the user gave
+    """
+    friend_ids = [
+        f[0] for f in db.session.query(friends.buddy_id)
+        .filter(friends.user_id == user_id)
+        .all()
+    ]
+    
+    # Early exit if user doesn't follow anyone
+    if not friend_ids:
+        return []
+    
+    # Reviews from friends in descending order
+    raw_reviews = (
+        db.session.query(review)
+        .filter(review.user_id.in_(friend_ids))
+        .order_by(review.created_at.desc())
+        .all()
+    )
+
+    # Filter 1 per friend, most recent    
+    remove_duplicates = {}
+    for rev in raw_reviews:
+        if rev.user_id not in remove_duplicates:
+            remove_duplicates[rev.user_id] = rev
+    
+    friend_reviews=[]
+    for rev in remove_duplicates.values():
+        friend_reviews.append({
+            "friend_id": rev.user_id,
+            "friend_name": f"{rev.user.first_name} {rev.user.last_name}",
+            "friend_icon": rev.user.icon_path,
+            "content": rev.content,
+            "rating": rev.rating,
+            "dish_id": rev.dish_id,
+            "dish_name": rev.dish.dish_name,
+            "restaurant_id": rev.dish.menu_dishes[0].menu.restaurant.restaurant_id,
+            "restaurant_name": rev.dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+        })
+    
+    return friend_reviews[:limit]
+
+
 
 """
 Method to determine a list of dishes with appropriate score
