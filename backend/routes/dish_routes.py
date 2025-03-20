@@ -16,7 +16,7 @@ def dishes():
 
     dishes = [
         get_dish_info(d[0])
-        for d in dish_recommendations:
+        for d in dish_recommendations
     ]
 
     return render_template("dishes.html", dishes = dishes)
