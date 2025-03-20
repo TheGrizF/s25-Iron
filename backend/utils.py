@@ -5,22 +5,183 @@ Keeps them organized so we can use them again if we need to.
 from sqlalchemy import func
 from database import db
 from database.models.taste_profiles import dishTasteProfile
-from database.models.user import cuisineUserJunction, user, user_allergen, user_restriction, tasteComparisons
+from database.models.user import cuisineUserJunction, savedDishes, user, user_allergen, user_restriction, tasteComparisons, friends
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import restaurant
 
+# Get Featured dishes from restaurants to display in carosel - sort by rating
+# top 10?
+def get_featured_dishes():
+    
+    featured = (
+        db.session.query(dish)
+        .filter(dish.featured.is_(True))
+        .all()
+    )
+    
+    featured_dish_info = [
+        {
+            "dish_id": dish.dish_id,
+            "name": dish.dish_name,
+            "image": dish.image_path,
+            "restaurant": dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": dish.menu_dishes[0].menu.restaurant.restaurant_id,
+        }
+        for dish in featured
+    ]
+    
+    return featured_dish_info
 
-"""
-Method to determine a list of dishes with appropriate score
-:param user_id: user_id to get curated list of dishes to try
-:return scored_matches: list of tuples containing (dish_id, tastebuddy_id, dish_score)
-    dish_id: id of the dish to recommend to user
-    bud_id: user_id of the taste match profile that reviewed dish
-    dish_score: % score based on average rating, taste buddy score, and cuisine match, 
-"""
+def get_daily_dishes(user_id, limit=10):
+    """
+    Get dishes with scores where the score didn't come from user reviews
+    should be dishes user hasn't tried yet
+    """
+
+    recommended = get_dish_recommendations(user_id)
+    
+    new_dishes = [dish for dish in recommended if dish[1] != user_id][:limit]
+
+    dish_ids = [dish[0] for dish in new_dishes]
+    dishes = {
+        this_dish.dish_id: this_dish 
+        for this_dish in db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()
+    }
+
+    reviews = (
+        db.session.query(review)
+        .filter(review.dish_id.in_(dishes.keys()), review.user_id != user_id)
+        .order_by(review.created_at.desc())
+        .distinct(review.dish_id)
+        .all()
+    )
+
+    buddy_reviews = {
+        rev.dish_id: {
+            "buddy_name": f"{rev.user.first_name} {rev.user.last_name}",
+            "buddy_icon": rev.user.icon_path,
+            "review_content": rev.content,
+            "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+            "rating": rev.rating,
+        }
+        for rev in reviews
+    }
+    
+    daily_dishes = [
+        {
+            "dish_id": id,
+            "name": dishes[id].dish_name,
+            "image_path": dishes[id].image_path,
+            "restaurant": dishes[id].menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": dishes[id].menu_dishes[0].menu.restaurant.restaurant_id,
+            "match_score": score,
+
+            "buddy_name": buddy_reviews[id]["buddy_name"],
+            "buddy_icon": buddy_reviews[id]["buddy_icon"],
+            "buddy_rating": buddy_reviews[id]["rating"],
+            "review_content": buddy_reviews[id]["review_content"],
+            "time_stamp": buddy_reviews[id]["time_stamp"]
+        }
+        for id, _, score in new_dishes if id in dishes
+    ]
+        
+    return daily_dishes
+
+def get_friend_reviews(user_id, limit=5):
+    """
+    Gets a list of the recent reviews from the user's friends.
+    Dictionary return contains:
+    -friend_name: friends full name
+    -friend_icon: user icon of the friend
+    -dish_name: name of dish they reviewed
+    -dish_id: dish id to link to dish page
+    -retaurant_name: name of restaurant where dish is
+    -restaurant_id: to link to restaurant page
+    -content: the written review
+    -rating: the score the user gave
+    """
+    friend_ids = [
+        f[0] for f in db.session.query(friends.buddy_id)
+        .filter(friends.user_id == user_id)
+        .all()
+    ]
+    
+    # Early exit if user doesn't follow anyone
+    if not friend_ids:
+        return []
+    
+    # Reviews from friends in descending order
+    raw_reviews = (
+        db.session.query(review)
+        .filter(review.user_id.in_(friend_ids))
+        .order_by(review.created_at.desc())
+        .all()
+    )
+
+    # Filter 1 per friend, most recent    
+    remove_duplicates = {}
+    for rev in raw_reviews:
+        if rev.user_id not in remove_duplicates:
+            remove_duplicates[rev.user_id] = rev
+    
+    friend_reviews=[]
+    for rev in remove_duplicates.values():
+        friend_reviews.append({
+            "friend_id": rev.user_id,
+            "friend_name": f"{rev.user.first_name} {rev.user.last_name}",
+            "friend_icon": rev.user.icon_path,
+            "content": rev.content,
+            "rating": rev.rating,
+            "dish_id": rev.dish_id,
+            "dish_name": rev.dish.dish_name,
+            "restaurant_id": rev.dish.menu_dishes[0].menu.restaurant.restaurant_id,
+            "restaurant_name": rev.dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+        })
+    
+    return friend_reviews[:limit]
+
+def get_saved_dishes(user_id):
+    """
+    Compiles a list of the users saved dishes with oldest first
+    saved in dictionary containing:
+        -dish_name: name of dish they reviewed
+        -dish_id: dish id to link to dish page
+        -image: path to dish image
+        -retaurant_name: name of restaurant where dish is
+        -restaurant_id: to link to restaurant page
+        -date_saved: date user saved the dish
+    """
+    user_info = db.session.query(user).get(user_id)
+
+    if not user_info:
+        return []
+    
+    saved_dishes = []
+    for saved in user_info.saved_dishes:
+        user_dish = saved.dish
+
+        saved_dishes.append({
+            "dish_id": user_dish.dish_id,
+            "dish_name": user_dish.dish_name,
+            "image": user_dish.image_path,
+            "restaurant_name": user_dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": user_dish.menu_dishes[0].menu.restaurant.restaurant_id,
+            "date_saved": saved.date_saved.strftime("%B %d, %Y"),
+        })
+    
+    return saved_dishes
+
 def get_dish_recommendations(user_id):
-
+    """
+    Method to determine a list of dishes with appropriate score
+    :param user_id: user_id to get curated list of dishes to try
+    :return scored_matches: list of tuples containing (dish_id, tastebuddy_id, dish_score)
+        dish_id: id of the dish to recommend to user
+        bud_id: user_id of the taste match profile that reviewed dish
+        dish_score: % score based on average rating, taste buddy score, and cuisine match, 
+    """
     # Get user info from db
     user_tp = db.session.query(user).filter(user.user_id == user_id).first()
     user_allergy = db.session.query(user_allergen.allergen).filter(user_allergen.user_id == user_id).all()
@@ -59,6 +220,7 @@ def get_dish_recommendations(user_id):
             if dish_id not in unique_dishes or bud_review > unique_dishes[dish_id][2]:
                 unique_dishes[dish_id] = (bud_id, comparison_num, bud_review)
 
+    # include users own reviews!
     user_reviews = (
         db.session.query(review.dish_id, review.rating)
         .filter(review.user_id == user_id)
@@ -136,7 +298,6 @@ get_restaurant_dish_scores - Returns a list of the dishes with scores for the us
 get_restaurant_info - Returns a list of the information on the restaurant, including a rating for the user based on their dish scores
 get_all_restaurant_info - calls get_restaurant_info on each restaurant id to get a full list of all the restaurants with their info
 """
-
 def get_restaurant_dish_scores(user_id, restaurant_id):
     
     # Precondition check - user exists

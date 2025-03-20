@@ -22,8 +22,6 @@ def restaurants():
     exclude_words = {'the', 'a', 'and'}
     searched_keywords = [word for word in search.split() if word not in exclude_words]
 
-
-    
     # Sorting and filtering arguments
     filtered_restaurants = restaurant_info
 

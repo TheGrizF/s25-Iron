@@ -98,7 +98,6 @@ def searchUser():
     flash("No user found")
     return redirect(url_for('daily_dish.TasteBuds'))
 
-
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])
 def addFriend(user_id):
     current_user_id = session.get('user_id')  # Renamed to avoid conflict

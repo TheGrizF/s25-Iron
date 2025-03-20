@@ -13,11 +13,19 @@
                  alt="It's You!"
                  style="width: 150px; height: 150px;">
         {% else %}
-            <img src="{{ url_for('static', filename='images\profile_icons\default1.png') }}" 
+            <img src="{{ url_for('static', filename='images/profile_icons/default1.png') }}" 
                  alt="Default Icon"
                  style="width: 150px; height: 150px">
         {% endif %}
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div><br>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <div class="intro-section">
         <p>Your email: {{ user.email }}</p>
