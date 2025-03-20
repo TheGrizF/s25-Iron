@@ -1,0 +1,321 @@
+/* Mobile-first styles for dailyDish page */
+:root {
+    --content-max-width: 600px;
+    --content-padding: 16px;
+    --bottom-bar-height: 70px;  /* Height of the bottom UI bar */
+}
+
+body {
+    background-color: var(--background);
+}
+
+.home-container {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--content-padding);
+    padding-bottom: calc(var(--bottom-bar-height) + var(--content-padding));  /* Add extra padding for the bottom bar */
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-sizing: border-box;
+    min-height: 100vh;  /* Ensure container takes full viewport height */
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 24px;
+    color: var(--slate-dark);
+    margin: 0 0 15px;
+    text-align: center;
+    width: 100%;
+    font-weight: normal;
+}
+
+.section-subtitle {
+    font-size: 20px;
+    color: var(--slate-dark);
+    margin: 0;
+    font-weight: normal;
+    text-align: center;
+}
+
+.section-description {
+    color: var(--slate-light);
+    margin: 5px 0 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Featured Section */
+.featured-section {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+/* Carousel Styles */
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    margin: 15px auto;
+    background: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 500px;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    width: 100%;
+}
+
+.carousel-item {
+    min-width: 100%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.carousel-caption a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.carousel-caption a:hover {
+    color: #ffd700;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+}
+
+.carousel-button:hover {
+    background: var(--burgundy-main);
+    text-shadow: none;
+}
+
+.carousel-button.prev {
+    left: 8px;
+}
+
+.carousel-button.next {
+    right: 8px;
+}
+
+/* Carousel Dots */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-dot.active {
+    background-color: var(--burgundy-main);
+}
+
+/* Live Feed Styles */
+.live-feed {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.feed-item {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.feed-header {
+    margin-bottom: 12px;
+}
+
+.username {
+    color: var(--burgundy-main);
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.action {
+    color: var(--slate-light);
+    font-size: 14px;
+}
+
+.feed-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.feed-text {
+    flex: 1;
+}
+
+.feed-content img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.profile-pic {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+}
+
+.feed-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    color: var(--slate-light);
+    font-size: 13px;
+}
+
+.feed-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.feed-actions i {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.timestamp {
+    font-size: 12px;
+}
+
+.private-content {
+    color: var(--slate-light);
+    font-style: italic;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Star Rating */
+.star-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 8px 0;
+}
+
+.star-rating span {
+    font-size: 14px;
+    color: var(--slate-light);
+}
+
+.star-rating i {
+    color: #ffd700;
+    font-size: 14px;
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+    .home-container {
+        padding: 24px;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+
+    .section-subtitle {
+        font-size: 24px;
+    }
+
+    .carousel-item img {
+        height: 220px;
+    }
+
+    .carousel-caption {
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    .feed-content {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .feed-content img:not(.profile-pic) {
+        width: 120px;
+        height: 120px;
+        flex-shrink: 0;
+    }
+
+    .profile-pic {
+        width: 60px !important;
+        height: 60px !important;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+    .carousel-item img {
+        height: 260px;
+    }
+
+    .feed-content img:not(.profile-pic) {
+        width: 150px;
+        height: 150px;
+    }
+
+    .profile-pic {
+        width: 70px !important;
+        height: 70px !important;
+    }
+} 
