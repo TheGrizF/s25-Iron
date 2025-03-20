@@ -2,6 +2,7 @@
 Use this to create all the helper functions for the routes.
 Keeps them organized so we can use them again if we need to.
 """
+from flask import session
 from sqlalchemy import func
 from database import db
 from database.models.taste_profiles import dishTasteProfile
@@ -9,6 +10,85 @@ from database.models.user import cuisineUserJunction, savedDishes, user, user_al
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import restaurant
+
+def get_dish_info(dish_id, include_reviews=False):
+    """
+    Gets all the information for a dish based on its dish_id.
+    optional 'include_reviews' will additionally include a list of review information
+
+    dish_id - dish id
+    dish_name - Name of dish
+    image - path to image
+    average_rating - average rating based on all reviews
+    restaurant_id - restaurant id
+    restaurant_name - name of restaurant
+    description - dish description
+    price - price per dish (usd)
+    allergens - list of dish allergens
+    restrictions - list of diets that this dish is acceptable for
+    available - Boolean, false if dish is 86'd
+
+    when include_reviews is true, dictionary will include:
+    reviews: a list of reviews for the dish including:
+    user_name - user name as string First Last
+    user_icon - path to user image
+    content - review text
+    rating - rating the user gave
+    timestamp - date review was left
+    """
+
+    dish_info = db.session.query(dish).get(dish_id)
+    if not dish_info:
+        return None
+    
+    # Calculate Average Rating
+    average_rating = (
+        db.session.query(db.func.avg(review.rating))
+        .filter(review.dish_id == dish_id)
+        .scalar()
+    ) or 0
+
+    # Create allergen and restriction lists
+    allergens = [a.allergen.lower() for a in dish_info.dish_allergens]
+    restrictions = [r.restriction.lower() for r in dish_info.dish_restrictions]
+
+    review_list = []
+    if include_reviews:
+        reviews = (
+            db.session.query(review)
+            .filter(review.dish_id == dish_id, review.user_id != session.get("user_id"))
+            .order_by(review.created_at.desc())
+            .all()
+        )
+        review_list = [
+            {
+                "user_name": f"{rev.user.first_name} {rev.user.last_name}",
+                "user_icon": rev.user.icon_path,
+                "content": rev.content,
+                "rating": rev.rating,
+                "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+            }
+            for rev in reviews
+        ]
+
+    dish_scores = session.get("dish_scores", {})
+
+    return {
+        "dish_id": dish_info.dish_id,
+        "dish_name": dish_info.dish_name,
+        "image": dish_info.image_path,
+        "match_score": dish_scores.get(dish_id, 42),
+        "average_rating": round(average_rating, 1),
+        "restaurant_id": dish_info.menu_dishes[0].menu.restaurant.restaurant_id,
+        "restaurant_name": dish_info.menu_dishes[0].menu.restaurant.restaurant_name,
+        "description": dish_info.description,
+        "price": dish_info.price,
+        "allergens": allergens,
+        "restrictions": restrictions,
+        "available": dish_info.available,
+        "reviews": review_list,
+        
+    }
 
 # Get Featured dishes from restaurants to display in carosel - sort by rating
 # top 10?
