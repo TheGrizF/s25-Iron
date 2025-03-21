@@ -15,12 +15,55 @@ def dishes():
     dish_scores = {d[0]: d[2] for d in dish_recommendations}
     session["dish_scores"] = dish_scores
 
+    # to load saved dishes!
+    saved_dish_ids = {
+        saved.dish_id for saved in savedDishes.query.filter_by(user_id=user_id).all()
+    }
+
     dishes = [
-        get_dish_info(d[0])
+        get_dish_info(d[0]) | {"is_saved": d[0] in saved_dish_ids} # also added
         for d in dish_recommendations
     ]
 
-    return render_template("dishes.html", dishes = dishes)
+    sort_by = request.args.get('sort', 'match_score') #default is match score
+    filter_by = request.args.get('filter','all')
+
+    # Searching logic
+    search = request.args.get('search', "").lower()
+    exclude_words = {'the', 'a', 'and'}
+    searched_keywords = [word for word in search.split() if word not in exclude_words]
+
+    # Sorting and filtering arguments
+    filtered_dishes = dishes
+
+    if filter_by != 'all':
+        if filter_by == "four_stars":
+            filtered_dishes = [d for d in dishes if 4.0 <= d["average_rating"] <= 5.0]
+        elif filter_by == "three_stars":
+            filtered_dishes = [d for d in dishes if 3.0 <= d["average_rating"] < 4.0]
+        elif filter_by == "two_stars":
+            filtered_dishes = [d for d in dishes if 2.0 <= d["average_rating"] < 3.0]
+        elif filter_by == "one_star":
+            filtered_dishes = [d for d in dishes if 1.0 <= d["average_rating"] < 2.0]
+        elif filter_by == "saved":
+            saved_dish_ids = {d.dish_id for d in savedDishes.query.filter_by(user_id=user_id).all()}
+            filtered_dishes = [d for d in dishes if d["dish_id"] in saved_dish_ids]
+
+    sorted_dishes = sort_dishes(filtered_dishes, sort_by)
+
+    # Search logic continued to remain within filtered constraints
+    if searched_keywords:
+        sorted_dishes = [
+            d for d in filtered_dishes if any(
+                keyword in d['dish_name'].lower() or
+                keyword in d['restaurant_name'].lower() or
+                keyword in d['description'].lower()          
+                for keyword in searched_keywords
+            )
+        ]   
+
+
+    return render_template("dishes.html", dishes = sorted_dishes)
 
 @dish_bp.route("/dishes/<int:dish_id>")
 def dish_detail(dish_id):
@@ -53,3 +96,15 @@ def toggle_save(dish_id):
 
     db.session.commit()
     return jsonify({"success": True, "saved": saved})
+
+def sort_dishes(filtered_dishes, sort_by="match_score"):
+    if sort_by == "match_score":
+        return sorted(filtered_dishes, key=lambda d: d["match_score"], reverse=True)
+    elif sort_by == "name":
+        return sorted(filtered_dishes, key=lambda d: d["dish_name"].lower()) 
+    elif sort_by == "Price":
+        return sorted(filtered_dishes, key=lambda d: float(d["price"]))
+    elif sort_by == "Restaurant":
+        return sorted(filtered_dishes, key=lambda d : d["restaurant_name"])
+    else:
+        return filtered_dishes 

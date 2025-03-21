@@ -34,6 +34,8 @@
                     <option value="" {% if request.args.get('sort') == None or request.args.get('sort') == '' %} selected {% endif %}>Sort by:</option>
                     <option value="match_score" {% if request.args.get('sort') == 'match_score' %} selected{% endif %}> Match score </option>
                     <option value="name" {% if request.args.get('sort') == 'name' %} selected{% endif %}>Name</option>
+                    <option value="price" {% if request.args.get('sort')== 'price' %} selected{% endif %}>Price</option>
+                    <option value="restaurant_name" {%if request.args.get('sort') == 'restaurant_name' %} selected {% endif %}>Restaurant</option>
                 </select>
 
                 {% if request.args.get('filter') %}
@@ -45,10 +47,11 @@
             <form id="filter-form" method="get" action="{{ url_for('dish.dishes') }}">
                 <select class="filter-dropdown" id="filter-by" name="filter" onchange="this.form.submit()">
                     <option value="all" {% if request.args.get('filter') == 'all' %} selected{% endif %}>All</option>
-                    <option value="American" {% if request.args.get('filter') == 'American' %} selected{% endif %}>American</option>
-                    <option value="Asian" {% if request.args.get('filter') == 'Asian' %} selected{% endif %}>Asian</option>    
-                    <option value="Mediterranean" {% if request.args.get('filter') == 'Mediterranean' %} selected{% endif %}>Mediterranean</option>
-                    <option value="Mexican" {% if request.args.get('filter') == 'Mexican' %} selected{% endif %}>Mexican</option>
+                    <option value="saved" {% if request.args.get('filter') == 'saved' %} selected{% endif %}>Saved Dishes</option>
+                    <option value="four_stars" {% if request.args.get('filter') == 'four_stars' %} selected{% endif %}>4+ stars</option>
+                    <option value="three_stars" {% if request.args.get('filter') == 'three_stars' %} selected{% endif %}>3 stars</option>    
+                    <option value="two_stars" {% if request.args.get('filter') == 'two_stars' %} selected{% endif %}>2 stars</option>
+                    <option value="one_star" {% if request.args.get('filter') == 'one_star' %} selected{% endif %}>1 star</option>
                 </select>
                 
                 {% if request.args.get('sort') %}
