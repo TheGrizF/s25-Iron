@@ -35,7 +35,7 @@ def get_dish_info(dish_id, include_reviews=False):
     user_icon - path to user image
     content - review text
     rating - rating the user gave
-    timestamp - date review was left
+    time_stamp - date review was left
     """
 
     dish_info = db.session.query(dish).get(dish_id)
