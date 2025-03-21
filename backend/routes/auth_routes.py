@@ -59,6 +59,7 @@ def logout():
     flash("You have been logged out.", "success")
     return redirect(url_for('auth.index'))
 
+
 @auth_bp.route('/TasteBuds', methods=['GET', 'POST'])
 def searchUser():
     userName = request.form.get('userName', "").strip()
@@ -97,7 +98,7 @@ def searchUser():
 
     flash("No user found")
     return redirect(url_for('daily_dish.TasteBuds'))
-
+ 
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])
 def addFriend(user_id):
     current_user_id = session.get('user_id')  # Renamed to avoid conflict
@@ -118,6 +119,7 @@ def addFriend(user_id):
         flash("Buddy added", "success")
 
     return redirect(url_for('profile.viewUserSearchResults', user_id=user_id))
+
 
 @auth_bp.route('/database')
 def database():
