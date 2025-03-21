@@ -8,6 +8,7 @@
 
 {% block content %}
 <div class="dishes-container">
+    <script src ="{{ url_for('static', filename='js/toggle_save.js')}}"></script>
     
     <div class="search-header">
         <h1>Dishes</h1>  
@@ -62,21 +63,29 @@
     <div class="dishes-list">
         {% if dishes %}
             {% for dish in dishes %}
-            <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">
-                <div class ="dish-image-container">
-                    <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.dish_name}}">
-                    <span class="match">{{ dish.match_score }}% match</span>
-                </div>
+            <div class="dish-card">
+                <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-image-container">
+                    <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.dish_name }}">
+                </a>
                 <div class="dish-info">
-                    <h2>{{ dish.dish_name }} </h2>
-                    <!--p class="hours">{{ dish.hours | safe }}</p-->
+                    <h2>{{ dish.dish_name }}</h2>
+                    <span class="match">{{ dish.match_score }}% match</span>
                     <p class="details">{{ dish.description }}</p>
-                    <div class = "dish-info-price">
-                        <p class="price">{{ price }} </p>
-                    </div>
-                   
+                    
+                    <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="see-details">
+                        See Details
+                    </a>
+                    <p class="price">$ {{ dish.price }}</p>
                 </div>
-            </a>
+                <div class="dish-save" onclick ="toggleSave(this, {{dish.dish_id}})">
+                    <!----find appropriate save icon, if ticked, dark, not ticked light-->
+                    {% if dish.is_saved %}
+                        <i class="fas fa-bookmark saved"></i>
+                    {% else %}
+                    <i class="far fa-bookmark not-saved"></i>
+                    {% endif %}              
+                </div>
+            </div>
             {% endfor %}
         <!-- Troubleshooting the database -->
         {% else %}
@@ -87,3 +96,4 @@
     </div>
 </div>
 {% endblock %} 
+

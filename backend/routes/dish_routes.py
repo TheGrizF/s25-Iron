@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, request, jsonify
 from database import db
 from backend.utils import get_dish_info, get_dish_recommendations
+from database.models.user import savedDishes
 
 dish_bp = Blueprint('dish', __name__)
 
@@ -31,3 +32,24 @@ def dish_detail(dish_id):
     dish_info = get_dish_info(dish_id, include_reviews=True)
 
     return render_template("dish_detail.html", dish = dish_info )
+
+@dish_bp.route("/toggle-save/<int:dish_id>", methods=["POST"])
+def toggle_save(dish_id):
+    user_id = session.get("user_id")
+     
+    if not user_id:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+
+    
+    saved_dish = savedDishes.query.filter_by(user_id=user_id, dish_id=dish_id).first()
+
+    if saved_dish:
+        db.session.delete(saved_dish)
+        saved = False
+    else:
+        new_save = savedDishes(user_id=user_id, dish_id=dish_id)
+        db.session.add(new_save)
+        saved = True
+
+    db.session.commit()
+    return jsonify({"success": True, "saved": saved})
