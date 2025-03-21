@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ dish.dish_name }} @ {{ dish.restaurant_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/restaurant_detail.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="restaurant-info">
+        <img src="{{ url_for('static', filename=dish.image) }}" alt = "{{ dish.name }}"  style="width: 80%">
+        <h2>{{ dish.dish_name }} @ {{ dish.restaurant_name }}</h2>
+        <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}">
+                View Restaurant
+        </a>
+    </div>
+
+    <section class="recommendations">
+        <h2>Dish Info:</h2>
+        Suggested for you: {{ dish.match_score }}%
+        <div class="star-rating">
+            <span>Average Rating:</span>
+            {% set full = dish.average_rating|int %}
+            {% set half = dish.average_rating - full %}
+            {% if half >= 0.5 %}
+                {% set half = 1 %}
+            {% else %}
+                {% set half = 0 %}
+            {% endif %}
+            {% set empty = 5 - full - half %}
+
+            {% for _ in range(full) %}
+                <i class = "fas fa-star"></i>
+            {% endfor %}
+
+            {% for _ in range(half) %}
+                <i class = "fas fa-star-half-alt"></i>
+            {% endfor %}
+
+            {% for _ in range(empty) %}
+                <i class = "far fa-star"></i>
+            {% endfor %}
+            {{ dish.average_rating }}
+        </div> 
+        Dish Description: {{ dish.description }} <br>
+        Cost: ${{ dish.price }} <br>
+        Allergens: 
+        {% for a in dish.allergens %}
+            {{ a }}
+        {% endfor %}
+        <br>
+        Restrictions: 
+        {% for r in dish.restrictions %}
+            {{ r }}
+        {% endfor %}
+        <br>
+        Currently Available: {{ dish.available }}
+    </section>
+    <section class = "reviews">
+        <h2>Reviews</h2>
+        {% for rev in dish.reviews %}
+            <div class="feed-item">
+                <div class="feed-header">
+                    <span class="friend">{{ rev.user_name }} on {{ rev.time_stamp }}</span>
+                </div>
+                <div class="feed-content">
+                    <img src="{{ url_for('static', filename=rev.user_icon) }}" alt="{{ rev.user_name }}" style="width: 75px; height: 75px">
+                        <div class="star-rating">
+                            <span>Rated:</span>
+                            {% set full = rev.rating|int %}
+                            {% set empty = 5 - full %}
+
+                            {% for _ in range(full) %}
+                                <i class = "fas fa-star"></i>
+                            {% endfor %}
+
+                            {% for _ in range(empty) %}
+                                <i class = "far fa-star"></i>
+                            {% endfor %}
+                        </div>
+                    <p>{{ rev.content }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </section> 
+    <br><br><br><br>  
+</div>
+{% endblock %} 

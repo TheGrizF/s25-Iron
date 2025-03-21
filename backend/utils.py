@@ -19,6 +19,7 @@ def get_dish_info(dish_id, include_reviews=False):
     dish_id - dish id
     dish_name - Name of dish
     image - path to image
+    match_score - taste match score for current user
     average_rating - average rating based on all reviews
     restaurant_id - restaurant id
     restaurant_name - name of restaurant
@@ -34,7 +35,7 @@ def get_dish_info(dish_id, include_reviews=False):
     user_icon - path to user image
     content - review text
     rating - rating the user gave
-    timestamp - date review was left
+    time_stamp - date review was left
     """
 
     dish_info = db.session.query(dish).get(dish_id)
