@@ -19,12 +19,10 @@
             <div class="carousel">
                 {% for dish in featured_dishes %}
                 <div class="carousel-item">
-                    <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.name }}">
-                    <div class="carousel-caption">{{ dish.name }} @ 
-                        <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}">
-                            {{ dish.restaurant }}
-                        </a>
-                    </div>
+                    <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-image-container">
+                        <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.name }}">
+                        <div class="carousel-caption">{{ dish.name }} @  {{ dish.restaurant }}</div>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -52,7 +50,9 @@
                     </div>
                     <div class="feed-content"> 
                         <p>
-                            {{ item.data.name }} @ 
+                            <a href="{{ url_for('dish.dish_detail', dish_id=item.data.dish_id) }}">
+                                {{ item.data.name }}
+                            </a> @ 
                             <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}">
                                 {{ item.data.restaurant }}
                         </a>
@@ -124,16 +124,15 @@
 
             <!-- Saved card for dishes from saved list -->
             {% elif item.type == 'saved' %}
+                <a href="{{ url_for('dish.dish_detail', dish_id=item.data.dish_id) }}" class="dish-image-container">
+               
                 <div class="feed-item">
                     <div class="feed-header">
                         <span class="action">From Your Saved Dishes</span>
                     </div>
                     <div class="feed-content"> 
                         <p>
-                            {{ item.data.dish_name }} @ 
-                            <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}">
-                                {{ item.data.restaurant_name }}
-                        </a>
+                            {{ item.data.dish_name }} @ {{ item.data.restaurant_name }}
                         </p>
                         <img src="{{ url_for('static', filename=item.data.image) }}" alt="{{ item.data.dish_name }}">
                     </div>
@@ -141,7 +140,7 @@
                         <span class="timestamp">Saved on {{ item.data.date_saved }}</span>
                     </div>
                 </div>
-
+            </a>
             {% endif %}
 
         {% endfor %}

@@ -9,8 +9,10 @@
 
 {% block content %}
 
-
     <div class="restaurant-info">
+        <button class="back-button" onclick="window.history.back()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
         <img src="{{ url_for('static', filename=dish.image) }}" alt = "{{ dish.name }}"  style="width: 80%">
         <h2>{{ dish.dish_name }} @ {{ dish.restaurant_name }}</h2>
         <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}">

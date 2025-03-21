@@ -22,14 +22,17 @@
             
             <!--for loop for the dishes, but only first two here-->
             {% for dish in dishes %}
-            <div class="dish-card">
-                <img src="{{ url_for('static', filename=dish.image_url) }}" alt="{{ dish.name }}">
-                <div class="dish-info">
-                    <h3>{{ dish.name }}</h3>
-                    <p class="dish-match">{{ dish.match_percentage }}% </span>
-                    <p class="dish-price">{{ dish. price }} USD/Each </p>
+            <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-image-container">
+            
+                <div class="dish-card">
+                    <img src="{{ url_for('static', filename=dish.image_url) }}" alt="{{ dish.name }}">
+                    <div class="dish-info">
+                        <h3>{{ dish.name }}</h3>
+                        <p class="dish-match">{{ dish.match_percentage }}% </span>
+                        <p class="dish-price">{{ dish. price }} USD/Each </p>
+                    </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </section>
