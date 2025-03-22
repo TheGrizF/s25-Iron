@@ -4,7 +4,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dish_detail.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<!--link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"-->
 {% endblock %}
 
 {% block content %}
@@ -82,7 +82,7 @@
                 {{ dish.average_rating }} 
             </div> </p>
             <p>{{ dish.description }}</p>
-            <p>Cost: ${{ dish.price }} </p>
+            <p class="cost">${{ dish.price }} Each </p>
             
             <!--p Restrictions: 
             {% for r in dish.restrictions %}
@@ -94,28 +94,30 @@
     </div>
 
     <section class = "reviews">
-        <h2>What taste buddies say:</h2>
+        <h2>What taste buddies say:</h2><br>
         {% for rev in dish.reviews %}
             <div class="feed-item">
-                <div class="feed-header">
-                    <span class="friend">{{ rev.user_name }} on {{ rev.time_stamp }}</span>
-                </div>
-                <div class="feed-content">
+                <span class="friend">{{ rev.user_name }}</span><br>
+                <div class="feed-content">   
                     <img src="{{ url_for('static', filename=rev.user_icon) }}" alt="{{ rev.user_name }}" style="width: 75px; height: 75px">
-                        <div class="star-rating">
-                            <span>Rated:</span>
-                            {% set full = rev.rating|int %}
-                            {% set empty = 5 - full %}
+            
+                    <div class="review-bubble">                
+                            <span>Rated:
+                            <div class="star-rating">
+                                {% set full = rev.rating|int %}
+                                {% set empty = 5 - full %}
 
-                            {% for _ in range(full) %}
-                                <i class = "fas fa-star"></i>
-                            {% endfor %}
+                                {% for _ in range(full) %}
+                                    <i class = "fas fa-star"></i>
+                                {% endfor %}
 
-                            {% for _ in range(empty) %}
-                                <i class = "far fa-star"></i>
-                            {% endfor %}                    
-                        </div>
-                    <p>{{ rev.content }}</p>
+                                {% for _ in range(empty) %}
+                                    <i class = "far fa-star"></i>
+                                {% endfor %}                    
+                            </div></span>
+                        <p>{{ rev.content }}</p>
+                        <p>{{ rev.time_stamp }}</p>
+                    </div>
                 </div>
             </div>
         {% endfor %}

@@ -1,3 +1,7 @@
+body {
+    background-color: var(--white);
+}
+
 .dish-detail {
     display:flex;
     flex-direction:column;
@@ -74,9 +78,14 @@
     padding: 20px;
 }
 
-.description {
+.cost {
+    color: #858585;
+}
+
+.description p{
     overflow:hidden;
     text-overflow:ellipsis;
+    color:#161616;
 }
 
 .dish-title {
@@ -164,6 +173,7 @@
     cursor: pointer;
 } 
 
+/*******Footer stuff including the save stuff *****/
 .dish-footer {
     display: flex;
     flex-direction: row;
@@ -180,7 +190,7 @@
 .contact-details {
     color: #858585;
     text-align: left;
-    flex: 1; /* This allows it to take available space */
+    flex: 1; 
     text-decoration: none;
 }
 
@@ -193,7 +203,7 @@
     height: 1px;
     background-color: #858585;
     margin: 10px 0;
-    width: 90%; /* Doesn't extend to the edges */
+    width: 90%; 
     margin-left: auto;
     margin-right: auto;
 }
@@ -260,7 +270,56 @@
     margin-bottom:3px;
 }
 
-.stars {
+.star-rating {
     color: rgba(255, 196, 0, 0.822);
 }
 
+/****************review stuff**************/
+.reviews {
+    margin-left: 15px;
+}
+.review-bubble {
+    position: relative;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 15px;
+    flex-grow: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-right: 15px;
+}
+
+.review-bubble:before {
+    content: "";
+    position: absolute;
+    top: 20px; /* Adjust to vertically position the arrow */
+    left: -10px; /* Position arrow on left side */
+    border-width: 10px 10px 10px 0; /* Create triangle shape */
+    border-style: solid;
+    border-color: transparent #f5f5f5 transparent transparent; /* Make only right border visible */
+}
+
+.feed-content {
+    display: flex;
+    align-items: flex-start;
+    flex-direction:row;
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+.feed-content img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    margin-right: 20px; /* Space between image and bubble */
+    z-index: 1;
+}
+.feed-item {
+    margin-bottom: 25px;
+    font-size: 10px;
+    margin-left: 30px;
+}
+
+.friend {
+    color: var(--burgundy-main);
+    font-weight: bold;
+}
