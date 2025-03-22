@@ -1,3 +1,7 @@
+body {
+    padding-bottom: 70px; 
+  }
+
 .restaurants-container {
     /*padding: 20px;*/
     padding: 10px 20px 20px 20px;
@@ -91,7 +95,7 @@
     display: flex;
     background: var(--white);
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     padding: 15px;
     text-decoration: none;
     color: inherit;
@@ -109,7 +113,7 @@
 .restaurant-image-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
 }
 
 .restaurant-info {
