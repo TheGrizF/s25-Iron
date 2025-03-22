@@ -32,10 +32,8 @@ extra_css %}
           name="userName"
           id="userName"
           placeholder="Find a buddy"
-        >
-        <button
-          type="submit"
-          class="search-btn">Search</button>
+        />
+        <button type="submit" class="search-btn">Search</button>
       </div>
     </form>
   </div>
@@ -53,30 +51,29 @@ extra_css %}
         </select>
       </div>
 
-      <div class="filter-section">
-        <div class="filter-row">
-          <select class="filter-dropdown">
-            <option value="">Buddies</option>
-            <option value="friend1">Anthony Bourdain</option>
-            <option value="friend2">Gordon Ramsay</option>
-            <option value="friend3">Julia Child</option>
-            <option value="friend4">Kermit Frog</option>
-            <option value="friend5">Miss Piggy</option>
-            <option value="friend6">Fozzie Bear</option>
-            <option value="friend7">Swedish Chef</option>
-            <option value="friend8">Gonzo The Great</option>
-            <option value="friend9">Rizzo Rat</option>
-            <option value="friend10">Sam Eagle</option>
-            <option value="friend11">Bunsen Honeydew</option>
-            <option value="friend12">Red Fraggle</option>
-            <option value="friend13">Floyd Pepper</option>
-            <!-- Add more friends if needed-->
-          </select>
+      <form action="{{url_for('daily_dish.createGroup')}}" method="post">
+        <div class="filter-section">
+          <div class="filter-row">
+            <select class="filter-dropdown" name="selectedFriends" multiple>
+              <option value="">Buddies</option>
+              {% for friend in friendslist %}
+              <option value="{{friend.user_id}}">
+                {{ friend.first_name }} {{ friend.last_name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
-      </div>
-
-      <button type="submit">Find a Restaraunt for Active Group</button>
+        <h3>Active Group</h3>
+        <ul>
+          {% for friend in activeGroup %}
+          <li>{{ friend.first_name }} {{ friend.last_name }}</li>
+          {% endfor %}
+        </ul>
+        <button type="submit">Find a Restaraunt for Active Group</button>
+      </form>
     </div>
+
     {% endblock %}
   </div>
 </div>
