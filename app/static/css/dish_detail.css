@@ -212,16 +212,46 @@
     text-align: left;
 }
 
-.save-section {
+.dish-save {
     display: flex;
     flex-direction: column;
     align-items: center;
     color: gray;
     text-decoration-color: gray;
+    cursor:pointer;
+    width: 80px;
 }
 
-.save-section i {
+.dish-save i {
     font-size: 24px;
+}
+
+
+.dish-save i{
+    font-size: 24px;
+    flex-shrink:0;
+}
+
+.dish-save .saved {
+    color: var(--burgundy-main);
+}
+
+.dish-save .saved p{
+    color: var(--burgundy-main);
+}
+
+.dish-save .not-saved {
+    color: #858585;
+}
+
+.dish-save .not-saved:hover {
+    color: var(--burgundy-main);
+    
+}
+
+.dish-save:hover p {
+    color:var(--burgundy-main);
+    cursor:pointer;
 }
 
 .reviews h2{

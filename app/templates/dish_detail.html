@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block content %}
+<script src ="{{ url_for('static', filename='js/toggle_save.js')}}"></script>
+
 <div class ="dish-detail">
     <div class="header-images">
         <img src="{{ url_for('static', filename=dish.image) }}" alt = "{{ dish.name }}">
@@ -109,7 +111,7 @@
 
     
     <div class="horizontal-separator"></div>
-    <div class="dish-footer">           
+    <div class="dish-footer">         
         <a href = "{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}" class = "contact-details">
             <div class="contact-details">
                 <h3> {{ dish.restaurant_name }}</h3>
@@ -120,15 +122,15 @@
 
         <div class="vertical-separator"></div>
         
-        <div class="save-section">
+        <div class="dish-save" onclick ="toggleSave(this, {{dish.dish_id}})">
             {% if dish.is_saved %}
                 <i class="fas fa-bookmark saved"></i>
+                <p class="saved"> Saved dish</p>
             {% else %}
-            <i class="far fa-bookmark not-saved"></i>
+                <i class="far fa-bookmark not-saved"></i>
+                <p class="not_saved"> Save dish</p>
             {% endif %}    
-            <p> Save dish</p>
-        </div>
-    
+        </div>    
     </div>
 </div>
 {% endblock %} 

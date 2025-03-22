@@ -74,7 +74,11 @@ def dish_detail(dish_id):
 
     dish_info = get_dish_info(dish_id, include_reviews=True)
 
-    return render_template("dish_detail.html", dish = dish_info )
+    is_saved = savedDishes.query.filter_by(user_id=user_id, dish_id=dish_id).first() is not None
+
+    dish_info["is_saved"] = is_saved
+
+    return render_template("dish_detail.html", dish = dish_info, is_saved=is_saved)
 
 @dish_bp.route("/toggle-save/<int:dish_id>", methods=["POST"])
 def toggle_save(dish_id):
