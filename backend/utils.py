@@ -82,6 +82,7 @@ def get_dish_info(dish_id, include_reviews=False):
         "average_rating": round(average_rating, 1),
         "restaurant_id": dish_info.menu_dishes[0].menu.restaurant.restaurant_id,
         "restaurant_name": dish_info.menu_dishes[0].menu.restaurant.restaurant_name,
+        "restaurant_address": dish_info.menu_dishes[0].menu.restaurant.location,
         "description": dish_info.description,
         "price": dish_info.price,
         "allergens": allergens,

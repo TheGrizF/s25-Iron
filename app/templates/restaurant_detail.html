@@ -26,20 +26,20 @@
 
     <section class="recommendations">
         <h2>Recommended for You:</h2>
-        <div class="dishes-grid">
-            
+        <div class="dishes-grid">          
             <!--for loop for the dishes, but only first two here-->
-            {% for dish in restaurant.dishes[:2] %}
-            <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-image-container">
-                <div class="dish-card">
+            {% for dish in restaurant.dishes[:2] %}         
+            <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">    
+                <div class="dish-image-container">
                     <img src="{{ url_for('static', filename=dish.image_url) }}" alt="dish.name">
-                    <div class="dish-info">
-                        <h3>{{ dish.name }}</h3>
-                        <p class="dish-match">{{ dish.match_percentage }}% </span>
-                        <p class="dish-price">{{ dish.price }} USD/Each </p>
-                    </div>
                 </div>
-            </a>
+                
+                <div class="dish-info">
+                    <h3>{{ dish.name }}</h3>
+                    <p class="dish-match">{{ dish.match_percentage }}% </span>
+                    <p class="dish-price">{{ dish.price }} USD/Each </p>
+                </div>
+            </a>          
             {% endfor %}
 
         </div>

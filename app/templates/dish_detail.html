@@ -3,66 +3,84 @@
 {% block title %}{{ dish.dish_name }} @ {{ dish.restaurant_name }}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/restaurant_detail.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dish_detail.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 {% block content %}
-
-    <div class="restaurant-info">
+<div class ="dish-detail">
+    <div class="header-images">
+        <img src="{{ url_for('static', filename=dish.image) }}" alt = "{{ dish.name }}">
         <button class="back-button" onclick="window.history.back()">
             <i class="fas fa-chevron-left"></i>
         </button>
-        <img src="{{ url_for('static', filename=dish.image) }}" alt = "{{ dish.name }}"  style="width: 80%">
-        <h2>{{ dish.dish_name }} @ {{ dish.restaurant_name }}</h2>
-        <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}">
-                View Restaurant
-        </a>
     </div>
 
-    <section class="recommendations">
-        <h2>Dish Info:</h2>
-        Suggested for you: {{ dish.match_score }}%
-        <div class="star-rating">
-            <span>Average Rating:</span>
-            {% set full = dish.average_rating|int %}
-            {% set half = dish.average_rating - full %}
-            {% if half >= 0.5 %}
-                {% set half = 1 %}
-            {% else %}
-                {% set half = 0 %}
-            {% endif %}
-            {% set empty = 5 - full - half %}
-
-            {% for _ in range(full) %}
-                <i class = "fas fa-star"></i>
+    <div class = "dish-title">
+        <div class="dish-name-and-allergens">
+            <h2>{{ dish.dish_name }}</h2>
+            <p>
+            {% for a in dish.allergens %}
+                {% if a == 'dairy' %}
+                    <img src="{{ url_for('static', filename='images/dishes/allergens/dairy.png') }}" alt="Dairy" title="Dairy">
+                {% elif a == 'nuts' %}
+                    <img src="{{ url_for('static', filename='images/dishes/allergens/nut.png') }}" alt="Nuts" title="Nuts">
+                {% elif a == 'gluten' %}
+                    <img src="{{ url_for('static', filename='images/dishes/allergens/gluten.png') }}" alt="Gluten" title="Gluten" >
+                {% else %}
+                    <!-- If no specific image is found for the allergen, you can just display text or a default image -->
+                    <span>{{ a }}</span>
+                {% endif %}
             {% endfor %}
+            </p>
 
-            {% for _ in range(half) %}
-                <i class = "fas fa-star-half-alt"></i>
-            {% endfor %}
+        </div>
+        
+        <span class="dish-match">{{ dish.match_score }}% Match</span>
 
-            {% for _ in range(empty) %}
-                <i class = "far fa-star"></i>
+    </div>
+    
+    <div class="dish-info">       
+        <div class="description">        
+            <div class="star-rating">
+                <p>Average Rating:<span style="color: rgba(255, 196, 0, 0.822);">
+                {% set full = dish.average_rating|int %}
+                {% set half = dish.average_rating - full %}
+                {% if half >= 0.5 %}
+                    {% set half = 1 %}
+                {% else %}
+                    {% set half = 0 %}
+                {% endif %}
+                {% set empty = 5 - full - half %}
+
+                {% for _ in range(full) %}
+                    <i class = "fas fa-star"></i>
+                {% endfor %}
+
+                {% for _ in range(half) %}
+                    <i class = "fas fa-star-half-alt"></i>
+                {% endfor %}
+
+                {% for _ in range(empty) %}
+                    <i class = "far fa-star"></i>
+                {% endfor %}
+                </span>
+                {{ dish.average_rating }} 
+            </div> </p>
+            <p>{{ dish.description }}</p>
+            <p>Cost: ${{ dish.price }} </p>
+            
+            <!--p Restrictions: 
+            {% for r in dish.restrictions %}
+                {{ r }}
             {% endfor %}
-            {{ dish.average_rating }}
-        </div> 
-        Dish Description: {{ dish.description }} <br>
-        Cost: ${{ dish.price }} <br>
-        Allergens: 
-        {% for a in dish.allergens %}
-            {{ a }}
-        {% endfor %}
-        <br>
-        Restrictions: 
-        {% for r in dish.restrictions %}
-            {{ r }}
-        {% endfor %}
-        <br>
-        Currently Available: {{ dish.available }}
-    </section>
+            <p>
+            Currently Available: {{ dish.available }}</p Save for later-->
+        </div>
+    </div>
+
     <section class = "reviews">
-        <h2>Reviews</h2>
+        <h2>What taste buddies say:</h2>
         {% for rev in dish.reviews %}
             <div class="feed-item">
                 <div class="feed-header">
@@ -81,13 +99,36 @@
 
                             {% for _ in range(empty) %}
                                 <i class = "far fa-star"></i>
-                            {% endfor %}
+                            {% endfor %}                    
                         </div>
                     <p>{{ rev.content }}</p>
                 </div>
             </div>
         {% endfor %}
     </section> 
-    <br><br><br><br>  
+
+    
+    <div class="horizontal-separator"></div>
+    <div class="dish-footer">           
+        <a href = "{{ url_for('restaurant.restaurant_detail', restaurant_id=dish.restaurant_id) }}" class = "contact-details">
+            <div class="contact-details">
+                <h3> {{ dish.restaurant_name }}</h3>
+                <p> {{ dish.restaurant_address }}</p>
+            </div>
+        </a>
+        
+
+        <div class="vertical-separator"></div>
+        
+        <div class="save-section">
+            {% if dish.is_saved %}
+                <i class="fas fa-bookmark saved"></i>
+            {% else %}
+            <i class="far fa-bookmark not-saved"></i>
+            {% endif %}    
+            <p> Save dish</p>
+        </div>
+    
+    </div>
 </div>
 {% endblock %} 

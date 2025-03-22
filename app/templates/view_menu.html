@@ -22,9 +22,9 @@
             
             <!--for loop for the dishes, but only first two here-->
             {% for dish in dishes %}
-            <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-image-container">
+            <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">
             
-                <div class="dish-card">
+                <div class="dish-image-container">
                     <img src="{{ url_for('static', filename=dish.image_url) }}" alt="{{ dish.name }}">
                     <div class="dish-info">
                         <h3>{{ dish.name }}</h3>
