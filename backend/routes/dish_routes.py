@@ -102,9 +102,9 @@ def sort_dishes(filtered_dishes, sort_by="match_score"):
         return sorted(filtered_dishes, key=lambda d: d["match_score"], reverse=True)
     elif sort_by == "name":
         return sorted(filtered_dishes, key=lambda d: d["dish_name"].lower()) 
-    elif sort_by == "Price":
+    elif sort_by == "price":
         return sorted(filtered_dishes, key=lambda d: float(d["price"]))
-    elif sort_by == "Restaurant":
+    elif sort_by == "restaurant_name":
         return sorted(filtered_dishes, key=lambda d : d["restaurant_name"])
     else:
         return filtered_dishes 
