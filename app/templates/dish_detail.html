@@ -97,26 +97,26 @@
         <h2>What taste buddies say:</h2><br>
         {% for rev in dish.reviews %}
             <div class="feed-item">
-                <span class="friend">{{ rev.user_name }}</span><br>
+                <br>
                 <div class="feed-content">   
                     <img src="{{ url_for('static', filename=rev.user_icon) }}" alt="{{ rev.user_name }}" style="width: 75px; height: 75px">
             
                     <div class="review-bubble">                
-                            <span>Rated:
-                            <div class="star-rating">
-                                {% set full = rev.rating|int %}
-                                {% set empty = 5 - full %}
+                        <span class="friend">{{ rev.user_name }}</span><span> rated: </span>
+                        <span class="star-rating">
+                            {% set full = rev.rating|int %}
+                            {% set empty = 5 - full %}
 
-                                {% for _ in range(full) %}
-                                    <i class = "fas fa-star"></i>
-                                {% endfor %}
+                            {% for _ in range(full) %}
+                                <i class = "fas fa-star"></i>
+                            {% endfor %}
 
-                                {% for _ in range(empty) %}
-                                    <i class = "far fa-star"></i>
-                                {% endfor %}                    
-                            </div></span>
-                        <p>{{ rev.content }}</p>
-                        <p>{{ rev.time_stamp }}</p>
+                            {% for _ in range(empty) %}
+                                <i class = "far fa-star"></i>
+                            {% endfor %}                    
+                        </span>
+                        <p >{{ rev.content }}</p>
+                        <p class="date">{{ rev.time_stamp }}</p>
                     </div>
                 </div>
             </div>

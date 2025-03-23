@@ -1,11 +1,8 @@
-body {
-    background-color: var(--white);
-}
-
 .dish-detail {
     display:flex;
     flex-direction:column;
     padding-bottom: 70px;
+    background-color: var(--white);
 }
 
 .header-images {
@@ -78,8 +75,9 @@ body {
     padding: 20px;
 }
 
-.cost {
+.dish-info .cost {
     color: #858585;
+    margin-left:0px;
 }
 
 .description p{
@@ -271,6 +269,7 @@ body {
 }
 
 .star-rating {
+    margin-left: 3px;
     color: rgba(255, 196, 0, 0.822);
 }
 
@@ -310,16 +309,23 @@ body {
     width: 75px;
     height: 75px;
     border-radius: 50%;
-    margin-right: 20px; /* Space between image and bubble */
-    z-index: 1;
+    margin-right: 20px; 
+    object-fit: cover;
 }
+
 .feed-item {
     margin-bottom: 25px;
     font-size: 10px;
-    margin-left: 30px;
+    margin-left: 0px;
 }
 
 .friend {
     color: var(--burgundy-main);
     font-weight: bold;
+    margin-right: 3px;
+}
+
+.date {
+    font-style:italic;
+    margin-bottom: 0px;
 }

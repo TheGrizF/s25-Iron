@@ -78,7 +78,7 @@
                     <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="see-details">
                         See Details
                     </a>
-                    <p class="price">$ {{ dish.price }}</p>
+                    <p class="price"> $ <span> {{ dish.price }}</span></p>
                 </div>
                 <div class="dish-save" onclick ="toggleSave(this, {{dish.dish_id}})">
                     <!----find appropriate save icon, if ticked, dark, not ticked light-->
