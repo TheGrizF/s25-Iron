@@ -95,6 +95,7 @@ def sort_restaurants(filtered_restaurants, sort_by="match_percentage"):
     :param filtered_restaurants: List of restaurant information.
     :param sort_by: The key to sort by (default is 'match_percentage').
     :return: Sorted list of restaurants.
+    totally chatgpt, can you tell?
     """
     # Define the sort key
     if sort_by == "match_percentage":
