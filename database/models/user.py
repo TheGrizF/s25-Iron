@@ -19,6 +19,7 @@ class user(db.Model):
     saved_restaurants = relationship("savedRestaurants", back_populates="user", cascade="all, delete-orphan")
     user_allergens = relationship("user_allergen", back_populates="user", cascade="all, delete-orphan")
     user_restrictions = relationship("user_restriction", back_populates="user", cascade="all, delete-orphan")
+    live_updates = relationship("liveUpdate", back_populates="user", cascade="all, delete-orphan")
 
     friends = relationship("friends", foreign_keys="[friends.user_id]", back_populates="user", cascade="all, delete-orphan")
     buddies = relationship("friends", foreign_keys="[friends.buddy_id]", back_populates="buddy", cascade="all, delete-orphan")
