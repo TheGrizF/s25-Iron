@@ -2,49 +2,71 @@
   padding: 20px;
   padding-bottom: 80px;
   overflow-x: hidden;
+  justify-content: center;
 }
 
+
 .search-header {
-  position: sticky;
+  position: flex;
   top: 0;
-  background: var(--white);
-  padding: 15px 0;
+  justify-content: center;
+  /*padding: 15px 0;*/
   z-index: 100;
 }
 
+
 .search-bar {
+  width: 100%;
   display: flex;
-  max-width: 300px;
+  justify-content: center; /* This centers the search-container */
   padding: 8px;
   position: relative;
-  margin: 20px 0;
+  margin:0;
+
+
 }
+
 
 .search-container {
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: 700px;
+  position: relative;
 }
 
-.search-bar input {
+
+.search-bar form {
   width: 100%;
-  max-width: 250px;
+  max-width: 470px;
+  display: flex;
+  justify-content: center;
+}
+
+
+.search-bar input {
+  flex-grow: 1; /* Takes available space */
   padding: 12px 40px;
   border: 1px solid var(--gray-medium);
   border-radius: 25px;
   font-size: 16px;
 }
 
-.search-bar i {
+
+.search-container i {
   position: absolute;
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--slate-light);
+  z-index: 1;
 }
+
 
 .filter-section {
   margin: 20px 0;
 }
+
 
 .filter-row {
   display: flex;
@@ -52,9 +74,137 @@
   margin-bottom: 10px;
 }
 
+
 .filter-dropdown {
   flex: 1;
   padding: 8px;
   border: 1px solid var(--gray-medium);
   border-radius: 5px;
+}
+
+
+.search-btn {
+  margin-left: 5px;
+}
+
+
+/***************Mayhem starts here***************/
+
+
+.buddies-section {
+  width: 100%;
+  max-width: 500px; /* Adjust width as needed */
+  margin: 20px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+
+.buddies-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /*padding: 15px;*/
+ 
+  cursor: pointer;
+  font-weight: bold;
+
+
+}
+
+
+.buddies-header i {
+  transition: transform 0.3s ease;
+  margin-left: auto;
+}
+
+
+/*.buddies-header.expanded i {
+  transform: rotate(180deg);
+}*/
+
+
+.buddies-header span {
+  flex-grow: 1;
+}
+
+
+/* Buddies list (hidden by default) */
+.buddies-list {
+  display: none;
+  /*padding: 10px;*/
+}
+
+
+.buddies-list.expanded {
+  display: block;
+}
+
+
+.buddy {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+
+.buddy .user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gray-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+
+.buddy .user-name {
+  flex: 1;
+  font-size: 16px;
+}
+
+
+/* Follow/Unfollow button */
+.buddy .follow-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+buddies-header i {
+  margin-left: auto;
+}
+
+
+.follow-btn {
+  color: var(--burgundy-main);
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s ease;
+  justify-content:right;
+}
+
+
+.follow-btn i {
+  transition: transform 0.3s ease;
+}
+
+
+.bi {
+  display: inline-block;
+  line-height: 1;
+  vertical-align: -.125em;
+  color: #C4183A
 }
