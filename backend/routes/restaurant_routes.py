@@ -1,8 +1,10 @@
-from flask import Blueprint, json, render_template, session, request
+from flask import Blueprint, json, render_template, session, request, flash, redirect, url_for
 from database import db
-from database.models.restaurant import operatingHours, restaurant
+from database.models.restaurant import operatingHours, restaurant,liveUpdate
 from database.models.dish import dish, menu, menuDishJunction
+from database.models.user import user
 from backend.utils import get_all_restaurant_info, get_dish_recommendations, get_restaurant_info, get_restaurant_dish_scores
+from better_profanity import profanity
 
 restaurant_bp = Blueprint('restaurant', __name__)
 
@@ -56,9 +58,18 @@ def restaurant_detail(restaurant_id):
     
     sorted_dishes = get_restaurant_dish_scores(user_id, restaurant_id)
 
+    # get live updates for this restaurant
+    live_updates = (
+        db.session.query(liveUpdate, user)
+        .join(user, liveUpdate.user_id == user.user_id)
+        .filter(liveUpdate.restaurant_id == restaurant_id)
+        .order_by(liveUpdate.created_at.desc())
+        .all()
+    )
+
     session[f'restaurant_{restaurant_id}_dishes'] = json.dumps(sorted_dishes)  # store in flask session to reuse and limit db calls?
 
-    return render_template("restaurant_detail.html", restaurant=restaurant_info, dishes=sorted_dishes)
+    return render_template("restaurant_detail.html", restaurant=restaurant_info, dishes=sorted_dishes, updates=live_updates)
 
 @restaurant_bp.route("/restaurant/<int:restaurant_id>/menu")
 def view_menu(restaurant_id):
@@ -104,3 +115,35 @@ def sort_restaurants(filtered_restaurants, sort_by="match_percentage"):
         return sorted(filtered_restaurants, key=lambda r: r["restaurant_name"].lower()) 
     else:
         return filtered_restaurants 
+
+
+@restaurant_bp.route('/restaurant/<int:restaurant_id>/post-update', methods=['POST'])
+def post_update(restaurant_id):
+    
+    profanity.load_censor_words()
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('You must be logged in to post an update.', 'error')
+        return redirect(url_for('auth.index'))
+
+    update_content = request.form.get('update_content', '').strip()
+
+    if not update_content:
+        flash('Update cannot be empty.', 'error')
+        return redirect(url_for('restaurant.restaurant_detail', restaurant_id=restaurant_id))
+
+
+    if profanity.contains_profanity(update_content):
+        flash('Your update contains inappropriate language.', 'error')
+        return redirect(url_for('restaurant.restaurant_detail', restaurant_id=restaurant_id))
+
+
+    new_update = liveUpdate(
+        restaurant_id=restaurant_id,
+        user_id=user_id,
+        update_content=update_content
+    )
+    db.session.add(new_update)
+    db.session.commit()
+    flash('Your update has been posted.', 'success')
+    return redirect(url_for('restaurant.restaurant_detail', restaurant_id=restaurant_id))
