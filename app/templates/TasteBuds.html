@@ -66,10 +66,13 @@ extra_css %}
         </div>
         <h3>Active Group</h3>
         <ul>
-          {% for friend in activeGroup %}
-          <li>{{ friend.first_name }} {{ friend.last_name }}</li>
+          {% for member in activeGroup %}
+          <li>{{ member.first_name }} {{ member.last_name }}</li>
           {% endfor %}
         </ul>
+        {% for reccomendations in reccomendations %}
+        <li>{{reccomendations}} </li>
+        {% endfor %}
         <button type="submit">Find a Restaraunt for Active Group</button>
       </form>
     </div>

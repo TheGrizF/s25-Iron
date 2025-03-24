@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session, request
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, user
-from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes
+from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
 @daily_dish_bp.route('/dailyDish')
@@ -50,12 +50,23 @@ def TasteBuds():
 
 @daily_dish_bp.route('/createGroup', methods = ['POST'])
 def createGroup():
-    current_user_id = session.get('user_id') 
+    user_id = session.get('user_id') 
     selectedFriends = request.form.getlist("selectedFriends")
-    activeGroup = selectedFriends
-    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
     
-    return render_template('TasteBuds.html', activeGroup = activeGroupInfo)
+    # Add list containning current user to list of selected
+    activeGroup = [user_id] + selectedFriends
+    
+    #Fetch information on users in active group
+    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
+
+    #Fetch information on members recommendations
+    reccomendations = []
+    for member in activeGroupInfo:
+     reccomendationsList = get_dish_recommendations(member.user_id)
+     reccomendations.extend(reccomendationsList)
+  
+    return render_template('TasteBuds.html', activeGroup = activeGroupInfo, reccomendations = reccomendations)
+
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
