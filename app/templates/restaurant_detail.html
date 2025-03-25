@@ -16,12 +16,46 @@
     </div>
 
     <div class="restaurant-info">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <h2>{{ restaurant.restaurant_name }}</h2>
         <!--p class="category">Casual Dining</p>-->
         <p class="hours">Open hours: <br>{{ restaurant.hours | safe }}</p>
-        <button class="update-button">
+    
+        <!-- post update button -->
+        <button class="update-button" type="button" onclick="toggleUpdateForm()">
             Post Update <i class="fas fa-bullhorn"></i>
         </button>
+    
+        <!-- hidden live update form -->
+        <div id="live-update-form" class="update-form" style="display: none;">
+            <form action="{{ url_for('restaurant.post_update', restaurant_id=restaurant.restaurant_id) }}" method="POST">
+                <!-- change max length to control how big an update can be -->
+                <textarea name="update_content" maxlength="140" placeholder="What's happening? (max 140 characters)" required></textarea>
+                <div class="form-actions">
+                    <button type="submit">Submit</button>
+                    <button type="button" onclick="toggleUpdateForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- script for toggling form visibility -->
+    <script>
+        function toggleUpdateForm() {
+            const form = document.getElementById('live-update-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+    
+</script>
+
     </div>
 
     <section class="recommendations">
@@ -76,6 +110,26 @@
         
     </section>
 
+    <section class="live-updates">
+        <h2>Latest Updates</h2>
+        <div class="updates-scroll-box">
+            {% if updates %}
+                {% for update, user in updates %}
+                    <div class="update-card">
+                        <div class="update-user">
+                            <img src="{{ url_for('static', filename=user.icon_path) }}" alt="User Icon" class="user-icon">
+                            <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                        </div>
+                        <p class="update-content">{{ update.update_content }}</p>
+                        <p class="update-timestamp">{{ update.created_at.strftime('%b %d, %Y %I:%M %p') }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No updates yet. Be the first to post one!</p>
+            {% endif %}
+        </div>
+    </section>
     
+
 </div>
 {% endblock %} 
