@@ -139,3 +139,21 @@ def get_matches():#This doesn't work correctly
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+    
+@daily_dish_bp.route('/get-buddy/<int:user_id>')
+def get_buddy(user_id):
+    try:
+        buddy = user.query.filter_by(user_id=user_id).first()
+        if buddy:
+            return jsonify({
+                'user_id': buddy.user_id,
+                'icon_path': buddy.icon_path,
+                'first_name': buddy.first_name,
+                'last_name': buddy.last_name
+            })
+        else:
+            return jsonify({'error': 'Buddy not found'}), 404
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debugging
+        return jsonify({'error': 'Internal Server Error'}), 500 
+
