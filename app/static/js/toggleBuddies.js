@@ -51,5 +51,23 @@ function toggleFollow(element) {
         console.log("Removed user:", userId); // Confirm removal
     }
     console.log("Selected Buddies:", selectedBuddies); // Debugging
+    sendSelectedBuddiesList();
 }
 
+function sendSelectedBuddiesList(){
+    fetch('/createGroup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({selectedBuddies: selectedBuddies}),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (response.ok) {
+            window.location.href = '/createGroup';
+        } 
+    })
+    .catch(error => console.error("Error:", error)
+);
+}

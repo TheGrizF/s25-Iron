@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, session, request
+from flask import Blueprint, render_template, session, request, flash, redirect, url_for, jsonify
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, user
 from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations
+import json
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
 @daily_dish_bp.route('/dailyDish')
@@ -48,25 +49,52 @@ def TasteBuds():
 
      return render_template('TasteBuds.html', friendslist=friendsList)
 
-@daily_dish_bp.route('/createGroup', methods = ['POST'])
+@daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
 def createGroup():
-    user_id = session.get('user_id') 
-    selectedFriends = request.form.getlist("selectedFriends")
+    user_id = session.get('user_id')
+    groupData = request.get_json()
+    selectedFriends = groupData.get('selectedBuddies',[])
+    
+    #debug to see if user_ids coming through
+    print('Received selected buddies:', selectedFriends)
     
     # Add list containning current user to list of selected
     activeGroup = [user_id] + selectedFriends
     
     #Fetch information on users in active group
     activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
-
+    
     #Fetch information on members recommendations
-    reccomendations = []
+    recommendations = []
     for member in activeGroupInfo:
-     reccomendationsList = get_dish_recommendations(member.user_id)
-     reccomendations.extend(reccomendationsList)
-  
-    return render_template('TasteBuds.html', activeGroup = activeGroupInfo, reccomendations = reccomendations)
+     recommendationsList = get_dish_recommendations(member.user_id)
+     recommendations.extend(recommendationsList)
+    
+    print(recommendations) #debug for all members recommendations
 
+    seenDishes = {} #keep track of dishes seen and their match percentages
+    matchingDishes = set() #keep track of matched dishes
+   
+    #iterate through list of recommendations checking to see if dish IDs match and if match percentages are over threshold
+    for recommendation in recommendations:
+         dish_id, matchPercentage = recommendation[0], recommendation[2]
+         if matchPercentage > 75:
+            if dish_id in seenDishes:
+                seenDishes[dish_id].append(matchPercentage)
+                if len(seenDishes[dish_id]) == len(activeGroup):
+                    matchingDishes.add(dish_id)
+            else:
+                seenDishes[dish_id] = [matchPercentage]
+   
+    # for overlap iterate through matchingDishes set and make a list of the matches that meet requirements
+    overlapping_recommendations = [rec for rec in recommendations if rec[0] in matchingDishes]
+    print('overlap:',overlapping_recommendations) #debug for overlaps
+    
+    return redirect(url_for('daily_dish.groupMatch', activeGroup = activeGroupInfo, recommendations = recommendations))
+
+@daily_dish_bp.route('/groupMatch')
+def groupMatch():
+   return render_template('groupMatch.html')
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):

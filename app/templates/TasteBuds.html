@@ -130,12 +130,16 @@
               <i class="bi bi-plus-circle"></i>
             </span>
           </div>
+          
           {% endfor %}
+          
       </div>  
     </div>
-   
-   
-
+   <form action="{{ url_for('daily_dish.createGroup')}}">
+   <div class="submit-group">
+            <button type="button">Create Group</button>
+        </div>
+   </form>
 
     {% endblock %}
   </div>
