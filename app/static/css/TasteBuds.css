@@ -230,7 +230,7 @@ buddies-header i {
 }
 .separator {
   height: 1px;
-  background-color: #858585;
+  background-color: #ccc9c9;
   margin: 10px 0;
   width: 500px; 
   margin-left: auto;
