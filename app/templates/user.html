@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
 {% endblock %}
 
+
 {% block content %}
 <div class="taste-profile-container">
     <div class="profile-icon">
@@ -24,11 +25,20 @@
 
     {% if not is_buddy %}
     <div class="button-group centered">
-        <form action="{{ url_for('profile.add_buddy', buddy_id=viewed_user.user_id) }}" method="POST">
+        <form action="{{ url_for('auth.addFriend', user_id=viewed_user.user_id) }}" method="POST">
             <button type="submit" class="add-buddy-btn">Add TasteBuddy</button>
         </form>
     </div>
     {% endif %}
+    
+    <!-- Flash Message for Friend added or Already Friends -->
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages%} 
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %} 
+        {% endif %} 
+    {% endwith %}
 
     <div class="preview-card">
         <h2>Taste Match</h2>

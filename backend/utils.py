@@ -73,6 +73,10 @@ def get_dish_info(dish_id, include_reviews=False):
         ]
 
     dish_scores = session.get("dish_scores", {})
+    if not dish_scores:
+        dish_recommendations = get_dish_recommendations(session.get("user_id"))
+        dish_scores = {d[0]: d[2] for d in dish_recommendations}
+        session["dish_scores"] = dish_scores
 
     return {
         "dish_id": dish_info.dish_id,

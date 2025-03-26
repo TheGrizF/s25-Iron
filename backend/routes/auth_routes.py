@@ -118,7 +118,7 @@ def addFriend(user_id):
         db.session.commit()
         flash("Buddy added", "success")
 
-    return redirect(url_for('profile.viewUserSearchResults', user_id=user_id))
+    return redirect(request.referrer)
 
 
 @auth_bp.route('/database')
