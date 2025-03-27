@@ -144,6 +144,7 @@
     font-weight: normal;
     text-align: right;
     margin-bottom: 0;
+    margin-right: 10px;
 }
 
 .dish-price {
@@ -193,8 +194,8 @@
 }
 
 .contact-details p h3 {
-    margin-bottom: 3px;
-    margin-top: 3px;
+    margin-bottom: 1px;
+    margin-top: 1px;
 }
 
 .horizontal-separator {
@@ -211,7 +212,7 @@
     height: 70px;
     position: relative center;
     left: 50%;
-    margin: 0px 40px;
+    margin: 0px 20px;
     top: 0;
 }
 
@@ -227,11 +228,13 @@
     color: gray;
     text-decoration-color: gray;
     cursor:pointer;
-    width: 80px;
+    width: 95px;
+    justify-content: center;
 }
 
 .dish-save i {
     font-size: 24px;
+    margin: auto;
 }
 
 
@@ -328,4 +331,13 @@
 .date {
     font-style:italic;
     margin-bottom: 0px;
+}
+
+.review-button {
+    max-width: 200px;
+    margin: auto;
+}
+
+.review-button i{
+    margin-right: 5px;
 }

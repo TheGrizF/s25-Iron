@@ -93,6 +93,11 @@
         </div>
     </div>
 
+    <button class = "review-button" onClick="goToReview('{{ dish.dish_id }}')")>
+       <i class="fa-solid fa-pen"></i>
+        Write a Review
+    </button>
+
     <section class = "reviews">
         <h2>What taste buddies say:</h2><br>
         {% for rev in dish.reviews %}
@@ -147,4 +152,10 @@
         </div>    
     </div>
 </div>
+
+<script>
+    function goToReview(dishId) {
+        window.location.href = `/review?dish_id=${dishId}`;
+    }
+    </script>
 {% endblock %} 
