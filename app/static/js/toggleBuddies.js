@@ -34,40 +34,100 @@ function toggleSection(list, chevron) {
 function toggleFollow(element) {
     let icon = element.querySelector("i");
     let userId = element.getAttribute("data-user-id");
+    let firstName = element.getAttribute("data-first-name");
+    let lastName = element.getAttribute("data-last-name");
+    let iconPath = element.getAttribute("data-icon-path");
 
     if (icon.classList.contains("bi-plus-circle")) {
         icon.classList.remove("bi-plus-circle");
         icon.classList.add("bi-plus-circle-fill");
 
-        if (!selectedBuddies.includes(userId)) { //adds it to list for Oronde to use
-            selectedBuddies.push(userId);
+        if (!selectedBuddies.some(buddy => buddy.userId === userId)) { // Prevent duplicates
+            selectedBuddies.push({ userId, firstName, lastName, iconPath });
             console.log("Added user:", userId);
+            updateBuddyDisplay();
         }
 
     } else {
         icon.classList.remove("bi-plus-circle-fill");
         icon.classList.add("bi-plus-circle");
-        selectedBuddies = selectedBuddies.filter(id => id !== userId);
-        console.log("Removed user:", userId); // Confirm removal
+
+        selectedBuddies = selectedBuddies.filter(buddy => buddy.userId !== userId);
+        console.log("Removed user:", userId);
+        updateBuddyDisplay();
     }
+
     console.log("Selected Buddies:", selectedBuddies); // Debugging
-    sendSelectedBuddiesList();
 }
 
-function sendSelectedBuddiesList(){
-    fetch('/createGroup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({selectedBuddies: selectedBuddies}),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (response.ok) {
-            window.location.href = '/createGroup';
-        } 
-    })
-    .catch(error => console.error("Error:", error)
-);
+
+function updateBuddyDisplay() {
+    const buddyList = document.querySelector('.group-match-buddies-list');
+    if (!buddyList) {
+        console.error('group-match-buddies-list not found!');
+        return;
+    }
+
+    buddyList.innerHTML = '';
+
+    selectedBuddies.forEach(buddy => {
+        if (!buddy) {
+            console.error("Invalid buddy data:", buddy);
+            return;
+        }
+
+        //const iconSrc = buddy.iconPath || "/static/images/profile_icons/default1.png";
+        let iconSrc = buddy.iconPath ? `/static/${buddy.iconPath}` : "/static/images/profile_icons/default1.png";
+        const buddyElement = document.createElement('div');
+        buddyElement.classList.add('buddy');
+        buddyElement.innerHTML = `
+            <img src="${iconSrc}" alt="Buddy Icon">
+            <span>${buddy.firstName} ${buddy.lastName}</span>
+        `;
+        buddyList.appendChild(buddyElement);
+    });
+}
+
+/*function updateBuddyDisplay() {
+    const buddyList = document.querySelector('.group-match-buddies-list');
+    if (!buddyList) {
+        console.error('group-match-buddies-list not found!');
+        return;
+    }
+
+    buddyList.innerHTML = '';
+
+    selectedBuddies.forEach(buddy => {
+        if (!buddy) {
+            console.error("Invalid buddy data:", buddy);
+            return;
+        }
+
+        let iconSrc = buddy.iconPath ? `/static/${buddy.iconPath}` : "/static/images/profile_icons/default1.png";
+        const buddyElement = document.createElement('div');
+        buddyElement.classList.add('group-buddy');
+        buddyElement.setAttribute('data-user-id', buddy.userId);
+        buddyElement.setAttribute('data-first-name', buddy.firstName);
+        buddyElement.setAttribute('data-last-name', buddy.lastName);
+        buddyElement.setAttribute('data-icon-path', buddy.iconPath);
+        buddyElement.innerHTML = `
+            <img src="${iconSrc}" alt="${buddy.firstName} ${buddy.lastName}" class="group-buddy-icon" />
+            <span class="group-buddy-name">${buddy.firstName} ${buddy.lastName}</span>
+            <i class="bi bi-x-circle remove-buddy" onclick="removeBuddy(${buddy.userId})"></i>
+        `;
+        buddyList.appendChild(buddyElement);
+    });
+}*/
+
+function removeBuddy(userId) {
+    selectedBuddies = selectedBuddies.filter(buddy => buddy.userId !== userId.toString());
+    updateBuddyDisplay();
+    
+    // Update the plus/minus icon in the original list
+    const buddyElement = document.querySelector(`.follow-btn[data-user-id="${userId}"]`);
+    if (buddyElement) {
+        const icon = buddyElement.querySelector('i');
+        icon.classList.remove('bi-plus-circle-fill');
+        icon.classList.add('bi-plus-circle');
+    }
 }

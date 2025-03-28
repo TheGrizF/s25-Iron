@@ -164,6 +164,10 @@
     font-weight: normal;
 }
 
+.dish-save {
+    justify-content: center;
+}
+
 .card-link {
     position: absolute;
     top: 0;

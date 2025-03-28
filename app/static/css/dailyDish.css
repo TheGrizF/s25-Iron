@@ -3,10 +3,20 @@
     --content-max-width: 600px;
     --content-padding: 16px;
     --bottom-bar-height: 70px;  /* Height of the bottom UI bar */
+    --bottom-spacing: 90px;     /* Extra spacing to ensure no overlap */
 }
 
 body {
     background-color: var(--background);
+    /* Remove any positioning */
+    margin: 0;
+    padding: 0;
+}
+
+/* Create a wrapper for all content */
+.page-wrapper {
+    position: relative;
+    z-index: 1;
 }
 
 .home-container {
@@ -14,7 +24,7 @@ body {
     max-width: var(--content-max-width);
     margin: 0 auto;
     padding: var(--content-padding);
-    padding-bottom: calc(var(--bottom-bar-height) + var(--content-padding));  /* Add extra padding for the bottom bar */
+    padding-bottom: var(--bottom-spacing);  /* Use the larger bottom spacing */
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -61,8 +71,7 @@ body {
     margin: 15px auto;
     background: var(--white);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    width: 90%;
-    max-width: 500px;
+    width: 100%;
 }
 
 .carousel {
@@ -117,7 +126,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    z-index: 100;  /* High enough to be above carousel content but below bottom nav */
     color: white;
     text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     transition: all 0.3s ease;
@@ -172,10 +181,50 @@ body {
     width: 100%;
     box-sizing: border-box;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    transform: translateZ(0);
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.feed-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Restaurant links and interactive elements */
+.restaurant-link {
+    color: var(--slate-dark);
+    text-decoration: none;
+    position: relative;
+    pointer-events: auto;
+}
+
+.restaurant-link:hover {
+    text-decoration: underline;
+}
+
+/* Ensure feed actions remain clickable */
+.feed-actions {
+    position: relative;
 }
 
 .feed-header {
     margin-bottom: 12px;
+    position: relative;
 }
 
 .username {
@@ -194,10 +243,20 @@ body {
     flex-direction: column;
     gap: 12px;
     width: 100%;
+    position: relative;
 }
 
-.feed-text {
-    flex: 1;
+/* Review content specific styling */
+.feed-content .review-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.feed-content .review-text {
+    margin-top: 4px;
+    color: var(--slate-dark);
+    font-size: 14px;
 }
 
 .feed-content img {
@@ -221,6 +280,7 @@ body {
     margin-top: 12px;
     color: var(--slate-light);
     font-size: 13px;
+    position: relative;
 }
 
 .feed-actions {
@@ -248,24 +308,125 @@ body {
 .star-rating {
     display: flex;
     align-items: center;
-    gap: 5px;
-    margin: 8px 0;
+    gap: 4px;
+    margin: 0;
 }
 
 .star-rating span {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--slate-light);
 }
 
 .star-rating i {
     color: #ffd700;
+    font-size: 13px;
+}
+
+/* Recommendation Layout */
+.dish-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+}
+
+.dish-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recommendation-header {
+    color: var(--slate-light);
+    font-size: 13px;
+    margin-bottom: -4px;
+}
+
+.dish-header {
+    font-size: 16px;
+    color: var(--slate-dark);
+    margin-bottom: 4px;
+}
+
+.dish-title {
+    color: var(--burgundy-main);
+}
+
+.match-score {
+    color: var(--burgundy-main);
     font-size: 14px;
+}
+
+.dish-image {
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.dish-image img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.compact-review {
+    margin-top: 8px;
+}
+
+.buddy-intro {
+    font-style: italic;
+    color: var(--slate-dark);
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.buddy-review {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.buddy-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.review-content {
+    flex: 1;
+}
+
+.review-text {
+    margin-top: 4px;
+    color: var(--slate-dark);
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.section-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 12px 0;
+    width: 100%;
+}
+
+.review-section {
+    margin-top: 12px;
 }
 
 /* Tablet Styles */
 @media (min-width: 768px) {
+    :root {
+        --bottom-spacing: 100px;  /* Slightly more spacing on larger screens */
+    }
+
     .home-container {
         padding: 24px;
+        padding-bottom: var(--bottom-spacing);
     }
 
     .section-title {
@@ -291,6 +452,10 @@ body {
         gap: 20px;
     }
 
+    .feed-content .review-content {
+        flex: 1;
+    }
+
     .feed-content img:not(.profile-pic) {
         width: 120px;
         height: 120px;
@@ -300,6 +465,23 @@ body {
     .profile-pic {
         width: 60px !important;
         height: 60px !important;
+    }
+
+    .dish-image {
+        width: 150px;
+    }
+
+    .dish-image img {
+        height: 150px;
+    }
+
+    .buddy-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .review-text {
+        font-size: 14px;
     }
 }
 
@@ -318,4 +500,56 @@ body {
         width: 70px !important;
         height: 70px !important;
     }
+
+    .dish-image {
+        width: 180px;
+    }
+
+    .dish-image img {
+        height: 180px;
+    }
+
+    .buddy-icon {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* Bottom UI Bar */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--bottom-bar-height);
+    background-color: var(--white);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 1000000;
+}
+
+/* Remove ALL other z-index properties except carousel buttons */
+.feed-item, .restaurant-link, .feed-actions, .page-wrapper {
+    position: relative;
+    z-index: auto;
+}
+
+/* Restore carousel button z-index */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;  /* High enough to be above carousel content but below bottom nav */
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
 } 

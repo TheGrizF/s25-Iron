@@ -19,9 +19,9 @@
   width: 100%;
   display: flex;
   justify-content: center; /* This centers the search-container */
-  padding: 8px;
+  padding: 0px;
   position: relative;
-  margin: 20px auto;
+  margin: 0px auto;
 
 
 }
@@ -31,14 +31,15 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 700px;
+  max-width: 500px;
   position: relative;
+  margin: 0px 0;
 }
 
 
 .search-bar form {
   width: 100%;
-  max-width: 470px;
+  max-width: 500px;
   display: flex;
   justify-content: center;
 }
@@ -89,7 +90,15 @@
 
 
 /***************Mayhem starts here***************/
-
+.all-buddies-container {
+  width: 100%;
+  max-width: 500px; /* Adjust width as needed */
+  margin: 20px auto;
+  border-radius: 10px;
+  padding: 0px 10px;
+  overflow: hidden;
+  background: var(--white);
+}
 
 .buddies-section {
   width: 100%;
@@ -206,5 +215,37 @@ buddies-header i {
   display: inline-block;
   line-height: 1;
   vertical-align: -.125em;
-  color: #C4183A
+  color: #C4183A;
+  margin-right: 15px;
 }
+
+/******Active Group Stuff *****/
+.active-group{
+  width: 100%;
+  max-width: 500px; 
+  margin: 20px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--white);
+}
+.separator {
+  height: 1px;
+  background-color: #ccc9c9;
+  margin: 10px 0;
+  width: 500px; 
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.group-match-buddies-list {
+  flex-direction:row;
+  color: var(--burgundy-main);
+  font-weight:500;
+}
+.group-match-buddies-list img {
+  height: 40px;
+  width: 40px;
+  margin-right: 5px;
+}
+
