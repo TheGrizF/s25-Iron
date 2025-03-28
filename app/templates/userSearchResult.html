@@ -1,32 +1,63 @@
-{% extends 'base.html' %} {% block title %}Profile{% endblock %} {% block
+{% extends 'base.html' %} {% block title %}Profile{% endblock %} 
+{% block head %}
+<style>
+  body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  }
+  .profile-icon img {
+      width: 150px;
+      height: 150px;
+  }
+</style>
+{% endblock %}
+
+{% block
 content %}
-<h2>{{ user.first_name }} {{ user.last_name }}!</h2>
-<div class="profile-icon">
-  {% if user.icon_path %}
-      <img src="{{ url_for('static', filename=user.icon_path) }}" 
-           alt="It's You!"
-           style="width: 150px; height: 150px;">
-  {% else %}
-      <img src="{{ url_for('static', filename='images\profile_icons\default1.png') }}" 
-           alt="Default Icon"
-           style="width: 150px; height: 150px">
-  {% endif %}
-</div>
-<p>Email: {{ user.email }}</p>
 
-<form action="{{ url_for('auth.addFriend', user_id=user.user_id) }}" method="post">
-  <button type="submit">Add Buddy</button>
-</form>
 
-<p>
-  <a href="{{ url_for('daily_dish.TasteBuds') }}">
-      <button>Go Back</button>
-  </a>
-</p>
+<body>
 
-<!-- Flash Message for Friend added or Already Friends -->
-{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
-%} {% for category, message in messages %}
-<div class="flash-message {{ category }}">{{ message }}</div>
-<br />
-{% endfor %} {% endif %} {% endwith %} {% endblock %}
+  <div class="find-friend" 
+    style="display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+          text-align: center; 
+          max-width: 100%; 
+          margin: auto; 
+          border-radius: 10px;
+          background-color: white;">
+    <h2>{{ user.first_name }} {{ user.last_name }}!</h2>
+    <div class="profile-icon" style="align-self: center;">
+      {% if user.icon_path %}
+          <img src="{{ url_for('static', filename=user.icon_path) }}" 
+              alt="It's You!"
+              style="width: 150px; height: 150px;">
+      {% else %}
+          <img src="{{ url_for('static', filename='images\profile_icons\default1.png') }}" 
+              alt="Default Icon"
+              style="width: 150px; height: 150px">
+      {% endif %}
+    </div>
+    <p>Email: {{ user.email }}</p>
+
+    <form action="{{ url_for('auth.addFriend', user_id=user.user_id) }}" method="post">
+      <button type="submit">Add Buddy</button>
+    </form>
+
+    <p>
+      <a href="{{ url_for('daily_dish.TasteBuds') }}">
+          <button>Go Back</button>
+      </a>
+    </p>
+
+    <!-- Flash Message for Friend added or Already Friends -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+    %} {% for category, message in messages %}
+    <div class="flash-message {{ category }}">{{ message }}</div>
+    <br />
+    {% endfor %} {% endif %} {% endwith %} {% endblock %}
+  </div>
+</body>
