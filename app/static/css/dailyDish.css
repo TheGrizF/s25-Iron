@@ -172,10 +172,51 @@ body {
     width: 100%;
     box-sizing: border-box;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.feed-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Ensure restaurant links within cards remain separately clickable */
+.restaurant-link {
+    color: var(--burgundy-main);
+    text-decoration: none;
+    z-index: 3;
+    position: relative;
+}
+
+.restaurant-link:hover {
+    text-decoration: underline;
+}
+
+/* Ensure feed actions remain clickable */
+.feed-actions {
+    z-index: 3;
+    position: relative;
 }
 
 .feed-header {
     margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
 }
 
 .username {
@@ -194,6 +235,8 @@ body {
     flex-direction: column;
     gap: 12px;
     width: 100%;
+    position: relative;
+    z-index: 2;
 }
 
 .feed-text {
@@ -221,6 +264,8 @@ body {
     margin-top: 12px;
     color: var(--slate-light);
     font-size: 13px;
+    position: relative;
+    z-index: 2;
 }
 
 .feed-actions {
@@ -231,6 +276,7 @@ body {
 .feed-actions i {
     cursor: pointer;
     font-size: 16px;
+    z-index: 3;
 }
 
 .timestamp {
