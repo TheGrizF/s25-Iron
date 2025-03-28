@@ -46,36 +46,45 @@
             {% if item.type == 'dish' %}
                 <div class="feed-item">
                     <a href="{{ url_for('dish.dish_detail', dish_id=item.data.dish_id) }}" class="card-link">
-                        <div class="feed-header">
-                            <span class="action">Recommended For You: {{ item.data.match_score }}% match</span>
-                        </div>
-                        <div class="feed-content"> 
-                            <p>
-                                {{ item.data.name }} @ 
-                                <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="restaurant-link">
-                                    {{ item.data.restaurant }}
-                                </a>
-                            </p>
-                            <img src="{{ url_for('static', filename=item.data.image_path) }}" alt="{{ item.data.name }}">
-                        </div>
-                        <div class="feed-content">
-                            <p>Your TasteBuddy {{ item.data.buddy_name }}'s review</p>
-                            <img src="{{ url_for('static', filename=item.data.buddy_icon) }}" alt="{{ item.data.buddy_name }}" style="width: 75px; height: 75px">
-                            <div class="star-rating">
-                                <span>Rated:</span>
-                                    {% set full = item.data.buddy_rating|int %}
-                                    {% set empty = 5 - full %}
+                        <div class="dish-section">
+                            <div class="dish-info">
+                                <div class="recommendation-header">Recommended for you</div>
+                                <div class="dish-header">
+                                    <span class="dish-title">{{ item.data.name }}</span> @ 
+                                    <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="restaurant-link">
+                                        {{ item.data.restaurant }}
+                                    </a>
+                                </div>
+                                <div class="match-score">{{ item.data.match_score }}% taste match</div>
+                                
+                                <div class="compact-review">
+                                    <p class="buddy-intro">Your TasteBuddy {{ item.data.buddy_name }}'s review</p>
+                                    <div class="buddy-review">
+                                        <img src="{{ url_for('static', filename=item.data.buddy_icon) }}" alt="{{ item.data.buddy_name }}" class="buddy-icon">
+                                        <div class="review-content">
+                                            <div class="star-rating">
+                                                <span>Rated:</span>
+                                                {% set full = item.data.buddy_rating|int %}
+                                                {% set empty = 5 - full %}
 
-                                    {% for _ in range(full) %}
-                                        <i class = "fas fa-star"></i>
-                                    {% endfor %}
+                                                {% for _ in range(full) %}
+                                                    <i class="fas fa-star"></i>
+                                                {% endfor %}
                     
-                                    {% for _ in range(empty) %}
-                                        <i class = "far fa-star"></i>
-                                    {% endfor %}
+                                                {% for _ in range(empty) %}
+                                                    <i class="far fa-star"></i>
+                                                {% endfor %}
+                                            </div>
+                                            <p class="review-text">{{ item.data.review_content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <p>{{ item.data.review_content }}</p>
+                            <div class="dish-image">
+                                <img src="{{ url_for('static', filename=item.data.image_path) }}" alt="{{ item.data.name }}">
+                            </div>
                         </div>
+
                         <div class="feed-footer">
                             <span class="timestamp">{{ item.data.time_stamp }}</span>
                             <div class="feed-actions">
@@ -94,7 +103,8 @@
                         <div class="feed-header">
                             <span class="friend">Your friend {{ item.data.friend_name }} reviewed </span>
                             <br>
-                            <span class="action">{{ item.data.dish_name }} @ 
+                            <span class="action">
+                                <span class="dish-title">{{ item.data.dish_name }}</span> @ 
                                 <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="restaurant-link">
                                     {{ item.data.restaurant_name }}
                                 </a>
@@ -102,8 +112,9 @@
                         </div>
                         <div class="feed-content">
                             <img src="{{ url_for('static', filename=item.data.friend_icon) }}" alt="{{ item.data.friend_name }}" style="width: 75px; height: 75px">
-                            <div class="star-rating">
-                                <span>Rated:</span>
+                            <div class="review-content">
+                                <div class="star-rating">
+                                    <span>Rated:</span>
                                     {% set full = item.data.rating|int %}
                                     {% set empty = 5 - full %}
 
@@ -114,8 +125,9 @@
                                     {% for _ in range(empty) %}
                                         <i class = "far fa-star"></i>
                                     {% endfor %}
+                                </div>
+                                <p class="review-text">{{ item.data.content }}</p>
                             </div>
-                            <p>{{ item.data.content }}</p>
                         </div>
                         <div class="feed-footer">
                             <span class="timestamp">{{ item.data.time_stamp }}</span>
@@ -127,14 +139,21 @@
             {% elif item.type == 'saved' %}
                 <div class="feed-item">
                     <a href="{{ url_for('dish.dish_detail', dish_id=item.data.dish_id) }}" class="card-link">
-                        <div class="feed-header">
-                            <span class="action">From Your Saved Dishes</span>
-                        </div>
-                        <div class="feed-content"> 
-                            <p>
-                                {{ item.data.dish_name }} @ {{ item.data.restaurant_name }}
-                            </p>
-                            <img src="{{ url_for('static', filename=item.data.image) }}" alt="{{ item.data.dish_name }}">
+                        <div class="dish-section">
+                            <div class="dish-info">
+                                <div class="feed-header">
+                                    <span class="action">From Your Saved Dishes</span>
+                                </div>
+                                <p class="dish-header">
+                                    <span class="dish-title">{{ item.data.dish_name }}</span> @ 
+                                    <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="restaurant-link">
+                                        {{ item.data.restaurant_name }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="dish-image">
+                                <img src="{{ url_for('static', filename=item.data.image) }}" alt="{{ item.data.dish_name }}">
+                            </div>
                         </div>
                         <div class="feed-footer">
                             <span class="timestamp">Saved on {{ item.data.date_saved }}</span>
@@ -144,25 +163,6 @@
             {% endif %}
 
         {% endfor %}
-
-        <div class="feed-item">
-            <div class="feed-header">
-                <span class="username">MelCollie</span>
-                <span class="action">left a new dish review @ The Baattery</span>
-            </div>
-            <div class="feed-content">
-                <p class="private-content">private</p>
-                <img src="{{ url_for('static', filename='images/profile_icons/default2.png') }}" alt="User profile" class="profile-pic">
-            </div>
-            <div class="feed-footer">
-                <span class="timestamp">1 hour ago</span>
-                <div class="feed-actions">
-                    <i class="far fa-star"></i>
-                    <i class="fas fa-share"></i>
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
-        </div>
     </section>
 </div>
 
