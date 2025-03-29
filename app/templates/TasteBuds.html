@@ -177,7 +177,7 @@
                                     data-icon-path="{{ buddy.icon_path }}">
               <img src="{{ url_for('static', filename=buddy.icon_path) }}" alt="{{ buddy.first_name }} {{ buddy.last_name }}" class="group-buddy-icon" />
               <span class="group-buddy-name">{{ buddy.first_name }} {{ buddy.last_name }}</span>
-              <i class="bi bi-x-circle remove-buddy" onclick="removeBuddy({{ buddy.user_id }})"></i>
+              <i class="bi bi-x-circle remove-buddy" onclick="removeBuddy({{ buddy.user_id }})"></i> <!--not implemented yet-->
           </div>
           {% endfor %}
         </div>
