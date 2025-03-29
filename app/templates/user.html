@@ -8,7 +8,12 @@
 
 
 {% block content %}
-<div class="taste-profile-container">
+<div class="taste-profile-container" 
+     style="max-width: 600px !important; 
+            margin: 0 auto !important; 
+            box-sizing: border-box !important; 
+            overflow: hidden !important;
+            background-color: var(--gray-light);"> <!--Sorry Ben, didn't want to mess with your css-->
     <div class="profile-icon">
         {% if viewed_user.icon_path %}
             <img src="{{ url_for('static', filename=viewed_user.icon_path) }}" 
