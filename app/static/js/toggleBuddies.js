@@ -55,17 +55,19 @@ function toggleFollow(element) {
 }
 
 function sendSelectedBuddiesList(){
-    fetch('/createGroup', {
+    fetch('/getGroupUserIds', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-        },
+            },
         body: JSON.stringify({selectedBuddies: selectedBuddies}),
+       
+        
     })
     .then(response => response.json())
     .then(data => {
         if (response.ok) {
-            window.location.href = '/createGroup';
+            window.location.href = '/getGroupUserIds';
         } 
     })
     .catch(error => console.error("Error:", error)

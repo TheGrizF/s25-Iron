@@ -49,8 +49,9 @@ def TasteBuds():
 
      return render_template('TasteBuds.html', friendslist=friendsList)
 
-@daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
-def createGroup():
+
+@daily_dish_bp.route('/getGroupUserIds', methods=['POST'])
+def getGroupUserIds():
     user_id = session.get('user_id')
     groupData = request.get_json()
     selectedFriends = groupData.get('selectedBuddies',[])
@@ -59,7 +60,16 @@ def createGroup():
     print('Received selected buddies:', selectedFriends)
     
     # Add list containning current user to list of selected
-    activeGroup = [user_id] + selectedFriends
+    activeGroup =  selectedFriends + [user_id]
+    print(activeGroup)
+    
+    session['activeGroup'] = activeGroup
+    return redirect(url_for('daily_dish.getOverlappingDishes'))
+    #return jsonify({'status': 'success', 'activeGroup': activeGroup, })
+
+@daily_dish_bp.route('/getOverlappingDishes', methods = ['POST','GET'])
+def getOverlappingDishes():
+    activeGroup = session.get('activeGroup',[])
     
     #Fetch information on users in active group
     activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
@@ -88,13 +98,18 @@ def createGroup():
    
     # for overlap iterate through matchingDishes set and make a list of the matches that meet requirements
     overlapping_recommendations = [rec for rec in recommendations if rec[0] in matchingDishes]
+    dish_ids = []
+    for rec in overlapping_recommendations:
+        if rec[0] not in dish_ids:
+         dish_ids.append(rec[0])
     print('overlap:',overlapping_recommendations) #debug for overlaps
     
-    return redirect(url_for('daily_dish.groupMatch', activeGroup = activeGroupInfo, recommendations = recommendations))
+    return redirect(url_for('daily_dish.groupMatch', overlapping_recommendations=overlapping_recommendations, dish_ids=dish_ids))
+    
 
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
-   return render_template('groupMatch.html')
+    return render_template('groupMatch.html')
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
