@@ -9,7 +9,45 @@ from database.models.taste_profiles import dishTasteProfile
 from database.models.user import cuisineUserJunction, savedDishes, user, user_allergen, user_restriction, tasteComparisons, friends
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
-from database.models.restaurant import restaurant
+from database.models.restaurant import liveUpdate, restaurant
+
+def get_live_updates(user_id, threshold=80):
+    """
+    Gets a list of the most recent updates for restaurants that match a threshold for the user
+
+    :param user_id: id of user to base threshold for
+    :param threshold: only restaurants above this % match will be returned
+    :return: Sorted list of restaurants dictionaries and their updates
+    """
+
+    all_restaurants = get_all_restaurant_info(user_id)
+    match_rest_ids = [
+        rest['restaurant_id'] for rest in all_restaurants
+        if rest.get('match_percentage', 0) >= threshold
+    ]
+
+    if not match_rest_ids:
+        return []
+    
+    match_updates = (
+        db.session.query(liveUpdate)
+        .filter(liveUpdate.restaurant_id.in_(match_rest_ids))
+        .order_by(liveUpdate.created_at.desc())
+        .all()
+    )
+
+    live_updates = []
+    for update in match_updates:
+        user_name = f"{update.user.first_name} {update.user.last_name}"
+        live_updates.append({
+            "restaurant_id": update.restaurant.restaurant_id,
+            "restaurant_name": update.restaurant.restaurant_name,
+            "content": update.update_content,
+            "time_posted": update.created_at.strftime("%B %d, %Y %I:%M %p"),
+            "user_name": user_name,
+        })
+
+    return live_updates
 
 def get_dish_info(dish_id, include_reviews=False):
     """
