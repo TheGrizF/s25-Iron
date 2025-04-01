@@ -109,13 +109,10 @@ def submit_review():
 
 @dish_bp.route("/review", methods=["GET"])
 def review_page():
-    print("here....")
     dish_id = request.args.get("dish_id")
     restaurant_id = request.args.get("restaurant_id")
     user_id = session.get("user_id")
     user_obj = user.query.get(user_id)
-    print("dish_id", dish_id)
-    print("restaurant", restaurant_id)
     return render_template("review.html", dish_id=dish_id, restaurant_id=restaurant_id, user=user_obj)
 
 @dish_bp.route("/toggle-save/<int:dish_id>", methods=["POST"])
