@@ -2,8 +2,6 @@ from flask import Blueprint, render_template, session, request, flash, redirect,
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations
-from database.models.user import friends, user
 from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates
 import json
 daily_dish_bp = Blueprint('daily_dish', __name__)
@@ -105,11 +103,6 @@ def groupMatch():
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
     return render_template('restaurant_detail.html')
-
-@daily_dish_bp.route('/review', methods=['GET', 'POST'])
-def review():
-    user = {'firstName': 'Person-I-Know'} #Umm, don't know how to connect it with db right now 
-    return render_template('review.html', user = user)
 
 @daily_dish_bp.route('/get-buddy/<int:user_id>')
 def get_buddy(user_id):

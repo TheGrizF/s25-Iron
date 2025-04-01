@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <button class = "review-button" onClick="goToReview('{{ dish.dish_id }}')")>
+    <button class = "review-button" onClick="goToReview('{{ dish.dish_id }}', '{{ dish.restaurant_id }}')">
        <i class="fa-solid fa-pen"></i>
         Write a Review
     </button>
@@ -154,8 +154,8 @@
 </div>
 
 <script>
-    function goToReview(dishId) {
-        window.location.href = `/review?dish_id=${dishId}`;
+    function goToReview(dishId, restaurantId) {
+        window.location.href = `/review?dish_id=${dishId}&restaurant_id=${restaurantId}`;
     }
     </script>
 {% endblock %} 
