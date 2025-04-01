@@ -2,6 +2,7 @@
 Use this to create all the helper functions for the routes.
 Keeps them organized so we can use them again if we need to.
 """
+from datetime import datetime
 from flask import session
 from sqlalchemy import func
 from database import db
@@ -9,7 +10,46 @@ from database.models.taste_profiles import dishTasteProfile
 from database.models.user import cuisineUserJunction, savedDishes, user, user_allergen, user_restriction, tasteComparisons, friends
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
-from database.models.restaurant import restaurant
+from database.models.restaurant import liveUpdate, restaurant
+
+def get_live_updates(user_id, threshold=75):
+    """
+    Gets a list of the most recent updates for restaurants that match a threshold for the user
+
+    :param user_id: id of user to base threshold for
+    :param threshold: only restaurants above this % match will be returned
+    :return: Sorted list of restaurants dictionaries and their updates
+    """
+
+    all_restaurants = get_all_restaurant_info(user_id)
+    match_rest_ids = [
+        rest['restaurant_id'] for rest in all_restaurants
+        if rest.get('match_percentage', 0) >= threshold
+    ]
+
+    if not match_rest_ids:
+        return []
+    
+    match_updates = (
+        db.session.query(liveUpdate)
+        .filter(liveUpdate.restaurant_id.in_(match_rest_ids))
+        .filter(liveUpdate.user_id != user_id)
+        .order_by(liveUpdate.created_at.desc())
+        .all()
+    )
+
+    live_updates = []
+    for update in match_updates:
+        user_name = f"{update.user.first_name} {update.user.last_name}"
+        live_updates.append({
+            "restaurant_id": update.restaurant.restaurant_id,
+            "restaurant_name": update.restaurant.restaurant_name,
+            "content": update.update_content,
+            "time_posted": relative_time(update.created_at),
+            "user_name": user_name,
+        })
+
+    return live_updates
 
 def get_dish_info(dish_id, include_reviews=False):
     """
@@ -461,6 +501,44 @@ def get_restaurant_info(user_id, restaurant_id):
 def get_all_restaurant_info(user_id):
     all_restaurants = restaurant.query.all()
     return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
+
+def relative_time(original_time):
+    """
+    Converts a datetime object into a relative time string for display
+    based on the following rules:
+    - Under 5 minutes: "just now"
+    - Under 1 hour: "X minutes ago"
+    - Under 1 day: "X hours ago"
+    - Under 7 days: "yesterday" or "x days ago"
+    - Under 30 Days: "last week" or "x weeks ago"
+    - Over 30 days: "Month day, year"
+    """
+    now = datetime.now()
+    diff = now - original_time
+    seconds = diff.total_seconds()
+    minutes = int(seconds // 60)
+    hours = int(seconds // 3600)
+    days = diff.days
+
+    if seconds < 300:
+        return "Just now"
+    elif minutes < 60:
+        return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
+    elif hours < 24:
+        return f"{hours} hour{'s' if hours != 1 else ''} ago"
+    elif days < 7:
+        if days == 1:
+            return "Yesterday"
+        else:
+            return f"{days} days ago"
+    elif days < 30:
+        weeks = int(days // 7)
+        if weeks == 1:
+            return "Last week"
+        else:
+            return f"{weeks} weeks ago"
+    else:
+        return original_time.strftime("%B %d, %Y")
 
 """
 Normalize email is used to remove dot indifference and '+' extensions
