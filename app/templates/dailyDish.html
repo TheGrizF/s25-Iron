@@ -168,7 +168,7 @@
                             <div class="update-section">
                                 <div class="update-header">
                                     <button class="update-button" type="button">
-                                        Live Update <i class="fas fa-bullhorn"></i>
+                                        <i class="fas fa-bullhorn"></i>&nbsp;&nbsp; Update: {{ item.data.time_posted }}
                                     </button>
                                 </div>
                                 <div class="update-body">
@@ -176,9 +176,6 @@
                                         {{ item.data.user_name }} posted an update at {{ item.data.restaurant_name }}:
                                     </p>
                                     <p class="update-content">{{ item.data.content }}</p>
-                                </div>
-                                <div class="update-footer">
-                                    On {{ item.data.time_posted }}
                                 </div>
                             </div>
                         </a>
