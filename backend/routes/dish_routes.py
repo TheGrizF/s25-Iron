@@ -20,10 +20,12 @@ def dishes():
         saved.dish_id for saved in savedDishes.query.filter_by(user_id=user_id).all()
     }
 
-    dishes = [
-        get_dish_info(d[0]) | {"is_saved": d[0] in saved_dish_ids} # also added
-        for d in dish_recommendations
-    ]
+    dishes = []
+    for d in dish_recommendations:
+        info = get_dish_info(d[0])
+        if info is not None:
+            info["is_saved"] = d[0] in saved_dish_ids
+            dishes.append(info)
 
     sort_by = request.args.get('sort', 'match_score') #default is match score
     filter_by = request.args.get('filter','all')
