@@ -150,6 +150,7 @@ def taste_profile_debug():
 def save_taste_profile_step1():
     try:
         data = request.get_json()
+        user_id = session.get('user_id')
         
         # Store the data in session
         session['taste_profile_step1'] = data
@@ -166,8 +167,28 @@ def save_taste_profile_step2():
         data = request.get_json()
         session['taste_profile_step2'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        
+        allergens = data.get('allergens', [])
+        for allergen in allergens:
+            db.session.add(user_allergen(user_id=user_id, allergen=allergen))
+        other_allergens = data.get('otherAllergies', [])
+        for other in other_allergens:
+            db.session.add(user_allergen(user_id=user_id, allergen=other.strip().lower()))
+
+        restrictions = data.get('restrictions', [])
+        for restriction in restrictions:
+            db.session.add(user_restriction(user_id=user_id, restriction=restriction))
+
+        taste_profile.current_step = 2
+
+        db.session.commit()    
+
         return jsonify({'status': 'success'})
     except Exception as e:
+        db.session.rollback()
         print("Error:", str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
@@ -177,9 +198,19 @@ def save_taste_profile_step3():
         data = request.get_json()
         session['taste_profile_step3'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        taste_profile=tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.sour = data.get('sour', 0)
+        taste_profile.current_step = 3
+
+        db.session.commit()
+
         return jsonify({'status': 'success'})
+    
     except Exception as e:
         print("Error:", str(e))
+        db.session.rollback()
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @profile_bp.route('/api/taste-profile/step4', methods=['POST'])
