@@ -107,7 +107,7 @@ def get_dish_info(dish_id, include_reviews=False):
                 "user_icon": rev.user.icon_path,
                 "content": rev.content,
                 "rating": rev.rating,
-                "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+                "time_stamp": relative_time(rev.created_at),
             }
             for rev in reviews
         ]
@@ -188,7 +188,7 @@ def get_daily_dishes(user_id, limit=10):
             "buddy_name": f"{rev.user.first_name} {rev.user.last_name}",
             "buddy_icon": rev.user.icon_path,
             "review_content": rev.content,
-            "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+            "time_stamp": relative_time(rev.created_at),
             "rating": rev.rating,
         }
         for rev in reviews
@@ -263,7 +263,7 @@ def get_friend_reviews(user_id, limit=5):
             "dish_name": rev.dish.dish_name,
             "restaurant_id": rev.dish.menu_dishes[0].menu.restaurant.restaurant_id,
             "restaurant_name": rev.dish.menu_dishes[0].menu.restaurant.restaurant_name,
-            "time_stamp": rev.created_at.strftime("%B %d, %Y"),
+            "time_stamp": relative_time(rev.created_at),
         })
     
     return friend_reviews[:limit]
