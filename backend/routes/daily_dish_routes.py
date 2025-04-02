@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, request, flash, redirect, url_for, jsonify
 from database import db
 from database.models.dish import dish
-from database.models.user import friends, user
+from database.models.user import friends, tasteComparisons, user
 from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates
 import json
 daily_dish_bp = Blueprint('daily_dish', __name__)
@@ -49,8 +49,9 @@ def TasteBuds():
 
      # Fetch information on friends
      friendsList = db.session.query(user).join(friends, friends.buddy_id == user.user_id).filter(friends.user_id == user_id).all()
+     matches = get_matches()
 
-     return render_template('TasteBuds.html', friendslist=friendsList)
+     return render_template('TasteBuds.html', friendslist=friendsList, matches=matches)
 
 @daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
 def createGroup():
@@ -103,46 +104,6 @@ def groupMatch():
 def restaurant_detail(id):
     return render_template('restaurant_detail.html')
 
-@daily_dish_bp.route('/review', methods=['GET', 'POST'])
-def review():
-    user = {'firstName': 'Person-I-Know'} #Umm, don't know how to connect it with db right now 
-    return render_template('review.html', user = user)
-
-@daily_dish_bp.route('/TasteBuds')
-def get_matches():#This doesn't work correctly
-    try:
-        user_id = session.get('user_id')
-        if not user_id:
-            flash('Log in to view TasteBuddies.', 'error')
-            return redirect(url_for('auth.index'))
-
-
-        matches = db.session.query(
-            tasteComparisons.compare_to,
-            user.first_name,
-            user.last_name,
-            tasteComparisons.comparison_num
-        ).join(user, user.user_id == tasteComparisons.compare_to).filter(
-            tasteComparisons.compare_from == user_id,
-            tasteComparisons.comparison_num <= 6
-        ).order_by(tasteComparisons.comparison_num).all()
-
-
-
-
-        results =[{
-            "user_id": match.user_id,
-            "name": f"{match.first_name} {match.last_name}",
-            "match_score": round(( 24 - match.comparison_num) / 24 * 100, 1)
-        } for match in matches]
-
-
-        return render_template('TasteBuds.html', matches=results)
-
-
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-    
 @daily_dish_bp.route('/get-buddy/<int:user_id>')
 def get_buddy(user_id):
     try:
@@ -160,3 +121,33 @@ def get_buddy(user_id):
         print(f"Error: {str(e)}")  # Debugging
         return jsonify({'error': 'Internal Server Error'}), 500 
 
+def get_matches():#This doesn't work correctly
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            flash('Log in to view TasteBuddies.', 'error')
+            return redirect(url_for('auth.index'))
+
+        matches = db.session.query(
+        tasteComparisons.compare_to,
+        user.first_name,
+        user.last_name,
+        tasteComparisons.comparison_num,
+        user.icon_path
+    ).join(user, user.user_id == tasteComparisons.compare_to).filter(
+        tasteComparisons.compare_from == user_id
+    ).order_by(tasteComparisons.comparison_num).all()
+
+        results = [{ "user_id": match.compare_to,
+                "first_name": match.first_name,
+                "last_name": match.last_name,
+                "match_score": round((24 - match.comparison_num) / 24 * 100, 1),
+                "icon_path": match.icon_path} 
+                for match in matches if round((24 - match.comparison_num) / 24 * 100, 1) > 75]
+
+        return results
+
+    except Exception as e:
+        print(f"Error in get_matches: {e}")
+        return []
+    

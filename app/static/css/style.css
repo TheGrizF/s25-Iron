@@ -43,10 +43,21 @@ body {
 }
 
 .small-logo img{
-    width: 15%;
+    /*width: 15%;
     max-height: 24px;
+    max-width:24px;
     height:auto;
+    margin-bottom: 0;*/ /*Looks warped on actual phone screens*/
+    max-height: 24px;
+    max-width:24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 0;
+    flex-wrap: nowrap;  /* Prevent wrapping on very small screens */
+    position: relative;
+    top: -2px; 
 }
 
 .small-logo {

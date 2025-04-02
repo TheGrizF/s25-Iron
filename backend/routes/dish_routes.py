@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, session, request, jsonify
+from flask import Blueprint, redirect, render_template, session, request, jsonify, url_for
 from database import db
 from backend.utils import get_dish_info, get_dish_recommendations
-from database.models.user import savedDishes
+from database.models.review import review
+from database.models.user import savedDishes, user
 
 dish_bp = Blueprint('dish', __name__)
 
@@ -81,6 +82,38 @@ def dish_detail(dish_id):
     dish_info["is_saved"] = is_saved
 
     return render_template("dish_detail.html", dish = dish_info, is_saved=is_saved)
+
+@dish_bp.route("/submit-review", methods=["POST"])
+def submit_review():
+    user_id = session.get('user_id')
+
+    dish_id = request.form.get("dish_id")
+    restaurant_id = request.form.get("restaurant_id")
+    rating = request.form.get("rating")
+    content = request.form.get("content")
+    print(dish_id)
+    rating = int(rating)
+    
+    new_review = review(
+        user_id = user_id,
+        dish_id = dish_id,
+        restaurant_id = restaurant_id,
+        rating = rating,
+        content = content
+    )
+    print("dishid = ", repr(dish_id))
+    db.session.add(new_review)
+    db.session.commit()
+
+    return redirect(url_for('dish.dish_detail', dish_id=dish_id))
+
+@dish_bp.route("/review", methods=["GET"])
+def review_page():
+    dish_id = request.args.get("dish_id")
+    restaurant_id = request.args.get("restaurant_id")
+    user_id = session.get("user_id")
+    user_obj = user.query.get(user_id)
+    return render_template("review.html", dish_id=dish_id, restaurant_id=restaurant_id, user=user_obj)
 
 @dish_bp.route("/toggle-save/<int:dish_id>", methods=["POST"])
 def toggle_save(dish_id):
