@@ -131,6 +131,14 @@ h2 {
     color: var(--slate-dark);
 }
 
+.nav-item.active {
+    color: var(--slate-dark);
+}
+
+.nav-item.active i {
+    color: var(--slate-dark);
+}
+
 .nav-item i {
     font-size: 20px;
     margin-bottom: 4px;
