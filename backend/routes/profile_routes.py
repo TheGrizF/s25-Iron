@@ -490,3 +490,28 @@ def add_buddy(buddy_id):
             flash('Error adding buddy.', 'error')
     
     return redirect(url_for('profile.view_user', user_id=buddy_id))
+
+@profile_bp.route('/api/autocomplete')
+def autocomplete():
+    query = request.args.get('q', '').lower()
+    type = request.args.get('type', '')  # 'restaurant' or 'dish'
+    
+    if type == 'restaurant':
+        results = db.session.query(restaurant).filter(
+            restaurant.restaurant_name.ilike(f'%{query}%')
+        ).limit(5).all()
+        return jsonify([{
+            'id': r.restaurant_id,
+            'name': r.restaurant_name
+        } for r in results])
+    
+    elif type == 'dish':
+        results = db.session.query(dish).filter(
+            dish.dish_name.ilike(f'%{query}%')
+        ).limit(5).all()
+        return jsonify([{
+            'id': d.dish_id,
+            'name': d.dish_name
+        } for d in results])
+    
+    return jsonify([])
