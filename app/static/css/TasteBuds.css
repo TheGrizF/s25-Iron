@@ -20,7 +20,7 @@
   display: flex;
   justify-content: center; /* This centers the search-container */
   padding: 0px;
-  position: relative;
+  /*position: relative;*/
   margin: 0px auto;
 
 
@@ -33,13 +33,13 @@
   width: 100%;
   max-width: 500px;
   position: relative;
-  margin: 0px 0;
+  margin: 0px auto;
 }
 
 
 .search-bar form {
   width: 100%;
-  max-width: 500px;
+  /*max-width: 100%;*/
   display: flex;
   justify-content: center;
 }
@@ -51,6 +51,18 @@
   border: 1px solid var(--gray-medium);
   border-radius: 25px;
   font-size: 16px;
+  min-width: 20px;
+}
+
+.search-btn {
+  display: flex;
+  margin-left: 0px;
+  white-space: nowrap; /* Prevent button text from wrapping */
+  min-width: 70px; /* Give button a minimum width */
+  text-align: center;
+  justify-content: center; /* Center text horizontally */
+  align-items: center; /* Center text vertically */
+  text-align:
 }
 
 
@@ -98,6 +110,7 @@
   padding: 0px 10px;
   overflow: hidden;
   background: var(--white);
+  box-sizing: border-box;
 }
 
 .buddies-section {
@@ -155,6 +168,14 @@
   display: flex;
   align-items: center;
   padding: 10px;
+}
+
+.buddy a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  flex: 1; /* Take up available space */
 }
 
 

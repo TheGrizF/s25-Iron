@@ -13,25 +13,30 @@
     </div>
 
     <!--Review Form Start-->
-    <form action="/review" method="POST"> <!--Will need more involvement later-->
+    <form action="{{ url_for('dish.submit_review') }}" method="POST"> <!--Will need more involvement later-->
+
+        <input type="hidden" name="dish_id" value="{{ dish_id }}">
+        <input type="hidden" name="restaurant_id" value="{{ restaurant_id }}">
+        <input type="hidden" name="rating" id="rating" value="">
+
         <div class="rating-container">
-            <div class="rating-option">
+            <div class="rating-option" data-rating="1">
                 <div class="rating-circle"></div>
                 <img src="{{ url_for('static', filename='images/review/puke.png') }}" alt="Disgusting">
             </div>
-            <div class="rating-option">
+            <div class="rating-option" data-rating="2">
                 <div class="rating-circle"></div>
                 <img src="{{ url_for('static', filename='images/review/gross.png') }}" alt="Difficult to eat">
             </div>
-            <div class="rating-option">
+            <div class="rating-option" data-rating="3">
                 <div class="rating-circle"></div>
                 <img src="{{ url_for('static', filename='images/review/neutral.png') }}" alt="Neutral">
             </div>
-            <div class="rating-option">
+            <div class="rating-option" data-rating="4">
                 <div class="rating-circle"></div>
                 <img src="{{ url_for('static', filename='images/review/smile.png') }}" alt="Good">
             </div>
-            <div class="rating-option">
+            <div class="rating-option" data-rating="5">
                 <div class="rating-circle"></div>
                 <img src="{{ url_for('static', filename='images/review/yummy.png') }}" alt="Yummy">
             </div>
@@ -224,16 +229,14 @@
             </div>
         </div>
 
-        
-    </form>
-
-    <button class="expand-button" id="final-thoughts">Final Thoughts</button>
-        <textarea class="text-area" placeholder="Share your thoughts..."></textarea>
+        <button class="expand-button" id="final-thoughts">Final Thoughts</button>
+        <textarea class="text-area" name="content" placeholder="Share your thoughts..."></textarea>
 
         <div class="bottom-buttons">
             <button class="bottom-button" onclick="window.history.back()">Skip</button>
-            <button class="bottom-button">Submit</button> <!--Needs implementation-->
+            <button class="bottom-button" type="submit">Submit</button> <!--Needs implementation-->
         </div>
+    </form>
 
     <script>
         // Handle rating selection
@@ -241,11 +244,13 @@
             option.addEventListener('click', () => {
                 document.querySelectorAll('.rating-option').forEach(opt => opt.classList.remove('selected'));
                 option.classList.add('selected');
+
+                document.getElementById('rating').value = option.dataset.rating;
             });
         });
 
         // Handle "Tell us more" button
-        document.getElementById('tell-more').addEventListener('click', function() {
+        document.getElementById('tell-more').addEventListener('click', function(event) {
             event.preventDefault();
             this.style.backgroundColor = 'var(--dark-grey)';
             document.getElementById('categories').style.display = 'block';
@@ -263,7 +268,7 @@
         });
 
         // Handle "Final Thoughts" button
-        document.getElementById('final-thoughts').addEventListener('click', function() {
+        document.getElementById('final-thoughts').addEventListener('click', function(event) {
             event.preventDefault();
             this.style.backgroundColor = 'var(--dark-grey)';
             document.querySelector('.text-area').style.display = 'block';

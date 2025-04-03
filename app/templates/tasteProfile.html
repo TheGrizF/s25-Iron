@@ -7,17 +7,25 @@
     <form id="tasteProfileForm">
         <div class="form-group">
             <label for="favoriteRestaurant">What's your favorite restaurant?</label>
-            <input type="text" 
-                   id="favoriteRestaurant" 
-                   name="favoriteRestaurant" 
-                   required>
+            <div class="autocomplete-container">
+                <input type="text" 
+                       id="favoriteRestaurant" 
+                       name="favoriteRestaurant" 
+                       class="autocomplete-input"
+                       required>
+                <div id="restaurantSuggestions" class="autocomplete-suggestions"></div>
+            </div>
         </div>
         <div class="form-group">
             <label for="favoriteDish">What's your favorite dish?</label>
-            <input type="text" 
-                   id="favoriteDish" 
-                   name="favoriteDish" 
-                   required>
+            <div class="autocomplete-container">
+                <input type="text" 
+                       id="favoriteDish" 
+                       name="favoriteDish" 
+                       class="autocomplete-input"
+                       required>
+                <div id="dishSuggestions" class="autocomplete-suggestions"></div>
+            </div>
         </div>
         <div class="form-group">
             <label>Do you like to try new things?</label>
@@ -51,4 +59,124 @@
         Otherwise, click "Done". You can always update your Taste Profile later.
     </p>
 </div>
+
+<style>
+.autocomplete-container {
+    position: relative;
+    width: 100%;
+}
+
+.autocomplete-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.autocomplete-suggestions div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.autocomplete-suggestions div:hover {
+    background-color: #f0f0f0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const restaurantInput = document.getElementById('favoriteRestaurant');
+    const dishInput = document.getElementById('favoriteDish');
+    const restaurantSuggestions = document.getElementById('restaurantSuggestions');
+    const dishSuggestions = document.getElementById('dishSuggestions');
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    async function fetchSuggestions(query, type) {
+        try {
+            const response = await fetch(`/api/autocomplete?q=${encodeURIComponent(query)}&type=${type}`);
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            return [];
+        }
+    }
+
+    function showSuggestions(suggestions, container) {
+        container.innerHTML = '';
+        if (suggestions.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+
+        suggestions.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item.name;
+            div.onclick = () => {
+                container.previousElementSibling.value = item.name;
+                container.style.display = 'none';
+            };
+            container.appendChild(div);
+        });
+        container.style.display = 'block';
+    }
+
+    const handleRestaurantInput = debounce(async (e) => {
+        const query = e.target.value;
+        if (query.length < 2) {
+            restaurantSuggestions.style.display = 'none';
+            return;
+        }
+        const suggestions = await fetchSuggestions(query, 'restaurant');
+        showSuggestions(suggestions, restaurantSuggestions);
+    }, 300);
+
+    const handleDishInput = debounce(async (e) => {
+        const query = e.target.value;
+        if (query.length < 2) {
+            dishSuggestions.style.display = 'none';
+            return;
+        }
+        const suggestions = await fetchSuggestions(query, 'dish');
+        showSuggestions(suggestions, dishSuggestions);
+    }, 300);
+
+    restaurantInput.addEventListener('input', handleRestaurantInput);
+    dishInput.addEventListener('input', handleDishInput);
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!restaurantInput.contains(e.target)) {
+            restaurantSuggestions.style.display = 'none';
+        }
+        if (!dishInput.contains(e.target)) {
+            dishSuggestions.style.display = 'none';
+        }
+    });
+});
+</script>
 {% endblock %} 

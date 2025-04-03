@@ -73,8 +73,9 @@
         <div class="buddies-list">
           <!--These are hardcoded Superbuddies-->
             <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=10, from='tastebuds') }}" >
               <img src="{{ url_for('static', filename='images/profile_icons/julia.png') }}" style="width: 25px; height: 25px; padding-right: 5px;">
-              <span class="user-name">Julia Child</span>
+              <span class="user-name">Julia Child</span></a>
               <!--Disabled for Grant's ease of mind and general clarity-->
               <!--span class="follow-btn" onclick="toggleFollow(this)" 
                 data-user-id="10"
@@ -86,8 +87,9 @@
               </span-->
             </div>
             <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=9, from='tastebuds') }}">
               <img src="{{ url_for('static', filename='images/profile_icons/bourdain.png') }}" style="width: 25px; height: 25px; padding-right: 5px;">
-              <span class="user-name">Anthony Bourdain</span>
+              <span class="user-name">Anthony Bourdain</span></a>
               <!--span class="follow-btn" onclick="toggleFollow(this)" 
                 data-user-id="9"
                 data-first-name="Anthony" 
@@ -98,8 +100,9 @@
               </span-->
             </div>
             <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=8, from='tastebuds') }}" class="match-link">
               <img src="{{ url_for('static', filename='images/profile_icons/ramsay.png') }}" style="width: 25px; height: 25px; padding-right: 5px;">
-              <span class="user-name">Gordon Ramsay</span>
+              <span class="user-name">Gordon Ramsay</span></a>
               <!--span class="follow-btn" onclick="toggleFollow(this)" 
                 data-user-id="8"
                 data-first-name="Gordon" 
@@ -122,8 +125,9 @@
         <div class="buddies-list">
           {% for match in matches %}
             <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=match.user_id, from='tastebuds') }}">
               <img src="{{ url_for('static', filename=match.icon_path) }}" style="width: 25px; height: 25px; padding-right: 5px;">
-              <span class="user-name">{{ match.first_name}} {{ match.last_name }}</span>
+              <span class="user-name">{{ match.first_name}} {{ match.last_name }}</span></a>
               <!--span class="follow-btn" onclick="toggleFollow(this)" 
                 data-user-id= "{{ match.user_id }}"
                 data-first-name="{{ match.first_name }}" 
@@ -145,8 +149,9 @@
         <div class="buddies-list">
           {% for friend in friendslist %}
             <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=friend.user_id, from='tastebuds') }}">
               <img src="{{ url_for('static', filename=friend.icon_path) }}" style="width: 25px; height: 25px; padding-right: 5px;">
-              <span class="user-name">{{ friend.first_name}} {{ friend.last_name }}</span>
+              <span class="user-name">{{ friend.first_name}} {{ friend.last_name }}</span></a>
               <span class="follow-btn" onclick="toggleFollow(this)" 
                 data-user-id= "{{ friend.user_id }}"
                 data-first-name="{{ friend.first_name }}" 
@@ -172,7 +177,7 @@
                                     data-icon-path="{{ buddy.icon_path }}">
               <img src="{{ url_for('static', filename=buddy.icon_path) }}" alt="{{ buddy.first_name }} {{ buddy.last_name }}" class="group-buddy-icon" />
               <span class="group-buddy-name">{{ buddy.first_name }} {{ buddy.last_name }}</span>
-              <i class="bi bi-x-circle remove-buddy" onclick="removeBuddy({{ buddy.user_id }})"></i>
+              <i class="bi bi-x-circle remove-buddy" onclick="removeBuddy({{ buddy.user_id }})"></i> <!--not implemented yet-->
           </div>
           {% endfor %}
         </div>
