@@ -503,13 +503,6 @@ def get_all_restaurant_info(user_id):
     return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
 
 def get_follow_notifications(user_id):
-    """
-    Gets unseen follow notifications for the current user.
-    These appear when another user follows you but you haven't seen the notification yet.
-    
-    :param user_id: id of the current user
-    :return: list of follower info dictionaries
-    """
     new_follows = (
         db.session.query(friends, user)
         .join(user, friends.user_id == user.user_id)
@@ -519,14 +512,19 @@ def get_follow_notifications(user_id):
 
     notifications = []
     for relation, follower in new_follows:
+        is_following_back = db.session.query(friends).filter_by(
+            user_id=user_id, buddy_id=follower.user_id
+        ).first() is not None
+
         notifications.append({
             "follower_id": follower.user_id,
-            "follower_name": f"{follower.first_name} {follower.last_name}",
-            "follower_icon": follower.icon_path,
-            "followed_at": relation.date_added.strftime("%B %d, %Y")
+            "name": f"{follower.first_name} {follower.last_name}",
+            "icon_path": follower.icon_path,
+            "is_following_back": is_following_back,
         })
 
     return notifications
+
 
 def relative_time(original_time):
     """
