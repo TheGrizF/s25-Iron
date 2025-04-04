@@ -192,8 +192,7 @@
                         </div>
                         <div style="margin-top: 10px; display: flex; gap: 10px;">
                             {% if not item.data.is_following_back %}
-                                <form action="{{ url_for('auth.addFriend', user_id=item.data.follower_id) }}" method="POST">
-                                    <button class="add-buddy-btn" type="submit">Follow Back</button>
+                                    <button class="follow-back-btn" data-follow-id="{{ item.data.follower_id }}">Follow Back</button>
                                 </form>
                             {% endif %}
                             <button class="mark-seen-btn" type="button">Mark as Seen</button>
@@ -256,7 +255,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const followId = parent.getAttribute('data-follow-id');
 
             const res = await fetch(`/mark-follow-seen/${followId}`, {
-                method: 'POST'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
             const result = await res.json();
@@ -268,9 +270,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
 </script>
 
-
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.follow-back-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const followerId = btn.getAttribute('data-follow-id');
+    
+                const res = await fetch(`/follow-back/${followerId}`, {
+                    method: 'POST'
+                });
+    
+                const result = await res.json();
+                if (result.success) {
+                    btn.textContent = "Following";
+                    btn.disabled = true;
+                    btn.classList.add("disabled");
+                } else {
+                    alert('Could not follow back');
+                }
+            });
+        });
+    });
+    </script>
+    
 {% endblock %}
+
