@@ -157,6 +157,9 @@ def get_matches():#This doesn't work correctly
 @daily_dish_bp.route('/mark-follow-seen/<int:follow_id>', methods=['POST'])
 def mark_follow_seen(follow_id):
     user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'success': False, 'error': 'Not logged in'}), 401
+
     follow_entry = friends.query.filter_by(user_id=follow_id, buddy_id=user_id, seen=False).first()
 
     if follow_entry:
@@ -165,3 +168,21 @@ def mark_follow_seen(follow_id):
         return jsonify({'success': True})
     else:
         return jsonify({'success': False, 'error': 'Follow not found or already seen'})
+
+@daily_dish_bp.route('/follow-back/<int:follower_id>', methods=['POST'])
+def follow_back(follower_id):
+    current_user_id = session.get('user_id')
+    if not current_user_id:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    already_following = db.session.query(friends).filter_by(
+        user_id=current_user_id, buddy_id=follower_id
+    ).first()
+
+    if not already_following:
+        new_follow = friends(user_id=current_user_id, buddy_id=follower_id)
+        db.session.add(new_follow)
+        db.session.commit()
+
+    return jsonify({"success": True})
+
