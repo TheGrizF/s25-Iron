@@ -502,6 +502,32 @@ def get_all_restaurant_info(user_id):
     all_restaurants = restaurant.query.all()
     return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
 
+def get_follow_notifications(user_id):
+    """
+    Gets unseen follow notifications for the current user.
+    These appear when another user follows you but you haven't seen the notification yet.
+    
+    :param user_id: id of the current user
+    :return: list of follower info dictionaries
+    """
+    new_follows = (
+        db.session.query(friends, user)
+        .join(user, friends.user_id == user.user_id)
+        .filter(friends.buddy_id == user_id, friends.seen == False)
+        .all()
+    )
+
+    notifications = []
+    for relation, follower in new_follows:
+        notifications.append({
+            "follower_id": follower.user_id,
+            "follower_name": f"{follower.first_name} {follower.last_name}",
+            "follower_icon": follower.icon_path,
+            "followed_at": relation.date_added.strftime("%B %d, %Y")
+        })
+
+    return notifications
+
 def relative_time(original_time):
     """
     Converts a datetime object into a relative time string for display

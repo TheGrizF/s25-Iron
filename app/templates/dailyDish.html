@@ -180,8 +180,19 @@
                             </div>
                         </a>
                     </div>
-                {% endif %}
-
+                    
+                    {% elif item.type == 'follow' %}
+                    <div class="feed-item follow-notification" data-follow-id="{{ item.data.follower_id }}">
+                        <div class="follow-content">
+                            <img src="{{ url_for('static', filename=item.data.follower_icon) }}" class="buddy-icon" alt="{{ item.data.follower_name }}">
+                            <div>
+                                <p><strong>{{ item.data.follower_name }}</strong> started following you!</p>
+                                <button class="mark-seen-btn">Mark as Seen</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
             {% endfor %}
         </section>
     </div>
@@ -228,6 +239,29 @@ document.addEventListener('DOMContentLoaded', function() {
         showItem(currentIndex);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.mark-seen-btn').forEach(btn => {
+        btn.addEventListener('click', async function () {
+            const parent = btn.closest('.follow-notification');
+            const followId = parent.getAttribute('data-follow-id');
+
+            const res = await fetch(`/mark-follow-seen/${followId}`, {
+                method: 'POST'
+            });
+
+            const result = await res.json();
+            if (result.success) {
+                parent.remove();
+            } else {
+                alert('Could not mark as seen');
+            }
+        });
+    });
+});
+
 </script>
+
+
 
 {% endblock %}

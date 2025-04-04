@@ -101,25 +101,42 @@ def searchUser():
  
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])
 def addFriend(user_id):
-    current_user_id = session.get('user_id')  # Renamed to avoid conflict
+    current_user_id = session.get('user_id')
 
     if not current_user_id:
-        flash("You must be logged in to add a friend.", "error")
+        flash("You must be logged in to follow someone.", "error")
         return redirect(url_for('auth.index'))
 
-    # Check if already Friends
     exists = friends.query.filter_by(user_id=current_user_id, buddy_id=user_id).first()
     
     if exists:
-        flash("Buddy already added", "info")
+        flash("You are already following this user", "info")
     else:
-        new_friend = friends(user_id=current_user_id, buddy_id=user_id, status="accepted")
+        new_friend = friends(user_id=current_user_id, buddy_id=user_id)
         db.session.add(new_friend)
         db.session.commit()
-        flash("Buddy added", "success")
+        flash("You are now following this user", "success")
 
     return redirect(request.referrer)
 
+@auth_bp.route('/removeFriend/<user_id>', methods=['POST', 'GET'])
+def removeFriend(user_id):
+    current_user_id = session.get('user_id')
+
+    if not current_user_id:
+        flash("You must be logged in to unfollow someone.", "error")
+        return redirect(url_for('auth.index'))
+
+    friendship = friends.query.filter_by(user_id=current_user_id, buddy_id=user_id).first()
+
+    if friendship:
+        db.session.delete(friendship)
+        db.session.commit()
+        flash("You have unfollowed this user.", "success")
+    else:
+        flash("You are not following this user.", "error")
+
+    return redirect(request.referrer)
 
 @auth_bp.route('/database')
 def database():

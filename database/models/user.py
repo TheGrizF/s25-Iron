@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, SmallInteger, Text, TIMESTAMP, ForeignKey, func, CheckConstraint
+from sqlalchemy import Boolean, Column, Integer, SmallInteger, Text, TIMESTAMP, ForeignKey, func, CheckConstraint
 from sqlalchemy.orm import relationship
 from database import db
 
@@ -70,14 +70,13 @@ class friends(db.Model):
     user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
     buddy_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
     date_added = Column(TIMESTAMP, nullable=False, server_default=func.now(), onupdate=func.now())  # auto timestamp
-    status = Column(Text, nullable=False)
+    seen = Column(Boolean, default=False)  # 0 = not seen, 1 = seen
 
     user = relationship("user", foreign_keys=[user_id], back_populates="friends")
     buddy = relationship("user", foreign_keys=[buddy_id], back_populates="buddies")
 
     __table_args__ = (
         CheckConstraint("user_id != buddy_id", name="prevent_self_friendship"),
-        CheckConstraint("status IN ('pending', 'accepted', 'blocked')", name="valid_friend_status"),
     )
 
 class savedDishes(db.Model):

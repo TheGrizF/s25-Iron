@@ -94,22 +94,19 @@
         </div>
     </div>
 
-    <!-- Move TasteBuddies section before buttons -->
-    <h2>Your TasteBuddies</h2>
-    {% for friend in friendsList %}
-        {% if friend.icon_path %}
-            <img src="{{ url_for('static', filename=friend.icon_path) }}" 
-                 alt="It's You!"
-                 style="width: 25px; height: 25px;">
-        {% else %}
-            <img src="{{ url_for('static', filename='images/profile_icons/default1.png') }}" 
-                 alt="Unknown"
-                 style="width: 25px; height: 25px">
-        {% endif %}
-        <span class="friend-name">{{ friend.first_name }} {{ friend.last_name }}</span>
-        <br>
-    {% endfor %}
-
+    <h2 class="tastebuddies-header">Your TasteBuddies</h2>
+    <div class="tastebuddies-container">
+        {% for friend in friendsList %}
+            <a href="{{ url_for('profile.view_user', user_id=friend.user_id) }}" class="friend-link">
+                <div class="friend-entry">
+                    <img src="{{ url_for('static', filename=friend.icon_path or 'images/profile_icons/default1.png') }}" 
+                         alt="User Icon" class="match-icon">
+                    <span class="friend-name">{{ friend.first_name }} {{ friend.last_name }}</span>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+   
     <div class="button-group centered">
         <a href="{{ url_for('auth.logout') }}">
             <button class="logout-btn">Logout</button>
@@ -290,6 +287,37 @@
     width: 150px;
     height: 150px;
 }
+
+.tastebuddies-header {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.tastebuddies-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.friend-link {
+    text-decoration: none;
+    color: inherit;
+    width: fit-content;
+}
+
+.friend-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.friend-name {
+    font-weight: 500;
+}
+
+
 </style>
 
 <script>
