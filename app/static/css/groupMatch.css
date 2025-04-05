@@ -13,128 +13,71 @@ body {
     object-fit: cover;
 }
 
-.restaurants-container {
+.group-match-container {
     /*padding: 20px;*/
     padding: 10px 20px 20px 20px;
     /*padding-bottom: 80px;*/
     overflow-x: hidden;
 }
 
-.restaurants-container h2 {
+.group-match-container h2 {
     color:black;
     text-align:center;
 }
 
-.search-header {
-    position: sticky;
-    top: 0;
-    background: transparent;
-    padding: 10px 0;
-    z-index: 100;
+.title-bar {
+    display: flex;
+    min-height: 50px;
+    flex-direction:row;
+    width: 100%;
+    align-items: stretch;
+    font-weight:bold;
 }
 
-.search-bar {
-    position: relative;
-    margin: 15px 0;
+.restaurant-title {
+    flex: 2; /* Takes up half the space */
+    background-color: rgb(102, 100, 100);
+    color: white;
     display: flex;
     align-items: center;
-    padding: 8px 0px ;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    width: 100%; 
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 12px 40px;
-    border: 1px solid var(--gray-medium);
-    border-radius: 25px;
-    font-size: 16px;
-}
-
-.search-bar i {
-    position: absolute;
-    left: 15px;
-    top: 50%; /*adjusted because the padding at the bottom of search bar caused too much space*/
-    transform: translateY(-50%);
-    color: var(--slate-light);
-}
-/*******************************HERE**************************/
-.search-bar form {
-    display: flex;
-    width: 100%;
+    justify-content: left;
+    padding-right: 20px;
+    padding-left: 15px;
     position: relative;
-}
-/************************************************************************/
-
-.filter-section {
-    margin: 0 0;
-}
-
-.filter-row {
+    font-weight:600;
+    min-height: 50px;
+  }
+  
+  .team-title {
+    flex: 1; /* Takes up half the space */
+    background-color: #DFA908; /* Mustard color */
+    color: rgb(102, 100, 100);
     display: flex;
-    gap: 10px;
-    margin-bottom: 0px;
-}
-
-.filter-dropdown {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 0px;
-}
-
-.filter-row form {
-    flex: 1;
-    display: flex; 
-}
-
-.filter-dropdown select {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid var(--gray-medium);
-    border-radius: 5px;
-}
-
-.smart-filter {
-    padding: 8px 15px;
-    background: var(--white);
-    border: 1px solid var(--gray-medium);
-    border-radius: 5px;
-    color: var(--slate-dark);
-}
+    align-items: center;
+    padding-left: 0; /* Space after the triangle */
+    padding-right:15px;
+    position: relative;
+    font-weight: bold;
+    justify-content: right;
+    min-height: 50px;
+  }
+ 
+/*Scaling of triangle was giving me great issue, but Claude gave me this image, thanks!*/
+  .team-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 25px; 
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='100%25' viewBox='0 0 25 100' preserveAspectRatio='none'%3E%3Cpolygon points='25,0 25,100 0,50' fill='%23DFA908'/%3E%3C/svg%3E");
+    background-size: cover;
+    transform: translateX(-100%);
+  }
 
 
 
-.restaurant-card {
-    display: flex;
-    background: var(--white);
-    border-radius: 10px;
-    margin-bottom: 5px;
-    padding: 15px;
-    text-decoration: none;
-    color: inherit;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
 
-.restaurant-card img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 15px;
-}
-
-.restaurant-image-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0px;
-}
-
-.restaurant-info {
-    flex: 1;
-}
 
 .restaurant-info h2 {
     margin: 0;
@@ -177,19 +120,6 @@ body {
     margin: 5px 0;
 }
 
-.tags {
-    display: flex;
-    gap: 10px;
-    margin: 10px 0;
-}
-
-.tag {
-    background: var(--gray-light);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-}
-
 .status {
     display: flex;
     justify-content: space-between;
@@ -197,13 +127,37 @@ body {
     margin-top: 12px;
 }
 
+.match-cost {
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top:6px;
+}
+
 .match {
     color: var(--burgundy-main);
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
     display: block;
-    margin-left: 3;
+    margin-left: 15px;
     text-align: left;
+}
+
+.separator {
+    height: 1px;
+    background-color: #d3d3d3;
+    margin: 10px 0;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cost {
+    color: #858585;
+    font-size: 16px;
+    text-align: right;
+    margin-right:15px;
 }
 
 .busy {
@@ -222,51 +176,4 @@ br {
     margin-bottom: 5px; 
 }
 
-@media (max-width: 768px) {
-    .restaurants-container {
-        padding: 15px;
-    }
-    
-    .restaurant-card {
-        flex-direction: row;
-        align-items: flex-start;
-        padding: 12px;
-    }
-    
-    .restaurant-card img {
-        width: 150px;
-        height: 150px;
-        margin-right: 15px;
-        margin-bottom: 0;
-        flex-shrink: 0;
-    }
-
-    .restaurant-image-container {
-        width: 150px;
-        margin-right: 15px;
-        margin-bottom: 0;
-        display: flex;
-        flex-shrink: 0;
-        flex-direction: column;
-        align-items: left;
-    }
-    
-    .restaurant-info {
-        flex: 1;
-    }
-    
-    .filter-row {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    
-    .filter-dropdown {
-        flex: 1 1 calc(50% - 8px);
-        min-width: 120px;
-    }
-    
-    .smart-filter {
-        width: 100%;
-        margin-top: 8px;
-    }
-} 
+ 
