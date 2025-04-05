@@ -1,5 +1,6 @@
 from database import db
-from sqlalchemy import Column, ForeignKey, Integer, Text, Boolean, TIMESTAMP, func
+from sqlalchemy import Column, ForeignKey, Integer, Text, Boolean, TIMESTAMP, DECIMAL, func
+from sqlalchemy.sql import expression
 from sqlalchemy.orm import relationship
 
 class dish(db.Model):
@@ -7,9 +8,10 @@ class dish(db.Model):
     dish_id = Column(Integer, primary_key=True, autoincrement=True)
     description = Column(Text, nullable=True)
     dish_name = Column(Text, nullable=False)
-    featured = Column(Boolean, nullable=True, default=True)
-    available = Column(Boolean, nullable=True, default=False)
+    featured = Column(Boolean, nullable=True, server_default=expression.false())
+    available = Column(Boolean, nullable=True, server_default=expression.false())
     image_path = Column(Text, nullable=True, default="app/static/images/dishes/default.jpg")
+    price = Column(DECIMAL(5,2), nullable=True, default=123.45)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     taste_profiles = relationship("dishTasteProfile", back_populates="dish", cascade="all, delete-orphan")

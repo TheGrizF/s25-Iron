@@ -1,0 +1,343 @@
+.dish-detail {
+    display:flex;
+    flex-direction:column;
+    padding-bottom: 70px;
+    background-color: var(--white);
+}
+
+.header-images {
+    position: relative;
+    height: 250px;
+}
+
+.header-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(139, 137, 137, 0.9);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.dish-content{
+    flex-grow:1;
+}
+
+.dish-info {
+    padding: 20px;
+    background: var(--white);
+    position: relative;
+    display: block;
+    flex-direction: column;
+    justify-content: flex-start;
+   
+}
+
+.dish-info h2 {
+    margin: 5px; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding-right: 124px; 
+    
+}
+
+.dish-info p {
+    color: #858585;
+}
+
+
+.update-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: var(--burgundy-main);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.recommendations {
+    padding: 20px;
+}
+
+.dish-info .cost {
+    color: #858585;
+    margin-left:0px;
+}
+
+.description p{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    color:#161616;
+}
+
+.dish-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: top;
+    padding: 0px 0;
+    background-color: white;
+    text-align: left;
+    margin-top: 0;
+
+}
+
+.dish-title h2{
+    margin-left: 15px;
+    margin-top:5px;
+    margin-bottom: 0px;
+    font-size: 20px;
+}
+
+.dish-name-and-allergens {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.dish-name-and-allergens p {
+    margin-top: 5px;
+    margin-left: 15px;
+    margin-bottom:0px;
+}
+
+.dish-name-and-allergens img {
+    height: 30px;
+    margin-right: 5px;
+    margin-bottom: 0px;
+}
+
+
+.dish-info {
+    padding-left: 15px;
+    padding-top:0px;
+    margin-top:0px;
+}
+
+.dish-info h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.dish-info p{
+
+    margin: 5px 0;
+}
+.dish-match {
+    color: var(--burgundy-main);
+    font-size: 26px;
+    font-weight: normal;
+    text-align: right;
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+
+.dish-price {
+    color: #858585;
+    font-size: 13px;
+    font-weight: normal
+
+}
+
+.about {
+    padding: 20px;
+    background: var(--white);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.show-detail {
+    color: var(--burgundy-main);
+    background: none;
+    border: none;
+    cursor: pointer;
+} 
+
+/*******Footer stuff including the save stuff *****/
+.dish-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 0;
+    max-width: 90%;
+    margin: auto;
+    min-height: 60px;
+}
+
+
+
+.contact-details {
+    color: #858585;
+    text-align: left;
+    flex: 1; 
+    text-decoration: none;
+}
+
+.contact-details p h3 {
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.horizontal-separator {
+    height: 1px;
+    background-color: #858585;
+    margin: 10px 0;
+    width: 90%; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vertical-separator {
+    border-left: 1px solid #858585;
+    height: 70px;
+    position: relative center;
+    left: 50%;
+    margin: 0px 20px;
+    top: 0;
+}
+
+.contact-details {
+    color: #858585;
+    text-align: left;
+}
+
+.dish-save {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: gray;
+    text-decoration-color: gray;
+    cursor:pointer;
+    width: 95px;
+    justify-content: center;
+}
+
+.dish-save i {
+    font-size: 24px;
+    margin: auto;
+}
+
+
+.dish-save i{
+    font-size: 24px;
+    flex-shrink:0;
+}
+
+.dish-save .saved {
+    color: var(--burgundy-main);
+}
+
+.dish-save .saved p{
+    color: var(--burgundy-main);
+}
+
+.dish-save .not-saved {
+    color: #858585;
+}
+
+.dish-save .not-saved:hover {
+    color: var(--burgundy-main);
+    
+}
+
+.dish-save:hover p {
+    color:var(--burgundy-main);
+    cursor:pointer;
+}
+
+.reviews h2{
+    font-size:20px;
+    font-weight: normal;
+    margin-bottom:3px;
+}
+
+.star-rating {
+    margin-left: 3px;
+    color: rgba(255, 196, 0, 0.822);
+}
+
+/****************review stuff**************/
+.reviews {
+    margin-left: 15px;
+}
+.review-bubble {
+    position: relative;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 15px;
+    flex-grow: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-right: 15px;
+}
+
+.review-bubble:before {
+    content: "";
+    position: absolute;
+    top: 20px; /* Adjust to vertically position the arrow */
+    left: -10px; /* Position arrow on left side */
+    border-width: 10px 10px 10px 0; /* Create triangle shape */
+    border-style: solid;
+    border-color: transparent #f5f5f5 transparent transparent; /* Make only right border visible */
+}
+
+.feed-content {
+    display: flex;
+    align-items: flex-start;
+    flex-direction:row;
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+.feed-content img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    margin-right: 20px; 
+    object-fit: cover;
+}
+
+.feed-item {
+    margin-bottom: 25px;
+    font-size: 10px;
+    margin-left: 0px;
+}
+
+.friend {
+    color: var(--burgundy-main);
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+.date {
+    font-style:italic;
+    margin-bottom: 0px;
+}
+
+.review-button {
+    max-width: 200px;
+    margin: auto;
+}
+
+.review-button i{
+    margin-right: 5px;
+}

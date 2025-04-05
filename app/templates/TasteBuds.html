@@ -1,70 +1,198 @@
-{% extends "base.html" %} {% block title %}Restaurants{% endblock %} {% block
-extra_css %}
-
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/TasteBuds.css') }}"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
-{% endblock %} {% block content %}
-
-<div class="TasteBuds-container">
-  <!-- Flash Error for User Not Found login -->
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %} {% for category, message in messages %}
-  <div class="flash-message {{ category }}">{{ message }}</div>
-  <br />
-  {% endfor %} {% endif %} {% endwith %}
-
-  <div class="search-bar">
-    <form
-      name="Search TasteBuddies"
-      action="{{ url_for('auth.searchUser')}}"
-      method="post"
-    >
-      <div class="search-container">
-        <i class="fas fa-magnifying-glass"></i>
-        <input
-          type="text"
-          name="userName"
-          id="userName"
-          placeholder="Find a buddy"
-        >
-        <button
-          type="submit"
-          class="search-btn">Search</button>
-      </div>
-    </form>
-  </div>
-
-  <div class="filter-section">
-    <div class="filter-row">
-      <select class="filter-dropdown">
-        <option value="">Super TasteBuddies</option>
-      </select>
-    </div>
-    <div class="filter-section">
-      <div class="filter-row">
-        <select class="filter-dropdown">
-          <option value="">TasteBuddies</option>
-        </select>
-      </div>
-
-      <div class="filter-section">
-        <div class="filter-row">
-          <select class="filter-dropdown">
-            <option value="">Buddies</option>
-            <option value="friend1">Anthony Bourdain</option>
-            <option value="friend2">Gordon Ramsay</option>
-          </select>
+{% extends "base.html" %} {% block title %}TasteBuds{% endblock %} {% block
+  extra_css %}
+  
+  
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/TasteBuds.css') }}"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  {% endblock %}
+  
+  
+  {% block content %}
+  <script src ="{{ url_for('static', filename='js/toggleBuddies.js')}}"></script>
+  
+  
+  <div class="TasteBuds-container">
+    <h1>TasteBuddies</h1>
+    <!-- Flash Error for User Not Found login -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div class="flash-message {{ category }}">{{ message }}</div>
+    <br />
+    {% endfor %} {% endif %} {% endwith %}
+  
+  
+    <div class="search-bar">
+      <form
+        name="Search TasteBuddies"
+        action="{{ url_for('auth.searchUser')}}"
+        method="post"
+      >
+        <div class="search-container">
+          <i class="fas fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="userName"
+            id="userName"
+            placeholder="Find a buddy"
+          />
+          <button type="submit" class="search-btn">Search</button>
         </div>
+      </form>
+    </div>
+  
+  
+    
+<!--h3>Active Group</h3>
+        <ul>
+          {% for member in activeGroup %}
+          <li>{{ member.first_name }} {{ member.last_name }}</li>
+          {% endfor %}
+        </ul>
+        {% for reccomendations in reccomendations %}
+        <li>{{reccomendations}} </li>
+        {% endfor %}
+        <button type="submit">Find a Restaraunt for Active Group</button>
+      </form>
+    </div>
+    </div-->
+
+    <div class="all-buddies-container">
+
+      <div id="super-buddies" class="buddies-section">
+        <div class="buddies-header" onClick="toggleSuperBuddies()">Super TasteBuddies
+          <i class="fas fa-chevron-down" id="buddies-chevron"></i>
+        </div>
+    
+        <div class="buddies-list">
+          <!--These are hardcoded Superbuddies-->
+            <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=10, from='tastebuds') }}" >
+              <img src="{{ url_for('static', filename='images/profile_icons/julia.png') }}" style="width: 25px; height: 25px; padding-right: 5px;">
+              <span class="user-name">Julia Child</span></a>
+              <!--Disabled for Grant's ease of mind and general clarity-->
+              <!--span class="follow-btn" onclick="toggleFollow(this)" 
+                data-user-id="10"
+                data-first-name="Julia" 
+                data-last-name="Child" 
+                data-icon-path="images/profile_icons/julia.png"> 
+  
+                <i class="bi bi-plus-circle"></i>
+              </span-->
+            </div>
+            <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=9, from='tastebuds') }}">
+              <img src="{{ url_for('static', filename='images/profile_icons/bourdain.png') }}" style="width: 25px; height: 25px; padding-right: 5px;">
+              <span class="user-name">Anthony Bourdain</span></a>
+              <!--span class="follow-btn" onclick="toggleFollow(this)" 
+                data-user-id="9"
+                data-first-name="Anthony" 
+                data-last-name="Bourdain" 
+                data-icon-path="images/profile_icons/bourdain.png">
+
+                <i class="bi bi-plus-circle"></i>
+              </span-->
+            </div>
+            <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=8, from='tastebuds') }}" class="match-link">
+              <img src="{{ url_for('static', filename='images/profile_icons/ramsay.png') }}" style="width: 25px; height: 25px; padding-right: 5px;">
+              <span class="user-name">Gordon Ramsay</span></a>
+              <!--span class="follow-btn" onclick="toggleFollow(this)" 
+                data-user-id="8"
+                data-first-name="Gordon" 
+                data-last-name="Ramsay" 
+                data-icon-path="images/profile_icons/ramsay.png">
+                <i class="bi bi-plus-circle"></i>
+              </span-->
+            </div>
+        </div>  
       </div>
 
-      <button type="submit">Find a Restaraunt for Active Group</button>
+
+
+
+      <div id="taste-buddies" class="buddies-section">
+        <div class="buddies-header" onClick="toggleTasteBuddies()">TasteBuddies
+          <i class="fas fa-chevron-down" id="buddies-chevron"></i>
+        </div>
+    
+        <div class="buddies-list">
+          {% for match in matches %}
+            <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=match.user_id, from='tastebuds') }}">
+              <img src="{{ url_for('static', filename=match.icon_path) }}" style="width: 25px; height: 25px; padding-right: 5px;">
+              <span class="user-name">{{ match.first_name}} {{ match.last_name }}</span></a>
+              <!--span class="follow-btn" onclick="toggleFollow(this)" 
+                data-user-id= "{{ match.user_id }}"
+                data-first-name="{{ match.first_name }}" 
+                data-last-name="{{ match.last_name }}" 
+                data-icon-path="{{ match.icon_path }}">
+
+                <i class="bi bi-plus-circle"></i>
+              </span-->
+            </div>
+            {% endfor %}
+        </div>  
+      </div>
+
+
+      <div id="regular-buddies" class="buddies-section">
+        <div class="buddies-header" onClick="toggleRegularBuddies()">Buddies
+          <i class="fas fa-chevron-down" id="buddies-chevron"></i>
+        </div>
+        <div class="buddies-list">
+          {% for friend in friendslist %}
+            <div class="buddy">
+              <a href="{{ url_for('profile.view_user', user_id=friend.user_id, from='tastebuds') }}">
+              <img src="{{ url_for('static', filename=friend.icon_path) }}" style="width: 25px; height: 25px; padding-right: 5px;">
+              <span class="user-name">{{ friend.first_name}} {{ friend.last_name }}</span></a>
+              <span class="follow-btn" onclick="toggleFollow(this)" 
+                data-user-id= "{{ friend.user_id }}"
+                data-first-name="{{ friend.first_name }}" 
+                data-last-name="{{ friend.last_name }}" 
+                data-icon-path="{{ friend.icon_path }}">
+                <i class="bi bi-plus-circle"></i>
+              </span>
+            </div>
+            
+            {% endfor %}
+            
+        </div>  
+      </div>
+
+      <div class="buddies-section">
+        <div class="buddies-header">Active Group</div>
+          <div class="separator"></div>
+        <div class="group-match-buddies-list">
+          {% for buddy in selected_buddies %}
+          <div class="group-buddy" data-user-id="{{ buddy.user_id }}"
+                                    data-first-name="{{ buddy.first_name }}" 
+                                    data-last-name="{{ buddy.last_name }}" 
+                                    data-icon-path="{{ buddy.icon_path }}">
+              <img src="{{ url_for('static', filename=buddy.icon_path) }}" alt="{{ buddy.first_name }} {{ buddy.last_name }}" class="group-buddy-icon" />
+              <span class="group-buddy-name">{{ buddy.first_name }} {{ buddy.last_name }}</span>
+              <i class="bi bi-x-circle remove-buddy" onclick="removeBuddy({{ buddy.user_id }})"></i> <!--not implemented yet-->
+          </div>
+          {% endfor %}
+        </div>
+        
+
+      </div>
     </div>
+
+    <form action="{{ url_for('daily_dish.createGroup')}}">
+   <div class="submit-group">
+            <button type="button" style="display: block; margin: 0 auto;">Create Group</button>
+        </div>
+   </form>
+
     {% endblock %}
   </div>
 </div>
+    

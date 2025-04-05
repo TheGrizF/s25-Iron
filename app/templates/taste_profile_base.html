@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Taste Profile Creator{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
+{% endblock %}
+
+{% macro taste_profile_progress(current_step) %}
+<div class="progress-container">
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: {{ (current_step / 10) * 100 }}%"></div>
+    </div>
+</div>
+{% endmacro %}
+
+{% block content %}
+<div class="taste-profile-container">
+    {{ taste_profile_progress(current_step) }}
+    {% block taste_profile_content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %} 

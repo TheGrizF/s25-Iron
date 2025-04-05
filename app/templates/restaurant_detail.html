@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Norm's Corner{% endblock %}
+{% block title %}{{ restaurant.restaurant_name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/restaurant_detail.css') }}">
@@ -9,48 +9,116 @@
 {% block content %}
 <div class="restaurant-detail">
     <div class="header-images">
-        <!--img src="{{ url_for('static', filename='images/restaurant-header.jpg') }}" alt="Restaurant ambiance" -->
-        <button class="back-button">
+        <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="Restaurant ambiance">
+        <button class="back-button" onclick="window.history.back()">
             <i class="fas fa-chevron-left"></i>
         </button>
     </div>
 
     <div class="restaurant-info">
-        <h1>Norm's Corner</h1>
-        <p class="category">Casual Dining</p>
-        <p class="hours">Open hours: {{ restaurant.open_hours }}</p>
-        <button class="update-button">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>{{ restaurant.restaurant_name }}</h2>
+
+        <!-- hidden live update form (moved above hours) -->
+        <div id="live-update-form" class="update-form" style="display: none;">
+            <form action="{{ url_for('restaurant.post_update', restaurant_id=restaurant.restaurant_id) }}" method="POST">
+                <textarea name="update_content" maxlength="140" placeholder="What's happening? (max 140 characters)" required></textarea>
+                <div class="form-actions">
+                    <button type="submit">Submit</button>
+                    <button type="button" onclick="toggleUpdateForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- post update button -->
+        <button class="update-button" type="button" onclick="toggleUpdateForm()">
             Post Update <i class="fas fa-bullhorn"></i>
         </button>
+
+        <!-- open hours below form -->
+        <p class="hours">Open hours: <br>{{ restaurant.hours | safe }}</p>
     </div>
 
-    <section class="recommendations">
-        <h2>Recommended for You:</h2>
-        <div class="dishes-grid">
-            
-            <!--for loop for the dishes-->
-            {% for dish in restaurant.dishes %}
-            <div class="dish-card">
-                <img src="{{ dish.image_url }}" alt="dish.name">
-                <div class="dish-info">
-                    <h3>{{ dish.name }}</h3>
-                    <span class="match">{{dish.match_percentage}} </span>
-                    <p class="price">{{ dish. price }} USD/Each </p>
-                </div>
+    <!-- script for toggling form visibility -->
+    <script>
+        function toggleUpdateForm() {
+            const form = document.getElementById('live-update-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+
+<section class="recommendations">
+    <h2>Recommended for You:</h2>
+    <div class="dishes-grid">
+        {% for dish in restaurant.dishes[:2] %}
+        <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">
+            <div class="dish-image-container">
+                <img src="{{ url_for('static', filename=dish.image_url) }}" alt="dish.name">
             </div>
-            {% endfor % }
+            <div class="dish-info">
+                <h3>{{ dish.name }}</h3>
+                <p class="dish-match">{{ dish.match_percentage }}%</p>
+                <p class="dish-price">{{ dish.price }} USD/Each</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
 
+<section class="live-updates">
+    <h2>Latest Updates</h2>
+    <div class="updates-scroll-box">
+        {% if updates %}
+            {% for update, user in updates %}
+                <div class="update-card">
+                    <div class="update-user">
+                        <img src="{{ url_for('static', filename=user.icon_path) }}" alt="User Icon" class="user-icon">
+                        <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                    </div>
+                    <p class="update-content">{{ update.update_content }}</p>
+                    <p class="update-timestamp">{{ update.created_at.strftime('%b %d, %Y %I:%M %p') }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No updates yet. Be the first to post one!</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="about">
+    <div class="section-header">
+        <h2>About the restaurant</h2>
+        <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
+            <button class="show-detail">Full Menu</button>
+        </a>
+    </div>
+    <p class="description">
+        {{ restaurant.description }}
+    </p>
+    <section class="contact">
+        <div class="separator"></div>
+        <div class="contact-details">
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>
+                    {% for line in restaurant.location.split(",") %}
+                        {{ line.strip() }}<br>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="separator"></div>
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <p>{{ restaurant.phone_number }}</p>
+            </div>
         </div>
     </section>
-
-    <section class="about">
-        <div class="section-header">
-            <h2>About the restaurant</h2>
-            <button class="show-detail">Show Detail</button>
-        </div>
-        <p class="description">
-            {{ Restaurant.details }}
-        </p>
-    </section>
-</div>
-{% endblock %} 
+</section>
+{% endblock %}

@@ -23,7 +23,42 @@ def view_profile():
     #fetch information on friends
     friendsList = db.session.query(user).join(friends, friends.buddy_id == user.user_id).filter(friends.user_id==user_id).all()
 
-    return render_template('profile.html', user=selected_user, friendsList=friendsList)
+    # Get taste matches
+    matches = db.session.query(
+        tasteComparisons.compare_to,
+        user.first_name,
+        user.last_name,
+        tasteComparisons.comparison_num,
+        user.icon_path
+    ).join(user, user.user_id == tasteComparisons.compare_to).filter(
+        tasteComparisons.compare_from == user_id
+    ).order_by(tasteComparisons.comparison_num).limit(5).all()
+
+    taste_matches = [{"user_id": match.compare_to, 
+                    "name": f"{match.first_name} {match.last_name}",
+                    "comparison_num": match.comparison_num,
+                    "icon_path": match.icon_path} 
+                    for match in matches]
+
+    # Get recommended dishes
+    recommended_dishes = get_dish_recommendations(user_id)[:5]
+    dish_matches = []
+    for dish_id, buddy_id, match_percent in recommended_dishes:
+        dish_info = db.session.query(dish.dish_name).filter(dish.dish_id == dish_id).first()
+        buddy_info = db.session.query(user.first_name, user.last_name).filter(user.user_id == buddy_id).first()
+
+        dish_matches.append({
+            'dish_id': dish_id,
+            'dish_name': dish_info.dish_name,
+            'buddy_name': f"{buddy_info.first_name} {buddy_info.last_name}",
+            'match_percent': match_percent
+        })
+
+    return render_template('profile.html', 
+                         user=selected_user, 
+                         friendsList=friendsList,
+                         taste_matches=taste_matches,
+                         dish_matches=dish_matches)
 
 
 @profile_bp.route('/userSearchResult/<user_id>')
@@ -61,47 +96,47 @@ def delete_profile():
 def taste_profile():
     if request.method == 'POST':
         return redirect(url_for('profile.taste_profile_step2'))
-    return render_template('tasteProfile.html')
+    return render_template('tasteProfile.html', current_step=1)
 
 @profile_bp.route('/taste-profile/step2')
 def taste_profile_step2():
-    return render_template('tasteProfile2.html')
+    return render_template('tasteProfile2.html', current_step=2)
 
 @profile_bp.route('/taste-profile/step3')
 def taste_profile_step3():
-    return render_template('tasteProfile3.html')
+    return render_template('tasteProfile3.html', current_step=3)
 
 @profile_bp.route('/taste-profile/step4')
 def taste_profile_step4():
-    return render_template('tasteProfile4.html')
+    return render_template('tasteProfile4.html', current_step=4)
 
 @profile_bp.route('/taste-profile/step5')
 def taste_profile_step5():
-    return render_template('tasteProfile5.html')
+    return render_template('tasteProfile5.html', current_step=5)
 
 @profile_bp.route('/taste-profile/step6')
 def taste_profile_step6():
-    return render_template('tasteProfile6.html')
+    return render_template('tasteProfile6.html', current_step=6)
 
 @profile_bp.route('/taste-profile/step7')
 def taste_profile_step7():
-    return render_template('tasteProfile7.html')
+    return render_template('tasteProfile7.html', current_step=7)
 
 @profile_bp.route('/taste-profile/step8')
 def taste_profile_step8():
-    return render_template('tasteProfile8.html')
+    return render_template('tasteProfile8.html', current_step=8)
 
 @profile_bp.route('/taste-profile/step9')
 def taste_profile_step9():
-    return render_template('tasteProfile9.html')
+    return render_template('tasteProfile9.html', current_step=9)
 
 @profile_bp.route('/taste-profile/step10')
 def taste_profile_step10():
-    return render_template('tasteProfile10.html')
+    return render_template('tasteProfile10.html', current_step=10)
 
 @profile_bp.route('/taste-profile/step11')
 def taste_profile_step11():
-    return render_template('tasteProfile11.html')
+    return render_template('tasteProfile11.html', current_step=11)
 
 @profile_bp.route('/taste-profile/debug')
 def taste_profile_debug():
@@ -292,20 +327,33 @@ def save_taste_profile():
         taste_profile.spicy = data.get('spicy', 3)
         taste_profile.umami = data.get('umami', 3)
 
+        # Clear existing cuisine preferences
+        db.session.query(cuisineUserJunction).filter_by(user_id=user_id).delete()
+
+        # Add new cuisine preferences
+        cuisine_preferences = data.get('cuisines', {})
+        for cuisine_name, preference_level in cuisine_preferences.items():
+            # Get or create cuisine
+            cuisine_obj = cuisine.query.filter_by(cuisine_name=cuisine_name.title()).first()
+            if not cuisine_obj:
+                cuisine_obj = cuisine(cuisine_name=cuisine_name.title())
+                db.session.add(cuisine_obj)
+                db.session.flush()  # Get the ID of the new cuisine
+
+            # Create cuisine preference junction
+            cuisine_pref = cuisineUserJunction(
+                user_id=user_id,
+                cuisine_id=cuisine_obj.cuisine_id,
+                preference_level=preference_level
+            )
+            db.session.add(cuisine_pref)
+
         db.session.commit()
-
-        # trigger taste matching
         updateTasteComparisons(user_id)
-
-        # Clear data
-        for i in range(1, 12):
-            session.pop(f'taste_profile_step{i}', None)
-        flash('Taste Profile Saved!', 'success')
         return jsonify({'status': 'success'})
-    
     except Exception as e:
+        print("Error:", str(e))
         db.session.rollback()
-        print(f"Error in save_taste_profile: {str(e)}")  # Add this line to log the error
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 @profile_bp.route('/matches', methods=['GET'])
@@ -361,8 +409,7 @@ def dish_match_page():
     except Exception as e:
         print(f"Error in dish_matches_page: {e}")
         return render_template("dishMatches.html", user_name="Your")
-    
-    
+       
 @profile_bp.route('/api/dish-matches', methods=['GET'])
 def api_dish_matches():
     user_id = session.get('user_id')
@@ -385,3 +432,88 @@ def api_dish_matches():
         })
 
     return jsonify({'status': 'success', 'matches': results})
+
+@profile_bp.route('/user/<int:user_id>')
+def view_user(user_id):
+    current_user_id = session.get('user_id')
+    if not current_user_id:
+        flash('Log in to view profiles.', 'error')
+        return redirect(url_for('auth.index'))
+    
+    viewed_user = user.query.get(user_id)
+    if not viewed_user:
+        flash('User not found.', 'error')
+        return redirect(url_for('profile.view_profile'))
+
+    # check if current user is following the viewed user
+    is_buddy = db.session.query(friends).filter(
+        friends.user_id == current_user_id,
+        friends.buddy_id == user_id
+    ).first() is not None
+
+    # get taste comparison
+    comparison = db.session.query(tasteComparisons).filter(
+        tasteComparisons.compare_from == current_user_id,
+        tasteComparisons.compare_to == user_id
+    ).first()
+    
+    comparison_num = comparison.comparison_num if comparison else 12  # 50% fallback
+
+    return render_template(
+        'user.html',
+        viewed_user=viewed_user,
+        is_buddy=is_buddy,
+        comparison_num=comparison_num
+    )
+
+@profile_bp.route('/add-buddy/<int:buddy_id>', methods=['POST'])
+def add_buddy(buddy_id):
+    current_user_id = session.get('user_id')
+    if not current_user_id:
+        flash('Log in to add buddies.', 'error')
+        return redirect(url_for('auth.index'))
+    
+    # Check if already buddies
+    existing_buddy = db.session.query(friends).filter(
+        friends.user_id == current_user_id,
+        friends.buddy_id == buddy_id
+    ).first()
+
+    if existing_buddy:
+        flash('Already buddies!', 'error')
+    else:
+        new_friendship = friends(user_id=current_user_id, buddy_id=buddy_id)
+        db.session.add(new_friendship)
+        try:
+            db.session.commit()
+            flash('Buddy added successfully!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash('Error adding buddy.', 'error')
+    
+    return redirect(url_for('profile.view_user', user_id=buddy_id))
+
+@profile_bp.route('/api/autocomplete')
+def autocomplete():
+    query = request.args.get('q', '').lower()
+    type = request.args.get('type', '')  # 'restaurant' or 'dish'
+    
+    if type == 'restaurant':
+        results = db.session.query(restaurant).filter(
+            restaurant.restaurant_name.ilike(f'%{query}%')
+        ).limit(5).all()
+        return jsonify([{
+            'id': r.restaurant_id,
+            'name': r.restaurant_name
+        } for r in results])
+    
+    elif type == 'dish':
+        results = db.session.query(dish).filter(
+            dish.dish_name.ilike(f'%{query}%')
+        ).limit(5).all()
+        return jsonify([{
+            'id': d.dish_id,
+            'name': d.dish_name
+        } for d in results])
+    
+    return jsonify([])

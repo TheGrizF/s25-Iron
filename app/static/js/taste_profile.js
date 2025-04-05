@@ -286,12 +286,16 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             const cuisinePreferences = {
-                italian: parseInt(document.getElementById('italian').value),
-                japanese: parseInt(document.getElementById('japanese').value),
-                french: parseInt(document.getElementById('french').value),
+                asian: parseInt(document.getElementById('asian').value),
                 american: parseInt(document.getElementById('american').value),
-                spanish: parseInt(document.getElementById('spanish').value),
-                mexican: parseInt(document.getElementById('mexican').value)
+                sushi: parseInt(document.getElementById('sushi').value),
+                thai: parseInt(document.getElementById('thai').value),
+                indian: parseInt(document.getElementById('indian').value),
+                southern: parseInt(document.getElementById('southern').value),
+                italian: parseInt(document.getElementById('italian').value),
+                mexican: parseInt(document.getElementById('mexican').value),
+                healthy: parseInt(document.getElementById('healthy').value),
+                mediterranean: parseInt(document.getElementById('mediterranean').value)
             };
             
             try {
@@ -304,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (response.ok) {
-                    window.location.href = '/taste-profile/step11';  // Changed from /profile to next step
+                    window.location.href = '/taste-profile/step11';
                 } else {
                     throw new Error('Failed to save cuisine preferences');
                 }
@@ -379,5 +383,40 @@ async function submitBasicProfile() {
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to save preferences. Please try again.');
+    }
+}
+
+async function submitStep(step, data) {
+    try {
+        const response = await fetch(`/api/taste-profile/step${step}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            window.location.href = '/profile';  // Redirect to profile page
+        } else {
+            throw new Error(`Failed to save taste profile step ${step}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to save preferences. Please try again.');
+    }
+}
+
+function addOtherAllergy() {
+    const otherAllergyInput = document.getElementById('otherAllergy');
+    const otherAllergyList = document.getElementById('otherAllergyList');
+    
+    const allergy = otherAllergyInput.value.trim();
+    if (allergy) {
+        const allergyItem = document.createElement('div');
+        allergyItem.className = 'other-allergy-item';
+        allergyItem.textContent = allergy;
+        otherAllergyList.appendChild(allergyItem);
+        otherAllergyInput.value = '';
     }
 }

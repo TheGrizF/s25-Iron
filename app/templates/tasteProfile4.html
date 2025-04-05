@@ -1,51 +1,43 @@
-{% extends "base.html" %}
+{% extends "taste_profile_base.html" %}
 
-{% block title %}Taste Profile - Sweet Preferences{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/taste_profile.js') }}"></script>
-{% endblock %}
-
-{% block content %}
-<div class="taste-profile-container">
-    <h1>Create Your Taste Profile</h1>
-    <div class="intro-section">
-        <h2>Choose a baked good</h2>
-        <form id="sweetPreferenceForm">
-            <div class="image-grid">
-                {% for i in range(1, 5) %}
-                <div class="image-option">
-                    <input type="radio" 
-                           name="sweetPreference" 
-                           id="sweet{{ i }}" 
-                           value="{{ i }}" 
-                           required>
-                    <label for="sweet{{ i }}">
-                        <img src="{{ url_for('static', filename='images/tasteProfile/sweet' + i|string + '.jpg') }}" 
-                             alt="Sweet preference option {{ i }}">
-                    </label>
-                </div>
-                {% endfor %}
-                <div class="image-option center-option">
-                    <input type="radio" 
-                           name="sweetPreference" 
-                           id="sweet5" 
-                           value="5" 
-                           required>
-                    <label for="sweet5">
-                        <img src="{{ url_for('static', filename='images/tasteProfile/sweet5.jpg') }}" 
-                             alt="Sweet preference option 5">
-                    </label>
-                </div>
+{% block taste_profile_content %}
+<h1>Create Your Taste Profile</h1>
+<div class="intro-section">
+    <h2>Choose a baked good</h2>
+    <form id="sweetPreferenceForm">
+        <div class="image-grid">
+            {% for i in range(1, 5) %}
+            <div class="image-option">
+                <input type="radio" 
+                       name="sweetPreference" 
+                       id="sweet{{ i }}" 
+                       value="{{ i }}" 
+                       required>
+                <label for="sweet{{ i }}">
+                    <img src="{{ url_for('static', filename='images/tasteProfile/sweet' + i|string + '.jpg') }}" 
+                         alt="Sweet preference option {{ i }}">
+                </label>
             </div>
+            {% endfor %}
+            <div class="image-option center-option">
+                <input type="radio" 
+                       name="sweetPreference" 
+                       id="sweet5" 
+                       value="5" 
+                       required>
+                <label for="sweet5">
+                    <img src="{{ url_for('static', filename='images/tasteProfile/sweet5.jpg') }}" 
+                         alt="Sweet preference option 5">
+                </label>
+            </div>
+        </div>
+        <div class="button-group">
+            <button type="button" onclick="submitStep(4, { sweet: parseInt(document.querySelector('input[name=\'sweetPreference\']:checked').value) })" class="done-btn">Done</button>
             <button type="submit" class="submit-btn">Continue</button>
-        </form>
-    </div>
+        </div>
+    </form>
+    <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
+        Otherwise, click "Done". You can always update your Taste Profile later.
+    </p>
 </div>
-{% endblock %}
-
-{% block bottom_nav %}{% endblock %} 
+{% endblock %} 
