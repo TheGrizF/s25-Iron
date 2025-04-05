@@ -553,3 +553,56 @@ body {
     text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     transition: all 0.3s ease;
 } 
+
+.follow-notification {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.follow-notification .buddy-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.follow-notification .follow-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.follow-notification .mark-seen-btn {
+    background-color: var(--burgundy-main);
+    color: var(--white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+}
+
+.follow-notification .mark-seen-btn:hover {
+    background-color: var(--burgundy-dark);
+}
+
+@media (max-width: 480px) {
+    .follow-notification .buddy-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .follow-notification .mark-seen-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}

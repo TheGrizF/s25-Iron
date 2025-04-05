@@ -445,24 +445,26 @@ def view_user(user_id):
         flash('User not found.', 'error')
         return redirect(url_for('profile.view_profile'))
 
-    # Check if users are already buddies
+    # check if current user is following the viewed user
     is_buddy = db.session.query(friends).filter(
-        ((friends.user_id == current_user_id) & (friends.buddy_id == user_id)) |
-        ((friends.user_id == user_id) & (friends.buddy_id == current_user_id))
+        friends.user_id == current_user_id,
+        friends.buddy_id == user_id
     ).first() is not None
 
-    # Get taste comparison
+    # get taste comparison
     comparison = db.session.query(tasteComparisons).filter(
         tasteComparisons.compare_from == current_user_id,
         tasteComparisons.compare_to == user_id
     ).first()
     
-    comparison_num = comparison.comparison_num if comparison else 12  # Default to 50% match if no comparison exists
+    comparison_num = comparison.comparison_num if comparison else 12  # 50% fallback
 
-    return render_template('user.html',
-                         viewed_user=viewed_user,
-                         is_buddy=is_buddy,
-                         comparison_num=comparison_num)
+    return render_template(
+        'user.html',
+        viewed_user=viewed_user,
+        is_buddy=is_buddy,
+        comparison_num=comparison_num
+    )
 
 @profile_bp.route('/add-buddy/<int:buddy_id>', methods=['POST'])
 def add_buddy(buddy_id):
@@ -473,10 +475,10 @@ def add_buddy(buddy_id):
     
     # Check if already buddies
     existing_buddy = db.session.query(friends).filter(
-        ((friends.user_id == current_user_id) & (friends.buddy_id == buddy_id)) |
-        ((friends.user_id == buddy_id) & (friends.buddy_id == current_user_id))
+        friends.user_id == current_user_id,
+        friends.buddy_id == buddy_id
     ).first()
-    
+
     if existing_buddy:
         flash('Already buddies!', 'error')
     else:
