@@ -61,10 +61,12 @@ def view_profile():
                          dish_matches=dish_matches)
 
 
-@profile_bp.route('/userSearchResult/<user_id>')
+@profile_bp.route('/user/<user_id>')
 def viewUserSearchResults(user_id):
     selected_user = user.query.get(user_id)
-    return render_template('userSearchResult.html', user=selected_user)
+    # Kept if we want to use it to return search results for all users that fall under the query instead of one)
+    # return render_template('userSearchResult.html', user=selected_user) 
+    return render_template('user.html', viewed_user=selected_user)
 
 @profile_bp.route('/delete_profile', methods=['POST'])
 def delete_profile():

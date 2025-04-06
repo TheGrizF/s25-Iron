@@ -41,6 +41,10 @@
                 {% if request.args.get('filter') %}
                 <input type="hidden" name="filter" value="{{ request.args.get('filter') }}">
                 {% endif %}
+
+                {% if request.args.get('search') %}
+                <input type="hidden" name="search" value="{{ request.args.get('search') }}">
+                {% endif %}
             </form>
         
             <!-- Filter Form -->

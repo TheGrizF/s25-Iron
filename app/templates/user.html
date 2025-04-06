@@ -14,6 +14,9 @@
             box-sizing: border-box !important; 
             overflow: hidden !important;
             background-color: var(--gray-light);"> <!--Sorry Ben, didn't want to mess with your css-->
+    <button class="back-button" onclick="window.history.back()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
     <div class="profile-icon">
         {% if viewed_user.icon_path %}
             <img src="{{ url_for('static', filename=viewed_user.icon_path) }}" 
