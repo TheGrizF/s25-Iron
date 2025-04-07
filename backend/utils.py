@@ -502,6 +502,30 @@ def get_all_restaurant_info(user_id):
     all_restaurants = restaurant.query.all()
     return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
 
+def get_follow_notifications(user_id):
+    new_follows = (
+        db.session.query(friends, user)
+        .join(user, friends.user_id == user.user_id)
+        .filter(friends.buddy_id == user_id, friends.seen == False)
+        .all()
+    )
+
+    notifications = []
+    for relation, follower in new_follows:
+        is_following_back = db.session.query(friends).filter_by(
+            user_id=user_id, buddy_id=follower.user_id
+        ).first() is not None
+
+        notifications.append({
+            "follower_id": follower.user_id,
+            "name": f"{follower.first_name} {follower.last_name}",
+            "icon_path": follower.icon_path,
+            "is_following_back": is_following_back,
+        })
+
+    return notifications
+
+
 def relative_time(original_time):
     """
     Converts a datetime object into a relative time string for display
