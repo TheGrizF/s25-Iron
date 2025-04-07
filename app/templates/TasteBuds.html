@@ -188,7 +188,8 @@
 
     <form action="{{ url_for('daily_dish.createGroup')}}">
    <div class="submit-group">
-            <button type="button" style="display: block; margin: 0 auto;">Create Group</button>
+         <a href = "{{url_for('daily_dish.createGroup')}}">
+             <button button type="button" style="display: block; margin: 0 auto;">Create Group</button></a>
         </div>
    </form>
 

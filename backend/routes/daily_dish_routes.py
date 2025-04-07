@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session, request, flash, redirect,
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates
+from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_all_restaurant_info, get_restaurant_info
 import json
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
@@ -56,18 +56,23 @@ def TasteBuds():
 @daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
 def createGroup():
     user_id = session.get('user_id')
-    groupData = request.get_json()
-    selectedFriends = groupData.get('selectedBuddies',[])
-    
-    #debug to see if user_ids coming through
-    print('Received selected buddies:', selectedFriends)
-    
-    # Add list containning current user to list of selected
-    activeGroup = [user_id] + selectedFriends
-    
-    #Fetch information on users in active group
-    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
-    
+    try:
+     groupData = request.get_json('userId')
+     session['selectedBuddies'] = groupData.get('selectedBuddies',[])
+     return jsonify({'status': 'success'})
+    except Exception as e: 
+         print("Error:",str(e))
+   
+    return redirect (url_for('daily_dish.overlappingRestaurants'))
+
+
+
+@daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
+def overlappingDishes():
+    user_id = session.get('user_id')
+    selectedFriends = session.get('selectedBuddies',[])
+    groupIDs = [item['userId'] for item in selectedFriends]
+    activeGroup = groupIDs + [user_id]
     #Fetch information on members recommendations
     recommendations = []
     for member in activeGroupInfo:
@@ -94,11 +99,77 @@ def createGroup():
     overlapping_recommendations = [rec for rec in recommendations if rec[0] in matchingDishes]
     print('overlap:',overlapping_recommendations) #debug for overlaps
     
-    return redirect(url_for('daily_dish.groupMatch', activeGroup = activeGroupInfo, recommendations = recommendations))
+    return redirect(url_for('daily_dish.groupMatch'))
+
+@daily_dish_bp.route('/overlappingRestaurants', methods = ['POST','GET'])
+def overlappingRestaurants():
+  
+    user_id = session.get('user_id')
+    selectedFriends = session.get('selectedBuddies',[])
+    groupIDs = [item['userId'] for item in selectedFriends]
+    activeGroup = groupIDs + [user_id]
+    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
+
+    restaurantRecommendations = []
+    for member in activeGroupInfo:
+        recommendationsList = get_all_restaurant_info(member.user_id)
+        restaurantRecommendations.extend([
+         (rec.get('restaurant_id'),rec.get('restaurant_name'),rec.get('match_percentage')) 
+        for rec in recommendationsList ])
+    print(restaurantRecommendations) 
+
+    highSeenRestaurants = {}
+    mediumSeenRestaurants = {}
+    lowSeenRestaurants = {}
+    highMatchingRestaurants = set()
+    mediumMatchingRestaurant = set()
+    lowMatchingRestaurant = set()
+    
+    for recommendations in restaurantRecommendations:
+        restaurant_id, matchPercentage = recommendations[0], recommendations[2]
+        if matchPercentage > 75:
+            if restaurant_id in highSeenRestaurants:
+                highSeenRestaurants[restaurant_id].append(matchPercentage)
+                if len(highSeenRestaurants[restaurant_id]) == len(activeGroup):
+                    highMatchingRestaurants.add(restaurant_id)
+            else:
+                highSeenRestaurants[restaurant_id] = [matchPercentage]
+        if matchPercentage > 50 and matchPercentage < 75:
+            if restaurant_id in mediumSeenRestaurants:
+                mediumSeenRestaurants[restaurant_id].append(matchPercentage)
+                if len(mediumSeenRestaurants[restaurant_id]) == len(activeGroup):
+                    mediumMatchingRestaurant.add(restaurant_id)
+            else:
+                mediumSeenRestaurants[restaurant_id] = [matchPercentage]
+        if matchPercentage < 50:
+            if restaurant_id in lowSeenRestaurants:
+                lowSeenRestaurants[restaurant_id].append(matchPercentage)
+                if len(lowSeenRestaurants[restaurant_id]) == len(activeGroup):
+                    lowMatchingRestaurant.add(restaurant_id)
+            else:
+                lowSeenRestaurants[restaurant_id] = [matchPercentage]
+            
+    highOverlappingRecommendations =[rec for rec in restaurantRecommendations if rec[0] in highMatchingRestaurants]
+    mediumOverlappingRecommendations =[rec for rec in restaurantRecommendations if rec[0] in mediumMatchingRestaurant]
+    lowOverlappingRecommendations =[rec for rec in restaurantRecommendations if rec[0] in lowMatchingRestaurant]
+    print('High overlap:',highOverlappingRecommendations)
+    print('Medium overlap:',mediumOverlappingRecommendations)
+    print('Low overlap:',lowOverlappingRecommendations)
+    session['highOverlappingRecommendations'] = highOverlappingRecommendations
+    session['mediumOverlappingRecommendations'] = mediumOverlappingRecommendations  
+    session['lowOverlappingRecommendations'] = lowOverlappingRecommendations
+
+    return redirect(url_for('daily_dish.groupMatch'))
+
+
 
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
-   return render_template('groupMatch.html')
+    highOverlappingRecommendations = session.get('highOverlappingRecommendations',[])
+    mediumOverlappingRecommendations = session.get('mediumOverlappingRecommendations',[])   
+    lowOverlappingRecommendations = session.get('lowOverlappingRecommendations',[])
+   
+    return render_template('groupMatch.html')
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
