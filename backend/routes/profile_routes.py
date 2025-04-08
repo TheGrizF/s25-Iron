@@ -389,6 +389,24 @@ def exit_early():
     except Exception as e:
         print("Error finalizing taste profile:", str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@profile_bp.route('/taste-profile/view')
+def view_edit_taste_profile():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Please log in first.', 'error')
+        return redirect(url_for('auth.index'))
+    
+    this_user = user.query.get(user_id)
+    profile = this_user.taste_profile
+
+    next_step = None
+    if profile and (not profile.current_step or profile.current_step < 11):
+        next_step = profile.current_step + 1 if profile.current_step else 1
+        if next_step == 9:
+            next_step = 10
+
+    return render_template('viewTasteProfile.html', user=this_user, taste_profile=profile, next_step=next_step)
     
 @profile_bp.route('/matches', methods=['GET'])
 def matches_page():
