@@ -221,6 +221,14 @@ def save_taste_profile_step4():
         data = request.get_json()
         session['taste_profile_step4'] = data
         session.modified = True
+
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.sweet = data.get('sweet', 0)
+        taste_profile.current_step = 4
+
+        db.session.commit()
+
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -232,6 +240,15 @@ def save_taste_profile_step5():
         data = request.get_json()
         session['taste_profile_step5'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.umami = data.get('umami', 0)
+        taste_profile.current_step = 5
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -243,6 +260,15 @@ def save_taste_profile_step6():
         data = request.get_json()
         session['taste_profile_step6'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.savory = data.get('savory', 0)
+        taste_profile.current_step = 6
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -254,6 +280,15 @@ def save_taste_profile_step7():
         data = request.get_json()
         session['taste_profile_step7'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.spicy = data.get('spicy', 0)
+        taste_profile.current_step = 7
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -265,6 +300,15 @@ def save_taste_profile_step8():
         data = request.get_json()
         session['taste_profile_step8'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.bitter = data.get('bitter', 0)
+        taste_profile.current_step = 8
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -287,6 +331,29 @@ def save_taste_profile_step10():
         data = request.get_json()
         session['taste_profile_step10'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        db.session.query(cuisineUserJunction).filter_by(user_id=user_id).delete()
+
+        cuisine_preferences = data.get('cuisines', {})
+        for cuisine_name, preference_level in cuisine_preferences.items():
+            cuisine_obj = cuisine.query.filter_by(cuisine_name=cuisine_name.title()).first()
+            if not cuisine_obj:
+                cuisine_obj=cuisine(cuisine_name=cuisine_name.title())
+                db.session.add(cuisine_obj)
+                db.session.flush()
+
+            cuisine_pref=cuisineUserJunction(
+                user_id=user_id,
+                cuisine_id=cuisine_obj.cuisine_id,
+                preference_level=preference_level
+            )
+            db.session.add(cuisine_pref)
+
+        taste_profile=tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.current_step = 10
+
+        db.session.commit()
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -298,6 +365,12 @@ def save_taste_profile_step11():
         data = request.get_json()
         session['taste_profile_step11'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.current_step = 11
+
+        db.session.commit()
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -387,6 +460,20 @@ def save_taste_profile():
     except Exception as e:
         print("Error:", str(e))
         db.session.rollback()
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+    
+@profile_bp.route('/api/taste-profile/exit_early', methods=['POST'])
+def exit_early():
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
+
+        updateTasteComparisons(user_id)
+
+        return jsonify({'status': 'success', 'message': 'Taste Profile updated'})
+    except Exception as e:
+        print("Error finalizing taste profile:", str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 @profile_bp.route('/matches', methods=['GET'])
