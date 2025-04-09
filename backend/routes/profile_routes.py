@@ -61,7 +61,6 @@ def view_profile():
                          taste_matches=taste_matches,
                          dish_matches=dish_matches)
 
-
 @profile_bp.route('/user/<user_id>')
 def viewUserSearchResults(user_id):
     selected_user = user.query.get(user_id)
@@ -158,9 +157,54 @@ def save_taste_profile_step1():
         # Store the data in session
         session['taste_profile_step1'] = data
         session.modified = True  # Explicitly mark the session as modified
-        
+
+        fav_restaurant = data.get('favoriteRestaurant', '').strip()
+        print(fav_restaurant)
+        fav_dish = data.get('favoriteDish', '').strip()
+
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        if not taste_profile:
+            taste_profile = tasteProfile(user_id=user_id)
+            db.session.add(taste_profile)
+
+        if fav_restaurant:
+            rest_match = restaurant.query.filter(
+                restaurant.restaurant_name.ilike(fav_restaurant)
+            ).first()
+            if rest_match:
+                fav_cuisine = rest_match.cuisine
+
+                cuisine_obj = db.session.query(cuisine).filter_by(cuisine_name=fav_cuisine).first()
+                add_cuisine = cuisineUserJunction(
+                    user_id=user_id,
+                    cuisine_id=cuisine_obj.cuisine_id,
+                    preference_level=5
+                )
+                db.session.add(add_cuisine)
+
+        if fav_dish:
+            dish_match = dish.query.filter(
+                dish.dish_name.ilike(fav_dish)
+            ).first()
+            if dish_match:
+                dish_profile = db.session.query(dishTasteProfile).filter_by(dish_id=dish_match.dish_id).first()
+                if dish_profile:
+                    taste_profile.sweet = dish_profile.sweet
+                    taste_profile.savory = dish_profile.savory
+                    taste_profile.sour = dish_profile.sour
+                    taste_profile.bitter = dish_profile.bitter
+                    taste_profile.spicy = dish_profile.spicy
+                    taste_profile.umami = dish_profile.umami
+
+                saved = savedDishes(user_id=user_id, dish_id=dish_match.dish_id)
+                db.session.add(saved)
+
+
+        taste_profile.current_step=1
+        db.session.commit()
         return jsonify({'status': 'success'})
     except Exception as e:
+        db.session.rollback()
         print("Error:", str(e))  # Debug log
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
