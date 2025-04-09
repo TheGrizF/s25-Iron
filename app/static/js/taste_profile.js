@@ -411,6 +411,9 @@ async function submitStep(step, data, done = false) {
 
             if (!doneDone.ok) throw new Error('Failed to save and exit');
             window.location.href = '/profile';
+        } else { 
+            const nextStep = step === 8 ? 10 : step + 1;
+            window.location.href = `/taste-profile/step${nextStep}`;
         }
 
     } catch (error) {
