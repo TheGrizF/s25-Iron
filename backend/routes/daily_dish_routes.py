@@ -165,11 +165,46 @@ def overlappingRestaurants():
 
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
+    user_id = session.get('user_id')
     highOverlappingRecommendations = session.get('highOverlappingRecommendations',[])
     mediumOverlappingRecommendations = session.get('mediumOverlappingRecommendations',[])   
     lowOverlappingRecommendations = session.get('lowOverlappingRecommendations',[])
    
-    return render_template('groupMatch.html')
+    highRecommendedRestaurants = []
+    for recommendation in highOverlappingRecommendations:
+        if recommendation[0] not in highRecommendedRestaurants:
+         highRecommendedRestaurants.append(recommendation[0])
+    print('highRecommendedRestaurants:',highRecommendedRestaurants) 
+    mediumRecommendedRestaurants = []
+    for recommendation in mediumOverlappingRecommendations:
+        if recommendation[0] not in mediumRecommendedRestaurants:
+         mediumRecommendedRestaurants.append(recommendation[0])
+    print('mediumRecommendation:',mediumRecommendedRestaurants)
+    lowRecommendedRestaurants = []
+    for recommendation in lowOverlappingRecommendations:   
+        if recommendation[0] not in lowRecommendedRestaurants:
+         lowRecommendedRestaurants.append(recommendation[0])
+    print('lowRecommendation:',lowRecommendedRestaurants)
+
+    restaraunts =  []
+    for restaurant_id in highRecommendedRestaurants:
+        restaurant_info = get_restaurant_info(user_id,restaurant_id)
+        if restaurant_info:
+            restaraunts.append(restaurant_info)
+    
+     
+    for restaurant_id in mediumRecommendedRestaurants:
+        restaurant_info = get_restaurant_info(user_id,restaurant_id)
+        if restaurant_info:
+            restaraunts.append(restaurant_info)
+    
+  
+    for restaurant_id in lowRecommendedRestaurants:
+        restaurant_info = get_restaurant_info(user_id,restaurant_id)
+        if restaurant_info:
+            restaraunts.append(restaurant_info)
+    
+    return render_template('groupMatch.html',restaurants= restaraunts,highRecommendedRestaurants=highRecommendedRestaurants, mediumRecommendedRestaurants=mediumRecommendedRestaurants, lowRecommendedRestaurants=lowRecommendedRestaurants)
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
