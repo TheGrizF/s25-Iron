@@ -72,6 +72,21 @@
     </div>
 </section>
 
+
+
+<section class="about">
+    <div class="section-header">
+        <h2>About restaurant</h2>
+        <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
+            <button class="show-detail" style="flex-wrap:nowrap;">Full Menu</button>
+        </a>
+    </div>
+    <p class="description">
+        {{ restaurant.description }}
+    </p>
+
+</section>
+
 <section class="live-updates">
     <h2>Latest Updates</h2>
     <div class="updates-scroll-box">
@@ -92,26 +107,18 @@
     </div>
 </section>
 
-<section class="about">
-    <div class="section-header">
-        <h2>About the restaurant</h2>
-        <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
-            <button class="show-detail">Full Menu</button>
-        </a>
-    </div>
-    <p class="description">
-        {{ restaurant.description }}
-    </p>
+<section class ="about">
     <section class="contact">
         <div class="separator"></div>
         <div class="contact-details">
             <div class="contact-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <p>
+                <p class="address">{{ restaurant.location }} </p>
+                <!--p>
                     {% for line in restaurant.location.split(",") %}
                         {{ line.strip() }}<br>
                     {% endfor %}
-                </p>
+                </p Not into this being bulky-->
             </div>
             <div class="separator"></div>
             <div class="contact-item">

@@ -114,6 +114,7 @@ h2 {
     display: flex;
     justify-content: space-around;
     padding: 10px 0;
+    padding-bottom: 30px; /*recommended at 46, but that seemed excessive, will see on phone first*/
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
 
