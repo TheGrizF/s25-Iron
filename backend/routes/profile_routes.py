@@ -159,7 +159,6 @@ def save_taste_profile_step1():
         session.modified = True  # Explicitly mark the session as modified
 
         fav_restaurant = data.get('favoriteRestaurant', '').strip()
-        print(fav_restaurant)
         fav_dish = data.get('favoriteDish', '').strip()
 
         taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
