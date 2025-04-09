@@ -386,7 +386,7 @@ async function submitBasicProfile() {
     }
 }
 
-async function submitStep(step, data) {
+async function submitStep(step, data, done = false) {
     try {
         const response = await fetch(`/api/taste-profile/step${step}`, {
             method: 'POST',
@@ -396,11 +396,23 @@ async function submitStep(step, data) {
             body: JSON.stringify(data)
         });
 
-        if (response.ok) {
-            window.location.href = '/profile';  // Redirect to profile page
-        } else {
+        if (!response.ok) {
             throw new Error(`Failed to save taste profile step ${step}`);
         }
+
+        if (done) {
+            const doneDone = await fetch('/api/taste-profile/exit_early',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!doneDone.ok) throw new Error('Failed to save and exit');
+            window.location.href = '/profile';
+        }
+
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to save preferences. Please try again.');
