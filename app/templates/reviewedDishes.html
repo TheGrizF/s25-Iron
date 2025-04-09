@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Reviewed Dishes{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviewedDishes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="reviews-container">
+        <h1 class="section-title">Your Reviewed Dishes</h1>
+
+        {% if reviews %}
+            <div class="reviews-list">
+                {% for review in reviews %}
+                <div class="feed-item review-card">
+                    <a href="{{ url_for('dish.dish_detail', dish_id=review.dish.dish_id) }}" class="card-link">
+                        <div class="dish-image">
+                             {# Ensure image path exists and is not None before creating URL #}
+                            {% if review.dish.image_path %}
+                                <img src="{{ url_for('static', filename=review.dish.image_path) }}" alt="{{ review.dish.dish_name }}">
+                            {% else %}
+                                {# Provide a default image or placeholder #}
+                                <img src="{{ url_for('static', filename='images/default_dish.png') }}" alt="Default Dish Image">
+                            {% endif %}
+                        </div>
+                        <div class="dish-info">
+                            <h3 class="dish-name">{{ review.dish.dish_name }}</h3>
+                            <p class="restaurant-name">@ {{ review.restaurant.restaurant_name }}</p>
+                            <div class="star-rating">
+                                {% set full = review.rating|int %}
+                                {% set empty = 5 - full %}
+                                {% for _ in range(full) %}<i class="fas fa-star"></i>{% endfor %}{% for _ in range(empty) %}<i class="far fa-star"></i>{% endfor %}
+                                ({{ review.rating }})
+                            </div>
+                            <p class="review-content">"{{ review.content }}"</p>
+                            <span class="timestamp">Reviewed on: {{ review.created_at.strftime('%Y-%m-%d') }}</span>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-reviews">You haven't reviewed any dishes yet.</p>
+             <div class="button-group centered" style="margin-top: 20px;">
+                <a href="{{ url_for('dish.dishes') }}" class="taste-profile-btn">Explore Dishes</a>
+            </div>
+        {% endif %}
+        
+        <div class="button-group centered" style="margin-top: 30px;">
+             <a href="{{ url_for('profile.view_profile') }}" class="see-all-btn">Back to Profile</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %} 

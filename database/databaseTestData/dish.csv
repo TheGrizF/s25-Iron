@@ -43,8 +43,8 @@ dish_id,dish_name,description,featured,available,image_path,price
 42,Palak Paneer,"Spinach, onion gravy cooked with homemade paneer",0,0,images/dishes/punjabi/palak_paneer.png,17.99
 43,Tandoori Chicken,Roasted chicken marinated in yogurt and generously spiced,0,1,images/dishes/punjabi/tandoori_chicken.png,18.99
 44,Mutton Boti Kebab,a delicious North Indian / Mughlai dish where succulent and tender lamb pieces are marinated and grilled to perfection,0,1,images/dishes/punjabi/mutton_boti_kebab.png,22.99
-45,Shrimp Chicken Zafrani,"a mild, delicate, aromatic curry infused with saffron, cardamom and fennel, in a sauce with added tamarind, cream, and fresh coriander",1,1,images/dishes/punjabi/shrimp_chicken_zafrani.png,20.99
-46,Makhani Butter Paneer,Jumbo shrimp And chicken breast in a saffron-ginger marinade,0,1,images/dishes/punjabi/makhani_butter_paneer.png,18.99
+45,Shrimp Chicken Zafrani,Jumbo shrimp And chicken breast in a saffron-ginger marinade,1,1,images/dishes/punjabi/shrimp_chicken_zafrani.png,20.99
+46,Makhani Butter Paneer,"a mild, delicate, aromatic curry infused with saffron, cardamom and fennel, in a sauce with added tamarind, cream, and fresh coriander",0,1,images/dishes/punjabi/makhani_butter_paneer.png,18.99
 47,Sabji Jalfrezi,"Seasonal vegetables cooked in tomato, ginger and garlic sauce infused with peppercorns.",0,0,images/dishes/punjabi/sabji_jalfrezi.png,14.99
 48,Shrimp Po Boy,"Indulge in a seafood delight with our Shrimp Po' Boy. Plump fried shrimp nestled in a crusty French baguette served with spring mix, tomatoes and our house made Chesapeake Cocktail sauce.",0,1,images/dishes/pjays/shrimp_po_boy.jpg,12.99
 49,Wing station,"Experience our lightly breaded chicken wings, perfectly seasoned and fried to a delightful crunch. Available in 6-piece or 12-piece servings, these wings are perfect for any occasion. Choose from a variety of mouthwatering sauces: Sweet Red Chili, Buffalo, PJK Dry Rub, Garlic Parmesan, Garlic Buffalo, Hot Buffalo, Lemon Pepper or our signature Mumbo Sauce. **1 flavor per 6 wings**",0,1,images/dishes/pjays/wing_station.jpg,10

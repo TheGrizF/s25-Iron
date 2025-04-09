@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from sqlalchemy import func
 from backend.utils import normalize_email
 from database import db
+from database.models.taste_profiles import tasteProfile
 from database.models.user import friends, user
 import tastebuddies
 
@@ -21,6 +22,8 @@ def add_user():
     first_name = request.form.get("first_name")
     last_name = request.form.get("last_name")
     email = normalize_email(request.form.get("email"))
+    icon_path = request.form.get("icon_path") or "images/profile_icons/default1.png"
+    print(icon_path)
 
     if not first_name or not last_name or not email:
         flash("Missing required fields.", "error")
@@ -31,9 +34,17 @@ def add_user():
         flash("Email already attached to an account.", "error")
         return redirect(url_for("auth.add_user_page"))
 
-    new_user = user(first_name=first_name, last_name=last_name, email=email)
+    new_user = user(
+        first_name=first_name, 
+        last_name=last_name, 
+        email=email,
+        icon_path=icon_path)
 
     db.session.add(new_user)
+    db.session.commit()
+
+    taste_profile = tasteProfile(user_id=new_user.user_id, current_step=1)
+    db.session.add(taste_profile)
     db.session.commit()
     
     session["user_id"] = new_user.user_id  
@@ -101,25 +112,42 @@ def searchUser():
  
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])
 def addFriend(user_id):
-    current_user_id = session.get('user_id')  # Renamed to avoid conflict
+    current_user_id = session.get('user_id')
 
     if not current_user_id:
-        flash("You must be logged in to add a friend.", "error")
+        flash("You must be logged in to follow someone.", "error")
         return redirect(url_for('auth.index'))
 
-    # Check if already Friends
     exists = friends.query.filter_by(user_id=current_user_id, buddy_id=user_id).first()
     
     if exists:
-        flash("Buddy already added", "info")
+        flash("You are already following this user", "info")
     else:
-        new_friend = friends(user_id=current_user_id, buddy_id=user_id, status="accepted")
+        new_friend = friends(user_id=current_user_id, buddy_id=user_id)
         db.session.add(new_friend)
         db.session.commit()
-        flash("Buddy added", "success")
+        flash("You are now following this user", "success")
 
     return redirect(request.referrer)
 
+@auth_bp.route('/removeFriend/<user_id>', methods=['POST', 'GET'])
+def removeFriend(user_id):
+    current_user_id = session.get('user_id')
+
+    if not current_user_id:
+        flash("You must be logged in to unfollow someone.", "error")
+        return redirect(url_for('auth.index'))
+
+    friendship = friends.query.filter_by(user_id=current_user_id, buddy_id=user_id).first()
+
+    if friendship:
+        db.session.delete(friendship)
+        db.session.commit()
+        flash("You have unfollowed this user.", "success")
+    else:
+        flash("You are not following this user.", "error")
+
+    return redirect(request.referrer)
 
 @auth_bp.route('/database')
 def database():

@@ -9,7 +9,7 @@
 {% block content %}
 <div class="restaurant-detail">
     <div class="header-images">
-        <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="Restaurant ambiance" >
+        <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="Restaurant ambiance">
         <button class="back-button" onclick="window.history.back()">
             <i class="fas fa-chevron-left"></i>
         </button>
@@ -25,18 +25,10 @@
         {% endwith %}
 
         <h2>{{ restaurant.restaurant_name }}</h2>
-        <!--p class="category">Casual Dining</p>-->
-        <p class="hours">Open hours: <br>{{ restaurant.hours | safe }}</p>
-    
-        <!-- post update button -->
-        <button class="update-button" type="button" onclick="toggleUpdateForm()">
-            Post Update <i class="fas fa-bullhorn"></i>
-        </button>
-    
-        <!-- hidden live update form -->
+
+        <!-- hidden live update form (moved above hours) -->
         <div id="live-update-form" class="update-form" style="display: none;">
             <form action="{{ url_for('restaurant.post_update', restaurant_id=restaurant.restaurant_id) }}" method="POST">
-                <!-- change max length to control how big an update can be -->
                 <textarea name="update_content" maxlength="140" placeholder="What's happening? (max 140 characters)" required></textarea>
                 <div class="form-actions">
                     <button type="submit">Submit</button>
@@ -44,8 +36,16 @@
                 </div>
             </form>
         </div>
+
+        <!-- post update button -->
+        <button class="update-button" type="button" onclick="toggleUpdateForm()">
+            Post Update <i class="fas fa-bullhorn"></i>
+        </button>
+
+        <!-- open hours below form -->
+        <p class="hours">Open hours: <br>{{ restaurant.hours | safe }}</p>
     </div>
-    
+
     <!-- script for toggling form visibility -->
     <script>
         function toggleUpdateForm() {
@@ -53,83 +53,72 @@
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
     </script>
-    
-</script>
 
-    </div>
-
-    <section class="recommendations">
-        <h2>Recommended for You:</h2>
-        <div class="dishes-grid">          
-            <!--for loop for the dishes, but only first two here-->
-            {% for dish in restaurant.dishes[:2] %}         
-            <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">    
-                <div class="dish-image-container">
-                    <img src="{{ url_for('static', filename=dish.image_url) }}" alt="dish.name">
-                </div>
-                
-                <div class="dish-info">
-                    <h3>{{ dish.name }}</h3>
-                    <p class="dish-match">{{ dish.match_percentage }}% </span>
-                    <p class="dish-price">{{ dish.price }} USD/Each </p>
-                </div>
-            </a>          
-            {% endfor %}
-
-        </div>
-    </section>
-
-    <section class="about">
-        <div class="section-header">
-            <h2>About the restaurant</h2>
-            <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
-                <button class="show-detail">Full Menu</button>
-            </a>
-        </div>
-        <p class="description">
-            {{ restaurant.description }}
-        </p>
-        <section class="contact">
-            <div class="separator"></div>
-            <div class="contact-details">
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <p>    
-                        {% for line in restaurant.location.split(",") %}
-                            {{ line.strip() }}<br>
-                        {% endfor %}
-                    </p>
-                </div>
-                <div class="separator"></div>
-                <div class="contact-item">
-                    <i class="fas fa-phone-alt"></i>
-                    <p>    {{ restaurant.phone_number }}</p>
-                </div>
+<section class="recommendations">
+    <h2>Recommended for You:</h2>
+    <div class="dishes-grid">
+        {% for dish in restaurant.dishes[:2] %}
+        <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">
+            <div class="dish-image-container">
+                <img src="{{ url_for('static', filename=dish.image_url) }}" alt="dish.name">
             </div>
-        </section>
-        
-    </section>
+            <div class="dish-info">
+                <h3>{{ dish.name }}</h3>
+                <p class="dish-match">{{ dish.match_percentage }}%</p>
+                <p class="dish-price">{{ dish.price }} USD/Each</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
 
-    <section class="live-updates">
-        <h2>Latest Updates</h2>
-        <div class="updates-scroll-box">
-            {% if updates %}
-                {% for update, user in updates %}
-                    <div class="update-card">
-                        <div class="update-user">
-                            <img src="{{ url_for('static', filename=user.icon_path) }}" alt="User Icon" class="user-icon">
-                            <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
-                        </div>
-                        <p class="update-content">{{ update.update_content }}</p>
-                        <p class="update-timestamp">{{ update.created_at.strftime('%b %d, %Y %I:%M %p') }}</p>
+<section class="live-updates">
+    <h2>Latest Updates</h2>
+    <div class="updates-scroll-box">
+        {% if updates %}
+            {% for update, user in updates %}
+                <div class="update-card">
+                    <div class="update-user">
+                        <img src="{{ url_for('static', filename=user.icon_path) }}" alt="User Icon" class="user-icon">
+                        <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
                     </div>
-                {% endfor %}
-            {% else %}
-                <p>No updates yet. Be the first to post one!</p>
-            {% endif %}
+                    <p class="update-content">{{ update.update_content }}</p>
+                    <p class="update-timestamp">{{ update.created_at.strftime('%b %d, %Y %I:%M %p') }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No updates yet. Be the first to post one!</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="about">
+    <div class="section-header">
+        <h2>About the restaurant</h2>
+        <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
+            <button class="show-detail">Full Menu</button>
+        </a>
+    </div>
+    <p class="description">
+        {{ restaurant.description }}
+    </p>
+    <section class="contact">
+        <div class="separator"></div>
+        <div class="contact-details">
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>
+                    {% for line in restaurant.location.split(",") %}
+                        {{ line.strip() }}<br>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="separator"></div>
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <p>{{ restaurant.phone_number }}</p>
+            </div>
         </div>
     </section>
-    
-
-</div>
-{% endblock %} 
+</section>
+{% endblock %}

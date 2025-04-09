@@ -86,7 +86,7 @@
                 allergens: Array.from(document.querySelectorAll('input[name=\'allergens\']:checked')).map(cb => cb.value),
                 restrictions: Array.from(document.querySelectorAll('input[name=\'restrictions\']:checked')).map(cb => cb.value),
                 otherAllergies: Array.from(document.querySelectorAll('.other-allergy-item')).map(item => item.textContent.trim())
-            })" class="done-btn">Done</button>
+            }, true)" class="done-btn">Save & Exit</button>
             <button type="submit" class="submit-btn">Continue</button>
         </div>
     </form>
