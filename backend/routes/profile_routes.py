@@ -7,6 +7,7 @@ from database.models.taste_profiles import tasteProfile, dishTasteProfile
 from database.models.user import user, tasteComparisons, cuisine, cuisineUserJunction, friends, savedDishes, savedRestaurants, user_allergen, user_restriction
 from database.tasteMatching import updateTasteComparisons
 from database import db
+from sqlalchemy.orm import joinedload, contains_eager # Add contains_eager
 import json
 
 profile_bp = Blueprint('profile', __name__)
@@ -569,3 +570,49 @@ def autocomplete():
         } for d in results])
     
     return jsonify([])
+
+@profile_bp.route('/reviewed-dishes')
+def reviewed_dishes():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Log in to view your reviewed dishes.', 'error')
+        return redirect(url_for('auth.index'))
+
+    user_reviews = review.query.filter_by(user_id=user_id) \
+                            .options(joinedload(review.dish), joinedload(review.restaurant)) \
+                            .order_by(review.created_at.desc()) \
+                            .all()
+
+    # Fetch the user object to pass to the template if needed (e.g., for display name)
+    current_user = user.query.get(user_id)
+
+    return render_template('reviewedDishes.html', reviews=user_reviews, user=current_user)
+
+@profile_bp.route('/saved-dishes')
+def saved_dishes():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Log in to view your saved dishes.', 'error')
+        return redirect(url_for('auth.index'))
+
+    # Query saved dishes, joining through to restaurant
+    user_saved_dishes = savedDishes.query \
+        .filter(savedDishes.user_id == user_id) \
+        .join(savedDishes.dish) \
+        .outerjoin(dish.menu_dishes).outerjoin(menuDishJunction.menu).outerjoin(menu.restaurant) \
+        .options(
+            contains_eager(savedDishes.dish)
+            .contains_eager(dish.menu_dishes)
+            .contains_eager(menuDishJunction.menu)
+            .contains_eager(menu.restaurant)
+        ) \
+        .order_by(savedDishes.date_saved.desc()) \
+        .all()
+
+    # The query above loads related data. If a dish isn't on *any* menu,
+    # its menu_dishes list will be empty, and restaurant info won't be loaded via the join.
+    # The template already has a fallback for this.
+
+    current_user = user.query.get(user_id)
+
+    return render_template('savedDishes.html', saved_dishes=user_saved_dishes, user=current_user)

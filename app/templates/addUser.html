@@ -34,12 +34,17 @@
                 <label>Select a User Icon</label>
                 <div class="image-grid">
                     {% for i in range(1, 7) %}
-                    <label class="image-option">
-                        <input type="radio" name="icon_path" value="images/profile_icons/default{{ i }}.png" required>
-                        <img src="{{ url_for('static', filename='images/profile_icons/default' ~ i ~ '.png') }}" 
-                        alt="default icon {{ i }}">
-                    </label>
+                    <div class="image-option">
+                        <input type="radio" name="icon_path" id="icon{{ i }}" value="images/profile_icons/default{{ i }}.png" required>
+                        <label for="icon{{ i }}">
+                            <div class="image-wrapper">
+                                <img src="{{ url_for('static', filename='images/profile_icons/default' ~ i ~ '.png') }}" 
+                                     alt="default icon {{ i }}">
+                            </div>
+                        </label>
+                    </div>
                     {% endfor %}
+                </div>
             </div>
 
             <div class="button-group">
