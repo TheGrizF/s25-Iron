@@ -14,6 +14,9 @@
             box-sizing: border-box !important; 
             overflow: hidden !important;
             background-color: var(--gray-light);"> <!--Sorry Ben, didn't want to mess with your css-->
+    <button class="back-button" onclick="window.history.back()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
     <div class="profile-icon">
         {% if viewed_user.icon_path %}
             <img src="{{ url_for('static', filename=viewed_user.icon_path) }}" 
@@ -28,22 +31,27 @@
 
     <h1>{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h1>
 
-    {% if not is_buddy %}
     <div class="button-group centered">
-        <form action="{{ url_for('auth.addFriend', user_id=viewed_user.user_id) }}" method="POST">
-            <button type="submit" class="add-buddy-btn">Add TasteBuddy</button>
-        </form>
+        {% if is_buddy %}
+            <form action="{{ url_for('auth.removeFriend', user_id=viewed_user.user_id) }}" method="POST">
+                <button type="submit" class="add-buddy-btn">Unfollow</button>
+            </form>
+        {% else %}
+            <form action="{{ url_for('auth.addFriend', user_id=viewed_user.user_id) }}" method="POST">
+                <button type="submit" class="add-buddy-btn">Follow</button>
+            </form>
+        {% endif %}
     </div>
-    {% endif %}
     
-    <!-- Flash Message for Friend added or Already Friends -->
-    {% with messages = get_flashed_messages(with_categories=true) %} 
-        {% if messages%} 
-            {% for category, message in messages %}
-                <div class="flash-message {{ category }}">{{ message }}</div>
-            {% endfor %} 
-        {% endif %} 
-    {% endwith %}
+    <div class="flash-message-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>   
 
     <div class="preview-card">
         <h2>Taste Match</h2>
@@ -152,6 +160,32 @@ body {
         padding: 15px 15px 100px 15px;
     }
 }
+
+.flash-message-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.flash-message {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
 </style>
 
 {% endblock %} 

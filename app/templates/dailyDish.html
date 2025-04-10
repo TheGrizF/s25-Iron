@@ -180,8 +180,27 @@
                             </div>
                         </a>
                     </div>
-                {% endif %}
-
+                    
+                    {% elif item.type == 'follow' %}
+                    <div class="feed-item follow-notification" data-follow-id="{{ item.data.follower_id }}">
+                        <div class="follow-content" style="display: flex; align-items: center; gap: 15px;">
+                            <a href="{{ url_for('profile.view_user', user_id=item.data.follower_id) }}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                                <img src="{{ url_for('static', filename=item.data.icon_path) }}" class="buddy-icon">
+                                <strong>{{ item.data.name }}</strong>
+                            </a>
+                            <span>started following you!</span>
+                        </div>
+                        <div style="margin-top: 10px; display: flex; gap: 10px;">
+                            {% if not item.data.is_following_back %}
+                                    <button class="follow-back-btn" data-follow-id="{{ item.data.follower_id }}">Follow Back</button>
+                                </form>
+                            {% endif %}
+                            <button class="mark-seen-btn" type="button">Mark as Seen</button>
+                        </div>
+                    </div>
+                    
+                    {% endif %}
+                    
             {% endfor %}
         </section>
     </div>
@@ -228,6 +247,53 @@ document.addEventListener('DOMContentLoaded', function() {
         showItem(currentIndex);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.mark-seen-btn').forEach(btn => {
+        btn.addEventListener('click', async function () {
+            const parent = btn.closest('.follow-notification');
+            const followId = parent.getAttribute('data-follow-id');
+
+            const res = await fetch(`/mark-follow-seen/${followId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await res.json();
+            if (result.success) {
+                parent.remove();
+            } else {
+                alert('Could not mark as seen');
+            }
+        });
+    });
+});
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.follow-back-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const followerId = btn.getAttribute('data-follow-id');
+    
+                const res = await fetch(`/follow-back/${followerId}`, {
+                    method: 'POST'
+                });
+    
+                const result = await res.json();
+                if (result.success) {
+                    btn.textContent = "Following";
+                    btn.disabled = true;
+                    btn.classList.add("disabled");
+                } else {
+                    alert('Could not follow back');
+                }
+            });
+        });
+    });
+    </script>
+    
 {% endblock %}
+

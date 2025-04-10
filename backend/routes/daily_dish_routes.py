@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session, request, flash, redirect,
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_daily_dishes, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_all_restaurant_info, get_restaurant_info
+from backend.utils import get_featured_dishes, get_daily_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_all_restaurant_info, get_restaurant_info
 import json
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
@@ -19,6 +19,7 @@ def daily_dish():
     recommended_dishes = get_daily_dishes(user_id, 10)
     saved_dishes = get_saved_dishes(user_id)
     live_updates = get_live_updates(user_id)
+    follow_notifications = get_follow_notifications(user_id)
 
     daily_dish_items = []
     for i in range(max(len(friend_reviews), len(recommended_dishes), len(saved_dishes))):
@@ -30,6 +31,8 @@ def daily_dish():
             daily_dish_items.append({"type": "review", "data": friend_reviews[i]})
         if i < len(saved_dishes):
             daily_dish_items.append({"type": "saved", "data": saved_dishes[i]})
+        if i < len(follow_notifications):
+            daily_dish_items.append({"type": "follow", "data": follow_notifications[i]})
 
     return render_template('dailyDish.html', featured_dishes=featured_dishes, feed_items=daily_dish_items)
 
@@ -257,3 +260,35 @@ def get_matches():#This doesn't work correctly
         print(f"Error in get_matches: {e}")
         return []
     
+@daily_dish_bp.route('/mark-follow-seen/<int:follow_id>', methods=['POST'])
+def mark_follow_seen(follow_id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'success': False, 'error': 'Not logged in'}), 401
+
+    follow_entry = friends.query.filter_by(user_id=follow_id, buddy_id=user_id, seen=False).first()
+
+    if follow_entry:
+        follow_entry.seen = True
+        db.session.commit()
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'error': 'Follow not found or already seen'})
+
+@daily_dish_bp.route('/follow-back/<int:follower_id>', methods=['POST'])
+def follow_back(follower_id):
+    current_user_id = session.get('user_id')
+    if not current_user_id:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    already_following = db.session.query(friends).filter_by(
+        user_id=current_user_id, buddy_id=follower_id
+    ).first()
+
+    if not already_following:
+        new_follow = friends(user_id=current_user_id, buddy_id=follower_id)
+        db.session.add(new_follow)
+        db.session.commit()
+
+    return jsonify({"success": True})
+

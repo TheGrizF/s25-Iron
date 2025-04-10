@@ -37,7 +37,7 @@ def dishes():
     searched_keywords = [word for word in search.split() if word not in exclude_words]
 
     # Sorting and filtering arguments
-    filtered_dishes = dishes
+    filtered_dishes = dishes.copy()
 
     if filter_by != 'all':
         if filter_by == "four_stars":
@@ -52,11 +52,10 @@ def dishes():
             saved_dish_ids = {d.dish_id for d in savedDishes.query.filter_by(user_id=user_id).all()}
             filtered_dishes = [d for d in dishes if d["dish_id"] in saved_dish_ids]
 
-    sorted_dishes = sort_dishes(filtered_dishes, sort_by)
 
     # Search logic continued to remain within filtered constraints
     if searched_keywords:
-        sorted_dishes = [
+        filtered_dishes = [
             d for d in filtered_dishes if any(
                 keyword in d['dish_name'].lower() or
                 keyword in d['restaurant_name'].lower() or
@@ -65,6 +64,7 @@ def dishes():
             )
         ]   
 
+    sorted_dishes = sort_dishes(filtered_dishes, sort_by)
 
     return render_template("dishes.html", dishes = sorted_dishes)
 
