@@ -580,3 +580,18 @@ def normalize_email(email):
         name = name.replace(".", "")
 
     return f"{name}@{domain}"
+
+def get_average_dish_price(restaurant_id):
+    """
+    Get the average dish price for a restaurant
+    :param restaurant_id: ID of restaurant to get average price for
+    """
+    avg_price = (
+        db.session.query(func.avg(dish.price))
+        .join(menuDishJunction, dish.dish_id == menuDishJunction.dish_id)
+        .join(menu, menu.menu_id == menuDishJunction.menu_id)
+        .filter(menu.restaurant_id == restaurant_id)
+        .scalar()
+    )
+
+    return round(avg_price, 2) 
