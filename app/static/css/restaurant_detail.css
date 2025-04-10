@@ -121,6 +121,8 @@ a.dish-card {
     background: none;
     border: none;
     cursor: pointer;
+    align-items: center;
+    margin: 0;
 } 
 
 .contact {
@@ -250,6 +252,7 @@ a.dish-card {
 }
 
 .update-card {
+    margin-top: 0;
     padding: 12px;
     margin-bottom: 12px;
     border: 1px solid #e0e0e0;
