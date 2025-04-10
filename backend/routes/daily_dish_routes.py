@@ -168,6 +168,7 @@ def overlappingRestaurants():
 
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
+    user_id = session.get('user_id')
     highOverlappingRecommendations = session.get('highOverlappingRecommendations',[])
     mediumOverlappingRecommendations = session.get('mediumOverlappingRecommendations',[])   
     lowOverlappingRecommendations = session.get('lowOverlappingRecommendations',[])
@@ -195,10 +196,6 @@ def groupMatch():
             restaurantInfo = get_average_dish_price(restaurantInfo)
             restaurantInfo['averagePrice'] = restaurantInfo['averagePrice']
             restaraunts.append(restaurantInfo)
-    
-     
-    
-    
     return render_template('groupMatch.html',restaurants= restaraunts,highRecommendedRestaurants=highRecommendedRestaurants, mediumRecommendedRestaurants=mediumRecommendedRestaurants, lowRecommendedRestaurants=lowRecommendedRestaurants)
 
 @daily_dish_bp.route('/restaurant/<id>')
