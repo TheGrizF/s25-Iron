@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "taste_profile_base.html" %}
 
 {% block title %}Add User - TasteBuddies{% endblock %}
 
@@ -28,6 +28,23 @@
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Select a User Icon</label>
+                <div class="image-grid">
+                    {% for i in range(1, 7) %}
+                    <div class="image-option">
+                        <input type="radio" name="icon_path" id="icon{{ i }}" value="images/profile_icons/default{{ i }}.png" required>
+                        <label for="icon{{ i }}">
+                            <div class="image-wrapper">
+                                <img src="{{ url_for('static', filename='images/profile_icons/default' ~ i ~ '.png') }}" 
+                                     alt="default icon {{ i }}">
+                            </div>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
 
             <div class="button-group">

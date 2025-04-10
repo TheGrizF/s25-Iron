@@ -7,6 +7,7 @@ from database.models.taste_profiles import tasteProfile, dishTasteProfile
 from database.models.user import user, tasteComparisons, cuisine, cuisineUserJunction, friends, savedDishes, savedRestaurants, user_allergen, user_restriction
 from database.tasteMatching import updateTasteComparisons
 from database import db
+from sqlalchemy.orm import joinedload, contains_eager # Add contains_eager
 import json
 
 profile_bp = Blueprint('profile', __name__)
@@ -59,7 +60,6 @@ def view_profile():
                          friendsList=friendsList,
                          taste_matches=taste_matches,
                          dish_matches=dish_matches)
-
 
 @profile_bp.route('/user/<user_id>')
 def viewUserSearchResults(user_id):
@@ -152,13 +152,58 @@ def taste_profile_debug():
 def save_taste_profile_step1():
     try:
         data = request.get_json()
+        user_id = session.get('user_id')
         
         # Store the data in session
         session['taste_profile_step1'] = data
         session.modified = True  # Explicitly mark the session as modified
-        
+
+        fav_restaurant = data.get('favoriteRestaurant', '').strip()
+        fav_dish = data.get('favoriteDish', '').strip()
+
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        if not taste_profile:
+            taste_profile = tasteProfile(user_id=user_id)
+            db.session.add(taste_profile)
+
+        if fav_restaurant:
+            rest_match = restaurant.query.filter(
+                restaurant.restaurant_name.ilike(fav_restaurant)
+            ).first()
+            if rest_match:
+                fav_cuisine = rest_match.cuisine
+
+                cuisine_obj = db.session.query(cuisine).filter_by(cuisine_name=fav_cuisine).first()
+                add_cuisine = cuisineUserJunction(
+                    user_id=user_id,
+                    cuisine_id=cuisine_obj.cuisine_id,
+                    preference_level=5
+                )
+                db.session.add(add_cuisine)
+
+        if fav_dish:
+            dish_match = dish.query.filter(
+                dish.dish_name.ilike(fav_dish)
+            ).first()
+            if dish_match:
+                dish_profile = db.session.query(dishTasteProfile).filter_by(dish_id=dish_match.dish_id).first()
+                if dish_profile:
+                    taste_profile.sweet = dish_profile.sweet
+                    taste_profile.savory = dish_profile.savory
+                    taste_profile.sour = dish_profile.sour
+                    taste_profile.bitter = dish_profile.bitter
+                    taste_profile.spicy = dish_profile.spicy
+                    taste_profile.umami = dish_profile.umami
+
+                saved = savedDishes(user_id=user_id, dish_id=dish_match.dish_id)
+                db.session.add(saved)
+
+
+        taste_profile.current_step=1
+        db.session.commit()
         return jsonify({'status': 'success'})
     except Exception as e:
+        db.session.rollback()
         print("Error:", str(e))  # Debug log
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
@@ -168,8 +213,28 @@ def save_taste_profile_step2():
         data = request.get_json()
         session['taste_profile_step2'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        
+        allergens = data.get('allergens', [])
+        for allergen in allergens:
+            db.session.add(user_allergen(user_id=user_id, allergen=allergen))
+        other_allergens = data.get('otherAllergies', [])
+        for other in other_allergens:
+            db.session.add(user_allergen(user_id=user_id, allergen=other.strip().lower()))
+
+        restrictions = data.get('restrictions', [])
+        for restriction in restrictions:
+            db.session.add(user_restriction(user_id=user_id, restriction=restriction))
+
+        taste_profile.current_step = 2
+
+        db.session.commit()    
+
         return jsonify({'status': 'success'})
     except Exception as e:
+        db.session.rollback()
         print("Error:", str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
@@ -179,9 +244,19 @@ def save_taste_profile_step3():
         data = request.get_json()
         session['taste_profile_step3'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        taste_profile=tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.sour = data.get('sour', 0)
+        taste_profile.current_step = 3
+
+        db.session.commit()
+
         return jsonify({'status': 'success'})
+    
     except Exception as e:
         print("Error:", str(e))
+        db.session.rollback()
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @profile_bp.route('/api/taste-profile/step4', methods=['POST'])
@@ -190,6 +265,14 @@ def save_taste_profile_step4():
         data = request.get_json()
         session['taste_profile_step4'] = data
         session.modified = True
+
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.sweet = data.get('sweet', 0)
+        taste_profile.current_step = 4
+
+        db.session.commit()
+
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -201,6 +284,15 @@ def save_taste_profile_step5():
         data = request.get_json()
         session['taste_profile_step5'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.umami = data.get('umami', 0)
+        taste_profile.current_step = 5
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -212,6 +304,15 @@ def save_taste_profile_step6():
         data = request.get_json()
         session['taste_profile_step6'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.savory = data.get('savory', 0)
+        taste_profile.current_step = 6
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -223,6 +324,15 @@ def save_taste_profile_step7():
         data = request.get_json()
         session['taste_profile_step7'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.spicy = data.get('spicy', 0)
+        taste_profile.current_step = 7
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -234,6 +344,15 @@ def save_taste_profile_step8():
         data = request.get_json()
         session['taste_profile_step8'] = data
         session.modified = True
+
+        
+        user_id = session.get("user_id")
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.bitter = data.get('bitter', 0)
+        taste_profile.current_step = 8
+
+        db.session.commit()
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -256,6 +375,29 @@ def save_taste_profile_step10():
         data = request.get_json()
         session['taste_profile_step10'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        db.session.query(cuisineUserJunction).filter_by(user_id=user_id).delete()
+
+        cuisine_preferences = data.get('cuisines', {})
+        for cuisine_name, preference_level in cuisine_preferences.items():
+            cuisine_obj = cuisine.query.filter_by(cuisine_name=cuisine_name.title()).first()
+            if not cuisine_obj:
+                cuisine_obj=cuisine(cuisine_name=cuisine_name.title())
+                db.session.add(cuisine_obj)
+                db.session.flush()
+
+            cuisine_pref=cuisineUserJunction(
+                user_id=user_id,
+                cuisine_id=cuisine_obj.cuisine_id,
+                preference_level=preference_level
+            )
+            db.session.add(cuisine_pref)
+
+        taste_profile=tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.current_step = 10
+
+        db.session.commit()
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
@@ -267,96 +409,48 @@ def save_taste_profile_step11():
         data = request.get_json()
         session['taste_profile_step11'] = data
         session.modified = True
+
+        user_id = session.get('user_id')
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        taste_profile.current_step = 11
+
+        db.session.commit()
         return jsonify({'status': 'success'})
     except Exception as e:
         print("Error:", str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
-@profile_bp.route('/api/taste-profile/save', methods=['POST'])
-def save_taste_profile():
+@profile_bp.route('/api/taste-profile/exit_early', methods=['POST'])
+def exit_early():
     try:
         user_id = session.get('user_id')
         if not user_id:
-            return jsonify({'status': 'error', 'message': 'user not logged in'}), 401
+            return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
 
-        data = {}
-        for i in range(1, 12):
-            key = f'taste_profile_step{i}'
-            data.update(session.get(key, {}))
-
-        selected_user = user.query.get(user_id)
-
-        if not selected_user:
-            return jsonify({'status': 'error', 'message': 'user not found'}), 404
-
-        taste_profile = selected_user.taste_profile
-        
-        if not taste_profile:
-            taste_profile = tasteProfile(user_id=user_id)
-            selected_user.taste_profile = taste_profile
-            db.session.add(taste_profile)
-        else:
-            taste_profile.user_id = user_id
-        
-        # Clear existing allergens and restrictions
-        db.session.query(user_allergen).filter_by(user_id=user_id).delete()
-        db.session.query(user_restriction).filter_by(user_id=user_id).delete()
-
-        # Add new allergens
-        for allergen in data.get('allergens', []):
-            print(allergen)
-            new_allergen = user_allergen(user_id=user_id, allergen=allergen)
-            db.session.add(new_allergen)
-
-        # Add other allergens
-        other_allergies = data.get('otherAllergies', [])
-        for other_allergy in other_allergies:
-            other_allergy = other_allergy.lower()  # Convert to lowercase
-            print(other_allergy)
-            new_allergen = user_allergen(user_id=user_id, allergen=other_allergy)
-            db.session.add(new_allergen)
-
-        # Add new restrictions
-        for restriction in data.get('diets', []):
-            print(restriction)
-            new_restriction = user_restriction(user_id=user_id, restriction=restriction)
-            db.session.add(new_restriction)
-            
-        taste_profile.sweet = data.get('sweet', 3)
-        taste_profile.savory = data.get('savory', 3)
-        taste_profile.sour = data.get('sour', 3)
-        taste_profile.bitter = data.get('bitter', 3)
-        taste_profile.spicy = data.get('spicy', 3)
-        taste_profile.umami = data.get('umami', 3)
-
-        # Clear existing cuisine preferences
-        db.session.query(cuisineUserJunction).filter_by(user_id=user_id).delete()
-
-        # Add new cuisine preferences
-        cuisine_preferences = data.get('cuisines', {})
-        for cuisine_name, preference_level in cuisine_preferences.items():
-            # Get or create cuisine
-            cuisine_obj = cuisine.query.filter_by(cuisine_name=cuisine_name.title()).first()
-            if not cuisine_obj:
-                cuisine_obj = cuisine(cuisine_name=cuisine_name.title())
-                db.session.add(cuisine_obj)
-                db.session.flush()  # Get the ID of the new cuisine
-
-            # Create cuisine preference junction
-            cuisine_pref = cuisineUserJunction(
-                user_id=user_id,
-                cuisine_id=cuisine_obj.cuisine_id,
-                preference_level=preference_level
-            )
-            db.session.add(cuisine_pref)
-
-        db.session.commit()
         updateTasteComparisons(user_id)
-        return jsonify({'status': 'success'})
+
+        return jsonify({'status': 'success', 'message': 'Taste Profile updated'})
     except Exception as e:
-        print("Error:", str(e))
-        db.session.rollback()
+        print("Error finalizing taste profile:", str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@profile_bp.route('/taste-profile/view')
+def view_edit_taste_profile():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Please log in first.', 'error')
+        return redirect(url_for('auth.index'))
+    
+    this_user = user.query.get(user_id)
+    profile = this_user.taste_profile
+
+    next_step = None
+    if profile and (not profile.current_step or profile.current_step < 11):
+        next_step = profile.current_step + 1 if profile.current_step else 1
+        if next_step == 9:
+            next_step = 10
+
+    return render_template('viewTasteProfile.html', user=this_user, taste_profile=profile, next_step=next_step)
     
 @profile_bp.route('/matches', methods=['GET'])
 def matches_page():
@@ -519,3 +613,49 @@ def autocomplete():
         } for d in results])
     
     return jsonify([])
+
+@profile_bp.route('/reviewed-dishes')
+def reviewed_dishes():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Log in to view your reviewed dishes.', 'error')
+        return redirect(url_for('auth.index'))
+
+    user_reviews = review.query.filter_by(user_id=user_id) \
+                            .options(joinedload(review.dish), joinedload(review.restaurant)) \
+                            .order_by(review.created_at.desc()) \
+                            .all()
+
+    # Fetch the user object to pass to the template if needed (e.g., for display name)
+    current_user = user.query.get(user_id)
+
+    return render_template('reviewedDishes.html', reviews=user_reviews, user=current_user)
+
+@profile_bp.route('/saved-dishes')
+def saved_dishes():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Log in to view your saved dishes.', 'error')
+        return redirect(url_for('auth.index'))
+
+    # Query saved dishes, joining through to restaurant
+    user_saved_dishes = savedDishes.query \
+        .filter(savedDishes.user_id == user_id) \
+        .join(savedDishes.dish) \
+        .outerjoin(dish.menu_dishes).outerjoin(menuDishJunction.menu).outerjoin(menu.restaurant) \
+        .options(
+            contains_eager(savedDishes.dish)
+            .contains_eager(dish.menu_dishes)
+            .contains_eager(menuDishJunction.menu)
+            .contains_eager(menu.restaurant)
+        ) \
+        .order_by(savedDishes.date_saved.desc()) \
+        .all()
+
+    # The query above loads related data. If a dish isn't on *any* menu,
+    # its menu_dishes list will be empty, and restaurant info won't be loaded via the join.
+    # The template already has a fallback for this.
+
+    current_user = user.query.get(user_id)
+
+    return render_template('savedDishes.html', saved_dishes=user_saved_dishes, user=current_user)

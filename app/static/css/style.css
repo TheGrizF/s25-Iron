@@ -116,6 +116,7 @@ h2 {
     padding: 10px 0;
     padding-bottom: 30px; /*recommended at 46, but that seemed excessive, will see on phone first*/
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    z-index: 10; /* Ensure nav bar is above page content */
 }
 
 .nav-item {

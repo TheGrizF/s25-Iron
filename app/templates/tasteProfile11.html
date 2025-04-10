@@ -89,7 +89,7 @@
         <div class="button-group">
             <button type="button" onclick="submitStep(11, {
                 condiments: Array.from(document.querySelectorAll('input[name=\'condiments\']:checked')).map(cb => cb.value)
-            })" class="done-btn">Done</button>
+            }, true)" class="done-btn">Save & Exit</button>
             <button type="submit" class="submit-btn">Continue</button>
         </div>
     </form>

@@ -6,12 +6,14 @@ class tasteProfile(db.Model):
     __tablename__ = "taste_profile"
     taste_profile_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), unique=True, nullable=False)
-    sweet = Column(SmallInteger, nullable=True)
-    savory = Column(SmallInteger, nullable=True)
-    sour = Column(SmallInteger, nullable=True)
-    bitter = Column(SmallInteger, nullable=True)
-    spicy = Column(SmallInteger, nullable=True)
-    umami = Column(SmallInteger, nullable=True)
+    sweet = Column(SmallInteger, nullable=True, default=3)
+    savory = Column(SmallInteger, nullable=True, default=3)
+    sour = Column(SmallInteger, nullable=True, default=3)
+    bitter = Column(SmallInteger, nullable=True, default=3)
+    spicy = Column(SmallInteger, nullable=True, default=3)
+    umami = Column(SmallInteger, nullable=True, default=3)
+
+    current_step = Column(SmallInteger, nullable=True, default=0)
 
     user = relationship("user", back_populates="taste_profile")
 

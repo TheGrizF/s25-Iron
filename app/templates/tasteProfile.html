@@ -49,10 +49,14 @@
             <button type="button" onclick="submitStep(1, {
                 favoriteRestaurant: document.getElementById('favoriteRestaurant').value,
                 favoriteDish: document.getElementById('favoriteDish').value,
-                tryNew: document.querySelector('input[name=\'tryNew\']:checked').value,
-                basicProfileOnly: true
-            })" class="done-btn">Done</button>
-            <button type="submit" class="submit-btn">Continue</button>
+                tryNew: document.querySelector('input[name=\'tryNew\']:checked').value
+            }, true)" class="done-btn">Save & Exit</button>
+
+            <button type="button" onclick="submitStep(1, {
+                favoriteRestaurant: document.getElementById('favoriteRestaurant').value,
+                favoriteDish: document.getElementById('favoriteDish').value,
+                tryNew: document.querySelector('input[name=\'tryNew\']:checked').value
+            }, false, '/taste-profile/step2')" class="submit-btn">Continue</button>
         </div>
     </form>
     <p class="profile-info">For a more personalized experience, continue setting up your Taste Profile with additional questions. 
