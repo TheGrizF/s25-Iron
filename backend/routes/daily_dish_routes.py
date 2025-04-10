@@ -191,10 +191,9 @@ def groupMatch():
 
     restaraunts =  []
     for restaurant_id in highRecommendedRestaurants + mediumRecommendedRestaurants + lowRecommendedRestaurants:
-        restaurantInfo = get_restaurant_info(user_id,restaurantID)
+        restaurantInfo = get_restaurant_info(user_id,restaurant_id)
         if restaurantInfo:
-            restaurantInfo = get_average_dish_price(restaurantInfo)
-            restaurantInfo['averagePrice'] = restaurantInfo['averagePrice']
+            restaurantInfo = get_average_dish_price(restaurant_id)
             restaraunts.append(restaurantInfo)
     return render_template('groupMatch.html',restaurants= restaraunts,highRecommendedRestaurants=highRecommendedRestaurants, mediumRecommendedRestaurants=mediumRecommendedRestaurants, lowRecommendedRestaurants=lowRecommendedRestaurants)
 
