@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session, request, flash, redirect,
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_daily_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_all_restaurant_info, get_restaurant_info
+from backend.utils import get_featured_dishes, get_daily_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_all_restaurant_info, get_restaurant_info, get_average_dish_price
 import json
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
@@ -190,22 +190,14 @@ def groupMatch():
     print('lowRecommendation:',lowRecommendedRestaurants)
 
     restaraunts =  []
-    for restaurant_id in highRecommendedRestaurants:
-        restaurant_info = get_restaurant_info(user_id,restaurant_id)
-        if restaurant_info:
-            restaraunts.append(restaurant_info)
+    for restaurantID in highRecommendedRestaurants + mediumRecommendedRestaurants + lowRecommendedRestaurants:
+        restaurantInfo = get_restaurant_info(user_id,restaurantID)
+        if restaurantInfo:
+            averagePrice = get_average_dish_price(restaurantID)
+            restaurantInfo['averagePrice'] = averagePrice
+            restaraunts.append(restaurantInfo)
     
      
-    for restaurant_id in mediumRecommendedRestaurants:
-        restaurant_info = get_restaurant_info(user_id,restaurant_id)
-        if restaurant_info:
-            restaraunts.append(restaurant_info)
-    
-  
-    for restaurant_id in lowRecommendedRestaurants:
-        restaurant_info = get_restaurant_info(user_id,restaurant_id)
-        if restaurant_info:
-            restaraunts.append(restaurant_info)
     
     return render_template('groupMatch.html',restaurants= restaraunts,highRecommendedRestaurants=highRecommendedRestaurants, mediumRecommendedRestaurants=mediumRecommendedRestaurants, lowRecommendedRestaurants=lowRecommendedRestaurants)
 
