@@ -168,7 +168,6 @@ def overlappingRestaurants():
 
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
-    user_id = session.get('user_id')
     highOverlappingRecommendations = session.get('highOverlappingRecommendations',[])
     mediumOverlappingRecommendations = session.get('mediumOverlappingRecommendations',[])   
     lowOverlappingRecommendations = session.get('lowOverlappingRecommendations',[])
