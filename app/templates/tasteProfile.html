@@ -107,6 +107,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const dishInput = document.getElementById('favoriteDish');
     const restaurantSuggestions = document.getElementById('restaurantSuggestions');
     const dishSuggestions = document.getElementById('dishSuggestions');
+    
+    // Track selected items
+    let selectedRestaurant = null;
+    let selectedDish = null;
 
     function debounce(func, wait) {
         let timeout;
@@ -130,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function showSuggestions(suggestions, container) {
+    function showSuggestions(suggestions, container, input, type) {
         container.innerHTML = '';
         if (suggestions.length === 0) {
             container.style.display = 'none';
@@ -141,8 +145,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const div = document.createElement('div');
             div.textContent = item.name;
             div.onclick = () => {
-                container.previousElementSibling.value = item.name;
+                input.value = item.name;
                 container.style.display = 'none';
+                if (type === 'restaurant') {
+                    selectedRestaurant = item;
+                } else {
+                    selectedDish = item;
+                }
             };
             container.appendChild(div);
         });
@@ -153,20 +162,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const query = e.target.value;
         if (query.length < 2) {
             restaurantSuggestions.style.display = 'none';
+            selectedRestaurant = null;
             return;
         }
         const suggestions = await fetchSuggestions(query, 'restaurant');
-        showSuggestions(suggestions, restaurantSuggestions);
+        showSuggestions(suggestions, restaurantSuggestions, restaurantInput, 'restaurant');
     }, 300);
 
     const handleDishInput = debounce(async (e) => {
         const query = e.target.value;
         if (query.length < 2) {
             dishSuggestions.style.display = 'none';
+            selectedDish = null;
             return;
         }
         const suggestions = await fetchSuggestions(query, 'dish');
-        showSuggestions(suggestions, dishSuggestions);
+        showSuggestions(suggestions, dishSuggestions, dishInput, 'dish');
     }, 300);
 
     restaurantInput.addEventListener('input', handleRestaurantInput);
@@ -181,6 +192,35 @@ document.addEventListener('DOMContentLoaded', function() {
             dishSuggestions.style.display = 'none';
         }
     });
+
+    // Validate form submission
+    function validateForm() {
+        if (!selectedRestaurant || !selectedDish) {
+            alert('Please select valid items from the suggestions list');
+            return false;
+        }
+        return true;
+    }
+
+    // Override the submitStep function
+    window.submitStep = function(step, data, isDone, nextUrl) {
+        if (!validateForm()) {
+            return;
+        }
+        
+        // Use the selected items instead of input values
+        data.favoriteRestaurant = selectedRestaurant.name;
+        data.favoriteDish = selectedDish.name;
+        
+        // Original submitStep logic
+        if (isDone) {
+            // Handle save and exit
+            console.log('Saving and exiting with data:', data);
+        } else if (nextUrl) {
+            // Handle continue to next step
+            window.location.href = nextUrl;
+        }
+    };
 });
 </script>
 {% endblock %} 
