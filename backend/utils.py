@@ -2,7 +2,7 @@
 Use this to create all the helper functions for the routes.
 Keeps them organized so we can use them again if we need to.
 """
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import session
 from sqlalchemy import func
 from database import db
@@ -481,6 +481,20 @@ def get_restaurant_info(user_id, restaurant_id):
         for entry in this_restaurant.operating_hours
     )
 
+    recent_threshold = datetime.now() - timedelta(hours=4)
+
+    recent_update = (
+        db.session.query(liveUpdate)
+        .filter(liveUpdate.restaurant_id == this_restaurant.restaurant_id)
+        .filter(liveUpdate.created_at >= recent_threshold)
+        .order_by(liveUpdate.created_at.desc())
+        .first()
+    )
+    if recent_update:
+        update_info = recent_update.update_content
+    else:
+        update_info = None
+
     return {
             "restaurant_id": this_restaurant.restaurant_id,
             "restaurant_name": this_restaurant.restaurant_name,
@@ -495,6 +509,7 @@ def get_restaurant_info(user_id, restaurant_id):
             "cuisine": this_restaurant.cuisine,
             "match_percentage": restaurant_match_percent,
             "dishes": restaurant_dishes,
+            "live_update": update_info,
 
         }
 

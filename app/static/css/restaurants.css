@@ -193,7 +193,12 @@ body {
 .busy {
     color: var(--burgundy-main);
     font-size: 12px;
-    text-align: right;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient:vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .busy i {
