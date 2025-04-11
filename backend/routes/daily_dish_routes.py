@@ -121,46 +121,39 @@ def overlappingRestaurants():
         for rec in recommendationsList ])
     print(restaurantRecommendations) 
 
-    highSeenRestaurants = {}
-    mediumSeenRestaurants = {}
-    lowSeenRestaurants = {}
-    highMatchingRestaurants = set()
-    mediumMatchingRestaurant = set()
-    lowMatchingRestaurant = set()
-    
+    # Track seen restaurants and weighted scores
+    seenRestaurants = {}
+    weightedScores = {}
+
+   # Get each users match percentages per restaurant (stored in seenRestaurants)
     for recommendations in restaurantRecommendations:
-        restaurant_id, matchPercentage = recommendations[0], recommendations[2]
-        if matchPercentage > 75:
-            if restaurant_id in highSeenRestaurants:
-                highSeenRestaurants[restaurant_id].append(matchPercentage)
-                if len(highSeenRestaurants[restaurant_id]) == len(activeGroup):
-                    highMatchingRestaurants.add(restaurant_id)
-            else:
-                highSeenRestaurants[restaurant_id] = [matchPercentage]
-        if matchPercentage > 50 and matchPercentage < 75:
-            if restaurant_id in mediumSeenRestaurants:
-                mediumSeenRestaurants[restaurant_id].append(matchPercentage)
-                if len(mediumSeenRestaurants[restaurant_id]) == len(activeGroup):
-                    mediumMatchingRestaurant.add(restaurant_id)
-            else:
-                mediumSeenRestaurants[restaurant_id] = [matchPercentage]
-        if matchPercentage < 50:
-            if restaurant_id in lowSeenRestaurants:
-                lowSeenRestaurants[restaurant_id].append(matchPercentage)
-                if len(lowSeenRestaurants[restaurant_id]) == len(activeGroup):
-                    lowMatchingRestaurant.add(restaurant_id)
-            else:
-                lowSeenRestaurants[restaurant_id] = [matchPercentage]
-            
-    highOverlappingRecommendations =[rec for rec in restaurantRecommendations if rec[0] in highMatchingRestaurants]
-    mediumOverlappingRecommendations =[rec for rec in restaurantRecommendations if rec[0] in mediumMatchingRestaurant]
-    lowOverlappingRecommendations =[rec for rec in restaurantRecommendations if rec[0] in lowMatchingRestaurant]
-    print('High overlap:',highOverlappingRecommendations)
-    print('Medium overlap:',mediumOverlappingRecommendations)
-    print('Low overlap:',lowOverlappingRecommendations)
-    session['highOverlappingRecommendations'] = highOverlappingRecommendations
-    session['mediumOverlappingRecommendations'] = mediumOverlappingRecommendations  
-    session['lowOverlappingRecommendations'] = lowOverlappingRecommendations
+        restaurant_id, restaurant_name, matchPercentage = recommendations
+        if restaurant_id not in seenRestaurants:
+            seenRestaurants[restaurant_id] = []
+        seenRestaurants[restaurant_id].append(matchPercentage)
+    
+    # Calculate weighted match percentages (iterating through items in seenRestaurants)
+    for restaurant_id, percentages in seenRestaurants.items():
+        # Apply weights to extreme values
+        weightedMatchPercentage = sum(
+           matchPercentage * 1.2 if matchPercentage > 80 else matchPercentage * 0.8 if matchPercentage < 50 else matchPercentage
+          for matchPercentage in percentages
+        )
+        weightedAvg = weightedMatchPercentage / len(percentages)
+        weightedScores[restaurant_id] = round(weightedAvg,2)
+    
+    print('weightedScores:',weightedScores) #debug 
+
+    # Categorize restaurants based on weighted scores (numbers may need adjustment)
+    highMatchingRestaurants = {rid for rid, matchPercentage in weightedScores.items() if matchPercentage > 80}
+    mediumMatchingRestaurants = {rid for rid, matchPercentage in weightedScores.items() if 65<= matchPercentage <= 80}
+    lowMatchingRestaurants = {rid for rid, matchPercentage in weightedScores.items() if matchPercentage < 65}
+   
+    print (highMatchingRestaurants)
+    session['highMatchingRestaurants'] = list(highMatchingRestaurants)
+    session['meidumMatchingRestaurants'] = list(mediumMatchingRestaurants)
+    session['lowMatchingRestaurants'] = list(lowMatchingRestaurants)  
+    session['weightedScores'] = weightedScores
 
     return redirect(url_for('daily_dish.groupMatch'))
 
@@ -169,34 +162,30 @@ def overlappingRestaurants():
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
     user_id = session.get('user_id')
-    highOverlappingRecommendations = session.get('highOverlappingRecommendations',[])
-    mediumOverlappingRecommendations = session.get('mediumOverlappingRecommendations',[])   
-    lowOverlappingRecommendations = session.get('lowOverlappingRecommendations',[])
-   
-    highRecommendedRestaurants = []
-    for recommendation in highOverlappingRecommendations:
-        if recommendation[0] not in highRecommendedRestaurants:
-         highRecommendedRestaurants.append(recommendation[0])
-    print('highRecommendedRestaurants:',highRecommendedRestaurants) 
-    mediumRecommendedRestaurants = []
-    for recommendation in mediumOverlappingRecommendations:
-        if recommendation[0] not in mediumRecommendedRestaurants:
-         mediumRecommendedRestaurants.append(recommendation[0])
-    print('mediumRecommendation:',mediumRecommendedRestaurants)
-    lowRecommendedRestaurants = []
-    for recommendation in lowOverlappingRecommendations:   
-        if recommendation[0] not in lowRecommendedRestaurants:
-         lowRecommendedRestaurants.append(recommendation[0])
-    print('lowRecommendation:',lowRecommendedRestaurants)
-
-    restaraunts =  []
-    for restaurant_id in highRecommendedRestaurants + mediumRecommendedRestaurants + lowRecommendedRestaurants:
-        restaurantInfo = get_restaurant_info(user_id,restaurant_id)
+    highMatchingRestaurants = session.get('highMatchingRestaurants',[])
+    mediumMatchingRestaurants = session.get('meidumMatchingRestaurants',[])
+    lowMatchingRestaurants = session.get('lowMatchingRestaurants',[])
+    weightedScores = session.get('weightedScores')
+    print('weightedScores:',weightedScores)
+    
+    restaurants = []
+    for restaurant_id in highMatchingRestaurants + mediumMatchingRestaurants + lowMatchingRestaurants:
+        restaurantInfo = get_restaurant_info(user_id, restaurant_id)
         if restaurantInfo:
-            average_price = get_average_dish_price(restaurant_id) # edited to prevent restaurant overwrite
-            restaurantInfo['average_price'] = average_price # line edite
-            restaraunts.append(restaurantInfo)
-    return render_template('groupMatch.html',restaurants= restaraunts,highRecommendedRestaurants=highRecommendedRestaurants, mediumRecommendedRestaurants=mediumRecommendedRestaurants, lowRecommendedRestaurants=lowRecommendedRestaurants)
+            average_price = get_average_dish_price(restaurant_id)
+            restaurantInfo['weightedScores'] = weightedScores[restaurant_id]
+            restaurantInfo['average_price'] = average_price
+            if restaurant_id in highMatchingRestaurants:
+                restaurantInfo['confidence'] = 'High'
+            elif restaurant_id in mediumMatchingRestaurants:
+                restaurantInfo['confidence'] = 'Medium'
+            else:
+                restaurantInfo['confidence'] = 'Low'
+            restaurants.append(restaurantInfo)
+            
+    for restaurant in restaurants:
+        print (restaurant['restaurant_id'],restaurant['average_price'],restaurant['confidence']) #debug 
+    return render_template('groupMatch.html',restaurants = restaurants,highMatchingRestaurants = highMatchingRestaurants,mediumMatchingRestaurants=mediumMatchingRestaurants,lowMatchingRestaurants= lowMatchingRestaurants,weightedScores=weightedScores)
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
