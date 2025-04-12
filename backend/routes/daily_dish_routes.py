@@ -169,6 +169,13 @@ def overlappingRestaurants():
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
     user_id = session.get('user_id')
+    selectedFriends = session.get('selectedBuddies', [])
+    groupIDs = [item['userId'] for item in selectedFriends]
+    activeGroup = groupIDs + [user_id]
+
+    # Get user info for all group members
+    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
+    
     highOverlappingRecommendations = session.get('highOverlappingRecommendations',[])
     mediumOverlappingRecommendations = session.get('mediumOverlappingRecommendations',[])   
     lowOverlappingRecommendations = session.get('lowOverlappingRecommendations',[])
@@ -196,7 +203,18 @@ def groupMatch():
             average_price = get_average_dish_price(restaurant_id) # edited to prevent restaurant overwrite
             restaurantInfo['average_price'] = average_price # line edite
             restaraunts.append(restaurantInfo)
-    return render_template('groupMatch.html',restaurants= restaraunts,highRecommendedRestaurants=highRecommendedRestaurants, mediumRecommendedRestaurants=mediumRecommendedRestaurants, lowRecommendedRestaurants=lowRecommendedRestaurants)
+
+    # Create user dish recommendations dictionary
+    user_dish_recommendations = {}
+    for member in activeGroupInfo:
+        # Get recommended dishes for this user at the selected restaurant
+        if highRecommendedRestaurants:
+            restaurant_id = highRecommendedRestaurants[0]
+            user_dishes = get_dish_recommendations(member.user_id, restaurant_id)
+            # Format: {user_id: [(dish_name, match_percentage)]}
+            user_dish_recommendations[member.user_id] = [(dish.name, dish.match_percentage) 
+                                                       for dish in user_dishes[:2]]  #Match The top 2 dishes?
+    return render_template('groupMatch.html',restaurants= restaraunts,highRecommendedRestaurants=highRecommendedRestaurants, mediumRecommendedRestaurants=mediumRecommendedRestaurants, lowRecommendedRestaurants=lowRecommendedRestaurants, activeGroupInfo = activeGroupInfo, user_dish_recommendations=user_dish_recommendations)
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
