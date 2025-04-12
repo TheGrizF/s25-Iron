@@ -450,8 +450,46 @@ def view_edit_taste_profile():
         if next_step == 9:
             next_step = 10
 
-    return render_template('viewTasteProfile.html', user=this_user, taste_profile=profile, next_step=next_step)
+    allergies = [a.allergen for a in user_allergen.query.filter_by(user_id=user_id).all()]
+    restrictions = [r.restriction for r in user_restriction.query.filter_by(user_id=user_id).all()]
+
+    return render_template('viewTasteProfile.html', user=this_user, taste_profile=profile, next_step=next_step, allergies=allergies, restrictions=restrictions)
     
+@profile_bp.route('/api/taste-profile/update', methods=['POST'])
+def update_taste_profile():
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'status': 'error', 'message': 'User not logged in'}), 401
+
+        data = request.get_json()
+
+        taste_profile = tasteProfile.query.filter_by(user_id=user_id).first()
+        if not taste_profile:
+            return jsonify({'status': 'error', 'message': 'Taste profile not found'}), 404
+
+        for taste in ['sweet', 'sour', 'spicy', 'bitter', 'umami', 'savory']:
+            if taste in data:
+                setattr(taste_profile, taste, int(data[taste]))
+
+        db.session.query(user_allergen).filter_by(user_id=user_id).delete()
+        db.session.query(user_restriction).filter_by(user_id=user_id).delete()
+
+        for allergen in data.get('allergens', []):
+            db.session.add(user_allergen(user_id=user_id, allergen=allergen.lower()))
+
+        for restriction in data.get('restrictions', []):
+            db.session.add(user_restriction(user_id=user_id, restriction=restriction.lower()))
+
+        updateTasteComparisons(user_id)
+        db.session.commit()
+        return jsonify({'status': 'success'})
+
+    except Exception as e:
+        db.session.rollback()
+        print("Error updating taste profile:", str(e))
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+        
 @profile_bp.route('/matches', methods=['GET'])
 def matches_page():
     try:
