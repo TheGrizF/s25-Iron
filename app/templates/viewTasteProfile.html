@@ -35,7 +35,7 @@
 
     <h3>Dietary Restrictions</h3>
     <p>
-        {{ restrictions | map('capitalize') | join(',') if restrictions else "None" }}
+        {{ restrictions | map('capitalize') | join(', ') if restrictions else "None" }}
         <a href="#" id="edit-restrictions">[Edit]</a>
     </p>
     <div id="restriction-edit" style="display:none;">
