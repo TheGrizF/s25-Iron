@@ -15,5 +15,101 @@
     {% else %}
         <h2>Profile is setup</h2>
     {% endif %}
+
+    <form id="updateTasteForm">
+    <h3>Allergies</h3>
+    <p>
+        {{ allergies | map('capitalize') | join(', ') if allergies else "None" }}
+        <a href="#" id="edit-allergies">[Edit]</a>
+    </p>
+    <div id="allergy-edit" style="display:none;">
+        <div class="checkbox-grid">
+            {% for option in ['dairy', 'eggs', 'fish', 'shellfish', 'treenuts', 'peanuts', 'wheat', 'soy'] %}
+                <label class="checkbox-label">
+                    <input type="checkbox" name="allergens" value="{{ option }}" {% if option in allergies %}checked{% endif %}>
+                    {{ option.capitalize() }}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h3>Dietary Restrictions</h3>
+    <p>
+        {{ restrictions | map('capitalize') | join(', ') if restrictions else "None" }}
+        <a href="#" id="edit-restrictions">[Edit]</a>
+    </p>
+    <div id="restriction-edit" style="display:none;">
+        <div class="checkbox-grid">
+            {% for option in ['vegetarian', 'vegan', 'kosher', 'halal', 'glutenfree', 'dairyfree'] %}
+                <label class="checkbox-label">
+                    <input type="checkbox" name="restrictions" value="{{ option }}" {% if option in restrictions %}checked{% endif %}>
+                    {{ option.replace('free', '-free').capitalize() }}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h3>Flavor Preferences</h3>
+    {% for taste in ['sweet', 'sour', 'spicy', 'bitter', 'umami', 'savory'] %}
+        <label for="{{ taste }}">{{ taste.capitalize() }}: <span id="{{ taste }}Value">{{ taste_profile[taste] }}</span></label>
+        <input type="range" name="{{ taste }}" id="{{ taste }}" min="1" max="5" value="{{ taste_profile[taste] }}"
+            oninput="document.getElementById('{{ taste }}Value').innerText = this.value">
+            <br><br>
+        {% endfor %}
+        <button type="submit" class="submit-btn">Save Preferences</button>
+</form>
 </div>
+
+
+<script>
+    document.getElementById('edit-allergies').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('allergy-edit').style.display = 'block';
+    });
+    
+    document.getElementById('edit-restrictions').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('restriction-edit').style.display = 'block';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const update = document.getElementById('updateTasteForm');
+        if (update) {
+            update.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const data = {};
+                ['sweet', 'sour', 'spicy', 'bitter', 'umami', 'savory'].forEach(taste => {
+                    data[taste] = document.getElementById(taste).value;
+                });
+
+                data.allergens = Array.from(document.querySelectorAll('input[name="allergens"]:checked')).map(el => el.value);
+                data.restrictions = Array.from(document.querySelectorAll('input[name="restrictions"]:checked')).map(el => el.value);
+
+                try {
+                    const response = await fetch('/api/taste-profile/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        alert("Preferences saved successfully!");
+                        window.location.reload();
+                    } else {
+                        alert("Error: " + result.message);
+                    }
+
+                } catch (err) {
+                    console.error('Update error:', err);
+                    alert("Something went wrong. Please try again.");
+                }
+            });
+        }
+    })
+</script>
+
 {% endblock %}

@@ -51,7 +51,15 @@
 
     </div>
 
-
-
+   <!-------TESTING------->
+   {% for restaurant in restaurants %}
+   <li>
+    <p> Restaurant Name: {{restaurant.restaurant_name}}<br>
+    Average Price: {{restaurant.average_price}}<br>
+    WeightedScore: {{restaurant.weightedScores}}<br>
+    Match Confidence: {{restaurant.confidence}}<br>
+    
+  </li></p>
+    {% endfor %}
 </div>
 {% endblock %} 

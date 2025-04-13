@@ -203,24 +203,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Override the submitStep function
-    window.submitStep = function(step, data, isDone, nextUrl) {
+    window.submitStep = async function(step, data, isDone, nextUrl) {
         if (!validateForm()) {
             return;
         }
-        
+
         // Use the selected items instead of input values
         data.favoriteRestaurant = selectedRestaurant.name;
         data.favoriteDish = selectedDish.name;
-        
-        // Original submitStep logic
-        if (isDone) {
-            // Handle save and exit
-            console.log('Saving and exiting with data:', data);
-        } else if (nextUrl) {
-            // Handle continue to next step
-            window.location.href = nextUrl;
+
+        try {
+            const response = await fetch(`/api/taste-profile/step${step}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const resData = await response.json();
+            if (!response.ok) throw new Error(resData.message || "Failed to save");
+
+            if (isDone) {
+                // Handle save and exit
+                const finalize = await fetch('/api/taste-profile/exit_early', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                console.log('Saving and exiting with data:', data);
+
+                if (!finalize.ok) throw new Error("Failed to finalize profile");
+                window.location.href = '/profile';
+            } else if (nextUrl) {
+                // Handle continue to next step
+                window.location.href = nextUrl;
+            }
+
+        } catch (err) {
+            console.error('Error in submitStep:', err);
+            alert(err.message || 'Something went wrong.');
         }
     };
-});
+});    
 </script>
 {% endblock %} 

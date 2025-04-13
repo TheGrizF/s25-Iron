@@ -93,7 +93,7 @@
         {% if updates %}
             {% for update in updates %}
                 <div class="update-card" style="margin-top:0px;">
-                    <div class="update-user" style="margin-top:0px;">
+                    <div class="update-user" style="margin-top:0px">
                         <img src="{{ url_for('static', filename=update.icon) }}" alt="User Icon" class="user-icon">
                         <span class="user-name">{{ update.user_name }}</span>
                     </div>
