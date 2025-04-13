@@ -204,7 +204,7 @@ def groupMatch():
             restaurantInfo['average_price'] = average_price # line edite
             restaraunts.append(restaurantInfo)
 
-    # Create user dish recommendations dictionary
+    # Create user dish recommendations 
     user_dish_recommendations = {}
     for member in activeGroupInfo:
         # Get recommended dishes for this user at the selected restaurant

@@ -91,14 +91,14 @@
     <h2 style="margin-top:0px;">Latest Updates</h2>
     <div class="updates-scroll-box" >
         {% if updates %}
-            {% for update, user in updates %}
+            {% for update in updates %}
                 <div class="update-card" style="margin-top:0px;">
                     <div class="update-user" style="margin-top:0px;">
-                        <img src="{{ url_for('static', filename=user.icon_path) }}" alt="User Icon" class="user-icon">
-                        <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                        <img src="{{ url_for('static', filename=update.icon) }}" alt="User Icon" class="user-icon">
+                        <span class="user-name">{{ update.user_name }}</span>
                     </div>
                     <p class="update-content">{{ update.update_content }}</p>
-                    <p class="update-timestamp">{{ update.created_at.strftime('%b %d, %Y %I:%M %p') }}</p>
+                    <p class="update-timestamp">{{ update.time }}</p>
                 </div>
             {% endfor %}
         {% else %}

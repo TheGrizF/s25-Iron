@@ -3,7 +3,7 @@ from database import db
 from database.models.restaurant import operatingHours, restaurant,liveUpdate
 from database.models.dish import dish, menu, menuDishJunction
 from database.models.user import user
-from backend.utils import get_all_restaurant_info, get_dish_recommendations, get_restaurant_info, get_restaurant_dish_scores
+from backend.utils import get_all_restaurant_info, get_dish_recommendations, get_restaurant_info, get_restaurant_dish_scores, relative_time
 from better_profanity import profanity
 
 restaurant_bp = Blueprint('restaurant', __name__)
@@ -59,14 +59,21 @@ def restaurant_detail(restaurant_id):
     sorted_dishes = get_restaurant_dish_scores(user_id, restaurant_id)
 
     # get live updates for this restaurant
-    live_updates = (
-        db.session.query(liveUpdate, user)
-        .join(user, liveUpdate.user_id == user.user_id)
+    live_updates_raw = (
+        db.session.query(liveUpdate)
         .filter(liveUpdate.restaurant_id == restaurant_id)
         .order_by(liveUpdate.created_at.desc())
         .all()
     )
 
+    live_updates = []
+    for update in live_updates_raw:
+        live_updates.append({
+        "update_content": update.update_content,
+        "time": relative_time(update.created_at),
+        "user_name": f"{update.user.first_name} {update.user.last_name}",
+        "icon": update.user.icon_path
+    })
     session[f'restaurant_{restaurant_id}_dishes'] = json.dumps(sorted_dishes)  # store in flask session to reuse and limit db calls?
 
     return render_template("restaurant_detail.html", restaurant=restaurant_info, dishes=sorted_dishes, updates=live_updates)
