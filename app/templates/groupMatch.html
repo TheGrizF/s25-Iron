@@ -37,8 +37,10 @@
 
     <div class = "restaurant-details">
         <div class = "contact-details">
-            <h3> {{ restaurants[0].restaurant_name }}</h3>
-            <p>{{ restaurants[0].location }}</p>
+            {% for restaurant in restaurants %}
+            <h3> {{ restaurant.restaurant_name }}</h3>
+            <p>{{ restaurant.location }}</p>
+            {% endfor %}
         </div>
 
         <div class = "vertical-separator"></div>
