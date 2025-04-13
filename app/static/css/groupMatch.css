@@ -15,7 +15,7 @@
 
     display:flex;
     flex-direction:column;
-    padding-bottom: 70px;
+    padding-bottom: 100px; /* modified from 70 to accomodate buttons*/
     background-color: var(--white);
 }
 
@@ -260,4 +260,24 @@ br {
 .contact-details {
     color: #858585;
     text-align: left;
+}
+
+/*.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}*/
+
+.navigation-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    padding: 10px 20px;
+    z-index: 100;
 }

@@ -102,7 +102,7 @@ def overlappingDishes():
     overlapping_recommendations = [rec for rec in recommendations if rec[0] in matchingDishes]
     print('overlap:',overlapping_recommendations) #debug for overlaps
     
-    return redirect(url_for('daily_dish.groupMatch'))
+    return redirect(url_for('daily_dish.groupMatch', index=0))
 
 @daily_dish_bp.route('/overlappingRestaurants', methods = ['POST','GET'])
 def overlappingRestaurants():
@@ -155,12 +155,13 @@ def overlappingRestaurants():
     session['lowMatchingRestaurants'] = list(lowMatchingRestaurants)  
     session['weightedScores'] = weightedScores
 
-    return redirect(url_for('daily_dish.groupMatch'))
+    return redirect(url_for('daily_dish.groupMatch', index=0))
 
 
 
 @daily_dish_bp.route('/groupMatch')
-def groupMatch():
+@daily_dish_bp.route('/groupMatch/<int:index>')
+def groupMatch(index=0):
     user_id = session.get('user_id')
     highMatchingRestaurants = session.get('highMatchingRestaurants',[])
     mediumMatchingRestaurants = session.get('meidumMatchingRestaurants',[])
@@ -168,25 +169,32 @@ def groupMatch():
     weightedScores = session.get('weightedScores')
     print('weightedScores:',weightedScores)
     
-    restaurants = []
-    for restaurant_id in highMatchingRestaurants + mediumMatchingRestaurants + lowMatchingRestaurants:
-        restaurantInfo = get_restaurant_info(user_id, restaurant_id)
-        if restaurantInfo:
-            average_price = get_average_dish_price(restaurant_id)
-            restaurantInfo['weightedScores'] = weightedScores[restaurant_id]
-            restaurantInfo['average_price'] = average_price
-            restaurantInfo['restaurant_name'] = restaurantInfo.get('restaurant_name')
-            if restaurant_id in highMatchingRestaurants:
-                restaurantInfo['confidence'] = 'High'
-            elif restaurant_id in mediumMatchingRestaurants:
-                restaurantInfo['confidence'] = 'Medium'
-            else:
-                restaurantInfo['confidence'] = 'Low'
-            restaurants.append(restaurantInfo)
-            
-    for restaurant in restaurants:
-        print (restaurant['restaurant_id'],restaurant['average_price'],restaurant['confidence']) #debug 
-    return render_template('groupMatch.html',restaurants = restaurants,highMatchingRestaurants = highMatchingRestaurants,mediumMatchingRestaurants=mediumMatchingRestaurants,lowMatchingRestaurants= lowMatchingRestaurants,weightedScores=weightedScores)
+    # Sorry Oronde, added this session so it wouldn't recalculate when pagination is used
+    if 'restaurant_list' not in session or not session['restaurant_list']:
+        restaurants = []
+        for restaurant_id in highMatchingRestaurants + mediumMatchingRestaurants + lowMatchingRestaurants:
+            restaurantInfo = get_restaurant_info(user_id, restaurant_id)
+            if restaurantInfo:
+                average_price = get_average_dish_price(restaurant_id)
+                restaurantInfo['weightedScores'] = weightedScores[restaurant_id]
+                restaurantInfo['average_price'] = average_price
+                restaurantInfo['restaurant_name'] = restaurantInfo.get('restaurant_name')
+                if restaurant_id in highMatchingRestaurants:
+                    restaurantInfo['confidence'] = 'High'
+                elif restaurant_id in mediumMatchingRestaurants:
+                    restaurantInfo['confidence'] = 'Medium'
+                else:
+                    restaurantInfo['confidence'] = 'Low'
+                restaurants.append(restaurantInfo)
+       
+        for restaurant in restaurants:
+            print (restaurant['restaurant_id'],restaurant['average_price'],restaurant['confidence']) #debug 
+        session['restaurant_list'] = restaurants
+
+    else:
+        restaurants =session['restaurant_list'] # For future navigational purposes
+        
+    return render_template('groupMatch.html',restaurants = restaurants,highMatchingRestaurants = highMatchingRestaurants,mediumMatchingRestaurants=mediumMatchingRestaurants,lowMatchingRestaurants= lowMatchingRestaurants,weightedScores=weightedScores, index=index)
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
@@ -270,4 +278,24 @@ def follow_back(follower_id):
         db.session.commit()
 
     return jsonify({"success": True})
+
+@daily_dish_bp.route('/groupMatch/navigate/<int:index>')
+def navigate_restaurant(index=0):
+    restaurants = session.get('restaurant_list', [])
+    
+    # Ensure index is within bounds
+    if not restaurants:
+        index = 0
+    elif index < 0:
+        index = len(restaurants) - 1  # Loop to the end
+    elif index >= len(restaurants):
+        index = 0  # Loop back to beginning
+        
+    return render_template('groupMatch.html',
+                          restaurants=restaurants,
+                          index=index,
+                          highMatchingRestaurants=session.get('highMatchingRestaurants',[]),
+                          mediumMatchingRestaurants=session.get('meidumMatchingRestaurants',[]),
+                          lowMatchingRestaurants=session.get('lowMatchingRestaurants',[]),
+                          weightedScores=session.get('weightedScores'))
 
