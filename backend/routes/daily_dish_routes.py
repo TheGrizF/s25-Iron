@@ -136,9 +136,9 @@ def overlappingRestaurants():
     for restaurant_id, percentages in seenRestaurants.items():
         # Apply weights to extreme values
         weightedMatchPercentage = sum(
-           matchPercentage * 1.2 if matchPercentage > 80 else matchPercentage * 0.8 if matchPercentage < 50 else matchPercentage
+           matchPercentage * 1.2 if matchPercentage > 90 else matchPercentage * 0.8 if matchPercentage < 50 else matchPercentage
           for matchPercentage in percentages
-        )
+        ) #lowest number seen 62.6 highest 88.4
         weightedAvg = weightedMatchPercentage / len(percentages)
         weightedScores[restaurant_id] = round(weightedAvg,2)
     
@@ -175,6 +175,7 @@ def groupMatch():
             average_price = get_average_dish_price(restaurant_id)
             restaurantInfo['weightedScores'] = weightedScores[restaurant_id]
             restaurantInfo['average_price'] = average_price
+            restaurantInfo['restaurant_name'] = restaurantInfo.get('restaurant_name')
             if restaurant_id in highMatchingRestaurants:
                 restaurantInfo['confidence'] = 'High'
             elif restaurant_id in mediumMatchingRestaurants:
