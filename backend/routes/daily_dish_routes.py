@@ -154,6 +154,7 @@ def overlappingRestaurants():
     session['meidumMatchingRestaurants'] = list(mediumMatchingRestaurants)
     session['lowMatchingRestaurants'] = list(lowMatchingRestaurants)  
     session['weightedScores'] = weightedScores
+    session['activeGroup'] = activeGroupInfo
 
     return redirect(url_for('daily_dish.groupMatch'))
 
@@ -162,12 +163,6 @@ def overlappingRestaurants():
 @daily_dish_bp.route('/groupMatch')
 def groupMatch():
     user_id = session.get('user_id')
-    selectedFriends = session.get('selectedBuddies', [])
-    groupIDs = [item['userId'] for item in selectedFriends]
-    activeGroup = groupIDs + [user_id]
-
-    # Get user info for all group members
-    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
     
     highMatchingRestaurants = session.get('highMatchingRestaurants',[])
     mediumMatchingRestaurants = session.get('meidumMatchingRestaurants',[])
