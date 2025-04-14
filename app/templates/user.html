@@ -8,6 +8,8 @@
 
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div class="taste-profile-container" 
      style="max-width: 600px !important; 
             margin: 0 auto !important; 
@@ -58,8 +60,99 @@
         <div class="match-score">
             <span class="match-percent large">{{ ((24 - comparison_num) / 24 * 100)|round(1) }}%</span>
         </div>
+
+        <!-- Spider Graph does whatever a spider graph does -->
+        <canvas id="tasteSpiderGraph" width="100" height="100"></canvas>
+
     </div>
 </div>
+
+<!-- Can it swing from a web? No it can't, its a graph -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const currPoints= {{ current_points|safe }};
+    const otherPoints= {{ other_points|safe }};
+
+    const labels = ['Sweet', 'Sour', 'Spicy', 'Bitter', 'Umami', 'Savory'];
+
+    const data ={
+        labels: labels,
+        datasets: [
+            {
+                label: "You",
+                data: [
+                    currPoints.sweet,
+                    currPoints.sour,
+                    currPoints.spicy,
+                    currPoints.bitter,
+                    currPoints.umami,
+                    currPoints.savory
+                ],
+                fill: true,
+                backgroundColor: "rgba(196, 24, 58, 0.2)",
+                borderColor: "#C4183A",
+                pointBackgroundColor: "#C4183A",
+            },
+            {
+                label: "{{ viewed_user.first_name }}",
+                data: [
+                    otherPoints.sweet,
+                    otherPoints.sour,
+                    otherPoints.spicy,
+                    otherPoints.bitter,
+                    otherPoints.umami,
+                    otherPoints.savory
+                ],
+                fill: true,
+                backgroundColor: "rgba(244, 185, 66, 0.2)",
+                borderColor: "#F4B942",
+                pointBackgroundColor: "#F4B942",
+            }
+        ]
+    };
+
+    const config = {
+        type: 'radar',
+        data: data,
+        options: {
+            scales: {
+                r: {
+                    min: 0,
+                    max: 5,
+                    ticks: {
+                        stepSize: 1,
+                        display: false
+                    },
+                    pointLabels: {
+                        font: {
+                            size: 16,
+                            weight: 'bold',
+                            family: "'inherit'",
+                            
+                        },
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            size: 16,
+                            weight: 'bold',
+                            family: "'inherit'",
+                        }
+                    }
+                }
+            }
+        }
+    }; 
+
+    new Chart(document.getElementById('tasteSpiderGraph'), config);
+});
+</script>
+
+
+
 
 <style>
 body {

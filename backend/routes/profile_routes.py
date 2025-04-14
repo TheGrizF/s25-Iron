@@ -593,11 +593,27 @@ def view_user(user_id):
     
     comparison_num = comparison.comparison_num if comparison else 12  # 50% fallback
 
+    # Get info for spider-graph
+    user_tp = tasteProfile.query.filter_by(user_id=current_user_id).first()
+    other_tp = tasteProfile.query.filter_by(user_id=user_id).first()
+
+    def graph_points(profile):
+        return {
+            "sweet": profile.sweet,
+            "sour": profile.sour,
+            "spicy": profile.spicy,
+            "bitter": profile.bitter,
+            "umami": profile.umami,
+            "savory": profile.savory
+        } if profile else {}
+
     return render_template(
         'user.html',
         viewed_user=viewed_user,
         is_buddy=is_buddy,
-        comparison_num=comparison_num
+        comparison_num=comparison_num,
+        current_points=json.dumps(graph_points(user_tp)),
+        other_points=json.dumps(graph_points(other_tp))
     )
 
 @profile_bp.route('/add-buddy/<int:buddy_id>', methods=['POST'])
