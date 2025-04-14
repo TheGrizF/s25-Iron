@@ -47,7 +47,7 @@
                 <i class="fa-solid fa-phone"></i></div>
         </a>
     </div>
-</div>
+
 
 
 
@@ -64,15 +64,16 @@
     </a>
 </div>
 
-   <!-------TESTING
+   <div class="restaurant-list">
+   <ul>
    {% for restaurant in restaurants %}
    <li>
     <p> Restaurant Name: {{restaurant.restaurant_name}}<br>
     Average Price: {{restaurant.average_price}}<br>
     WeightedScore: {{restaurant.weightedScores}}<br>
-    Match Confidence: {{restaurant.confidence}}<br>
-    
-  </li></p>
-    {% endfor %}------->
+    Match Confidence: {{restaurant.confidence}}</p>
+</li>
+    {% endfor %}
+</ul>
 </div>
 {% endblock %} 
