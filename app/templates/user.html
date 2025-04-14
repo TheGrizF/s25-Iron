@@ -4,6 +4,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dishes.css') }}">
 {% endblock %}
 
 
@@ -65,6 +66,31 @@
         <canvas id="tasteSpiderGraph" width="100" height="100"></canvas>
 
     </div>
+    
+    {% if recent_review %}
+        <h2>Recently Reviewed</h2>
+        <div class="review-card">
+            <div class="dish-image-container">
+                <a href="{{ url_for('dish.dish_detail', dish_id=recent_review.dish.dish_id) }}">
+                    <img src="{{ url_for('static', filename=recent_review.dish.image_path) }}" alt="{{ recent_review.dish.dish_name }}">
+                </a>
+            </div>
+            <div class="review-info">
+                <h3>{{ recent_review.dish.dish_name }}</h3>
+                <p>@ {{ recent_review.restaurant.restaurant_name }}</p>
+                <div class="star-rating">
+                    {% for i in range(recent_review.rating) %}
+                        <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% for i in range(5 - recent_review.rating) %}
+                        <i class="far fa-star"></i>
+                    {% endfor %}
+                </div>
+                <p>{{ recent_review.content }}</p>
+            </div>
+        </div>
+    {% endif %}
+
 </div>
 
 <!-- Can it swing from a web? No it can't, its a graph -->
@@ -279,6 +305,47 @@ body {
     border: 1px solid #f5c6cb;
 }
 
+.review-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 600px;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.review-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.review-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.review-info h3 {
+    margin: 0 0 5px;
+}
+
+.review-info p {
+    margin: 4px 0;
+    color: var(--slate-light);
+    line-height: 1.4;
+}
+
+.star-rating {
+    color: var(--yellow-main);
+    font-size: 18px;
+    margin-bottom: 5px;
+}
 </style>
 
 {% endblock %} 
