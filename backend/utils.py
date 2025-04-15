@@ -72,6 +72,7 @@ def get_dish_info(dish_id, include_reviews=False):
     when include_reviews is true, dictionary will include:
     reviews: a list of reviews for the dish including:
     user_name - user name as string First Last
+    user_id - user ID
     user_icon - path to user image
     content - review text
     rating - rating the user gave
@@ -105,6 +106,7 @@ def get_dish_info(dish_id, include_reviews=False):
             {
                 "user_name": f"{rev.user.first_name} {rev.user.last_name}",
                 "user_icon": rev.user.icon_path,
+                "user_id": rev.user.user_id,
                 "content": rev.content,
                 "rating": rev.rating,
                 "time_stamp": relative_time(rev.created_at),

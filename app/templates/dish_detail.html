@@ -103,11 +103,15 @@
         {% for rev in dish.reviews %}
             <div class="feed-item">
                 <br>
-                <div class="feed-content">   
-                    <img src="{{ url_for('static', filename=rev.user_icon) }}" alt="{{ rev.user_name }}" style="width: 75px; height: 75px">
-            
-                    <div class="review-bubble">                
-                        <span class="friend">{{ rev.user_name }}</span><span> rated: </span>
+                <div class="feed-content">
+                    <a href="{{ url_for('profile.view_user', user_id=rev.user_id) }}" class="user-review-link">   
+                        <img src="{{ url_for('static', filename=rev.user_icon) }}" alt="{{ rev.user_name }}" style="width: 75px; height: 75px">
+                    </a>
+                    <div class="review-bubble">
+                        <a href="{{ url_for('profile.view_user', user_id=rev.user_id) }}" class="user-review-link">
+                            <span class="friend">{{ rev.user_name }}</span>
+                        </a>
+                        <span> rated: </span>
                         <span class="star-rating">
                             {% set full = rev.rating|int %}
                             {% set empty = 5 - full %}
