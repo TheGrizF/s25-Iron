@@ -169,6 +169,7 @@ def groupMatch(index=0):
     mediumMatchingRestaurants = session.get('meidumMatchingRestaurants',[])
     lowMatchingRestaurants = session.get('lowMatchingRestaurants',[])
     weightedScores = session.get('weightedScores')
+    activeGroupInfo = session.get('activeGroup')
     print('weightedScores:',weightedScores)
     
     # Sorry Oronde, added this session so it wouldn't recalculate when pagination is used
@@ -195,8 +196,17 @@ def groupMatch(index=0):
 
     else:
         restaurants =session['restaurant_list'] # For future navigational purposes
-        
-    return render_template('groupMatch.html',restaurants = restaurants,highMatchingRestaurants = highMatchingRestaurants,mediumMatchingRestaurants=mediumMatchingRestaurants,lowMatchingRestaurants= lowMatchingRestaurants,weightedScores=weightedScores, index=index)
+
+    activeGroup = [
+        {
+        "user_id": member.user_id,
+        "first_name": member.first_name,
+        "last_name": member.last_name,
+        "icon_path": member.icon_path
+        } for member in activeGroupInfo
+        ]
+    print('Info:',activeGroup)
+    return render_template('groupMatch.html',restaurants = restaurants,highMatchingRestaurants = highMatchingRestaurants,mediumMatchingRestaurants=mediumMatchingRestaurants,lowMatchingRestaurants= lowMatchingRestaurants,weightedScores=weightedScores, index=index, activeGroup=activeGroup)
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
