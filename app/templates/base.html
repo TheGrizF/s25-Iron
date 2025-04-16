@@ -44,8 +44,8 @@
             <span>TasteBuds</span>
         </a>
         <a href="{{ url_for('daily_dish.daily_dish') }}" class="nav-item {% if request.endpoint.startswith('daily_dish.daily_dish') %}active{% endif %}">
-            <i class="far fa-bell"></i>
-            <span>Updates</span>
+            <i class="fa-solid fa-bowl-food"></i>
+            <span>Daily Dish</span>
         </a>
     </div>
     {% endblock %}
