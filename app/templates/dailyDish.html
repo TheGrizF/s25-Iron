@@ -40,168 +40,13 @@
         <!-- Live Feed Section -->
         <section class="live-feed">
             <h2 class="section-title">Live Feed</h2>
-            <!-- Makes a card depending on the item type -->
             {% for item in feed_items %}
-
-                <!-- Dish card for recommended dishes -->
-                {% if item.type == 'dish' %}
-                    <div class="feed-item">
-                        <a href="{{ url_for('dish.dish_detail', dish_id=item.data.dish_id) }}" class="card-link">
-                            <div class="dish-section">
-                                <div class="dish-info">
-                                    <div class="recommendation-header">Recommended for you</div>
-                                    <div class="dish-header">
-                                        <span class="dish-title">{{ item.data.name }}</span> @ 
-                                        <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="restaurant-link">
-                                            {{ item.data.restaurant }}
-                                        </a>
-                                    </div>
-                                    <div class="match-score">{{ item.data.match_score }}% taste match</div>
-                                    
-                                    <div class="compact-review">
-                                        <p class="buddy-intro">Your TasteBuddy {{ item.data.buddy_name }}'s review</p>
-                                        <div class="buddy-review">
-                                            <img src="{{ url_for('static', filename=item.data.buddy_icon) }}" alt="{{ item.data.buddy_name }}" class="buddy-icon">
-                                            <div class="review-content">
-                                                <div class="star-rating">
-                                                    <span>Rated:</span>
-                                                    {% set full = item.data.buddy_rating|int %}
-                                                    {% set empty = 5 - full %}
-
-                                                    {% for _ in range(full) %}
-                                                        <i class="fas fa-star"></i>
-                                                    {% endfor %}
-                        
-                                                    {% for _ in range(empty) %}
-                                                        <i class="far fa-star"></i>
-                                                    {% endfor %}
-                                                </div>
-                                                <p class="review-text">{{ item.data.review_content }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dish-image">
-                                    <img src="{{ url_for('static', filename=item.data.image_path) }}" alt="{{ item.data.name }}">
-                                </div>
-                            </div>
-
-                            <div class="feed-footer">
-                                <span class="timestamp">{{ item.data.time_stamp }}</span>
-                                <div class="feed-actions">
-                                    <i class="far fa-star"></i>
-                                    <i class="fas fa-share"></i>
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                <!-- Review card for friends reviews -->
-                {% elif item.type == 'review' %}
-                    <div class="feed-item">
-                        <a href="{{ url_for('dish.dish_detail', dish_id=item.data.dish_id) }}" class="card-link">
-                            <div class="feed-header">
-                                <span class="friend">Your friend {{ item.data.friend_name }} reviewed </span>
-                                <br>
-                                <span class="action">
-                                    <span class="dish-title">{{ item.data.dish_name }}</span> @ 
-                                    <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="restaurant-link">
-                                        {{ item.data.restaurant_name }}
-                                    </a>
-                                </span>
-                            </div>
-                            <div class="feed-content">
-                                <img src="{{ url_for('static', filename=item.data.friend_icon) }}" alt="{{ item.data.friend_name }}" style="width: 75px; height: 75px">
-                                <div class="review-content">
-                                    <div class="star-rating">
-                                        <span>Rated:</span>
-                                        {% set full = item.data.rating|int %}
-                                        {% set empty = 5 - full %}
-
-                                        {% for _ in range(full) %}
-                                            <i class = "fas fa-star"></i>
-                                        {% endfor %}
-                    
-                                        {% for _ in range(empty) %}
-                                            <i class = "far fa-star"></i>
-                                        {% endfor %}
-                                    </div>
-                                    <p class="review-text">{{ item.data.content }}</p>
-                                </div>
-                            </div>
-                            <div class="feed-footer">
-                                <span class="timestamp">{{ item.data.time_stamp }}</span>
-                            </div>
-                        </a>
-                    </div>
-
-                <!-- Saved card for dishes from saved list -->
-                {% elif item.type == 'saved' %}
-                    <div class="feed-item">
-                        <a href="{{ url_for('dish.dish_detail', dish_id=item.data.dish_id) }}" class="card-link">
-                            <div class="dish-section">
-                                <div class="dish-info">
-                                    <div class="feed-header">
-                                        <span class="action">From Your Saved Dishes</span>
-                                    </div>
-                                    <p class="dish-header">
-                                        <span class="dish-title">{{ item.data.dish_name }}</span> @ 
-                                        <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="restaurant-link">
-                                            {{ item.data.restaurant_name }}
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="dish-image">
-                                    <img src="{{ url_for('static', filename=item.data.image) }}" alt="{{ item.data.dish_name }}">
-                                </div>
-                            </div>
-                            <div class="feed-footer">
-                                <span class="timestamp">Saved on {{ item.data.date_saved }}</span>
-                            </div>
-                        </a>
-                    </div>
-
-                {% elif item.type == 'update' %}
-                    <div class="feed-item">
-                        <a href="{{ url_for('restaurant.restaurant_detail', restaurant_id=item.data.restaurant_id) }}" class="card-link">
-                            <div class="update-section">
-                                <div class="update-header">
-                                    <button class="update-button" type="button">
-                                        <i class="fas fa-bullhorn"></i>&nbsp;&nbsp; Update: {{ item.data.time_posted }}
-                                    </button>
-                                </div>
-                                <div class="update-body">
-                                    <p class="update-info">
-                                        {{ item.data.user_name }} posted an update at {{ item.data.restaurant_name }}:
-                                    </p>
-                                    <p class="update-content">{{ item.data.content }}</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    {% elif item.type == 'follow' %}
-                    <div class="feed-item follow-notification" data-follow-id="{{ item.data.follower_id }}">
-                        <div class="follow-content" style="display: flex; align-items: center; gap: 15px;">
-                            <a href="{{ url_for('profile.view_user', user_id=item.data.follower_id) }}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                                <img src="{{ url_for('static', filename=item.data.icon_path) }}" class="buddy-icon">
-                                <strong>{{ item.data.name }}</strong>
-                            </a>
-                            <span>started following you!</span>
-                        </div>
-                        <div style="margin-top: 10px; display: flex; gap: 10px;">
-                            {% if not item.data.is_following_back %}
-                                    <button class="follow-back-btn" data-follow-id="{{ item.data.follower_id }}">Follow Back</button>
-                                </form>
-                            {% endif %}
-                            <button class="mark-seen-btn" type="button">Mark as Seen</button>
-                        </div>
-                    </div>
-                    
-                    {% endif %}
-                    
+                {% include 'components/feed_card.html' %}
             {% endfor %}
+
+            <div id="load-more-container" style="text-align: center; margin: 20px 0;">
+                <button id="load-more-btn" class="mark-seen-btn" data-offset="{{ feed_items|length }}">Load More</button>
+            </div>
         </section>
     </div>
 </div>
@@ -294,6 +139,45 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (!loadMoreBtn) return;
+    
+        loadMoreBtn.addEventListener('click', async function () {
+            const offset = parseInt(loadMoreBtn.getAttribute('data-offset')) || 0;
+    
+            const res = await fetch(`/load-more-feed?offset=${offset}`);
+            const data = await res.json();
+    
+            if (data.feed_html) {
+                const parser = new DOMParser();
+                const newItems = parser.parseFromString(data.feed_html, 'text/html').body.children;
+    
+                const feedSection = document.querySelector('.live-feed');
+                for (const item of newItems) {
+                    if (item.classList.contains('feed-item')) {
+                        feedSection.insertBefore(item, loadMoreBtn.parentElement);
+                    }
+                }
+    
+                // update offset for next batch
+                loadMoreBtn.setAttribute('data-offset', offset + data.count);
+    
+                // hide button if no more content
+                if (!data.has_more) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            } else {
+                alert('No more items to load.');
+                loadMoreBtn.style.display = 'none';
+            }
+        });
+    });
+    </script>
+    
+    
     
 {% endblock %}
 
