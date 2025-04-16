@@ -2,8 +2,9 @@ from flask import Blueprint, render_template, session, request, flash, redirect,
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_daily_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_daily_feed
+from backend.utils import get_featured_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_daily_feed
 import json
+
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
 @daily_dish_bp.route('/dailyDish')
@@ -171,10 +172,9 @@ def follow_back(follower_id):
 def load_more_feed():
     user_id = session.get('user_id')
     offset = int(request.args.get('offset', 0))
-
-    from backend.utils import get_daily_feed
     new_feed_items = get_daily_feed(user_id, offset=offset, limit=10)
-
+    print(f"Offset: {offset}")
+    
     rendered_html = ""
     for item in new_feed_items:
         if item["type"] == "dish":
@@ -187,6 +187,15 @@ def load_more_feed():
             rendered_html += render_template("components/feed_card.html", item=item)
         elif item["type"] == "follow":
             rendered_html += render_template("components/feed_card.html", item=item)
+
+    # import os
+    # from datetime import datetime
+    # # save rendered_html to a separate debug file
+    # os.makedirs("debug_logs", exist_ok=True)
+    # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    # with open(f"debug_logs/rendered_html_{timestamp}.html", "w", encoding="utf-8") as f:
+    #     f.write(rendered_html)
+
 
     return jsonify({
         "feed_html": rendered_html,
