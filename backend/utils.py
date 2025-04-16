@@ -11,6 +11,7 @@ from database.models.user import cuisineUserJunction, savedDishes, user, user_al
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import liveUpdate, restaurant
+from datetime import datetime, timedelta
 
 def get_dish_info(dish_id, include_reviews=False):
     """
@@ -556,10 +557,13 @@ def get_live_updates(user_id, threshold=75, limit=None):
     if not match_rest_ids:
         return []
     
+    twenty_four_hours_ago = datetime.utcnow() - timedelta(hours=24)
+
     match_updates = (
         db.session.query(liveUpdate)
         .filter(liveUpdate.restaurant_id.in_(match_rest_ids))
         .filter(liveUpdate.user_id != user_id)
+        .filter(liveUpdate.created_at >= twenty_four_hours_ago)
         .order_by(liveUpdate.created_at.desc())
         .all()
     )
