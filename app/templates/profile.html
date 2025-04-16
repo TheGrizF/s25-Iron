@@ -3,48 +3,203 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-
+{% with messages = get_flashed_messages(with_categories=true) %} 
+{% if messages%} 
+    {% for category, message in messages %}
+        <div class="flash-message {{ category }}">{{ message }}</div>
+    {% endfor %} 
+{% endif %} 
+{% endwith %}
 <div class="taste-profile-container">
+    <div class="profile-icon">
+        {% if user.icon_path %}
+            <img src="{{ url_for('static', filename=user.icon_path) }}" 
+                 alt="Profile Icon"
+                 style="width: 150px; height: 150px;">
+        {% else %}
+            <img src="{{ url_for('static', filename='images/profile_icons/default1.png') }}" 
+                 alt="Default Icon"
+                 style="width: 150px; height: 150px;">
+        {% endif %}
+    </div>
+    <br>
+
     <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
-    <div class="intro-section">
-        <p>Your email: {{ user.email }}</p>
-        <p>Explore your taste matches and reviews.</p>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div><br>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-       <div class="button-group">
-            <a href="{{ url_for('profile.matches_page') }}">
-                <button class="btn-matches">View Taste Matches</button>
-            </a>
-        </div> 
-        
-        <p></p>
+    <p>Your email: {{ user.email }}</p>
+    <p>Explore your taste matches and reviews.</p>
 
-        <div class="button-group">
-            <a href="{{ url_for('auth.logout') }}">
-                <button class="logout-btn">Logout</button>
-            </a>
-        </div>
+    <!-- Button for Reviewed Dishes -->
+    <div class="button-group centered">
+        <a href="{{ url_for('profile.reviewed_dishes') }}" class="see-all-btn">Your Reviewed Dishes</a>
+    </div>
 
-        <p></p>
+    <!-- Button for Saved Dishes -->
+    <div class="button-group centered">
+        <a href="{{ url_for('profile.saved_dishes') }}" class="see-all-btn">Saved Dishes</a>
+    </div>
 
+    <!-- TasteBuddies Button -->
+    <div class="button-group centered">
+        <a href="{{ url_for('daily_dish.TasteBuds') }}" class="see-all-btn">View TasteBuds</a>
+    </div>
+
+    <!-- My Taste Profile Button (Moved) -->
+    <div class="button-group centered">
+        <a href="{{ url_for('profile.view_edit_taste_profile') }}" class="taste-profile-btn">My Taste Profile</a> 
+    </div>
+   
+    <div class="button-group centered last-row">
+        <a href="{{ url_for('auth.logout') }}">
+            <button class="logout-btn">Logout</button>
+        </a>
         <form action="{{ url_for('profile.delete_profile') }}" method="POST" 
-            onsubmit="return confirmDeletion('{{ user.email }}');">
-            <div class="button-group">
-                <button type="submit" class="delete-btn">Delete Profile</button>
-            </div>
+            onsubmit="return confirmDeletion('{{ user.email }}');" style="display: inline;">
+            <button type="submit" class="delete-btn">Delete Profile</button>
         </form>
     </div>
 </div>
 
-<script>
+<style>
+.taste-profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px 100px 20px;
+    background-color: var(--white);
+    /* Align content centrally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+.profile-icon {
+    /* margin is handled by flex gap or specific margins */
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    margin-bottom: 20px; /* Add space below icon */
+}
+
+.profile-icon img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+}
+
+/* Center text elements */
+h1,
+.taste-profile-container > p { /* Target direct p children */
+    text-align: center;
+    width: 100%; /* Ensure they take width for centering */
+    max-width: 400px; /* Optional: constrain text width */
+}
+
+.button-group.centered {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px; /* Consistent top margin */
+    margin-bottom: 0; /* Remove bottom margin here */
+    width: 100%; /* Take full width of container */
+    max-width: 300px; /* Define the max width for the button rows */
+    margin-left: auto; /* Center the button group itself */
+    margin-right: auto;
+}
+
+/* Style for the group containing the last two buttons */
+.button-group.last-row {
+     /* Inherits base styles, specific overrides if needed */
+}
+
+.last-row > a,
+.last-row > form {
+    flex-grow: 1; /* Make link and form share space */
+    display: flex; /* Allow button inside to take width */
+    text-decoration: none;
+}
+
+/* Make all action buttons full width of their container */
+.see-all-btn,
+.taste-profile-btn,
+.logout-btn,
+.delete-btn {
+    display: block; /* Changed from inline-block */
+    width: 100%;
+    box-sizing: border-box; /* Include padding in width */
+    padding: 10px 15px; /* Adjusted padding */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-size: 1em; /* Consistent font size */
+    border: none; /* Ensure buttons have no border */
+    cursor: pointer;
+}
+
+/* Specific button colors */
+.see-all-btn,
+.taste-profile-btn,
+.logout-btn {
+    background-color: var(--burgundy-main);
+    color: white;
+}
+
+.delete-btn {
+    background-color: var(--slate-dark);
+    color: var(--white);
+}
+
+/* Hover states */
+.see-all-btn:hover,
+.taste-profile-btn:hover,
+.logout-btn:hover {
+    background-color: var(--burgundy-light);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.delete-btn:hover {
+    background-color: var(--slate-light); /* Adjusted hover */
+    transform: translateY(-2px);
+}
+
+/* Remove redundant preview styles if not used */
+.preview-card,
+.preview-content,
+.preview-item,
+.preview-footer,
+.match-info,
+.match-icon,
+.match-percent,
+.dish-match,
+.no-matches {
+    display: none; /* Hide unused elements */
+}
+
+@media (max-width: 768px) {
+    .taste-profile-container {
+        padding: 15px 15px 100px 15px;
+    }
+    .button-group.centered {
+        max-width: 90%; /* Allow slightly wider buttons on mobile */
+    }
+}
+
+</style>
+
+<script>
 function confirmDeletion(email) {
     return confirm(`Are you sure? Deleting ${email} can't be undone.`);
 }
 </script>
-
-  <h2> Your Friends </h2>
-  {% for friend in friendsList %}
-     <li>{{friend.first_name}} {{friend.last_name}}</li>
-  {% endfor %}
 
 {% endblock %}

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
 :root {
-    --magenta: #CD4E48;
+    --magenta: #C4183A;
     --light-grey: #f5f5f5;
     --dark-grey: #d3d3d3;
 }
@@ -53,7 +53,7 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: var(--magenta);
+    background-color: #C4183A;
     z-index: 1;
 }
 
@@ -165,4 +165,8 @@ body {
 
 #final-thoughts {
     display: none;
+}
+
+input[type="radio"] { /*Am attempt*/
+    accent-color: #C4183A; 
 }

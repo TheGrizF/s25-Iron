@@ -17,6 +17,7 @@ Old Dominion University
 3. run `flask run`
 
 If you would like to debug  run `flask run --debug`
+If you already have a copy of tastebuddies.db on your local, remember to delete it before running
 
 # Digital Ocean
 SSH keys required.

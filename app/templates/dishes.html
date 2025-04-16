@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}dishes{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dishes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dishes-container">
+    <script src ="{{ url_for('static', filename='js/toggle_save.js')}}"></script>
+    
+    <div class="search-header">
+        <h1>Dishes</h1>  
+        <div class="search-bar">
+            <form id="search-form" method="get" action="{{ url_for('dish.dishes') }}">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" name="search" placeholder="Search dishes..." value="{{ request.args.get('search', '') }}">
+                
+                {% if request.args.get('filter') %}
+                <input type="hidden" name="filter" value="{{ request.args.get('filter') }}">
+                {% endif %}
+                {% if request.args.get('sort') %}
+                <input type="hidden" name="sort" value="{{ request.args.get('sort') }}">
+                {% endif %}
+            </form>
+        </div>
+    </div>
+<!--------------Editing restaurants template to conform to dishes, more structural changes may be needed ------------------->
+        <div class="filter-row">
+            <!-- Sort Form -->
+            <form id="sort-form" method="get" action="{{ url_for('dish.dishes') }}">
+                <select class="filter-dropdown" id="sort-by" name="sort" onchange="this.form.submit()">
+                    <option value="" {% if request.args.get('sort') == None or request.args.get('sort') == '' %} selected {% endif %}>Sort by:</option>
+                    <option value="match_score" {% if request.args.get('sort') == 'match_score' %} selected{% endif %}> Match score </option>
+                    <option value="name" {% if request.args.get('sort') == 'name' %} selected{% endif %}>Name</option>
+                    <option value="price" {% if request.args.get('sort')== 'price' %} selected{% endif %}>Price</option>
+                    <option value="restaurant_name" {%if request.args.get('sort') == 'restaurant_name' %} selected {% endif %}>Restaurant</option>
+                </select>
+
+                {% if request.args.get('filter') %}
+                <input type="hidden" name="filter" value="{{ request.args.get('filter') }}">
+                {% endif %}
+
+                {% if request.args.get('search') %}
+                <input type="hidden" name="search" value="{{ request.args.get('search') }}">
+                {% endif %}
+            </form>
+        
+            <!-- Filter Form -->
+            <form id="filter-form" method="get" action="{{ url_for('dish.dishes') }}">
+                <select class="filter-dropdown" id="filter-by" name="filter" onchange="this.form.submit()">
+                    <option value="all" {% if request.args.get('filter') == 'all' %} selected{% endif %}>All</option>
+                    <option value="saved" {% if request.args.get('filter') == 'saved' %} selected{% endif %}>Saved Dishes</option>
+                    <option value="four_stars" {% if request.args.get('filter') == 'four_stars' %} selected{% endif %}>4+ stars</option>
+                    <option value="three_stars" {% if request.args.get('filter') == 'three_stars' %} selected{% endif %}>3 stars</option>    
+                    <option value="two_stars" {% if request.args.get('filter') == 'two_stars' %} selected{% endif %}>2 stars</option>
+                    <option value="one_star" {% if request.args.get('filter') == 'one_star' %} selected{% endif %}>1 star</option>
+                </select>
+                
+                {% if request.args.get('sort') %}
+                <input type="hidden" name="sort" value="{{ request.args.get('sort') }}">
+                {% endif %}
+            </form>
+        </div>
+    
+
+    </div>
+
+    <div class="dishes-list">
+        {% if dishes %}
+            {% for dish in dishes %}
+            <div class="dish-card">
+                <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-image-container">
+                    <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.dish_name }}">
+                </a>
+                <div class="dish-info">
+                    <h2>{{ dish.dish_name }}</h2>
+                    <span class="match">{{ dish.match_score }}% match</span>
+                    <p class="details">{{ dish.description }}</p>
+                    
+                    <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="see-details">
+                        See Details
+                    </a>
+                    <p class="price"> $ <span> {{ dish.price }}</span></p>
+                </div>
+                <div class="dish-save" onclick ="toggleSave(this, {{dish.dish_id}})">
+                    <!----find appropriate save icon, if ticked, dark, not ticked light-->
+                    {% if dish.is_saved %}
+                        <i class="fas fa-bookmark saved"></i>
+                    {% else %}
+                        <i class="far fa-bookmark not-saved"></i>
+                    {% endif %}              
+                </div>
+            </div>
+            {% endfor %}
+        <!-- Troubleshooting the database -->
+        {% else %}
+        <p>No dishes available.</p>
+        
+        {% endif %}
+       
+    </div>
+</div>
+{% endblock %} 
+

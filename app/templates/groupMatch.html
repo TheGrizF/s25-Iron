@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Group Matching{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/groupMatch.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="group-match-container">
+    <div class="header-images">
+        <img src="{{ url_for('static', filename= 'images/restaurant/default.jpg') }}" alt = " Placeholder ">
+    </div>
+    <div class = "title-bar">
+        <div class="restaurant-title">Restaurant Here</div>
+        <div class="team-title">Active Group</div>
+    </div>
+    <div class = "match-cost">
+        <div class="match">% Match</div>
+        <div class="cost" style="text-align: right;">~ $ Price per Entree</div>
+    </div>
+    <div class ="separator"></div>
+
+
+
+</div>
+{% endblock %} 

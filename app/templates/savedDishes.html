@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Saved Dishes{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/savedDishes.css') }}"> {# Link to new CSS #}
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="saved-dishes-container"> {# Use a specific container class #}
+        <h1 class="section-title">Your Saved Dishes</h1>
+
+        {% if saved_dishes %}
+            <div class="saved-dishes-list"> {# Use a specific list class #}
+                {% for saved_dish_entry in saved_dishes %}
+                {# Assuming saved_dish_entry contains the dish object #}
+                {% set dish = saved_dish_entry.dish %}
+                <div class="feed-item saved-dish-card"> {# Use specific card class #}
+                    <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="card-link">
+                        <div class="dish-image">
+                            {% if dish.image_path %}
+                                <img src="{{ url_for('static', filename=dish.image_path) }}" alt="{{ dish.dish_name }}">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/default_dish.png') }}" alt="Default Dish Image">
+                            {% endif %}
+                        </div>
+                        <div class="dish-info">
+                            <h3 class="dish-name">{{ dish.dish_name }}</h3>
+                            {# Need to access restaurant info potentially differently #}
+                            {# Assuming dish.menu_dishes[0].menu.restaurant.restaurant_name if it exists #}
+                            {% if dish.menu_dishes and dish.menu_dishes[0].menu and dish.menu_dishes[0].menu.restaurant %}
+                            <p class="restaurant-name">@ {{ dish.menu_dishes[0].menu.restaurant.restaurant_name }}</p>
+                            {% else %}
+                            <p class="restaurant-name">@ Unknown Restaurant</p> {# Fallback #}
+                            {% endif %}
+                            <p class="dish-description">{{ dish.description | truncate(100) if dish.description else 'No description available.' }}</p>
+                            <span class="timestamp">Saved on: {{ saved_dish_entry.date_saved.strftime('%Y-%m-%d') }}</span> {# Use date_saved #}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-saved-dishes">You haven't saved any dishes yet.</p> {# Specific message #}
+             <div class="button-group centered" style="margin-top: 20px;">
+                <a href="{{ url_for('dish.dishes') }}" class="taste-profile-btn">Explore Dishes</a>
+            </div>
+        {% endif %}
+        
+        <div class="button-group centered" style="margin-top: 30px;">
+             <a href="{{ url_for('profile.view_profile') }}" class="see-all-btn">Back to Profile</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %} 

@@ -156,7 +156,7 @@
         </div>
 
         <div style="text-align: center;">
-            <button onclick="submitFinalProfile()" class="confirm-btn">Confirm & Save Profile</button>
+            <button onclick="submitFinalProfile()" class="confirm-btn">Finish & View Profile</button>
         </div>
     </div>
 </div>
@@ -166,23 +166,22 @@
 <script>
 async function submitFinalProfile() {
     try {
-        const response = await fetch('/api/taste-profile/save', {
+        const response = await fetch('/api/taste-profile/exit_early', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: 'Finalize Profile' })
+            }
         });
 
         if (response.ok) {
-            alert('Taste Profile Saved!')
+            alert('Taste Profile finalized!');
             window.location.href = '/profile';
         } else {
-            throw new Error('Failed to save profile');
+            throw new Error('Failed to finalize profile');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to save profile. Please try again.');
+        alert('Failed to complete profile. Please try again.');
     }
 }
 </script>

@@ -1,0 +1,351 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ viewed_user.first_name }}'s Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dishes.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="taste-profile-container" 
+     style="max-width: 600px !important; 
+            margin: 0 auto !important; 
+            box-sizing: border-box !important; 
+            overflow: hidden !important;
+            background-color: var(--gray-light);"> <!--Sorry Ben, didn't want to mess with your css-->
+    <button class="back-button" onclick="window.history.back()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="profile-icon">
+        {% if viewed_user.icon_path %}
+            <img src="{{ url_for('static', filename=viewed_user.icon_path) }}" 
+                 alt="{{ viewed_user.first_name }}'s Profile"
+                 style="width: 150px; height: 150px;">
+        {% else %}
+            <img src="{{ url_for('static', filename='images/profile_icons/default1.png') }}" 
+                 alt="Default Icon"
+                 style="width: 150px; height: 150px">
+        {% endif %}
+    </div>
+
+    <h1>{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h1>
+
+    <div class="button-group centered">
+        {% if is_buddy %}
+            <form action="{{ url_for('auth.removeFriend', user_id=viewed_user.user_id) }}" method="POST">
+                <button type="submit" class="add-buddy-btn">Unfollow</button>
+            </form>
+        {% else %}
+            <form action="{{ url_for('auth.addFriend', user_id=viewed_user.user_id) }}" method="POST">
+                <button type="submit" class="add-buddy-btn">Follow</button>
+            </form>
+        {% endif %}
+    </div>
+    
+    <div class="flash-message-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>   
+
+    <div class="preview-card">
+        <h2>Taste Match</h2>
+        <div class="match-score">
+            <span class="match-percent large">{{ ((24 - comparison_num) / 24 * 100)|round(1) }}%</span>
+        </div>
+
+        <!-- Spider Graph does whatever a spider graph does -->
+        <canvas id="tasteSpiderGraph" width="100" height="100"></canvas>
+
+    </div>
+    
+    {% if recent_review %}
+        <h2>Recently Reviewed</h2>
+        <div class="review-card">
+            <div class="dish-image-container">
+                <a href="{{ url_for('dish.dish_detail', dish_id=recent_review.dish.dish_id) }}">
+                    <img src="{{ url_for('static', filename=recent_review.dish.image_path) }}" alt="{{ recent_review.dish.dish_name }}">
+                </a>
+            </div>
+            <div class="review-info">
+                <h3>{{ recent_review.dish.dish_name }}</h3>
+                <p>@ {{ recent_review.restaurant.restaurant_name }}</p>
+                <div class="star-rating">
+                    {% for i in range(recent_review.rating) %}
+                        <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% for i in range(5 - recent_review.rating) %}
+                        <i class="far fa-star"></i>
+                    {% endfor %}
+                </div>
+                <p>{{ recent_review.content }}</p>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+<!-- Can it swing from a web? No it can't, its a graph -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const currPoints= {{ current_points|safe }};
+    const otherPoints= {{ other_points|safe }};
+
+    const labels = ['Sweet', 'Sour', 'Spicy', 'Bitter', 'Umami', 'Savory'];
+
+    const data ={
+        labels: labels,
+        datasets: [
+            {
+                label: "You",
+                data: [
+                    currPoints.sweet,
+                    currPoints.sour,
+                    currPoints.spicy,
+                    currPoints.bitter,
+                    currPoints.umami,
+                    currPoints.savory
+                ],
+                fill: true,
+                backgroundColor: "rgba(196, 24, 58, 0.2)",
+                borderColor: "#C4183A",
+                pointBackgroundColor: "#C4183A",
+            },
+            {
+                label: "{{ viewed_user.first_name }}",
+                data: [
+                    otherPoints.sweet,
+                    otherPoints.sour,
+                    otherPoints.spicy,
+                    otherPoints.bitter,
+                    otherPoints.umami,
+                    otherPoints.savory
+                ],
+                fill: true,
+                backgroundColor: "rgba(244, 185, 66, 0.2)",
+                borderColor: "#F4B942",
+                pointBackgroundColor: "#F4B942",
+            }
+        ]
+    };
+
+    const config = {
+        type: 'radar',
+        data: data,
+        options: {
+            scales: {
+                r: {
+                    min: 0,
+                    max: 5,
+                    ticks: {
+                        stepSize: 1,
+                        display: false
+                    },
+                    pointLabels: {
+                        font: {
+                            size: 16,
+                            weight: 'bold',
+                            family: "'inherit'",
+                            
+                        },
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            size: 16,
+                            weight: 'bold',
+                            family: "'inherit'",
+                        }
+                    }
+                }
+            }
+        }
+    }; 
+
+    new Chart(document.getElementById('tasteSpiderGraph'), config);
+});
+</script>
+
+
+
+
+<style>
+body {
+    background-color: var(--gray-light);
+}
+
+.taste-profile-container {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px 100px 20px;
+    background-color: var(--white);
+}
+
+.profile-icon {
+    margin: 0 auto 20px;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+}
+
+.profile-icon img {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.preview-card {
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.preview-card h2 {
+    color: var(--burgundy-main);
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.match-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.match-percent.large {
+    font-size: 2.5em;
+    color: var(--burgundy-main);
+    font-weight: bold;
+}
+
+.match-label {
+    color: var(--slate-dark);
+    margin-top: 5px;
+}
+
+.button-group.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.button-group.centered form {
+    margin: 0 auto;
+    display: block;
+}
+
+.add-buddy-btn {
+    display: block;
+    margin: 0 auto;
+    background-color: var(--burgundy-main);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+    min-width: 150px;
+}
+
+.add-buddy-btn:hover {
+    background-color: var(--burgundy-dark);
+}
+
+@media (max-width: 768px) {
+    .taste-profile-container {
+        padding: 15px 15px 100px 15px;
+    }
+}
+
+.flash-message-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.flash-message {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.review-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 600px;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.review-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.review-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.review-info h3 {
+    margin: 0 0 5px;
+}
+
+.review-info p {
+    margin: 4px 0;
+    color: var(--slate-light);
+    line-height: 1.4;
+}
+
+.star-rating {
+    color: var(--yellow-main);
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+</style>
+
+{% endblock %} 

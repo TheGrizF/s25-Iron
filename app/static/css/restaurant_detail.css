@@ -1,6 +1,6 @@
 .restaurant-detail {
     padding-bottom: 70px;
-}
+} 
 
 .header-images {
     position: relative;
@@ -17,7 +17,7 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    background: rgba(255,255,255,0.9);
+    background: rgba(139, 137, 137, 0.9);
     border: none;
     width: 40px;
     height: 40px;
@@ -32,19 +32,35 @@
     padding: 20px;
     background: var(--white);
     position: relative;
+    display: block;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.restaurant-info h2 {
+    margin: 0; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding-right: 124px; 
+}
+
+.restaurant-info p {
+    color: #858585;
 }
 
 .update-button {
     position: absolute;
     right: 20px;
     top: 20px;
-    background: var(--gray-light);
+    background: var(--burgundy-main);
+    color: white;
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
     display: flex;
     align-items: center;
     gap: 5px;
+    cursor: pointer;
 }
 
 .recommendations {
@@ -62,6 +78,7 @@
     background: var(--white);
     border-radius: 10px;
     overflow: hidden;
+    text-decoration: none;
 }
 
 .dish-card img {
@@ -77,6 +94,10 @@
 .dish-info h3 {
     margin: 0;
     font-size: 16px;
+}
+
+.dish-info p {
+    margin: 3px 0;
 }
 
 .about {
@@ -96,3 +117,172 @@
     border: none;
     cursor: pointer;
 } 
+
+.contact {
+    margin-top: 0px;
+    padding: 20px;
+    padding-bottom: 0px;
+    text-align: left;
+}
+
+.separator {
+    height: 1px;
+    background-color: #858585;
+    margin: 10px 0;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-details {
+    color: #858585;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.contact-item i {
+    font-size: 18px;
+    color: var(--slate-light);
+    padding-left: 5px;
+}
+
+.dish-match {
+    color: var(--burgundy-main);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.dish-price {
+    color: #858585;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.dish-save {
+    justify-content: center;
+}
+
+.card-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* live update form styles */
+.update-form {
+    margin-top: 15px;
+    background: #f8f8f8;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.update-form textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.form-actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+    background-color: var(--burgundy-main);
+    color: white;
+}
+
+.form-actions button[type="button"] {
+    background-color: #ccc;
+}
+
+.live-updates {
+    padding: 20px;
+    background-color: var(--white);
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+}
+
+.live-update-text {
+    word-wrap: break-word;       
+    white-space: normal;       
+    overflow-wrap: break-word;  
+}
+
+.updates-scroll-box {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.update-card {
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.update-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.user-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-weight: bold;
+    color: var(--slate-dark);
+    font-size: 14px;
+}
+
+.update-content {
+    font-size: 14px;
+    color: #333;
+    margin: 6px 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.update-timestamp {
+    font-size: 12px;
+    color: #888;
+    text-align: right;
+}

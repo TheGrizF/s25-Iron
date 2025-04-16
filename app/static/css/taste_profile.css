@@ -1,4 +1,4 @@
-/* Container styles */
+/* Base Layout */
 .taste-profile-container {
     max-width: 600px;
     margin: 0 auto;
@@ -6,37 +6,67 @@
     background-color: var(--white);
 }
 
-h1 {
-    color: var(--burgundy-main);
+/* Progress Bar */
+.progress-container {
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--gray-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--burgundy-main);
+    transition: width 0.3s ease;
+}
+
+/* Typography */
+h1, h2 {
     text-align: center;
     margin-bottom: 30px;
-    font-size: 2em;
+}
+
+h1 {
+    font: 2em 'Comfortaa', cursive;
+    color: var(--burgundy-main);
 }
 
 h2 {
+    font: 1.5em 'Comfortaa', cursive;
     color: var(--slate-dark);
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 1.5em;
+}
+
+/* Common Components */
+.section, .intro-section, .ranking-container {
+    background: var(--white);
+    margin: 25px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .intro-section {
-    background: var(--white);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     max-width: 600px;
     margin: 0 auto;
 }
 
+/* Form Elements */
 .form-group {
     margin-bottom: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
-.form-group label {
+.form-group label,
+.other-allergy label {
     display: block;
     margin-bottom: 10px;
     color: var(--slate-dark);
@@ -44,8 +74,9 @@ h2 {
     align-self: flex-start;
 }
 
-.form-group input[type="text"] {
-    display: block;
+.form-group input[type="text"],
+.other-allergy input[type="text"],
+select {
     width: 100%;
     padding: 12px;
     border: 2px solid var(--gray-medium);
@@ -54,37 +85,72 @@ h2 {
     transition: border-color 0.3s ease;
 }
 
-.form-group input[type="text"]:focus {
+.form-group input[type="text"]:focus,
+.other-allergy input[type="text"]:focus,
+select:focus {
     border-color: var(--burgundy-main);
     outline: none;
 }
 
+select {
+    max-width: 300px;
+    cursor: pointer;
+}
+
+select:hover {
+    border-color: var(--burgundy-light);
+}
+
+/* Radio and Checkbox Groups */
 .radio-group {
     display: flex;
     gap: 20px;
     align-self: flex-start;
 }
 
-.radio-label {
+.radio-label,
+.checkbox-label {
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
 }
 
-.radio-label input[type="radio"] {
+.radio-label input[type="radio"],
+.checkbox-label input[type="checkbox"] {
     width: 18px;
     height: 18px;
     cursor: pointer;
 }
 
-.submit-btn {
-    display: block;
+/* Grid Layouts */
+.checkbox-grid,
+.condiment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 15px 0;
     width: 100%;
-    margin: 40px auto 0;
+}
+
+.checkbox-label,
+.condiment-item {
+    padding: 10px;
+    background: var(--gray-light);
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.checkbox-label:hover,
+.condiment-item:hover {
+    background: var(--gray-medium);
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.submit-btn,
+.button-group .done-btn {
     padding: 15px 30px;
-    background-color: var(--burgundy-main);
-    color: white;
     border: none;
     border-radius: 8px;
     font-size: 1.1em;
@@ -92,6 +158,24 @@ h2 {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: white;
+}
+
+.submit-btn {
+    background-color: var(--burgundy-main);
+    color: var(--white);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 200px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
 }
 
 .submit-btn:hover {
@@ -100,70 +184,27 @@ h2 {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.profile-info {
-    text-align: center;
-    color: var(--slate-dark);
-    margin: 20px 0;
-    font-style: italic;
-}
-
 .button-group {
     display: flex;
-    gap: 15px;
-    margin-top: 20px;
+    justify-content: center;
+    width: 100%;
+    margin-top: 30px;
 }
 
 .button-group .done-btn,
 .button-group .submit-btn {
-    width: auto;  /* Override the 100% width */
-    margin: 0;    /* Override the default margin */
+    width: auto;
+    margin: 0;
     padding: 10px 30px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    display: inline-block;  /* Override block display */
+    display: inline-block;
 }
 
 .button-group .done-btn {
     background-color: var(--slate-dark);
-    color: white;
-    font-size: 1.2em;  /* Make "Done" text bigger */
+    font-size: 1.2em;
 }
 
-.button-group .submit-btn {
-    background-color: var(--burgundy-main);
-    color: white;
-}
-
-/* Keep existing submit-btn styles for other pages */
-.submit-btn:not(.button-group .submit-btn) {
-    /* existing submit-btn styles remain unchanged */
-}
-
-@media (max-width: 768px) {
-    .taste-profile-container {
-        padding: 20px;
-    }
-    
-    .intro-section {
-        padding: 20px;
-        margin: 0 15px;
-    }
-
-    .checkbox-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-}
-
-/* Ranking container styles */
-.ranking-container {
-    background: #fff;
-    margin: 25px 0;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
+/* Ranking Styles */
 .ranking-list {
     list-style: none;
     padding: 0;
@@ -192,119 +233,18 @@ h2 {
     transform: translateY(-2px);
 }
 
-/* Section styles */
-.section {
-    background: #fff;
-    margin: 25px 0;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* Checkbox grid styles */
-.checkbox-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
-    margin: 15px 0;
-    width: 100%;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background: var(--gray-light);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.checkbox-label:hover {
-    background: var(--gray-medium);
-}
-
-.checkbox-label input[type="checkbox"] {
-    margin-right: 10px;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-.other-allergy {
-    margin-top: 20px;
-    width: 100%;
-}
-
-.other-allergy label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.other-allergy input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid var(--gray-medium);
-    border-radius: 6px;
-    font-size: 1em;
-    transition: border-color 0.3s ease;
-}
-
-.other-allergy input[type="text"]:focus {
-    border-color: var(--burgundy-main);
-    outline: none;
-}
-
-/* Select styles */
-select {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    background-color: #fff;
-    font-size: 1em;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-}
-
-select:hover {
-    border-color: var(--burgundy-light);
-}
-
-/* Preference item styles */
-.preference-item {
-    margin: 20px 0;
-}
-
-.preference-item p {
-    margin-bottom: 10px;
-    color: var(--slate-dark);
-}
-
-/* Animation for drag and drop */
-.sortable-ghost {
-    opacity: 0.4;
-}
-
-.sortable-drag {
-    background-color: var(--burgundy-light) !important;
-    color: white;
-}
-
-/* Update the image grid styles */
+/* Image Grid */
 .image-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* Always 2 columns */
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
 }
 
-/* Center option styling */
 .center-option {
-    grid-column: 1 / -1;  /* Span both columns */
+    grid-column: 1 / -1;
     width: 50%;
     margin: 0 auto;
 }
@@ -312,19 +252,34 @@ select:hover {
 .image-option {
     position: relative;
     width: 100%;
-    background: #ffffff;  /* Solid white background */
+    background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     transition: transform 0.2s;
     z-index: 1;
 }
 
+/* Default image styling for taste profile images */
 .image-option img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     border-radius: 8px;
     display: block;
+}
+
+.image-option label {
+    display: block;
+    cursor: pointer;
+    text-align: center;
+}
+
+.image-label {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+    font: 500 1.1em 'Comfortaa', cursive;
+    color: var(--slate-dark);
 }
 
 .image-option input[type="radio"] {
@@ -336,56 +291,46 @@ select:hover {
     z-index: 2;
 }
 
+/* Special styling just for profile icons */
+.profile-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.profile-icon-grid .image-option {
+    box-shadow: none;
+    background: transparent;
+}
+
+.profile-icon-grid .image-option img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    max-width: 120px;
+    height: auto;
+    display: block;
+    border: 3px solid transparent;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
 .image-option input[type="radio"]:checked + label {
     outline: 3px solid var(--burgundy-main);
     outline-offset: 2px;
     border-radius: 8px;
-    z-index: 3;
 }
 
-.image-option:hover {
-    transform: translateY(-2px);
+.profile-icon-grid .image-option input[type="radio"]:checked + label {
+    outline: none;
 }
 
-@media (max-width: 768px) {
-    .taste-profile-container {
-        padding: 10px;
-    }
-
-    .intro-section {
-        padding: 15px;
-    }
-
-    .image-grid {
-        grid-template-columns: repeat(2, 1fr);  /* Keep 2 columns on mobile */
-        padding: 10px;
-        gap: 10px;  /* Reduce gap on mobile for better fit */
-    }
-
-    .center-option {
-        width: 50%;  /* Keep center option at half width */
-    }
-
-    /* Adjust image height for better mobile viewing */
-    .image-option img {
-        height: 150px;  /* Slightly smaller images on mobile */
-    }
-}
-
-/* Add these new styles for atmosphere labels */
-.image-label {
-    display: block;
-    text-align: center;
-    margin-top: 8px;
-    font-size: 1.1em;
-    color: var(--slate-dark);
-    font-weight: 500;
-}
-
-.image-option label {
-    display: block;
-    cursor: pointer;
-    text-align: center;  /* Center the image and label */
+.profile-icon-grid .image-option input[type="radio"]:checked + label img {
+    border-color: var(--burgundy-main);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .image-option input[type="radio"]:checked + label .image-label {
@@ -393,7 +338,11 @@ select:hover {
     font-weight: 600;
 }
 
-/* Cuisine preference styles */
+.image-option:hover {
+    transform: translateY(-2px);
+}
+
+/* Cuisine Preferences */
 .cuisine-sliders {
     display: flex;
     flex-direction: column;
@@ -416,16 +365,14 @@ select:hover {
 }
 
 .cuisine-header label {
-    font-size: 1.1em;
-    font-weight: 500;
+    font: 500 1.1em 'Comfortaa', cursive;
     color: var(--slate-dark);
     min-width: 80px;
 }
 
 .cuisine-desc {
     color: var(--slate-dark);
-    font-size: 0.9em;
-    font-style: italic;
+    font: italic 0.9em 'Comfortaa', cursive;
     opacity: 0.8;
 }
 
@@ -440,124 +387,163 @@ select:hover {
     text-align: center;
 }
 
+/* Custom Range Input */
 .preference-slider {
     width: 100%;
     height: 8px;
     -webkit-appearance: none;
     background: #ddd;
-    outline: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.preference-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--burgundy-main);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
+.preference-slider::-webkit-slider-thumb,
 .preference-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     background: var(--burgundy-main);
     border-radius: 50%;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease;
     border: none;
+    -webkit-appearance: none;
 }
 
-.preference-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-}
-
+.preference-slider::-webkit-slider-thumb:hover,
 .preference-slider::-moz-range-thumb:hover {
     transform: scale(1.2);
 }
 
+/* Drag and Drop Animation */
+.sortable-ghost { opacity: 0.4; }
+.sortable-drag {
+    background-color: var(--burgundy-light);
+    color: white;
+}
+
+/* Spicy Preference Images */
+#spicyPreferenceForm .image-option img {
+    object-fit: contain;
+    padding: 10px;
+    background-color: #fff;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
-    .cuisine-header label {
-        min-width: 60px;
+    .taste-profile-container,
+    .intro-section {
+        padding: 15px;
     }
-    
-    .cuisine-desc {
-        font-size: 0.8em;
+
+    .intro-section {
+        margin: 0 15px;
     }
-}
 
-/* Condiment preference styles */
-.condiment-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    margin: 30px 0;
-}
-
-.condiment-item {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.condiment-item:hover {
-    background: #e9ecef;
-    transform: translateY(-2px);
-}
-
-.condiment-item input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.condiment-item label {
-    font-size: 1.1em;
-    color: var(--slate-dark);
-    cursor: pointer;
-}
-
-.condiment-item input[type="checkbox"]:checked + label {
-    color: var(--burgundy-main);
-    font-weight: 500;
-}
-
-@media (max-width: 768px) {
+    .checkbox-grid,
     .condiment-grid {
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         gap: 10px;
     }
-    
+
+    .image-grid {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .image-option img {
+        height: 150px;
+    }
+
+    .cuisine-header label {
+        min-width: 60px;
+    }
+
+    .cuisine-desc {
+        font-size: 0.8em;
+    }
+
     .condiment-item {
         padding: 12px;
     }
-    
+
     .condiment-item label {
         font-size: 1em;
     }
-}
-
-/* Specific styling for spicy preference images */
-#spicyPreferenceForm .image-option img {
-    object-fit: contain;
-    padding: 10px;
-    background-color: #ffffff;
-} 
-
-@media (max-width: 768px) {
+      
     .taste-profile-container {
-        padding-bottom: 100px; /* Adds extra space at the bottom */
+        padding-bottom: 100px;
     }
 
     .confirm-btn {
-        margin-bottom: 80px; /* Pushes the button above the nav bar */
+        margin-bottom: 80px;
     }
+
+    .profile-icon-grid .image-option img {
+        height: auto;
+    }
+}
+
+/* Other Allergy Input */
+.other-allergy {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.other-allergy input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid var(--gray-medium);
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.other-allergy input[type="text"]:focus {
+    border-color: var(--burgundy-main);
+    outline: none;
+}
+
+.other-allergy input[type="text"]::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+.add-btn {
+    background-color: var(--burgundy-main);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 4px;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: var(--burgundy-light);
+}
+
+#otherAllergyList {
+    width: 100%;
+    max-width: 400px;
+    margin: 10px auto;
+}
+
+.other-allergy-item {
+    background: var(--gray-light);
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 4px;
+    color: var(--slate-dark);
+    font-size: 0.9em;
 }

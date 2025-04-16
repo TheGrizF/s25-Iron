@@ -5,9 +5,9 @@ from sqlalchemy.orm import relationship
 class review(db.Model):
     __tablename__ = "review"
     review_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
-    restaurant_id = Column(Integer, ForeignKey("restaurant.restaurant_id"), nullable=False)
-    dish_id = Column(Integer, ForeignKey("dish.dish_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    restaurant_id = Column(Integer, ForeignKey("restaurant.restaurant_id", ondelete="CASCADE"), nullable=False)
+    dish_id = Column(Integer, ForeignKey("dish.dish_id", ondelete="CASCADE"), nullable=False)
     rating = Column(SmallInteger, nullable=False)
     content = Column(Text, nullable=True)
     image_path = Column(Text, nullable=True)
