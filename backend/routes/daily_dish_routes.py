@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session, request, flash, redirect,
 from database import db
 from database.models.dish import dish
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_daily_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates
+from backend.utils import get_featured_dishes, get_daily_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_daily_feed
 import json
 daily_dish_bp = Blueprint('daily_dish', __name__)
 
@@ -11,30 +11,11 @@ def daily_dish():
     user_id = session.get('user_id')
     if not user_id:
         return "Not Logged In", 404
-    
 
     featured_dishes = get_featured_dishes()
+    daily_dish_items = get_daily_feed(user_id, offset=0, limit=10)
 
-    friend_reviews = get_friend_reviews(user_id, 10)
-    recommended_dishes = get_daily_dishes(user_id, 10)
-    saved_dishes = get_saved_dishes(user_id)
-    live_updates = get_live_updates(user_id)
-    follow_notifications = get_follow_notifications(user_id)
-
-    daily_dish_items = []
-    for i in range(max(len(friend_reviews), len(recommended_dishes), len(saved_dishes))):
-        if i < len(live_updates):
-            daily_dish_items.append({"type": "update", "data": live_updates[i]})
-        if i < len(recommended_dishes):
-            daily_dish_items.append({"type": "dish", "data": recommended_dishes[i]})
-        if i < len(friend_reviews):
-            daily_dish_items.append({"type": "review", "data": friend_reviews[i]})
-        if i < len(saved_dishes):
-            daily_dish_items.append({"type": "saved", "data": saved_dishes[i]})
-        if i < len(follow_notifications):
-            daily_dish_items.append({"type": "follow", "data": follow_notifications[i]})
-
-    return render_template('dailyDish.html', featured_dishes=featured_dishes, feed_items=daily_dish_items)
+    return render_template('dailyDish.html', featured_dishes=featured_dishes, feed_items=daily_dish_items[:10])
 
 
 @daily_dish_bp.route('/search')

@@ -44,9 +44,6 @@
                 {% include 'components/feed_card.html' %}
             {% endfor %}
 
-            <div id="load-more-container" style="text-align: center; margin: 20px 0;">
-                <button id="load-more-btn" class="mark-seen-btn" data-offset="{{ feed_items|length }}">Load More</button>
-            </div>
         </section>
     </div>
 </div>
@@ -177,7 +174,51 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     </script>
     
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let loading = false;
+        let offset = 10; // starting offset since you already load the first 10
     
+        async function loadMoreFeed() {
+            if (loading) return;
+            loading = true;
+    
+            const res = await fetch(`/load-more-feed?offset=${offset}`);
+            const data = await res.json();
+    
+            if (data.feed_html) {
+                const parser = new DOMParser();
+                const newItems = parser.parseFromString(data.feed_html, 'text/html').body.children;
+    
+                const feedSection = document.querySelector('.live-feed');
+                for (const item of newItems) {
+                    if (item.classList.contains('feed-item')) {
+                        feedSection.appendChild(item);
+                    }
+                }
+    
+                offset += data.count;
+                loading = false;
+    
+                if (!data.has_more) {
+                    window.removeEventListener('scroll', scrollHandler);
+                }
+            } else {
+                loading = false;
+            }
+        }
+    
+        function scrollHandler() {
+            const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+            if (nearBottom) {
+                loadMoreFeed();
+            }
+        }
+    
+        window.addEventListener('scroll', scrollHandler);
+    });
+    </script>
+        
     
 {% endblock %}
 
