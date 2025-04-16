@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, Integer, SmallInteger, Text, TIMESTAMP, ForeignKey, func, CheckConstraint
 from sqlalchemy.orm import relationship
-from database import db
+from database import db, bcrypt
 
 class user(db.Model):
     __tablename__ = "user"
@@ -8,6 +8,7 @@ class user(db.Model):
     first_name = Column(Text, nullable=False)
     last_name = Column(Text, nullable=False)
     email = Column(Text, nullable=False, unique=True)
+    password_hash = Column(Text, nullable=False)
     user_role = Column(Text, nullable=False, default="user")
     icon_path = Column(Text, nullable=True, default="images/profile_icons/default1.png")
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
@@ -29,6 +30,29 @@ class user(db.Model):
     __table_args__ = (
         CheckConstraint("user_role IN ('admin', 'user', 'moderator')", name="valid_user_role"),
     )
+
+    def __init__(self, first_name, last_name, email, password="tastebuddies", user_role="user"):
+        """Ensure password is always hashed when creating a user."""
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+        self.user_role = user_role
+
+    @property
+    def password(self):
+        """Prevents direct access to the password."""
+        raise AttributeError("Password is not a readable attribute.")
+
+    @password.setter
+    def password(self, password):
+        """Hashes the password before storing it."""
+        self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+
+    def check_password(self, password):
+        """Checks if a given password matches the stored hash."""
+        return bcrypt.check_password_hash(self.password_hash, password)
+
 
 class tasteComparisons(db.Model):
     __tablename__ = "taste_comparisons"
