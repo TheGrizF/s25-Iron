@@ -186,3 +186,30 @@ def follow_back(follower_id):
 
     return jsonify({"success": True})
 
+@daily_dish_bp.route('/load-more-feed')
+def load_more_feed():
+    user_id = session.get('user_id')
+    offset = int(request.args.get('offset', 0))
+
+    from backend.utils import get_daily_feed
+    new_feed_items = get_daily_feed(user_id, offset=offset, limit=10)
+
+    rendered_html = ""
+    for item in new_feed_items:
+        if item["type"] == "dish":
+            rendered_html += render_template("components/feed_card.html", item=item)
+        elif item["type"] == "review":
+            rendered_html += render_template("components/feed_card.html", item=item)
+        elif item["type"] == "saved":
+            rendered_html += render_template("components/feed_card.html", item=item)
+        elif item["type"] == "update":
+            rendered_html += render_template("components/feed_card.html", item=item)
+        elif item["type"] == "follow":
+            rendered_html += render_template("components/feed_card.html", item=item)
+
+    return jsonify({
+        "feed_html": rendered_html,
+        "count": len(new_feed_items),
+        "has_more": len(new_feed_items) == 10
+    })
+

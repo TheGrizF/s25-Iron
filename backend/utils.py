@@ -597,3 +597,38 @@ def normalize_email(email):
         name = name.replace(".", "")
 
     return f"{name}@{domain}"
+
+
+def get_daily_feed(user_id, offset=0, limit=10):
+    """
+    returns a mixed list of feed items (reviews, recommendations, saved dishes, updates, and follows)
+    for use in infinite scroll pagination
+
+    :param user_id: the logged-in user id
+    :param offset: number of items to skip
+    :param limit: number of items to return
+    :return: list of feed item dictionaries with type and data
+    """
+    friend_reviews = get_friend_reviews(user_id, 50)
+    recommended_dishes = get_daily_dishes(user_id, 50)
+    saved_dishes = get_saved_dishes(user_id)
+    live_updates = get_live_updates(user_id)
+    follow_notifications = get_follow_notifications(user_id)
+
+    # interleave items
+    max_items = max(len(friend_reviews), len(recommended_dishes), len(saved_dishes), len(live_updates), len(follow_notifications))
+    combined_feed = []
+
+    for i in range(max_items):
+        if i < len(live_updates):
+            combined_feed.append({"type": "update", "data": live_updates[i]})
+        if i < len(recommended_dishes):
+            combined_feed.append({"type": "dish", "data": recommended_dishes[i]})
+        if i < len(friend_reviews):
+            combined_feed.append({"type": "review", "data": friend_reviews[i]})
+        if i < len(saved_dishes):
+            combined_feed.append({"type": "saved", "data": saved_dishes[i]})
+        if i < len(follow_notifications):
+            combined_feed.append({"type": "follow", "data": follow_notifications[i]})
+
+    return combined_feed[offset:offset + limit]
