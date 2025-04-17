@@ -11,45 +11,7 @@ from database.models.user import cuisineUserJunction, savedDishes, user, user_al
 from database.models.review import review
 from database.models.dish import dish, dish_allergen, dish_restriction, menu, menuDishJunction
 from database.models.restaurant import liveUpdate, restaurant
-
-def get_live_updates(user_id, threshold=75):
-    """
-    Gets a list of the most recent updates for restaurants that match a threshold for the user
-
-    :param user_id: id of user to base threshold for
-    :param threshold: only restaurants above this % match will be returned
-    :return: Sorted list of restaurants dictionaries and their updates
-    """
-
-    all_restaurants = get_all_restaurant_info(user_id)
-    match_rest_ids = [
-        rest['restaurant_id'] for rest in all_restaurants
-        if rest.get('match_percentage', 0) >= threshold
-    ]
-
-    if not match_rest_ids:
-        return []
-    
-    match_updates = (
-        db.session.query(liveUpdate)
-        .filter(liveUpdate.restaurant_id.in_(match_rest_ids))
-        .filter(liveUpdate.user_id != user_id)
-        .order_by(liveUpdate.created_at.desc())
-        .all()
-    )
-
-    live_updates = []
-    for update in match_updates:
-        user_name = f"{update.user.first_name} {update.user.last_name}"
-        live_updates.append({
-            "restaurant_id": update.restaurant.restaurant_id,
-            "restaurant_name": update.restaurant.restaurant_name,
-            "content": update.update_content,
-            "time_posted": relative_time(update.created_at),
-            "user_name": user_name,
-        })
-
-    return live_updates
+from datetime import datetime, timedelta
 
 def get_dish_info(dish_id, include_reviews=False):
     """
@@ -72,6 +34,7 @@ def get_dish_info(dish_id, include_reviews=False):
     when include_reviews is true, dictionary will include:
     reviews: a list of reviews for the dish including:
     user_name - user name as string First Last
+    user_id - user ID
     user_icon - path to user image
     content - review text
     rating - rating the user gave
@@ -105,6 +68,7 @@ def get_dish_info(dish_id, include_reviews=False):
             {
                 "user_name": f"{rev.user.first_name} {rev.user.last_name}",
                 "user_icon": rev.user.icon_path,
+                "user_id": rev.user.user_id,
                 "content": rev.content,
                 "rating": rev.rating,
                 "time_stamp": relative_time(rev.created_at),
@@ -159,146 +123,6 @@ def get_featured_dishes():
     ]
     
     return featured_dish_info
-
-def get_daily_dishes(user_id, limit=10):
-    """
-    Get dishes with scores where the score didn't come from user reviews
-    should be dishes user hasn't tried yet
-    """
-
-    recommended = get_dish_recommendations(user_id)
-    
-    new_dishes = [dish for dish in recommended if dish[1] != user_id][:limit]
-
-    dish_ids = [dish[0] for dish in new_dishes]
-    dishes = {
-        this_dish.dish_id: this_dish 
-        for this_dish in db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()
-    }
-
-    reviews = (
-        db.session.query(review)
-        .filter(review.dish_id.in_(dishes.keys()), review.user_id != user_id)
-        .order_by(review.created_at.desc())
-        .distinct(review.dish_id)
-        .all()
-    )
-
-    buddy_reviews = {
-        rev.dish_id: {
-            "buddy_name": f"{rev.user.first_name} {rev.user.last_name}",
-            "buddy_icon": rev.user.icon_path,
-            "review_content": rev.content,
-            "time_stamp": relative_time(rev.created_at),
-            "rating": rev.rating,
-        }
-        for rev in reviews
-    }
-    
-    daily_dishes = [
-        {
-            "dish_id": id,
-            "name": dishes[id].dish_name,
-            "image_path": dishes[id].image_path,
-            "restaurant": dishes[id].menu_dishes[0].menu.restaurant.restaurant_name,
-            "restaurant_id": dishes[id].menu_dishes[0].menu.restaurant.restaurant_id,
-            "match_score": score,
-
-            "buddy_name": buddy_reviews[id]["buddy_name"],
-            "buddy_icon": buddy_reviews[id]["buddy_icon"],
-            "buddy_rating": buddy_reviews[id]["rating"],
-            "review_content": buddy_reviews[id]["review_content"],
-            "time_stamp": buddy_reviews[id]["time_stamp"]
-        }
-        for id, _, score in new_dishes if id in dishes
-    ]
-        
-    return daily_dishes
-
-def get_friend_reviews(user_id, limit=5):
-    """
-    Gets a list of the recent reviews from the user's friends.
-    Dictionary return contains:
-    -friend_name: friends full name
-    -friend_icon: user icon of the friend
-    -dish_name: name of dish they reviewed
-    -dish_id: dish id to link to dish page
-    -retaurant_name: name of restaurant where dish is
-    -restaurant_id: to link to restaurant page
-    -content: the written review
-    -rating: the score the user gave
-    """
-    friend_ids = [
-        f[0] for f in db.session.query(friends.buddy_id)
-        .filter(friends.user_id == user_id)
-        .all()
-    ]
-    
-    # Early exit if user doesn't follow anyone
-    if not friend_ids:
-        return []
-    
-    # Reviews from friends in descending order
-    raw_reviews = (
-        db.session.query(review)
-        .filter(review.user_id.in_(friend_ids))
-        .order_by(review.created_at.desc())
-        .all()
-    )
-
-    # Filter 1 per friend, most recent    
-    remove_duplicates = {}
-    for rev in raw_reviews:
-        if rev.user_id not in remove_duplicates:
-            remove_duplicates[rev.user_id] = rev
-    
-    friend_reviews=[]
-    for rev in remove_duplicates.values():
-        friend_reviews.append({
-            "friend_id": rev.user_id,
-            "friend_name": f"{rev.user.first_name} {rev.user.last_name}",
-            "friend_icon": rev.user.icon_path,
-            "content": rev.content,
-            "rating": rev.rating,
-            "dish_id": rev.dish_id,
-            "dish_name": rev.dish.dish_name,
-            "restaurant_id": rev.dish.menu_dishes[0].menu.restaurant.restaurant_id,
-            "restaurant_name": rev.dish.menu_dishes[0].menu.restaurant.restaurant_name,
-            "time_stamp": relative_time(rev.created_at),
-        })
-    
-    return friend_reviews[:limit]
-
-def get_saved_dishes(user_id):
-    """
-    Compiles a list of the users saved dishes with oldest first
-    saved in dictionary containing:
-        -dish_name: name of dish they reviewed
-        -dish_id: dish id to link to dish page
-        -image: path to dish image
-        -retaurant_name: name of restaurant where dish is
-        -restaurant_id: to link to restaurant page
-        -date_saved: date user saved the dish
-    """
-    user_info = db.session.query(user).get(user_id)
-
-    if not user_info:
-        return []
-    
-    saved_dishes = []
-    for saved in user_info.saved_dishes:
-        user_dish = saved.dish
-
-        saved_dishes.append({
-            "dish_id": user_dish.dish_id,
-            "dish_name": user_dish.dish_name,
-            "image": user_dish.image_path,
-            "restaurant_name": user_dish.menu_dishes[0].menu.restaurant.restaurant_name,
-            "restaurant_id": user_dish.menu_dishes[0].menu.restaurant.restaurant_id,
-            "date_saved": saved.date_saved.strftime("%B %d, %Y"),
-        })
-    
-    return saved_dishes
 
 def get_dish_recommendations(user_id):
     """
@@ -518,30 +342,6 @@ def get_all_restaurant_info(user_id):
     all_restaurants = restaurant.query.all()
     return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
 
-def get_follow_notifications(user_id):
-    new_follows = (
-        db.session.query(friends, user)
-        .join(user, friends.user_id == user.user_id)
-        .filter(friends.buddy_id == user_id, friends.seen == False)
-        .all()
-    )
-
-    notifications = []
-    for relation, follower in new_follows:
-        is_following_back = db.session.query(friends).filter_by(
-            user_id=user_id, buddy_id=follower.user_id
-        ).first() is not None
-
-        notifications.append({
-            "follower_id": follower.user_id,
-            "name": f"{follower.first_name} {follower.last_name}",
-            "icon_path": follower.icon_path,
-            "is_following_back": is_following_back,
-        })
-
-    return notifications
-
-
 def relative_time(original_time):
     """
     Converts a datetime object into a relative time string for display
@@ -596,3 +396,264 @@ def normalize_email(email):
         name = name.replace(".", "")
 
     return f"{name}@{domain}"
+
+def get_friend_reviews(user_id, limit=None):
+    """
+    gets the most recent review from each friend.
+    returns all recent unique reviews, one per friend.
+    
+    :param user_id: current user ID
+    :param limit: maximum number of friend reviews to return
+    """
+    # get all buddy IDs
+    friend_ids = [
+        f[0] for f in db.session.query(friends.buddy_id)
+        .filter(friends.user_id == user_id)
+        .all()
+    ]
+
+    if not friend_ids:
+        return []
+
+    # get all reviews from friends ordered by most recent first
+    raw_reviews = (
+        db.session.query(review)
+        .filter(review.user_id.in_(friend_ids))
+        .order_by(review.created_at.desc())
+        .all()
+    )
+
+    # keep only 1 review per friend (most recent one)
+    seen = set()
+    unique_reviews = []
+    for r in raw_reviews:
+        if r.user_id not in seen:
+            seen.add(r.user_id)
+            unique_reviews.append(r)
+        if limit and len(unique_reviews) >= limit:
+            break
+
+    # convert to list of dictionaries for the feed
+    return [
+        {
+            "friend_id": r.user_id,
+            "friend_name": f"{r.user.first_name} {r.user.last_name}",
+            "friend_icon": r.user.icon_path,
+            "content": r.content,
+            "rating": r.rating,
+            "dish_id": r.dish_id,
+            "dish_name": r.dish.dish_name,
+            "restaurant_id": r.dish.menu_dishes[0].menu.restaurant.restaurant_id,
+            "restaurant_name": r.dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "time_stamp": relative_time(r.created_at),
+        }
+        for r in unique_reviews
+    ]
+
+def get_daily_dishes(user_id, limit=10):
+    """
+    Get dishes with scores where the score didn't come from user reviews
+    should be dishes user hasn't tried yet
+    """
+
+    recommended = get_dish_recommendations(user_id)
+    
+    new_dishes = [dish for dish in recommended if dish[1] != user_id][:limit]
+
+    dish_ids = [dish[0] for dish in new_dishes]
+    dishes = {
+        this_dish.dish_id: this_dish 
+        for this_dish in db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()
+    }
+
+    reviews = (
+        db.session.query(review)
+        .filter(review.dish_id.in_(dishes.keys()), review.user_id != user_id)
+        .order_by(review.created_at.desc())
+        .distinct(review.dish_id)
+        .all()
+    )
+
+    buddy_reviews = {
+        rev.dish_id: {
+            "buddy_name": f"{rev.user.first_name} {rev.user.last_name}",
+            "buddy_icon": rev.user.icon_path,
+            "review_content": rev.content,
+            "time_stamp": relative_time(rev.created_at),
+            "rating": rev.rating,
+        }
+        for rev in reviews
+    }
+    
+    daily_dishes = [
+        {
+            "dish_id": id,
+            "name": dishes[id].dish_name,
+            "image_path": dishes[id].image_path,
+            "restaurant": dishes[id].menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": dishes[id].menu_dishes[0].menu.restaurant.restaurant_id,
+            "match_score": score,
+
+            "buddy_name": buddy_reviews[id]["buddy_name"],
+            "buddy_icon": buddy_reviews[id]["buddy_icon"],
+            "buddy_rating": buddy_reviews[id]["rating"],
+            "review_content": buddy_reviews[id]["review_content"],
+            "time_stamp": buddy_reviews[id]["time_stamp"]
+        }
+        for id, _, score in new_dishes if id in dishes
+    ]
+        
+    return daily_dishes
+
+def get_saved_dishes(user_id, limit=None):
+    """
+    compiles a list of the user's saved dishes with oldest first
+    returns dictionaries containing:
+        - dish_name: name of dish they reviewed
+        - dish_id: dish id to link to dish page
+        - image: path to dish image
+        - restaurant_name: name of restaurant where dish is
+        - restaurant_id: to link to restaurant page
+        - date_saved: date user saved the dish
+    """
+    user_info = db.session.query(user).get(user_id)
+
+    if not user_info:
+        return []
+
+    saved_dishes = []
+    for saved in sorted(user_info.saved_dishes, key=lambda x: x.date_saved):
+        user_dish = saved.dish
+
+        saved_dishes.append({
+            "dish_id": user_dish.dish_id,
+            "dish_name": user_dish.dish_name,
+            "image": user_dish.image_path,
+            "restaurant_name": user_dish.menu_dishes[0].menu.restaurant.restaurant_name,
+            "restaurant_id": user_dish.menu_dishes[0].menu.restaurant.restaurant_id,
+            "date_saved": saved.date_saved.strftime("%B %d, %Y"),
+        })
+
+    if limit:
+        return saved_dishes[:limit]
+
+    return saved_dishes
+
+def get_live_updates(user_id, threshold=75, limit=None):
+    """
+    gets a list of the most recent updates for restaurants that match a threshold for the user
+
+    :param user_id: id of user to base threshold for
+    :param threshold: only restaurants above this % match will be returned
+    :param limit: max number of updates to return
+    :return: sorted list of restaurant dictionaries and their updates
+    """
+
+    all_restaurants = get_all_restaurant_info(user_id)
+    match_rest_ids = [
+        rest['restaurant_id'] for rest in all_restaurants
+        if rest.get('match_percentage', 0) >= threshold
+    ]
+
+    if not match_rest_ids:
+        return []
+    
+    twenty_four_hours_ago = datetime.utcnow() - timedelta(hours=24)
+
+    match_updates = (
+        db.session.query(liveUpdate)
+        .filter(liveUpdate.restaurant_id.in_(match_rest_ids))
+        .filter(liveUpdate.user_id != user_id)
+        .filter(liveUpdate.created_at >= twenty_four_hours_ago)
+        .order_by(liveUpdate.created_at.desc())
+        .all()
+    )
+
+    live_updates = []
+    for update in match_updates:
+        user_name = f"{update.user.first_name} {update.user.last_name}"
+        live_updates.append({
+            "restaurant_id": update.restaurant.restaurant_id,
+            "restaurant_name": update.restaurant.restaurant_name,
+            "content": update.update_content,
+            "time_posted": relative_time(update.created_at),
+            "user_name": user_name,
+        })
+
+    if limit:
+        return live_updates[:limit]
+
+    return live_updates
+
+def get_follow_notifications(user_id, limit=None):
+    new_follows = (
+        db.session.query(friends, user)
+        .join(user, friends.user_id == user.user_id)
+        .filter(friends.buddy_id == user_id, friends.seen == False)
+        .all()
+    )
+
+    notifications = []
+    for relation, follower in new_follows:
+        is_following_back = db.session.query(friends).filter_by(
+            user_id=user_id, buddy_id=follower.user_id
+        ).first() is not None
+
+        notifications.append({
+            "follower_id": follower.user_id,
+            "name": f"{follower.first_name} {follower.last_name}",
+            "icon_path": follower.icon_path,
+            "is_following_back": is_following_back,
+        })
+
+    if limit:
+        return notifications[:limit]
+
+    return notifications
+
+def get_daily_feed(user_id, offset=0, limit=100):
+
+    # CHANGE THE LIMIT VALUES TO MESS WITH THE FEED SIZE AND FEEL 
+    # Can also change review limit in get_friend_reviews
+    friend_reviews = get_friend_reviews(user_id, limit=30)
+    recommended_dishes = get_daily_dishes(user_id, limit=30)
+    saved_dishes = get_saved_dishes(user_id, limit=30)
+    live_updates = get_live_updates(user_id, limit=30)
+    follow_notifications = get_follow_notifications(user_id, limit=30)
+
+    combined_feed = []
+
+    # consistent interleaving
+    max_items = max(len(friend_reviews), len(recommended_dishes), len(saved_dishes), len(live_updates), len(follow_notifications))
+    for i in range(max_items):
+        if i < len(live_updates):
+            combined_feed.append({"type": "update", "data": live_updates[i]})
+        if i < len(recommended_dishes):
+            combined_feed.append({"type": "dish", "data": recommended_dishes[i]})
+        if i < len(friend_reviews):
+            combined_feed.append({"type": "review", "data": friend_reviews[i]})
+        if i < len(saved_dishes):
+            combined_feed.append({"type": "saved", "data": saved_dishes[i]})
+        if i < len(follow_notifications):
+            combined_feed.append({"type": "follow", "data": follow_notifications[i]})
+
+    result = combined_feed[offset:offset + limit]
+
+    # import json
+    # import os
+    # # save to debug log
+    # debug_info = {
+    #     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    #     "offset": offset,
+    #     "limit": limit,
+    #     "returned": len(result),
+    #     "total": len(combined_feed),
+    #     "items": result
+    # }
+    # os.makedirs("debug_logs", exist_ok=True)
+    # with open("debug_logs/feed_debug.json", "a") as f:
+    #     f.write(json.dumps(debug_info, indent=2))
+    #     f.write("\n\n" + ("=" * 80) + "\n\n")
+
+    return result
+

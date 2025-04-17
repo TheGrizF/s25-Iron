@@ -204,13 +204,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Override the submitStep function
     window.submitStep = async function(step, data, isDone, nextUrl) {
-        if (!validateForm()) {
-            return;
-        }
+        //if (!validateForm()) {
+            //return;
+        //}
 
         // Use the selected items instead of input values
-        data.favoriteRestaurant = selectedRestaurant.name;
-        data.favoriteDish = selectedDish.name;
+        data.favoriteRestaurant = selectedRestaurant?.name || restaurantInput.value;
+        data.favoriteDish = selectedDish?.name || dishInput.value;
 
         try {
             const response = await fetch(`/api/taste-profile/step${step}`, {
