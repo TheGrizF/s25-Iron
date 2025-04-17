@@ -112,17 +112,18 @@ def get_dish_info(dish_id, include_reviews=False):
             for rev in reviews
         ]
 
-    dish_scores = session.get("dish_scores", {})
-    if not dish_scores:
-        dish_recommendations = get_dish_recommendations(session.get("user_id"))
-        dish_scores = {d[0]: d[2] for d in dish_recommendations}
-        session["dish_scores"] = dish_scores
+    dish_score = None
+    user_id = session.get("user_id")
+    if user_id:
+        recommendations = get_dish_recommendations(user_id)
+        score_lookup = {d[0]: d[2] for d in recommendations}
+        dish_score = score_lookup.get(dish_id, 42)
 
     return {
         "dish_id": dish_info.dish_id,
         "dish_name": dish_info.dish_name,
         "image": dish_info.image_path,
-        "match_score": dish_scores.get(dish_id, 42),
+        "match_score": dish_score,
         "average_rating": round(average_rating, 1),
         "restaurant_id": dish_info.menu_dishes[0].menu.restaurant.restaurant_id,
         "restaurant_name": dish_info.menu_dishes[0].menu.restaurant.restaurant_name,
