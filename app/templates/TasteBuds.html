@@ -23,7 +23,7 @@
     <!-- Flash Error for User Not Found login -->
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %}
-    <div class="flash-message {{ category }}">{{ message }}</div>
+    <div class="flash-message {{ category }}" style="margin: 15px auto; text-align: center;">{{ message }}</div>
     <br />
     {% endfor %} {% endif %} {% endwith %}
   
