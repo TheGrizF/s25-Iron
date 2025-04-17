@@ -670,3 +670,54 @@ def get_daily_feed(user_id, offset=0, limit=100):
 
     return result
 
+def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="match_score"):
+    dish_recommendations = get_dish_recommendations(user_id)
+    dish_scores = {d[0]: d[2] for d in dish_recommendations}
+    saved_dish_ids = {saved.dish_id for saved in savedDishes.query.filter_by(user_id=user_id).all()}
+
+    all_dishes = []
+    for d in dish_recommendations:
+        info = get_dish_info(d[0])
+        if info:
+            info["is_saved"] = d[0] in saved_dish_ids
+            all_dishes.append(info)
+
+    # filter
+    if filter_by != 'all':
+        if filter_by == "four_stars":
+            all_dishes = [d for d in all_dishes if 4.0 <= d["average_rating"] <= 5.0]
+        elif filter_by == "three_stars":
+            all_dishes = [d for d in all_dishes if 3.0 <= d["average_rating"] < 4.0]
+        elif filter_by == "two_stars":
+            all_dishes = [d for d in all_dishes if 2.0 <= d["average_rating"] < 3.0]
+        elif filter_by == "one_star":
+            all_dishes = [d for d in all_dishes if 1.0 <= d["average_rating"] < 2.0]
+        elif filter_by == "saved":
+            all_dishes = [d for d in all_dishes if d["dish_id"] in saved_dish_ids]
+
+    # search
+    exclude_words = {'the', 'a', 'and'}
+    searched_keywords = [word for word in search.lower().split() if word not in exclude_words]
+    if searched_keywords:
+        all_dishes = [
+            d for d in all_dishes if any(
+                keyword in d['dish_name'].lower() or
+                keyword in d['restaurant_name'].lower() or
+                keyword in d['description'].lower()
+                for keyword in searched_keywords
+            )
+        ]
+
+    return sort_dishes(all_dishes, sort_by)
+
+def sort_dishes(filtered_dishes, sort_by="match_score"):
+    if sort_by == "match_score":
+        return sorted(filtered_dishes, key=lambda d: d["match_score"], reverse=True)
+    elif sort_by == "name":
+        return sorted(filtered_dishes, key=lambda d: d["dish_name"].lower())
+    elif sort_by == "price":
+        return sorted(filtered_dishes, key=lambda d: float(d["price"]))
+    elif sort_by == "restaurant_name":
+        return sorted(filtered_dishes, key=lambda d: d["restaurant_name"])
+    else:
+        return filtered_dishes

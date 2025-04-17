@@ -1,0 +1,19 @@
+<div class="dish-card">
+    <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-image-container">
+        <img src="{{ url_for('static', filename=dish.image) }}" alt="{{ dish.dish_name }}">
+    </a>
+    <div class="dish-info">
+        <h2>{{ dish.dish_name }}</h2>
+        <span class="match">{{ dish.match_score }}% match</span>
+        <p class="details">{{ dish.description }}</p>
+        <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="see-details">See Details</a>
+        <p class="price"> $ <span> {{ dish.price }}</span></p>
+    </div>
+    <div class="dish-save" onclick="toggleSave(this, '{{ dish.dish_id }}')">
+        {% if dish.is_saved %}
+            <i class="fas fa-bookmark saved"></i>
+        {% else %}
+            <i class="far fa-bookmark not-saved"></i>
+        {% endif %}
+    </div>
+</div>

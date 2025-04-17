@@ -1,0 +1,1887 @@
+[
+  {
+    "dish_id": 37,
+    "dish_name": "Pad See Eaw",
+    "image": "images/dishes/tida_thai/pad_see_eaw.jpg",
+    "match_score": 95.0,
+    "average_rating": 5.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Stir-fried flat noodle, brocoli, carrot and egg with chef's special sauce (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",
+    "price": "15.95",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 42,
+    "dish_name": "Palak Paneer",
+    "image": "images/dishes/punjabi/palak_paneer.png",
+    "match_score": 95.0,
+    "average_rating": 5.0,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "Spinach, onion gravy cooked with homemade paneer",
+    "price": "17.99",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [
+      "vegetarian"
+    ],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 21,
+    "dish_name": "Tuna Ringo",
+    "image": "images/dishes/koshi/tuna_ringo.jpg",
+    "match_score": 94.4,
+    "average_rating": 5.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Tuna, scallion, avocado, fuji apple, crab wrapped with daikon with apple puree and goat cheese",
+    "price": "15.95",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 23,
+    "dish_name": "April Roll",
+    "image": "images/dishes/koshi/april_roll.jpg",
+    "match_score": 94.4,
+    "average_rating": 5.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Avocado and cucumber roll topped with salmon, diced mango with mango sauce.",
+    "price": "14.95",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 26,
+    "dish_name": "Foxy Roll",
+    "image": "images/dishes/koshi/foxy_roll.jpg",
+    "match_score": 94.4,
+    "average_rating": 5.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Crab salad and avocado roll topped with tuna, salmon, jalapeno, sriracha, and apple puree.",
+    "price": "18.95",
+    "allergens": [
+      "fish",
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 27,
+    "dish_name": "Adam's Apple Roll",
+    "image": "images/dishes/koshi/adams_apple_roll.jpg",
+    "match_score": 94.4,
+    "average_rating": 5.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Salmon tartar and apple topped with salmon, avocado and spicy mayo.",
+    "price": "15.95",
+    "allergens": [
+      "fish",
+      "egg"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 32,
+    "dish_name": "Pad Thai",
+    "image": "images/dishes/tida_thai/pad_thai.jpg",
+    "match_score": 90.4,
+    "average_rating": 5.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Stir fried thin rice noodle with bean sprout, scallion, peanut, and egg (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",
+    "price": "15.95",
+    "allergens": [
+      "peanut"
+    ],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 24,
+    "dish_name": "Scallop Ninja Roll",
+    "image": "images/dishes/koshi/scallop_ninja_roll.jpg",
+    "match_score": 89.8,
+    "average_rating": 5.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Spicy tuna and shrimp tempura topped with torched scallop, shrimp, butter and eel sauce.",
+    "price": "19.95",
+    "allergens": [
+      "fish",
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 34,
+    "dish_name": "Matsaman Curry (spicy)",
+    "image": "images/dishes/tida_thai/matsaman_curry.jpg",
+    "match_score": 88.1,
+    "average_rating": 5.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Matsaman curry in coconut milk, potatoes, onion, pineapple and rosted peanut (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",
+    "price": "15.95",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 20,
+    "dish_name": "Sashimi Deluxe",
+    "image": "images/dishes/koshi/sashimi_deluxe.jpg",
+    "match_score": 87.5,
+    "average_rating": 5.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Chef choice of 15 pcs assorted sashimi.",
+    "price": "36.95",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 22,
+    "dish_name": "Aburi Zushi",
+    "image": "images/dishes/koshi/aburi_zushi.jpg",
+    "match_score": 87.5,
+    "average_rating": 5.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Seared salmon nigiri with scallions, pickled ginger and eel sauce.",
+    "price": "15.95",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 79,
+    "dish_name": "Enchiladas",
+    "image": "images/dishes/los_cuates/enchiladas.jpg",
+    "match_score": 87.0,
+    "average_rating": 4.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Three chicken or beef enchiladas in green or red sauce",
+    "price": "14.69",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 47,
+    "dish_name": "Sabji Jalfrezi",
+    "image": "images/dishes/punjabi/sabji_jalfrezi.png",
+    "match_score": 86.6,
+    "average_rating": 4.5,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "Seasonal vegetables cooked in tomato, ginger and garlic sauce infused with peppercorns.",
+    "price": "14.99",
+    "allergens": [],
+    "restrictions": [
+      "vegitarian"
+    ],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 51,
+    "dish_name": "Rasta Pasta",
+    "image": "images/dishes/pjays/rasta_pasta1.jpg",
+    "match_score": 86.6,
+    "average_rating": 4.5,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Savor the rhythm of the Caribbean with our Rasta Pasta. Al dente pasta meets creamy jerk sauce, harmonized with vibrant bell peppers, and red onions. For an additional charge, you can add your choice of grilled jerk-spiced chicken, shrimp or pulled oxtail or a combination of chicken and shrimp. It's a flavorful celebration on your plate, Jamaican style.",
+    "price": "14.99",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 6,
+    "dish_name": "Riverside Salmon",
+    "image": "images/dishes/freemason/riverside_salmon.jpg",
+    "match_score": 85.8,
+    "average_rating": 5.0,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Grilled and brushed with an Asian barbecue glaze, served over rice pilaf and vegetable medley",
+    "price": "25.00",
+    "allergens": [
+      "fish",
+      "soy"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 7,
+    "dish_name": "Broiled Seafood Platter",
+    "image": "images/dishes/freemason/broiled_seafood_platter.jpg",
+    "match_score": 85.8,
+    "average_rating": 5.0,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Shrimp, scallops, and flounder seasoned and broiled, served with rice pilaf and asparagus",
+    "price": "33.00",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [
+      "glutenfree"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 43,
+    "dish_name": "Tandoori Chicken",
+    "image": "images/dishes/punjabi/tandoori_chicken.png",
+    "match_score": 85.8,
+    "average_rating": 5.0,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "Roasted chicken marinated in yogurt and generously spiced",
+    "price": "18.99",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 13,
+    "dish_name": "Beef Noodle Soup",
+    "image": "images/dishes/highside/beef_soup.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 2,
+    "restaurant_name": "High Side",
+    "restaurant_address": "4009 Fairfax Rd, Norfolk VA 23510, United States",
+    "description": "Wheat noodles, braised beef with Sichuan spices, bok choy and pickled mustard green.",
+    "price": "15.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 38,
+    "dish_name": "Chicken Tikka Masala",
+    "image": "images/dishes/punjabi/chicken_tikka_masala.png",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "Marinated chicken (milk cream with flavored spices) cooked in tomato and onion sauce with fenugreek, cilantro and cardamom",
+    "price": "20.99",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 40,
+    "dish_name": "Punjabi Platter",
+    "image": "images/dishes/punjabi/punjabi_platter.png",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "A combination of samosa, pakora (vegetable and paneer)",
+    "price": "10.99",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 1,
+    "dish_name": "She Crab Soup",
+    "image": "images/dishes/freemason/she_crab_soup.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Seasoned blend of lump crab meat and cream with sherry",
+    "price": "10.00",
+    "allergens": [
+      "shellfish",
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 19,
+    "dish_name": "Tuna or Salmon carpaccio",
+    "image": "images/dishes/koshi/tuna_or_salmon_carpaccio.jpg",
+    "match_score": 83.5,
+    "average_rating": 3.7,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Tuna or salmon with pepper, sesame oil, fuji apple, scallions served with ponzu sauce",
+    "price": "16.95",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 36,
+    "dish_name": "Thai Fried Rice",
+    "image": "images/dishes/tida_thai/thai_fried_rice.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Traditional Thai fried rice with onion, scallion, tomatoes, green peas, carrot and egg (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",
+    "price": "15.95",
+    "allergens": [
+      "egg"
+    ],
+    "restrictions": [
+      "vegitarian"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 53,
+    "dish_name": "PJK Chicken Sandwich",
+    "image": "images/dishes/pjays/pkj_chicken_sandwich.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Deep fried chicken breast, tomato, lettuce ,Ranch and Mumbo sauce in between a toasted brioche bun.",
+    "price": "12.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 8,
+    "dish_name": "French Onion Soup",
+    "image": "images/dishes/freemason/french_onion_soup.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Topped with a crostini and swiss cheese",
+    "price": "7.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 17,
+    "dish_name": "Braised Pork Belly over Rice",
+    "image": "images/dishes/highside/porkbelly_rice.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 2,
+    "restaurant_name": "High Side",
+    "restaurant_address": "4009 Fairfax Rd, Norfolk VA 23510, United States",
+    "description": "Served over rice with a braised egg and pickled radish.",
+    "price": "11.00",
+    "allergens": [
+      "soy",
+      "egg"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 69,
+    "dish_name": "Osso Bucco",
+    "image": "images/dishes/luce/osso_bucco.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Prok shank slow braised in Barolo wine, served over roasted garlic and white truffle potatoes",
+    "price": "32.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 12,
+    "dish_name": "Malaysian Chicken Satay",
+    "image": "images/dishes/highside/chicken_satay.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 2,
+    "restaurant_name": "High Side",
+    "restaurant_address": "4009 Fairfax Rd, Norfolk VA 23510, United States",
+    "description": "Grilled chicken skewers served with peanut sauce and cucumbers",
+    "price": "12.00",
+    "allergens": [
+      "peanuts",
+      "sesame"
+    ],
+    "restrictions": [
+      "glutenfree"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 15,
+    "dish_name": "Spicy Dan Dan Noodles with Tofu",
+    "image": "images/dishes/highside/spicy_noodles.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 2,
+    "restaurant_name": "High Side",
+    "restaurant_address": "4009 Fairfax Rd, Norfolk VA 23510, United States",
+    "description": "Mala chili oil, seasame & peanut sauce, fried shallot, scallion and cilantro with fried tofu.",
+    "price": "11.00",
+    "allergens": [
+      "egg",
+      "peanut",
+      "soy",
+      "sesame"
+    ],
+    "restrictions": [
+      "vegitarian"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 29,
+    "dish_name": "Red Curry (spicy)",
+    "image": "images/dishes/tida_thai/red_curry.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Traditional style red curry in coconut milk, bamboo shoot, green peas, bellpepper, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",
+    "price": "15.95",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 30,
+    "dish_name": "Roasted Duck Kapaw (spicy)",
+    "image": "images/dishes/tida_thai/roasted_duck_kapaw.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Half roasted duck topped with mince chicken, chili garlic sauce & fresh basil leaves",
+    "price": "27.95",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 3,
+    "dish_name": "Seafood Fantasia",
+    "image": "images/dishes/freemason/seafood_fantasia.jpg",
+    "match_score": 83.5,
+    "average_rating": 5.0,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Shrimp and sea scallops saut\u00e9ed with peppers, onions and Parmesan tossed with linguini in a white wine Old Bay cream sauce",
+    "price": "24.00",
+    "allergens": [
+      "shellfish",
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 45,
+    "dish_name": "Shrimp Chicken Zafrani",
+    "image": "images/dishes/punjabi/shrimp_chicken_zafrani.png",
+    "match_score": 82.6,
+    "average_rating": 3.2,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "Jumbo shrimp And chicken breast in a saffron-ginger marinade",
+    "price": "20.99",
+    "allergens": [
+      "shellfish",
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 44,
+    "dish_name": "Mutton Boti Kebab",
+    "image": "images/dishes/punjabi/mutton_boti_kebab.png",
+    "match_score": 82.5,
+    "average_rating": 4.7,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "a delicious North Indian / Mughlai dish where succulent and tender lamb pieces are marinated and grilled to perfection",
+    "price": "22.99",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 78,
+    "dish_name": "Tacos al Pastor",
+    "image": "images/dishes/los_cuates/tacos_al_pastor.jpg",
+    "match_score": 82.4,
+    "average_rating": 4.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Seasoned Pork",
+    "price": "4.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 81,
+    "dish_name": "Chifrijo Bowl",
+    "image": "images/dishes/stockpot/chifrijo_bowl.jpg",
+    "match_score": 82.4,
+    "average_rating": 4.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Crispy pork carnitas, local vibrant greens, marinated black beans, pico de gallo, cotija, mango, avocado, baked corn tortilla chips, chimichuri dressing \u2022 Add-Ons: Poached Egg, Make it a wrap",
+    "price": "16.75",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 82,
+    "dish_name": "BuiBowl",
+    "image": "images/dishes/stockpot/bui_bowl.jpg",
+    "match_score": 82.4,
+    "average_rating": 4.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Sauteed cauliflower florets, red pepper, chickpeas, kale, golden beets, heirloom tomatoes, black eyed pea hummus, pickled onios. \u2022 Add-Ons: Falafel, Feta, Hormone Free Chicken Breast, Organic Fresh Caught Salmon*.",
+    "price": "13.25",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 68,
+    "dish_name": "Paccheri",
+    "image": "images/dishes/luce/paccheri.jpg",
+    "match_score": 82.0,
+    "average_rating": 4.5,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Paccheri pasta with Baccala and caramalized shallots. Simply delicious!",
+    "price": "27.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 18,
+    "dish_name": "Flaming Salmon Belly",
+    "image": "images/dishes/koshi/flaming_salmon_belly.jpg",
+    "match_score": 81.5,
+    "average_rating": 3.0,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Salmon belly nigiri, avocado, scallion flambed with vodka.",
+    "price": "10.95",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 39,
+    "dish_name": "Butter Chicken",
+    "image": "images/dishes/punjabi/butter_chicken.png",
+    "match_score": 81.3,
+    "average_rating": 3.5,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "Type of curry made from chicken with a spiced tomato and butter(makhan) sauce",
+    "price": "19.99",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 83,
+    "dish_name": "Anne's Chicken Noodle",
+    "image": "images/dishes/stockpot/annes_chicken_noodle.jpg",
+    "match_score": 81.3,
+    "average_rating": 5.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Tamari ginger chicken broth, shredded hormone-free chicken breast, soba noodles, pickled onions, green onion, kimchi, cilantro",
+    "price": "6.70",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 14,
+    "dish_name": "Garlic Noodles with Shrimps",
+    "image": "images/dishes/highside/garlic_noodles.jpg",
+    "match_score": 81.3,
+    "average_rating": 5.0,
+    "restaurant_id": 2,
+    "restaurant_name": "High Side",
+    "restaurant_address": "4009 Fairfax Rd, Norfolk VA 23510, United States",
+    "description": "Egg noodles with garlic butter, parmesan cheese, scallion and grilled jumbo shrimps.",
+    "price": "16.00",
+    "allergens": [
+      "egg",
+      "shellfish",
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 16,
+    "dish_name": "Crispy Pork Belly",
+    "image": "images/dishes/highside/crispy_pork.jpg",
+    "match_score": 81.3,
+    "average_rating": 5.0,
+    "restaurant_id": 2,
+    "restaurant_name": "High Side",
+    "restaurant_address": "4009 Fairfax Rd, Norfolk VA 23510, United States",
+    "description": "Deep fried pork belly served with pickled daikon & carrot and chili-garlic lime sauce",
+    "price": "12.00",
+    "allergens": [],
+    "restrictions": [
+      "glutenfree"
+    ],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 25,
+    "dish_name": "Summer Breeze",
+    "image": "images/dishes/azars/azars_lentil_soup.png",
+    "match_score": 80.8,
+    "average_rating": 3.5,
+    "restaurant_id": 3,
+    "restaurant_name": "Koshi",
+    "restaurant_address": "201 W 21st St #9, Norfolk VA 23517, United States",
+    "description": "Tuna, salmon, rock fish, crab stick, avocado, cucumber, masago, scallion with sweet vinegar wrapped in daikon.",
+    "price": "14.95",
+    "allergens": [
+      "fish",
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 59,
+    "dish_name": "Chicken Parmesean",
+    "image": "images/dishes/luce/chicken_parmesean.jpg",
+    "match_score": 80.3,
+    "average_rating": 4.7,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Pounded chicken, breaded and baked with fresh mozzarella and marinara.  Served over pasta",
+    "price": "20.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 54,
+    "dish_name": "Chicken Tenders Basket",
+    "image": "images/dishes/pjays/chicken_tenders_basket.jpg",
+    "match_score": 80.3,
+    "average_rating": 4.7,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Satisfy your cravings with our Chicken Tender Basket. Enjoy golden-brown, crispy chicken tenders, perfectly seasoned and fried to perfection. Served with two sides and two hushpuppies, this basket delivers a delightful combination of crunchy exterior and tender, flavorful chicken.",
+    "price": "13.99",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 52,
+    "dish_name": "Pulled Oxtail Taco",
+    "image": "images/dishes/pjays/pulled_oxtail_taco.jpg",
+    "match_score": 80.1,
+    "average_rating": 4.0,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Overnight braised pulled oxtail with balsamic onion jam and crispy onions is a tantalizing culinary creation that combines rich, savory flavors and diverse textures.",
+    "price": "7.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 77,
+    "dish_name": "Mojara",
+    "image": "images/dishes/los_cuates/Mojarra.jpg",
+    "match_score": 80.1,
+    "average_rating": 4.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "A fried queen tilapia fish served in a green cactus, shrimp, crab legs, crawfish, sauteed chicken and beef, and mexican sausage",
+    "price": "40.94",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 2,
+    "dish_name": "Roast Prime Rib Au Jus",
+    "image": "images/dishes/freemason/roast_prime_rib_aus_jus.jpg",
+    "match_score": 79.5,
+    "average_rating": 3.7,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Top Quality Certified Angus Prime Rib of Beef slow roasted and served with au jus, smashed potatoes and vegetable medley",
+    "price": "30.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 46,
+    "dish_name": "Makhani Butter Paneer",
+    "image": "images/dishes/punjabi/makhani_butter_paneer.png",
+    "match_score": 78.8,
+    "average_rating": 2.7,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "a mild, delicate, aromatic curry infused with saffron, cardamom and fennel, in a sauce with added tamarind, cream, and fresh coriander",
+    "price": "18.99",
+    "allergens": [
+      "shellfish",
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 70,
+    "dish_name": "Menudo",
+    "image": "images/dishes/los_cuates/menudo.jpg",
+    "match_score": 78.3,
+    "average_rating": 3.4,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Beef stomach in broth with red chili pepper base",
+    "price": "16.79",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 5,
+    "dish_name": "Vegetable Penne",
+    "image": "images/dishes/freemason/vegetable_penne.jpg",
+    "match_score": 78.3,
+    "average_rating": 4.0,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Peppers, onions, broccoli, mushrooms and spinach saut\u00e9ed and tossed in a smoked Gouda cream sauce with penne",
+    "price": "14.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": true
+  },
+  {
+    "dish_id": 60,
+    "dish_name": "Jumbo prawn, halibut, and scallop",
+    "image": "images/dishes/luce/jumbo_prawn.jpg",
+    "match_score": 78.3,
+    "average_rating": 4.0,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Jumbo prawn, hailbut and scallop simmered in white wine sage butter, broccolini, and oregano bread crumb",
+    "price": "30.00",
+    "allergens": [
+      "dairy",
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 48,
+    "dish_name": "Shrimp Po Boy",
+    "image": "images/dishes/pjays/shrimp_po_boy.jpg",
+    "match_score": 77.8,
+    "average_rating": 4.0,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Indulge in a seafood delight with our Shrimp Po' Boy. Plump fried shrimp nestled in a crusty French baguette served with spring mix, tomatoes and our house made Chesapeake Cocktail sauce.",
+    "price": "12.99",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 55,
+    "dish_name": "Shrimp or Fish & Grits",
+    "image": "images/dishes/pjays/fish_and_grits.jpg",
+    "match_score": 77.8,
+    "average_rating": 4.0,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Savor the South with our Fish & Grits or Shrimp & Grits. Choose between golden-fried fish or succulent fried shrimp, perfectly paired with creamy grits and draped in our zesty turkey sausage Cajun cream sauce. Each bite delivers a harmonious blend of flavors, bringing you a taste of true Southern comfort.",
+    "price": "20.99",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 57,
+    "dish_name": "Battered Oyster Taco",
+    "image": "images/dishes/pjays/battered_oyster_taco.jpg",
+    "match_score": 77.8,
+    "average_rating": 4.0,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Experience the sea's finest with our Battered Oyster Taco. Crispy oysters, tender and flavorful, are nestled in a warm tortilla with zesty slaw and tangy aioli, creating a perfect harmony of textures and flavors. Dive into coastal bliss with this seafood sensation.",
+    "price": "6.00",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 66,
+    "dish_name": "Ox Tail Ragu",
+    "image": "images/dishes/luce/ox_tail_ragu.jpg",
+    "match_score": 77.8,
+    "average_rating": 4.0,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Simmered for hours, pairs well with wine",
+    "price": "28.00",
+    "allergens": [],
+    "restrictions": [
+      "glutenfree"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 80,
+    "dish_name": "OG Fried Rice",
+    "image": "images/dishes/stockpot/og_fried_rice.jpg",
+    "match_score": 77.8,
+    "average_rating": 4.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Crispy basmati brown rice, carrot, red cabbage, red onion, kale, hormone-free chicken breast, tamari-ginger sauce, over easy eggs*, house kimchi, green onion. Add-ons: extra kimchi, avocado scoop, sub tofu crumble",
+    "price": "14.65",
+    "allergens": [
+      "soy",
+      "egg"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 95,
+    "dish_name": "My Big Fat Greek Burger",
+    "image": "images/dishes/azars/my_big_fat_greek_burger.png",
+    "match_score": 77.8,
+    "average_rating": 4.0,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "Loaded with Mediterranean flavor! This seasoned ground beef patty is covered with our feta and mozzarella blend, banana peppers, kalamata olives, lettuce, tomato and tzatziki (Laban\u00e9) sauce on a ciabatta bun",
+    "price": "14.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 96,
+    "dish_name": "Mousaaka Platter",
+    "image": "images/dishes/azars/mousaaka.png",
+    "match_score": 77.8,
+    "average_rating": 4.0,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "Seasoned grilled eggplant, layered lasagna style, with lean ground beef and tomato sauce. Finished with b\u00e9chamel and a mozzarella and feta cheese blend. Baked to perfection and served with your choice of basmati rice or linguini pasta.",
+    "price": "18.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 56,
+    "dish_name": "Fried Oysters Basket",
+    "image": "images/dishes/pjays/fried_oyster_basket.jpg",
+    "match_score": 77.3,
+    "average_rating": 3.7,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Experience homestyle comfort with our Breaded Fried Oyster Basket. Indulge in plump oysters, coated in a classic homestyle breading and fried to a perfect golden brown. Served with two sides, this basket combines the crispy satisfaction of the breading with the succulent tenderness of the oysters.",
+    "price": "21.99",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 33,
+    "dish_name": "Drunken Noodles (spicy) / Pad Kee Mao",
+    "image": "images/dishes/tida_thai/drunken_noodles.jpg",
+    "match_score": 77.3,
+    "average_rating": 3.7,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Stir-fried flat noodle, onion, scallion, tomatoes, chili, garlic, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +3, seafood +3)",
+    "price": "15.95",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 11,
+    "dish_name": "Three Cup Chicken Wings",
+    "image": "images/dishes/highside/three_cup_wings.jpg",
+    "match_score": 76.7,
+    "average_rating": 5.0,
+    "restaurant_id": 2,
+    "restaurant_name": "High Side",
+    "restaurant_address": "4009 Fairfax Rd, Norfolk VA 23510, United States",
+    "description": "Soy sauce, rice wine, and seasame oil.  Garnished with Thai basil and Thai chili pepper.",
+    "price": "14.00",
+    "allergens": [
+      "soy",
+      "sesame"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 31,
+    "dish_name": "Whole Red Snapper",
+    "image": "images/dishes/tida_thai/whole_red_snapper.jpg",
+    "match_score": 76.7,
+    "average_rating": 5.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Choice of: chili garlic sauce (spicy) fresh basil, garlic, bell pepper \u2026 OR black bean sauce mushroom, ginger, celery, carrot, onion, and scallion",
+    "price": "35.95",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 41,
+    "dish_name": "Vegetable Biryani",
+    "image": "images/dishes/punjabi/vegetable_biryani.png",
+    "match_score": 76.7,
+    "average_rating": 5.0,
+    "restaurant_id": 5,
+    "restaurant_name": "Punjabi Rasoi Indian Cuisine",
+    "restaurant_address": "4200 Monarch Way, Norfolk VA 23508, United States",
+    "description": "Mix vegetables cooked with steamed basmati rice and flavored with yougurt, saffron, cardamom and spices served with yogurt garnished with cucumber and spices.",
+    "price": "16.99",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 28,
+    "dish_name": "Tida Thai Sampler",
+    "image": "images/dishes/tida_thai/tida_thai_sampler.jpg",
+    "match_score": 76.3,
+    "average_rating": 2.6,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "With 2 shrimp bikini, 2 crab rangoon, 3 dumplings, 4 calamari, 2 spring rolls, 4 fried tofu served with an assortment of sauce",
+    "price": "17.95",
+    "allergens": [
+      "shellfish",
+      "soy",
+      "peanut"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 50,
+    "dish_name": "Fried Catfish Basket",
+    "image": "images/dishes/pjays/fried_catfish_basket.jpg",
+    "match_score": 76.2,
+    "average_rating": 3.3,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Indulge in the Southern comfort of our Fried Catfish Basket. Savor the golden perfection of tender catfish fillets, delicately coated and fried to crispy perfection. Accompanied by a generous serving of crispy fries, this basket is a delightful symphony of textures and flavors. Immerse yourself in the savory crunch of the catfish paired with the comforting warmth of the fries, creating a satisfying and classic culinary experience that will transport you to the heart of Southern hospitality.",
+    "price": "16.99",
+    "allergens": [
+      "fish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 4,
+    "dish_name": "Grilled Filet Mignon",
+    "image": "images/dishes/freemason/grilled_filet_mignon.jpg",
+    "match_score": 76.0,
+    "average_rating": 3.2,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "8 oz. beef tenderloin served with smashed potatoes and grilled asparagus, accompanied by a rosemary demi-glace",
+    "price": "30.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [
+      "glutenfree"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 64,
+    "dish_name": "Spaghetti alle Vongole",
+    "image": "images/dishes/luce/spaghetti_alle_vongole.jpg",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Whole baby clams, oregano, garlic, lemon, olive oil, grated Pecorino Romano.",
+    "price": "27.00",
+    "allergens": [
+      "dairy",
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 91,
+    "dish_name": "Originial Gyro",
+    "image": "images/dishes/azars/originial_gyro.png",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "Served with hummus, and a side of our delicious basmati rice.",
+    "price": "8.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 92,
+    "dish_name": "Chicken Kebab Platter",
+    "image": "images/dishes/azars/chicken_kebab.png",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "Chicken tender pieces marinated with a blend Garlic herb spice and a touch of sea salt. Grilled to perfection.",
+    "price": "14.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 98,
+    "dish_name": "Mediterranean Pizza",
+    "image": "images/dishes/azars/mediterranean_pizza.png",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "Strips of grilled chicken breast, tomatoes, pitted sliced Kalamata olives and sliced banana peppers on our 11'' Zaatar crust topped with a mozzarella and feta blend and olive oil.",
+    "price": "17.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 71,
+    "dish_name": "Caldo de Res",
+    "image": "images/dishes/los_cuates/caldo_de_res.jpg",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Oxtail beef soup",
+    "price": "24.14",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 72,
+    "dish_name": "Caldo 7 Mares",
+    "image": "images/dishes/los_cuates/caldo_7_mares.jpg",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "seven seafood soup",
+    "price": "30.44",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 97,
+    "dish_name": "Lamb Shank Platter",
+    "image": "images/dishes/azars/lamb_shank.png",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "A braised bone-in lamb shank topped with our own flavorful curry vegetable sauce and served with our hearty bulgur wheat pilaf. **May substitute Bulgur pilaf for basmati rice as a Gluten Free option",
+    "price": "22.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 49,
+    "dish_name": "Wing station",
+    "image": "images/dishes/pjays/wing_station.jpg",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 6,
+    "restaurant_name": "PJay's Kitchen",
+    "restaurant_address": "323 Granby St, Norfolk VA 23510, United States",
+    "description": "Experience our lightly breaded chicken wings, perfectly seasoned and fried to a delightful crunch. Available in 6-piece or 12-piece servings, these wings are perfect for any occasion. Choose from a variety of mouthwatering sauces: Sweet Red Chili, Buffalo, PJK Dry Rub, Garlic Parmesan, Garlic Buffalo, Hot Buffalo, Lemon Pepper or our signature Mumbo Sauce. **1 flavor per 6 wings**",
+    "price": "10.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 86,
+    "dish_name": "Spicy Miso Ramen",
+    "image": "images/dishes/stockpot/spicy_miso_ramen.jpg",
+    "match_score": 75.5,
+    "average_rating": 4.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Spicy miso tare, chicken & pork broth, pork belly, crispy pork, bok choy, shiitake, chili oil.",
+    "price": "18.75",
+    "allergens": [
+      "soy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 10,
+    "dish_name": "Fried Green Tomatoes",
+    "image": "images/dishes/freemason/fried_green_tomatoes.jpg",
+    "match_score": 75.2,
+    "average_rating": 3.0,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Beer battered and fried, topped with a goat cheese crumble and balsamic drizzle",
+    "price": "11.00",
+    "allergens": [
+      "dairy",
+      "fish"
+    ],
+    "restrictions": [
+      "vegitarian"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 58,
+    "dish_name": "Rib Eye",
+    "image": "images/dishes/luce/rib_eye.jpg",
+    "match_score": 74.5,
+    "average_rating": 3.5,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Melts directly in your face hole on contact!",
+    "price": "34.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 65,
+    "dish_name": "Pumpkin Gnocchi",
+    "image": "images/dishes/luce/pumpkin_gnocchi.jpg",
+    "match_score": 74.1,
+    "average_rating": 2.0,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Rendered bacon, heirloom cherry tomatoes, sundried, girlled zucchini, smoked Gouda creama, pumpkin gnocchi",
+    "price": "29.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 61,
+    "dish_name": "Spaghetti Carbonara",
+    "image": "images/dishes/luce/carbonara.jpg",
+    "match_score": 74.0,
+    "average_rating": 3.3,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Spaghetti tossed with bacon and onions in rich cream sauce",
+    "price": "18.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 85,
+    "dish_name": "Classic Shoyu Ramen",
+    "image": "images/dishes/stockpot/shoyu_ramen.jpg",
+    "match_score": 73.2,
+    "average_rating": 4.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Shoyu tare, chicken & pork broth, pork belly, crispy pork, radish, nappa cabbage.",
+    "price": "18.75",
+    "allergens": [
+      "soy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 87,
+    "dish_name": "Veggie Ramen",
+    "image": "images/dishes/stockpot/veggie_ramen.jpg",
+    "match_score": 73.2,
+    "average_rating": 4.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Mushroom broth, grilled tofu, pickled carrot/daikon, shiitakes, nappa cabbage, radish, charred kale, black garlic oil | Ask for vegan option.",
+    "price": "18.75",
+    "allergens": [
+      "soy"
+    ],
+    "restrictions": [
+      "vegetarian"
+    ],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 74,
+    "dish_name": "Shrimp Ceviche",
+    "image": "images/dishes/los_cuates/ceviche.jpg",
+    "match_score": 72.3,
+    "average_rating": 2.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Shrimp lightly cooked with lime juice, tomatoes, onions, cucumber, cilantro, and avocado slices served with a side of tostadas",
+    "price": "16.43",
+    "allergens": [
+      "shellfish"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 93,
+    "dish_name": "Azar's Lentil Soup",
+    "image": "images/dishes/azars/azars_lentil_soup.png",
+    "match_score": 71.8,
+    "average_rating": 3.5,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "An old fashioned recipe made with wholesome green lentils and fresh vegetables.",
+    "price": "7.00",
+    "allergens": [],
+    "restrictions": [
+      "glutenfree",
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 62,
+    "dish_name": "Rib Eye Gnocchi",
+    "image": "images/dishes/luce/rib_eye_gnocchi.jpg",
+    "match_score": 71.0,
+    "average_rating": 2.3,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "24 hour brined prime prok rib eye, cremini and procini crema, herb toasted gnochhi, 10 year aged balsamic, white truffle spritz",
+    "price": "40.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 73,
+    "dish_name": "Taco salad",
+    "image": "images/dishes/los_cuates/taco_salad.jpg",
+    "match_score": 71.0,
+    "average_rating": 2.5,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Beans, meat, lettuce, tomatoes, sour cream, white crumbling cheese",
+    "price": "12.60",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 94,
+    "dish_name": "Greek Entree Salad",
+    "image": "images/dishes/azars/greek_entree_salad.png",
+    "match_score": 69.8,
+    "average_rating": 2.8,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "vegetables, hummus, and a side of our delicious basmati rice.",
+    "price": "14.00",
+    "allergens": [],
+    "restrictions": [
+      "vegitarian"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 76,
+    "dish_name": "Quesadilla",
+    "image": "images/dishes/los_cuates/quesadilla.jpg",
+    "match_score": 69.8,
+    "average_rating": 5.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Queso or veggie.  Add pollo,carne, or camaron for extra.",
+    "price": "14.89",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [
+      "vegetarian"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 35,
+    "dish_name": "Green Curry (spicy)",
+    "image": "images/dishes/tida_thai/green_curry.jpg",
+    "match_score": 69.5,
+    "average_rating": 2.0,
+    "restaurant_id": 4,
+    "restaurant_name": "Tida Thai",
+    "restaurant_address": "441 Granby St, Norfolk VA 23510, United State",
+    "description": "Traditional style green curry in coconut milk, bamboo shoot, green peas, bell pepper, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",
+    "price": "15.95",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 63,
+    "dish_name": "Braciola di Carne",
+    "image": "images/dishes/luce/braciola_di_carne.jpg",
+    "match_score": 69.5,
+    "average_rating": 2.8,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Rolled beef tenderloin with prociutto, fontina and bread crumbs, topped off with cremini mushrooms, sundrid tomatoes...",
+    "price": "39.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 84,
+    "dish_name": "Avo Toast",
+    "image": "images/dishes/stockpot/avo_toast.jpg",
+    "match_score": 68.8,
+    "average_rating": 2.5,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "Two scoops of smashed avocado, local vibrant greens, pickled peppers, tomato, lime juice, sea salt, and house bread. Add-ons: poached egg*, bacon, side of kale appleslaw, puttanesca pasta salad",
+    "price": "13.50",
+    "allergens": [],
+    "restrictions": [
+      "vegan"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 99,
+    "dish_name": "Beef Shawarma Wrap",
+    "image": "images/dishes/azars/beef_shwarma.png",
+    "match_score": 68.7,
+    "average_rating": 4.0,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "Tender portions of grilled beef served with hummus, tomatoes, tahini, pickles, sumac and parsley.",
+    "price": "9.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 67,
+    "dish_name": "Veal Tenderloin",
+    "image": "images/dishes/luce/veal_tenderloin.jpg",
+    "match_score": 66.5,
+    "average_rating": 2.5,
+    "restaurant_id": 7,
+    "restaurant_name": "Luce",
+    "restaurant_address": "245 Granby St, Norfolk VA 23510, United States",
+    "description": "Cast iron seared veal tenderloin with braised cremini mushrooms, roasted romensco and Veal demi.",
+    "price": "32.00",
+    "allergens": [],
+    "restrictions": [],
+    "available": false,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 90,
+    "dish_name": "Veggie Kebab Platter",
+    "image": "images/dishes/azars/veggie_kebab.png",
+    "match_score": 64.9,
+    "average_rating": 2.8,
+    "restaurant_id": 10,
+    "restaurant_name": "Azar's Mediterranean Grill",
+    "restaurant_address": "1624 Laskin Rd #727, Virginia Beach VA 23451, United States",
+    "description": "Two skewers of Seasonal Vegetables seasoned with a blend of spices and a touch of sea salt. Grilled to perfection.",
+    "price": "13.00",
+    "allergens": [],
+    "restrictions": [
+      "vegitarian"
+    ],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 89,
+    "dish_name": "The Southender",
+    "image": "images/dishes/stockpot/the_southender.jpg",
+    "match_score": 63.8,
+    "average_rating": 3.0,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "House pork sausage, pimento cheese, over easy egg*, rosemary biscuit, side of seasonal fruit, substitute: house turkey sausage",
+    "price": "13.35",
+    "allergens": [
+      "egg"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 88,
+    "dish_name": "Chicken Salad Toast",
+    "image": "images/dishes/stockpot/chicken_salad_toast.jpg",
+    "match_score": 62.8,
+    "average_rating": 2.7,
+    "restaurant_id": 9,
+    "restaurant_name": "The Stockpot",
+    "restaurant_address": "215 E Plume St #100, Norfolk VA 23510, United States",
+    "description": "wo herbed chicken salad scoops with Greek yogurt, aioli, celery, green onions, sunflower seeds, raisins, dijon, local vibrant greens, and house bread. Substitute: croissant $2.50 | Add-ons: avocado scoop, side of broccoli slaw",
+    "price": "11.15",
+    "allergens": [],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 9,
+    "dish_name": "Chicken Abbey Garden salad",
+    "image": "images/dishes/freemason/chicken_abbey_garden_salad.jpg",
+    "match_score": 61.8,
+    "average_rating": 2.3,
+    "restaurant_id": 1,
+    "restaurant_name": "Freemason Abbey Restaurant",
+    "restaurant_address": "209 W Freemason St, Norfolk VA 23510, United States",
+    "description": "Grilled Chicken, romaine lettuce, garden vegetables, Cheddar cheese and homemade croutons",
+    "price": "13.00",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  },
+  {
+    "dish_id": 75,
+    "dish_name": "Nachos",
+    "image": "images/dishes/los_cuates/nachos.jpg",
+    "match_score": 61.1,
+    "average_rating": 3.0,
+    "restaurant_id": 8,
+    "restaurant_name": "Los Cuates Taqueria",
+    "restaurant_address": "412 Newtown Rd B, Virginia Beach VA 23462, United States",
+    "description": "Nachos topped with refried beans, yellow cheese, pico de gallo, sour cream, and crumbled white cheese with a choice of steak or grilled chicken",
+    "price": "15.63",
+    "allergens": [
+      "dairy"
+    ],
+    "restrictions": [],
+    "available": true,
+    "reviews": [],
+    "is_saved": false
+  }
+]
