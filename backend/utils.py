@@ -612,6 +612,19 @@ def get_follow_notifications(user_id, limit=None):
     return notifications
 
 def get_daily_feed(user_id, offset=0, limit=100):
+    """
+    This function recreates the entire list everytime it is called which is BAD.
+    then the offset is used to get the next set of items to show the user.
+    ideally the list would be created once then the ones shown to the user
+    would be popped off like a stack or queue in C++
+    Sadly, I am time constrained and it isn't that important to the innovativeness of the project
+    Get the daily feed for a user, combining friend reviews, recommended dishes,
+    saved dishes, live updates, and follow notifications.
+    :param user_id: ID of the user
+    :param offset: Offset for pagination
+    :param limit: Limit for pagination
+    :return: List of feed items
+    """
 
     # CHANGE THE LIMIT VALUES TO MESS WITH THE FEED SIZE AND FEEL 
     # Can also change review limit in get_friend_reviews
