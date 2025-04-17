@@ -197,6 +197,7 @@ def get_dish_recommendations(user_id):
         # Vegan dishes are Vegetarian, Vegetarian are kosher and halal
         if "vegan" in dish_dietary_list:
             dish_dietary_list.add("vegetarian")
+            dish_dietary_list.add("dairyfree")
         if "vegetarian" in dish_dietary_list:
             dish_dietary_list.add("kosher") 
             dish_dietary_list.add("halal")
