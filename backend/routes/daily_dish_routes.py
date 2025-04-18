@@ -93,6 +93,17 @@ def overlappingRestaurants():
     user_id = session.get('user_id')
     selectedFriends = session.get('selectedBuddies',[])
     groupIDs = [item['userId'] for item in selectedFriends]
+    
+    # Clear previous group data
+    clearSessionInfo = [
+        'selectedBuddies', 'restaurant_list', 'highMatchingRestaurants',
+        'mediumMatchingRestaurants', 'lowMatchingRestaurants', 'activeGroup',
+        'activeGroupInfo', 'weightedScores'
+        ]
+    for key in clearSessionInfo:
+        if key in session:
+            session.pop(key)
+   
     activeGroup = groupIDs + [user_id]
     activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
 
