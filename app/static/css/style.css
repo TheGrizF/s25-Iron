@@ -280,3 +280,9 @@ button:hover {
     display: inline-block;
     border-radius: 4px;  /* More rectangular shape */
 } 
+
+/* Get rid of that link line! */
+.user-review-link {
+    text-decoration: none;
+    color: inherit;
+}

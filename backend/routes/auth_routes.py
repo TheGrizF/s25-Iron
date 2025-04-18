@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from backend.utils import normalize_email
 from database import db
 from database.models.taste_profiles import tasteProfile
@@ -80,7 +80,7 @@ def searchUser():
         flash("Enter a name or email to find your buddy")
         return redirect(url_for('daily_dish.TasteBuds'))
 
-    search = userName.split()
+    search = userName.lower().split()
 
     # Default values
     first_name, last_name = None, None
@@ -91,23 +91,38 @@ def searchUser():
         last_name = search[1]
 
     # Check for email - Case insensitive
-    if "@" in userName:
-        normalize_userName = normalize_email(userName)
-        found_user = user.query.filter(func.lower(user.email) == userName.lower()).first()
+    if "@" in userName:        
+        normalized_email = normalize_email(userName)
+        found_user = user.query.filter(func.lower(user.email) == normalized_email).first()
+        if found_user:
+            if found_user.user_id == current_user_id:
+                return redirect(url_for('profile.view_profile'))
+            return redirect(url_for('profile.viewUserSearchResults', user_id=found_user.user_id))
     else:
         # Case insensitive search by first and last name
-        matches = user.query.filter(func.lower(user.first_name) == first_name.lower())
+        matches = user.query.filter(
+            or_(
+                func.lower(user.first_name) == first_name,
+                func.lower(user.last_name) == first_name
+            ),
+            user.user_id != current_user_id
+        )
+        
         if last_name:
             matches = matches.filter(func.lower(user.last_name) == last_name.lower())
-        found_user = matches.first()
-
-    if found_user:
-        if found_user.user_id == current_user_id:
-            return redirect(url_for('profile.view_profile'))
-        else:
+        
+        all_matches = matches.all()
+        
+        if len(all_matches) == 1:
+            found_user = all_matches[0]
+            if found_user.user_id == current_user_id:
+                return redirect(url_for('profile.view_profile'))
             return redirect(url_for('profile.viewUserSearchResults', user_id=found_user.user_id))
-
-    flash("No user found")
+        
+        elif len(all_matches) > 1:
+            return render_template('userSearchResult.html', matches=all_matches, search_term=userName)
+        
+    flash("No user found", "error")
     return redirect(url_for('daily_dish.TasteBuds'))
  
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])

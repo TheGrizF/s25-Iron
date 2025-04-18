@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
+from sqlalchemy import desc
 from backend.utils import get_dish_recommendations
 from database.models.dish import dish, menu, menuDishJunction
 from database.models.restaurant import restaurant, operatingHours, liveUpdate
@@ -593,11 +594,31 @@ def view_user(user_id):
     
     comparison_num = comparison.comparison_num if comparison else 12  # 50% fallback
 
+    # Get info for spider-graph
+    user_tp = tasteProfile.query.filter_by(user_id=current_user_id).first()
+    other_tp = tasteProfile.query.filter_by(user_id=user_id).first()
+
+    def graph_points(profile):
+        return {
+            "sweet": profile.sweet,
+            "sour": profile.sour,
+            "spicy": profile.spicy,
+            "bitter": profile.bitter,
+            "umami": profile.umami,
+            "savory": profile.savory
+        } if profile else {}
+
+    # Most Recent Review
+    recent_review = review.query.filter_by(user_id=user_id).order_by(desc(review.created_at)).first()
+
     return render_template(
         'user.html',
         viewed_user=viewed_user,
         is_buddy=is_buddy,
-        comparison_num=comparison_num
+        comparison_num=comparison_num,
+        current_points=json.dumps(graph_points(user_tp)),
+        other_points=json.dumps(graph_points(other_tp)),
+        recent_review=recent_review
     )
 
 @profile_bp.route('/add-buddy/<int:buddy_id>', methods=['POST'])
