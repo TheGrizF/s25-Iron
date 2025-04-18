@@ -54,7 +54,7 @@
 
 
     <div class="navigation-buttons">
-        <a href="{{ url_for('daily_dish.navigate_restaurant', index=(restaurants|length - 1 if index == 0 else index - 1)) }}" class="nav-button back-button">
+        <a href="{{ url_for('daily_dish.navigate_restaurant', index=(restaurants|length - 1 if index == 0 else index - 1)) }}">
             <button type="button">
                 <i class="fa-solid fa-chevron-left" style="color:white;"></i> 
             </button>
@@ -73,7 +73,7 @@
         <span style="color: {{ color }};">
             Confidence: {{ confidence }}
         </span>
-        <a href="{{ url_for('daily_dish.navigate_restaurant', index=0 if index == (restaurants|length - 1) else index + 1) }}" class="nav-button forward-button">
+        <a href="{{ url_for('daily_dish.navigate_restaurant', index=0 if index == (restaurants|length - 1) else index + 1) }}">
             <button type="button">
                 <i class="fa-solid fa-chevron-right" style="color:white;"></i> 
             </button>

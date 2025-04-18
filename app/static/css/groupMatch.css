@@ -75,9 +75,11 @@
     top: 0;
     height: 100%;
     width: 25px; 
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='100%25' viewBox='0 0 25 100' preserveAspectRatio='none'%3E%3Cpolygon points='25,0 25,100 0,50' fill='%23DFA908'/%3E%3C/svg%3E");
+    background-color: #DFA908;
+    clip-path: polygon(100% 0%, 100% 100%, 0% 50%);
     background-size: cover;
     transform: translateX(-100%);
+    left: 0.5px; /*I see an odd very slight gap, so moving it right a bit*/
   }
 
 
