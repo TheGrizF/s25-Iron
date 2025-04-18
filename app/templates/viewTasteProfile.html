@@ -2,12 +2,120 @@
 
 {% block title %}Taste Profile{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/taste_profile.css') }}">
+<style>
+    .edit-link {
+        color: var(--burgundy-main);
+        text-decoration: none;
+        margin-left: 10px;
+        font-size: 0.9em;
+    }
+    
+    .edit-link:hover {
+        color: var(--burgundy-light);
+    }
+
+    .preference-section {
+        background: var(--white);
+        margin: 25px 0;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        text-align: left;
+    }
+
+    .preference-section h3 {
+        color: var(--slate-dark);
+        margin-bottom: 15px;
+        font-family: 'Comfortaa', cursive;
+        font-size: 1.8em;
+    }
+
+    .preference-value {
+        color: var(--slate-dark);
+        font-size: 1.1em;
+    }
+
+    .slider-container {
+        margin: 25px 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .slider-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .taste-name {
+        color: var(--slate-dark);
+        font-size: 1.4em;
+        font-weight: 500;
+    }
+
+    .slider-value {
+        background: var(--burgundy-main);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        min-width: 35px;
+        text-align: center;
+        margin-left: 15px;
+    }
+
+    .slider-track {
+        width: 100%;
+        position: relative;
+    }
+
+    input[type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 4px;
+        background: var(--gray-light);
+        border-radius: 2px;
+        outline: none;
+        margin: 0;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        background: var(--burgundy-main);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+        background: var(--burgundy-light);
+        transform: scale(1.1);
+    }
+
+    .flavor-preferences {
+        padding: 40px;
+    }
+
+    .flavor-preferences h3 {
+        margin-bottom: 40px;
+        color: var(--slate-dark);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="taste-profile-container" style="text-align: center; padding: 40px;">
+<div class="taste-profile-container">
     <h1>{{ user.first_name }}'s Taste Profile</h1>
 
     {% if next_step %}
-        <div class="button-container">
+        <div class="button-group centered">
             <a href="/taste-profile/step{{ next_step }}">
                 <button class="submit-btn">Continue Setting Up</button>
             </a>
@@ -17,49 +125,68 @@
     {% endif %}
 
     <form id="updateTasteForm">
-    <h3>Allergies</h3>
-    <p>
-        {{ allergies | map('capitalize') | join(', ') if allergies else "None" }}
-        <a href="#" id="edit-allergies">[Edit]</a>
-    </p>
-    <div id="allergy-edit" style="display:none;">
-        <div class="checkbox-grid">
-            {% for option in ['dairy', 'eggs', 'fish', 'shellfish', 'treenuts', 'peanuts', 'wheat', 'soy'] %}
-                <label class="checkbox-label">
-                    <input type="checkbox" name="allergens" value="{{ option }}" {% if option in allergies %}checked{% endif %}>
-                    {{ option.capitalize() }}
-                </label>
+        <div class="preference-section">
+            <h3>Allergies</h3>
+            <p class="preference-value">
+                {{ allergies | map('capitalize') | join(', ') if allergies else "None" }}
+                <a href="#" id="edit-allergies" class="edit-link">[Edit]</a>
+            </p>
+            <div id="allergy-edit" style="display:none;">
+                <div class="checkbox-grid">
+                    {% for option in ['dairy', 'eggs', 'fish', 'shellfish', 'treenuts', 'peanuts', 'wheat', 'soy'] %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="allergens" value="{{ option }}" {% if option in allergies %}checked{% endif %}>
+                            {{ option.capitalize() }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="preference-section">
+            <h3>Dietary Restrictions</h3>
+            <p class="preference-value">
+                {{ restrictions | map('capitalize') | join(', ') if restrictions else "None" }}
+                <a href="#" id="edit-restrictions" class="edit-link">[Edit]</a>
+            </p>
+            <div id="restriction-edit" style="display:none;">
+                <div class="checkbox-grid">
+                    {% for option in ['vegetarian', 'vegan', 'kosher', 'halal', 'glutenfree', 'dairyfree'] %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="restrictions" value="{{ option }}" {% if option in restrictions %}checked{% endif %}>
+                            {{ option.replace('free', '-free').capitalize() }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="preference-section flavor-preferences">
+            <h3>Flavor Preferences</h3>
+            {% for taste in ['sweet', 'sour', 'spicy', 'bitter', 'umami', 'savory'] %}
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span class="taste-name">{{ taste.capitalize() }}</span>
+                        <span class="slider-value" id="{{ taste }}Value">{{ taste_profile[taste] }}</span>
+                    </div>
+                    <div class="slider-track">
+                        <input type="range" 
+                               name="{{ taste }}" 
+                               id="{{ taste }}" 
+                               min="1" 
+                               max="5" 
+                               value="{{ taste_profile[taste] }}"
+                               oninput="document.getElementById('{{ taste }}Value').innerText = this.value">
+                    </div>
+                </div>
             {% endfor %}
         </div>
-    </div>
 
-    <h3>Dietary Restrictions</h3>
-    <p>
-        {{ restrictions | map('capitalize') | join(', ') if restrictions else "None" }}
-        <a href="#" id="edit-restrictions">[Edit]</a>
-    </p>
-    <div id="restriction-edit" style="display:none;">
-        <div class="checkbox-grid">
-            {% for option in ['vegetarian', 'vegan', 'kosher', 'halal', 'glutenfree', 'dairyfree'] %}
-                <label class="checkbox-label">
-                    <input type="checkbox" name="restrictions" value="{{ option }}" {% if option in restrictions %}checked{% endif %}>
-                    {{ option.replace('free', '-free').capitalize() }}
-                </label>
-            {% endfor %}
+        <div class="button-group centered">
+            <button type="submit" class="submit-btn">Save Preferences</button>
         </div>
-    </div>
-
-    <h3>Flavor Preferences</h3>
-    {% for taste in ['sweet', 'sour', 'spicy', 'bitter', 'umami', 'savory'] %}
-        <label for="{{ taste }}">{{ taste.capitalize() }}: <span id="{{ taste }}Value">{{ taste_profile[taste] }}</span></label>
-        <input type="range" name="{{ taste }}" id="{{ taste }}" min="1" max="5" value="{{ taste_profile[taste] }}"
-            oninput="document.getElementById('{{ taste }}Value').innerText = this.value">
-            <br><br>
-        {% endfor %}
-        <button type="submit" class="submit-btn">Save Preferences</button>
-</form>
+    </form>
 </div>
-
 
 <script>
     document.getElementById('edit-allergies').addEventListener('click', function(e) {
@@ -109,7 +236,7 @@
                 }
             });
         }
-    })
+    });
 </script>
 
 {% endblock %}
