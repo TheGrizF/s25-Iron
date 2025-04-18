@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, request, flash, redirect, url_for, jsonify
 from database import db
 from database.models.dish import dish
+from database.models.restaurant import restaurant
 from database.models.user import friends, tasteComparisons, user
 from backend.utils import get_featured_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_daily_feed, get_all_restaurant_info, get_restaurant_info, get_average_dish_price
 import json
@@ -133,7 +134,7 @@ def overlappingRestaurants():
    
     print (highMatchingRestaurants)
     session['highMatchingRestaurants'] = list(highMatchingRestaurants)
-    session['meidumMatchingRestaurants'] = list(mediumMatchingRestaurants)
+    session['mediumMatchingRestaurants'] = list(mediumMatchingRestaurants)
     session['lowMatchingRestaurants'] = list(lowMatchingRestaurants)  
     session['weightedScores'] = weightedScores
     session['activeGroup'] = activeGroupInfo
@@ -148,16 +149,27 @@ def groupMatch(index=0):
     user_id = session.get('user_id')
     
     highMatchingRestaurants = session.get('highMatchingRestaurants',[])
-    mediumMatchingRestaurants = session.get('meidumMatchingRestaurants',[])
+    mediumMatchingRestaurants = session.get('mediumMatchingRestaurants',[])
     lowMatchingRestaurants = session.get('lowMatchingRestaurants',[])
-    weightedScores = session.get('weightedScores')
+    weightedScores = session.get('weightedScores', {})
     activeGroupInfo = session.get('activeGroup')
     print('weightedScores:',weightedScores)
     
     # Sorry Oronde, added this session so it wouldn't recalculate when pagination is used
     if 'restaurant_list' not in session or not session['restaurant_list']:
         restaurants = []
-        for restaurant_id in highMatchingRestaurants + mediumMatchingRestaurants + lowMatchingRestaurants:
+
+        # Sort restaurants in descending order to make this meaningful
+        sorted_ids = sorted(weightedScores, key=lambda rid: weightedScores[rid], reverse=True)
+
+        # Get the top restaurant IDs with scores above 70 or the top 5, whichever is greater
+        top_restaurant_ids = [rid for rid in sorted_ids if weightedScores[rid] >= 70]
+        if len(top_restaurant_ids) < 5:
+            # Add more restaurants to reach at least 5 (if available)
+            additional_ids = [rid for rid in sorted_ids if rid not in top_restaurant_ids][:5-len(top_restaurant_ids)]
+            top_restaurant_ids.extend(additional_ids)
+
+        for restaurant_id in top_restaurant_ids:
             restaurantInfo = get_restaurant_info(user_id, restaurant_id)
             if restaurantInfo:
                 average_price = get_average_dish_price(restaurant_id)
@@ -172,8 +184,9 @@ def groupMatch(index=0):
                     restaurantInfo['confidence'] = 'Low'
                 restaurants.append(restaurantInfo)
        
-        for restaurant in restaurants:
-            print (restaurant['restaurant_id'],restaurant['average_price'],restaurant['confidence']) #debug 
+        for r in restaurants:
+            print (r['restaurant_id'],r['average_price'],r['confidence']) #debug 
+        
         session['restaurant_list'] = restaurants
 
     else:
@@ -324,7 +337,7 @@ def navigate_restaurant(index=0):
                           restaurants=restaurants,
                           index=index,
                           highMatchingRestaurants=session.get('highMatchingRestaurants',[]),
-                          mediumMatchingRestaurants=session.get('meidumMatchingRestaurants',[]),
+                          mediumMatchingRestaurants=session.get('mediumMatchingRestaurants',[]),
                           lowMatchingRestaurants=session.get('lowMatchingRestaurants',[]),
                           weightedScores=session.get('weightedScores'))
 

@@ -17,11 +17,17 @@
     flex-direction:column;
     padding-bottom: 100px; /* modified from 70 to accomodate buttons*/
     background-color: var(--white);
+    /*padding-bottom: 70px;*/
 }
 
 .group-match-container h2 {
     color:black;
     text-align:center;
+}
+
+.above-navigation {
+    padding-top: 0;
+    padding-bottom: 70px;
 }
 
 .title-bar {
@@ -83,7 +89,7 @@
     padding: 0px;
     line-height: 1.2;
     font-weight: normal;
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .restaurant-info h3 {
@@ -112,6 +118,7 @@
     -webkit-box-orient:vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 18px;
 }
 
 .description { /*not sure what this modifies now*/
@@ -206,19 +213,19 @@ br {
     justify-content: center;
     text-decoration: none;
     margin: 0;
-    padding-left: 15px;
+    padding-left: 0px;
 }
 
 
 .contact-details p {
     margin-bottom: 1px;
     margin-top: 1px;
-    font-size: 18px;
+    font-size: 16px;
 }
 .contact-details h3 {
     margin-bottom: 1px;
     margin-top: 1px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .phone {
@@ -274,10 +281,14 @@ br {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    bottom: 100px;
+    bottom: 80px;
     left: 0;
     right: 0;
-    background-color: transparent;
+    background-color: white;
     padding: 10px 20px;
     z-index: 100;
+}
+
+.confidence-level {
+    font-size: 18px;
 }
