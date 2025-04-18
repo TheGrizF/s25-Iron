@@ -683,5 +683,7 @@ def get_average_dish_price(restaurant_id):
         .filter(menu.restaurant_id == restaurant_id)
         .scalar()
     )
+    roundPrice = round(averagePrice,2)
+    roundedPrice = f"{roundPrice:.2f}"
     
-    return round(averagePrice, 2)
+    return roundedPrice
