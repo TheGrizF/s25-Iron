@@ -24,14 +24,14 @@
 
         <div class = "group-details">
             <h3> Why your party would like it: </h3>
-            <!--{% for user in party %}
+            {% for member in restaurants[index].members %}
                 <div class = "user-dish">
-                    - { dish } for { user }
+                    - {{ member.top_dish.dish_name }} ({{ member.match_score }}%)  for {{ member.first_name }} {{ member.last_name }}
                 </div>
-            {% endfor %} FOR ACTUAL IMPLEMENTATION BELOW IS FOR SAMPLING-->
-            <div class = "user-dish">
+            {% endfor %} 
+            <!--div class = "user-dish">
                 - Dish for User (looped)
-            </div>
+            </div-->
         </div>
 
         <div class = "separator"></div>
@@ -61,17 +61,17 @@
         </a>
         {% set confidence = restaurants[index].confidence %}
         {% if 'Low' in confidence %}
-            {% set color = 'red' %}
+            {% set color = '#e57373' %}
         {% elif 'Medium' in confidence %}
-            {% set color = 'purple' %}
+            {% set color = '#f0ad4e' %}
         {% elif 'High' in confidence %}
-            {% set color = 'blue' %}
+            {% set color = '#337ab7' %}
         {% else %}
             {% set color = 'black' %}
         {% endif %}
 
-        <span style="color: {{ color }};">
-            Confidence: {{ confidence }}
+        <span style="color: {{ color }}; text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);">
+            Confidence: <span style= "font-weight: 600;">{{ confidence }}</span>
         </span>
         <a href="{{ url_for('daily_dish.navigate_restaurant', index=0 if index == (restaurants|length - 1) else index + 1) }}">
             <button type="button">
