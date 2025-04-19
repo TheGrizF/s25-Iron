@@ -11,7 +11,8 @@ daily_dish_bp = Blueprint('daily_dish', __name__)
 def daily_dish():
     user_id = session.get('user_id')
     if not user_id:
-        return "Not Logged In", 404
+        flash("Please log in first!", "error")
+        return redirect(url_for("auth.login"))
 
     featured_dishes = get_featured_dishes()
     daily_dish_items = get_daily_feed(user_id, offset=0, limit=10)
@@ -41,6 +42,11 @@ def TasteBuds():
 @daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
 def createGroup():
     user_id = session.get('user_id')
+    if not user_id:        
+        flash("Please log in first!", "error")
+        return redirect(url_for("auth.login"))
+
+
     groupData = request.get_json()
     selectedFriends = groupData.get('selectedBuddies',[])
     
