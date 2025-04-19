@@ -101,6 +101,45 @@ def get_dish_info(dish_id, include_reviews=False):
         
     }
 
+def get_all_dish_info(dish_recommendations, saved_dish_ids):
+    dish_ids = [d[0] for d in dish_recommendations]
+    score_lookup = {d[0]: d[2] for d in dish_recommendations}
+
+    dishes = db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()
+    dishes_by_id = {d.dish_id: d for d in dishes}
+
+    avg_ratings = dict(
+        db.session.query(review.dish_id, func.avg(review.rating))
+        .filter(review.dish_id.in_(dish_ids))
+        .group_by(review.dish_id)
+        .all()
+    )
+
+    result = []
+    for dish_id in dish_ids:
+        d = dishes_by_id.get(dish_id)
+        if not d or not d.menu_dishes:
+            continue
+
+        restaurant = d.menu_dishes[0].menu.restaurant
+
+        result.append({
+            "dish_id": d.dish_id,
+            "dish_name": d.dish_name,
+            "image": d.image_path,
+            "match_score": score_lookup.get(d.dish_id, 0),
+            "average_rating": round(avg_ratings.get(d.dish_id, 0), 1),
+            "restaurant_id": restaurant.restaurant_id,
+            "restaurant_name": restaurant.restaurant_name,
+            "description": d.description,
+            "price": d.price,
+            "available": d.available,
+            "is_saved": d.dish_id in saved_dish_ids,
+        })
+
+    return result
+
+
 # Get Featured dishes from restaurants to display in carosel - sort by rating
 # top 10?
 def get_featured_dishes():
@@ -675,12 +714,7 @@ def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="mat
     dish_scores = {d[0]: d[2] for d in dish_recommendations}
     saved_dish_ids = {saved.dish_id for saved in savedDishes.query.filter_by(user_id=user_id).all()}
 
-    all_dishes = []
-    for d in dish_recommendations:
-        info = get_dish_info(d[0])
-        if info:
-            info["is_saved"] = d[0] in saved_dish_ids
-            all_dishes.append(info)
+    all_dishes = get_all_dish_info(dish_recommendations, saved_dish_ids)
 
     # filter
     if filter_by != 'all':
