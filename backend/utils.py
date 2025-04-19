@@ -671,3 +671,19 @@ def get_daily_feed(user_id, offset=0, limit=100):
 
     return result
 
+def get_average_dish_price(restaurant_id):
+    """
+    Get the average dish price for a restaurant
+    :param restaurant_id: ID of restaurant to get average price for
+    """
+    averagePrice = (
+        db.session.query(func.avg(dish.price))
+        .join(menuDishJunction, dish.dish_id == menuDishJunction.dish_id)
+        .join(menu, menu.menu_id == menuDishJunction.menu_id)
+        .filter(menu.restaurant_id == restaurant_id)
+        .scalar()
+    )
+    roundPrice = round(averagePrice,2)
+    roundedPrice = f"{roundPrice:.2f}"
+    
+    return roundedPrice

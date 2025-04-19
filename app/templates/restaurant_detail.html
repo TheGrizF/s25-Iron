@@ -27,7 +27,7 @@
         <h2>{{ restaurant.restaurant_name }}</h2>
 
         <!-- hidden live update form (moved above hours) -->
-        <div id="live-update-form" class="update-form" style="display: none;">
+        <div id="live-update-form" class="update-form" style="display: none; paddint-top:13px;">
             <form action="{{ url_for('restaurant.post_update', restaurant_id=restaurant.restaurant_id) }}" method="POST">
                 <textarea name="update_content" maxlength="140" placeholder="What's happening? (max 140 characters)" required></textarea>
                 <div class="form-actions">
@@ -55,7 +55,7 @@
     </script>
 
 <section class="recommendations">
-    <h2>Recommended for You:</h2>
+    <h2 style="margin-top:0px;">Recommended for You:</h2>
     <div class="dishes-grid">
         {% for dish in restaurant.dishes[:2] %}
         <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">
@@ -72,13 +72,28 @@
     </div>
 </section>
 
+
+
+<section class="about">
+    <div class="section-header" >
+        <h2 style="margin-top:0px;">About restaurant</h2>
+        <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
+            <button class="show-detail" style="flex-wrap:nowrap;">Full Menu</button>
+        </a>
+    </div>
+    <p class="description" style="margin-top:0px;">
+        {{ restaurant.description }}
+    </p>
+
+</section>
+
 <section class="live-updates">
-    <h2>Latest Updates</h2>
-    <div class="updates-scroll-box">
+    <h2 style="margin-top:0px;">Latest Updates</h2>
+    <div class="updates-scroll-box" >
         {% if updates %}
             {% for update in updates %}
-                <div class="update-card">
-                    <div class="update-user">
+                <div class="update-card" style="margin-top:0px;">
+                    <div class="update-user" style="margin-top:0px">
                         <img src="{{ url_for('static', filename=update.icon) }}" alt="User Icon" class="user-icon">
                         <span class="user-name">{{ update.user_name }}</span>
                     </div>
@@ -92,26 +107,18 @@
     </div>
 </section>
 
-<section class="about">
-    <div class="section-header">
-        <h2>About the restaurant</h2>
-        <a href="{{ url_for('restaurant.view_menu', restaurant_id=restaurant.restaurant_id) }}">
-            <button class="show-detail">Full Menu</button>
-        </a>
-    </div>
-    <p class="description">
-        {{ restaurant.description }}
-    </p>
+<section class ="about">
     <section class="contact">
         <div class="separator"></div>
         <div class="contact-details">
             <div class="contact-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <p>
+                <p class="address">{{ restaurant.location }} </p>
+                <!--p>
                     {% for line in restaurant.location.split(",") %}
                         {{ line.strip() }}<br>
                     {% endfor %}
-                </p>
+                </p Not into this being bulky-->
             </div>
             <div class="separator"></div>
             <div class="contact-item">

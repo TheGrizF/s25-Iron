@@ -159,6 +159,7 @@ body {
 .description { /*not sure what this modifies now*/
     color:  #858585;
     margin: 5px 0;
+    font-size: 14px;
 }
 
 .tags {
