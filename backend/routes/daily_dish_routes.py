@@ -169,7 +169,7 @@ def groupMatch(index=0):
     activeGroupInfo = session.get('activeGroup')
     print('weightedScores:',weightedScores)
     
-    # Sorry Oronde, added this session so it wouldn't recalculate when pagination is used
+    # Added this session so it wouldn't recalculate when pagination is used
     if 'restaurant_list' not in session or not session['restaurant_list']:
         restaurants = []
 
@@ -208,7 +208,6 @@ def groupMatch(index=0):
                         user_dishes[rest_id] = (dish_id, tastebuddy_id, dish_score)
             
             top_dishes_by_member[member.user_id] = user_dishes
-
         
         
         for restaurant_id in top_restaurant_ids:

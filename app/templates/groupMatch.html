@@ -7,55 +7,67 @@
 {% endblock %}
 
 {% block content %}
-<div class="group-match-container">
-    <div class ="above-navigation">
-        <div class="header-images">
-            <img src="{{ url_for('static', filename= restaurants[index].image_path) }}" alt = " {{ restaurants[index].restaurant_name }} ">
-        </div>
-        <div class = "title-bar">
-            <div class="restaurant-title">{{ restaurants[index].restaurant_name }}</div>
-            <div class="team-title">Active Group</div>
-        </div>
-        <div class = "match-cost">
-            <div class="match">{{ restaurants[index].weightedScores }} % Match</div>
-            <div class="cost" style="text-align: right;">~ $ {{ restaurants[index].average_price }} per Entree</div>
-        </div>
-        <div class ="separator"></div>
-
-        <div class = "group-details">
-            <h3> Why your party would like it: </h3>
-            {% for member in restaurants[index].members %}
-                <div class = "user-dish">
-                    - {{ member.top_dish.dish_name }} ({{ member.match_score }}%)  for {{ member.first_name }} {{ member.last_name }}
-                </div>
-            {% endfor %} 
-            <!--div class = "user-dish">
-                - Dish for User (looped)
-            </div-->
-        </div>
-
-        <div class = "separator"></div>
-
-        <div class = "restaurant-details">
-            <div class = "contact-details">
-                <h3> {{ restaurants[index].restaurant_name }}</h3>
-                <p>{{ restaurants[index].location }}</p>
+    <div class="group-match-container">
+        <div class ="above-navigation">
+            <div class="header-images">
+                <img src="{{ url_for('static', filename= restaurants[index].image_path) }}" alt = " {{ restaurants[index].restaurant_name }} ">
             </div>
+            <div class = "title-bar">
+                <div class="restaurant-title">{{ restaurants[index].restaurant_name }}</div>
+                <div class="team-title">Active Group</div>
+            </div>
+            <div class = "match-cost">
+                <div class="match">{{ restaurants[index].weightedScores }} % Match</div>
+                <div class="cost" style="text-align: right;">~ $ {{ restaurants[index].average_price }} per Entree</div>
+            </div>
+            <div class ="separator"></div>
 
-            <div class = "vertical-separator"></div>
-            <a href="tel:+1{{ restaurants[index].phone_number }}" style="text-decoration:none; color: inherit;">
-                <div class = "phone">
-                    <i class="fa-solid fa-phone"></i></div>
-            </a>
+            <div class = "group-details">
+                <h3> Why your party would like it: </h3>
+                {% for member in restaurants[index].members %}
+                    <div class = "user-dish" style ="display: flex; align-items: center; gap: 7px; margin: 5px; justify-content:space-between;">
+                        <div class ="user" style ="display: flex; flex:1; align-items: center; gap: 7px; margin: 5px;">
+                            <img src="{{ url_for('static', filename=member.icon_path) }}"
+                                style="width: 40px; height: 40px;"></img>
+                            {{ member.first_name }} 
+                            {{ member.last_name }}
+                        </div>
+                        <div class = "dish" style ="display: flex; align-items: center; gap: 7px; margin: 5px; justify-content: flex-end;" >
+                            <span style="font-weight:bold; text-align: right;">
+                                {{ member.top_dish.dish_name }} 
+                            </span>
+                            <!--({{ member.match_score }}%)  -->
+                            <a href="{{ url_for('dish.dish_detail', dish_id=member.top_dish.dish_id) }}">
+                            <img src= "{{url_for('static', filename=member.top_dish.image_path) }}" style="display: flex; width: 70px; height:70px; margin-right:15; border-radius:5px; flex-shrink:0; object-fit: cover;"></img>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %} 
+            </div>
+            <!--If you're seeing this, something is wrong-->
+
+            <div class = "separator"></div>
+
+            <div class = "restaurant-details">
+                <div class = "contact-details">
+                    <h3> {{ restaurants[index].restaurant_name }}</h3>
+                    <p>{{ restaurants[index].location }}</p>
+                </div>
+
+                <div class = "vertical-separator"></div>
+                <a href="tel:+1{{ restaurants[index].phone_number }}" style="text-decoration:none; color: inherit;">
+                    <div class = "phone">
+                        <i class="fa-solid fa-phone"></i></div>
+                </a>
+            </div>
         </div>
-    </div>
 
 
 
 
     <div class="navigation-buttons">
         <a href="{{ url_for('daily_dish.navigate_restaurant', index=(restaurants|length - 1 if index == 0 else index - 1)) }}">
-            <button type="button">
+            <button type="button" style="height:50px">
                 <i class="fa-solid fa-chevron-left" style="color:white;"></i> 
             </button>
         </a>
@@ -74,7 +86,7 @@
             Confidence: <span style= "font-weight: 600;">{{ confidence }}</span>
         </span>
         <a href="{{ url_for('daily_dish.navigate_restaurant', index=0 if index == (restaurants|length - 1) else index + 1) }}">
-            <button type="button">
+            <button type="button" style="height:50px">
                 <i class="fa-solid fa-chevron-right" style="color:white;"></i> 
             </button>
         </a>
