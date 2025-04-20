@@ -161,6 +161,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     width: 45%;
+    max-width: 100px;
 }
 
 #final-thoughts {

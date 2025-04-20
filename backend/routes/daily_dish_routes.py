@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, session, request, flash, redirect, url_for, jsonify
 from database import db
-from database.models.dish import dish
+from database.models.dish import dish, menuDishJunction, menu 
+from database.models.restaurant import restaurant
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_daily_feed
+from backend.utils import get_featured_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_daily_feed, get_all_restaurant_info, get_restaurant_info, get_average_dish_price
 import json
 
 daily_dish_bp = Blueprint('daily_dish', __name__)
@@ -42,23 +43,23 @@ def TasteBuds():
 @daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
 def createGroup():
     user_id = session.get('user_id')
-    if not user_id:        
-        flash("Please log in first!", "error")
-        return redirect(url_for("auth.login"))
+    try:
+     groupData = request.get_json('userId')
+     session['selectedBuddies'] = groupData.get('selectedBuddies',[])
+     return jsonify({'status': 'success'})
+    except Exception as e: 
+         print("Error:",str(e))
+   
+    return redirect (url_for('daily_dish.overlappingRestaurants'))
 
 
-    groupData = request.get_json()
-    selectedFriends = groupData.get('selectedBuddies',[])
-    
-    #debug to see if user_ids coming through
-    print('Received selected buddies:', selectedFriends)
-    
-    # Add list containning current user to list of selected
-    activeGroup = [user_id] + selectedFriends
-    
-    #Fetch information on users in active group
-    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
-    
+
+@daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
+def overlappingDishes():
+    user_id = session.get('user_id')
+    selectedFriends = session.get('selectedBuddies',[])
+    groupIDs = [item['userId'] for item in selectedFriends]
+    activeGroup = groupIDs + [user_id]
     #Fetch information on members recommendations
     recommendations = []
     for member in activeGroupInfo:
@@ -85,11 +86,196 @@ def createGroup():
     overlapping_recommendations = [rec for rec in recommendations if rec[0] in matchingDishes]
     print('overlap:',overlapping_recommendations) #debug for overlaps
     
-    return redirect(url_for('daily_dish.groupMatch', activeGroup = activeGroupInfo, recommendations = recommendations))
+    return redirect(url_for('daily_dish.groupMatch', index=0))
+
+@daily_dish_bp.route('/overlappingRestaurants', methods = ['POST','GET'])
+def overlappingRestaurants():
+  
+    user_id = session.get('user_id')
+    selectedFriends = session.get('selectedBuddies',[])
+    groupIDs = [item['userId'] for item in selectedFriends]
+    
+    # Clear previous group data
+    clearSessionInfo = [
+        'selectedBuddies', 'restaurant_list', 'highMatchingRestaurants',
+        'mediumMatchingRestaurants', 'lowMatchingRestaurants', 'activeGroup',
+        'activeGroupInfo', 'weightedScores'
+        ]
+    for key in clearSessionInfo:
+        if key in session:
+            session.pop(key)
+   
+    activeGroup = groupIDs + [user_id]
+    activeGroupInfo = user.query.filter(user.user_id.in_(activeGroup)).all()
+
+    restaurantRecommendations = []
+    for member in activeGroupInfo:
+        recommendationsList = get_all_restaurant_info(member.user_id)
+        restaurantRecommendations.extend([
+         (rec.get('restaurant_id'),rec.get('restaurant_name'),rec.get('match_percentage')) 
+        for rec in recommendationsList ])
+    print(restaurantRecommendations) 
+
+    # Track seen restaurants and weighted scores
+    seenRestaurants = {}
+    weightedScores = {}
+
+   # Get each users match percentages per restaurant (stored in seenRestaurants)
+    for recommendations in restaurantRecommendations:
+        restaurant_id, restaurant_name, matchPercentage = recommendations
+        if restaurant_id not in seenRestaurants:
+            seenRestaurants[restaurant_id] = []
+        seenRestaurants[restaurant_id].append(matchPercentage)
+    
+    # Calculate weighted match percentages (iterating through items in seenRestaurants)
+    for restaurant_id, percentages in seenRestaurants.items():
+        # Apply weights to extreme values
+        weightedMatchPercentage = sum(
+           matchPercentage * 1.2 if matchPercentage > 90 else matchPercentage * 0.8 if matchPercentage < 50 else matchPercentage
+          for matchPercentage in percentages
+        ) #lowest number seen 62.6 highest 88.4
+        weightedAvg = weightedMatchPercentage / len(percentages)
+        weightedScores[restaurant_id] = round(weightedAvg,2) 
+    print('weightedScores:',weightedScores) #debug 
+
+
+    # Categorize restaurants based on weighted scores (numbers may need adjustment)
+    highMatchingRestaurants = {rid for rid, matchPercentage in weightedScores.items() if matchPercentage > 80}
+    mediumMatchingRestaurants = {rid for rid, matchPercentage in weightedScores.items() if 65<= matchPercentage <= 80}
+    lowMatchingRestaurants = {rid for rid, matchPercentage in weightedScores.items() if matchPercentage < 65}
+   
+
+
+
+    print (highMatchingRestaurants)
+    session['highMatchingRestaurants'] = list(highMatchingRestaurants)
+    session['mediumMatchingRestaurants'] = list(mediumMatchingRestaurants)
+    session['lowMatchingRestaurants'] = list(lowMatchingRestaurants)  
+    session['weightedScores'] = weightedScores
+    session['activeGroup'] = activeGroupInfo
+
+    return redirect(url_for('daily_dish.groupMatch', index=0))
+
+
 
 @daily_dish_bp.route('/groupMatch')
-def groupMatch():
-   return render_template('groupMatch.html')
+@daily_dish_bp.route('/groupMatch/<int:index>')
+def groupMatch(index=0):
+    user_id = session.get('user_id')
+    
+    highMatchingRestaurants = session.get('highMatchingRestaurants',[])
+    mediumMatchingRestaurants = session.get('mediumMatchingRestaurants',[])
+    lowMatchingRestaurants = session.get('lowMatchingRestaurants',[])
+    weightedScores = session.get('weightedScores', {})
+    activeGroupInfo = session.get('activeGroup')
+    print('weightedScores:',weightedScores)
+    
+    # Added this session so it wouldn't recalculate when pagination is used
+    if 'restaurant_list' not in session or not session['restaurant_list']:
+        restaurants = []
+
+        # Sort restaurants in descending order to make this meaningful
+        sorted_ids = sorted(weightedScores, key=lambda rid: weightedScores[rid], reverse=True)
+
+        # Get the top restaurant IDs with scores above 70 or the top 5, whichever is greater
+        top_restaurant_ids = [rid for rid in sorted_ids if weightedScores[rid] >= 70]
+        if len(top_restaurant_ids) < 5:
+            # Add more restaurants to reach at least 5 (if available)
+            additional_ids = [rid for rid in sorted_ids if rid not in top_restaurant_ids][:5-len(top_restaurant_ids)]
+            top_restaurant_ids.extend(additional_ids)
+
+        # Load dishes from top restaurants beforehand
+        dish_restaurant_pairs = (
+            db.session.query(menuDishJunction.dish_id, menu.restaurant_id)
+            .join(menu, menuDishJunction.menu_id == menu.menu_id)
+            .filter(menu.restaurant_id.in_(top_restaurant_ids))
+            .all()
+        )
+
+        # Map dishes to restaurants
+        dish_to_restaurant = {dish_id: restaurant_id for dish_id, restaurant_id in dish_restaurant_pairs}
+
+        # Assign top dishes per group member
+        top_dishes_by_member = {}
+        for member in activeGroupInfo:
+            user_dishes = {}
+            dish_recommendations = get_dish_recommendations(member.user_id)
+            
+            # Find each member's top dish per restaurant
+            for dish_id, tastebuddy_id, dish_score in dish_recommendations:
+                rest_id = dish_to_restaurant.get(dish_id)
+                if rest_id in top_restaurant_ids:
+                    if (rest_id not in user_dishes) or (dish_score > user_dishes[rest_id][2]):
+                        user_dishes[rest_id] = (dish_id, tastebuddy_id, dish_score)
+            
+            top_dishes_by_member[member.user_id] = user_dishes
+        
+        
+        for restaurant_id in top_restaurant_ids:
+            restaurantInfo = get_restaurant_info(user_id, restaurant_id)
+            if restaurantInfo:
+                average_price = get_average_dish_price(restaurant_id)
+                restaurantInfo['weightedScores'] = weightedScores[restaurant_id]
+                restaurantInfo['average_price'] = average_price
+                restaurantInfo['restaurant_name'] = restaurantInfo.get('restaurant_name')
+                if restaurant_id in highMatchingRestaurants:
+                    restaurantInfo['confidence'] = 'High'
+                elif restaurant_id in mediumMatchingRestaurants:
+                    restaurantInfo['confidence'] = 'Medium'
+                else:
+                    restaurantInfo['confidence'] = 'Low'
+                # Add member data to restaurant
+                restaurantInfo['members'] = []
+                
+                # Get dish details for each member's top pick at this restaurant
+                dish_details = {}
+                for member in activeGroupInfo:
+                    member_dishes = top_dishes_by_member.get(member.user_id, {})
+                    if restaurant_id in member_dishes:
+                        dish_id, tastebuddy_id, dish_score = member_dishes[restaurant_id]
+                        
+                        # Lazily fetch dish info as needed
+                        if dish_id not in dish_details:
+                            dish_obj = dish.query.get(dish_id)
+                            if dish_obj:
+                                dish_details[dish_id] = {
+                                    'dish_id': dish_id,
+                                    'dish_name': dish_obj.dish_name,
+                                    'price': dish_obj.price,
+                                    'image_path': dish_obj.image_path
+                                }
+                        
+                        if dish_id in dish_details:
+                            restaurantInfo['members'].append({
+                                'user_id': member.user_id,
+                                'first_name': member.first_name,
+                                'last_name': member.last_name,
+                                'icon_path': member.icon_path,
+                                'top_dish': dish_details[dish_id],
+                                'match_score': dish_score
+                            })
+                
+
+                restaurants.append(restaurantInfo)
+       
+        for r in restaurants:
+            print (r['restaurant_id'],r['average_price'],r['confidence']) #debug 
+        
+        session['restaurant_list'] = restaurants
+
+    else:
+        restaurants =session['restaurant_list'] # For future navigational purposes
+
+    activeGroup = [ 
+        {
+        "user_id": member.user_id,
+        "first_name": member.first_name,
+        "last_name": member.last_name,
+        "icon_path": member.icon_path,
+        } for member in activeGroupInfo
+        ]
+    print('Info:',activeGroup)
+    return render_template('groupMatch.html',restaurants = restaurants,highMatchingRestaurants = highMatchingRestaurants,mediumMatchingRestaurants=mediumMatchingRestaurants,lowMatchingRestaurants= lowMatchingRestaurants,weightedScores=weightedScores, index=index, activeGroup=activeGroup)
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
@@ -208,4 +394,24 @@ def load_more_feed():
         "count": len(new_feed_items),
         "has_more": len(new_feed_items) == 10
     })
+
+@daily_dish_bp.route('/groupMatch/navigate/<int:index>')
+def navigate_restaurant(index=0):
+    restaurants = session.get('restaurant_list', [])
+    
+    # Ensure index is within bounds
+    if not restaurants:
+        index = 0
+    elif index < 0:
+        index = len(restaurants) - 1  # Loop to the end
+    elif index >= len(restaurants):
+        index = 0  # Loop back to beginning
+        
+    return render_template('groupMatch.html',
+                          restaurants=restaurants,
+                          index=index,
+                          highMatchingRestaurants=session.get('highMatchingRestaurants',[]),
+                          mediumMatchingRestaurants=session.get('mediumMatchingRestaurants',[]),
+                          lowMatchingRestaurants=session.get('lowMatchingRestaurants',[]),
+                          weightedScores=session.get('weightedScores'))
 
