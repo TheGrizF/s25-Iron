@@ -236,6 +236,7 @@ def get_dish_recommendations(user_id):
         # Vegan dishes are Vegetarian, Vegetarian are kosher and halal
         if "vegan" in dish_dietary_list:
             dish_dietary_list.add("vegetarian")
+            dish_dietary_list.add("dairyfree")
         if "vegetarian" in dish_dietary_list:
             dish_dietary_list.add("kosher") 
             dish_dietary_list.add("halal")
@@ -709,6 +710,22 @@ def get_daily_feed(user_id, offset=0, limit=100):
 
     return result
 
+def get_average_dish_price(restaurant_id):
+    """
+    Get the average dish price for a restaurant
+    :param restaurant_id: ID of restaurant to get average price for
+    """
+    averagePrice = (
+        db.session.query(func.avg(dish.price))
+        .join(menuDishJunction, dish.dish_id == menuDishJunction.dish_id)
+        .join(menu, menu.menu_id == menuDishJunction.menu_id)
+        .filter(menu.restaurant_id == restaurant_id)
+        .scalar()
+    )
+    roundPrice = round(averagePrice,2)
+    roundedPrice = f"{roundPrice:.2f}"
+    
+    return roundedPrice
 def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="match_score"):
     dish_recommendations = get_dish_recommendations(user_id)
     dish_scores = {d[0]: d[2] for d in dish_recommendations}
