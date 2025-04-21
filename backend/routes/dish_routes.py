@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, session, request, jsonify, url_for
+from flask import Blueprint, redirect, render_template, session, request, jsonify, url_for, flash
 from database import db
 from backend.utils import get_dish_info, get_dish_recommendations
 from database.models.review import review
@@ -10,7 +10,8 @@ dish_bp = Blueprint('dish', __name__)
 def dishes():
     user_id = session.get("user_id")
     if not user_id:
-        return "Must be logged in!", 404
+        flash("Please log in first!", "error")
+        return redirect(url_for("auth.login"))
     
     dish_recommendations = get_dish_recommendations(user_id)
     dish_scores = {d[0]: d[2] for d in dish_recommendations}
@@ -73,7 +74,8 @@ def dish_detail(dish_id):
 
     user_id = session.get('user_id')        
     if not user_id:
-        return "User not logged in", 404
+        flash("Please log in first!", "error")
+        return redirect(url_for("auth.login"))
 
     dish_info = get_dish_info(dish_id, include_reviews=True)
 
@@ -86,6 +88,9 @@ def dish_detail(dish_id):
 @dish_bp.route("/submit-review", methods=["POST"])
 def submit_review():
     user_id = session.get('user_id')
+    if not user_id:
+        flash("Please log in first!", "error")
+        return redirect(url_for("auth.login"))
 
     dish_id = request.form.get("dish_id")
     restaurant_id = request.form.get("restaurant_id")
@@ -112,6 +117,9 @@ def review_page():
     dish_id = request.args.get("dish_id")
     restaurant_id = request.args.get("restaurant_id")
     user_id = session.get("user_id")
+    if not user_id:
+        flash("Please log in first!", "error")
+        return redirect(url_for("auth.login"))
     user_obj = user.query.get(user_id)
     return render_template("review.html", dish_id=dish_id, restaurant_id=restaurant_id, user=user_obj)
 
@@ -120,7 +128,8 @@ def toggle_save(dish_id):
     user_id = session.get("user_id")
      
     if not user_id:
-        return jsonify({"success": False, "message": "User not logged in"}), 401
+        flash("Please log in first!", "error")
+        return redirect(url_for("auth.login"))
 
     
     saved_dish = savedDishes.query.filter_by(user_id=user_id, dish_id=dish_id).first()

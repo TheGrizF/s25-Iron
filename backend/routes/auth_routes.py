@@ -50,20 +50,23 @@ def add_user():
     session["user_id"] = new_user.user_id  
     return redirect(url_for("profile.taste_profile"))
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    email = normalize_email(request.form.get("email"))
-    password = request.form.get("password")
+    if request.method == 'POST':
+        email = normalize_email(request.form.get("email"))
+        password = request.form.get("password")
 
-    selected_user = user.query.filter(func.lower(user.email) == email.lower()).first()
+        selected_user = user.query.filter(func.lower(user.email) == email.lower()).first()
 
-    if selected_user:
-        session["user_id"] = selected_user.user_id
-        return redirect(url_for("profile.view_profile"))
+        if selected_user:
+            session["user_id"] = selected_user.user_id
+            return redirect(url_for("profile.view_profile"))
+        else:
+            flash("Invalid email or password. Please try again.", "error")
+            return redirect(url_for("auth.index"))
     else:
-        flash("Invalid email or password. Please try again.", "error")
-        return redirect(url_for("auth.index"))
-
+        return render_template("index.html")
+    
 @auth_bp.route('/logout')
 def logout():
     session.clear()
