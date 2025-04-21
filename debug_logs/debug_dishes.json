@@ -10,7 +10,7 @@
     "description": "Traditional style red curry in coconut milk, bamboo shoot, green peas, bellpepper, and fresh basil leaves (available in Chicken, beef, fork, tofu, veggie, shrimp +4, seafood +4)",
     "price": "15.95",
     "available": true,
-    "is_saved": false
+    "is_saved": true
   },
   {
     "dish_id": 34,

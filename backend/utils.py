@@ -726,6 +726,7 @@ def get_average_dish_price(restaurant_id):
     roundedPrice = f"{roundPrice:.2f}"
     
     return roundedPrice
+
 def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="match_score"):
     dish_recommendations = get_dish_recommendations(user_id)
     dish_scores = {d[0]: d[2] for d in dish_recommendations}
