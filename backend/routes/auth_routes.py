@@ -17,6 +17,12 @@ def index():
 def add_user_page():
     return render_template('addUser.html')
 
+"""
+    Displays the form for adding a new user account.
+    This form allows users to input their first name, last name, email, and select a profile icon.
+    It returns the 'addUser.html' template to collect this information.
+"""
+
 @auth_bp.route('/addUser', methods=['POST'])
 def add_user():
     first_name = request.form.get("first_name")
@@ -24,6 +30,13 @@ def add_user():
     email = normalize_email(request.form.get("email"))
     icon_path = request.form.get("icon_path") or "images/profile_icons/default1.png"
     print(icon_path)
+
+    """
+     Processes the submitted user registration and creates a new user and taste profile in the database.
+     It performs validation, checks for duplicate email addresses, and saves user data if valid.
+     After registration, it redirects the user to the taste profile page and stores the user ID in the session.
+ 
+     """
 
     if not first_name or not last_name or not email:
         flash("Missing required fields.", "error")
@@ -50,8 +63,17 @@ def add_user():
     session["user_id"] = new_user.user_id  
     return redirect(url_for("profile.taste_profile"))
 
+   
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+
+    """
+    This function Handles the user login with a form on the login page.
+    If the method is POST, it verifies the email and logs in the user if a match is found in the database.
+    If the login is successful, it redirects to the user's taste  profile page; otherwise, it shows an error and returns to the index.
+
+    """
     if request.method == 'POST':
         email = normalize_email(request.form.get("email"))
         password = request.form.get("password")
