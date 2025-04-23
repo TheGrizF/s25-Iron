@@ -56,7 +56,11 @@ function toggleFollow(element) {
         console.log("Removed user:", userId);
         updateBuddyDisplay();
     }
+<<<<<<< HEAD
 
+=======
+    sendSelectedBuddiesList()
+>>>>>>> origin/main
     console.log("Selected Buddies:", selectedBuddies); // Debugging
 }
 
@@ -130,4 +134,24 @@ function removeBuddy(userId) {
         icon.classList.remove('bi-plus-circle-fill');
         icon.classList.add('bi-plus-circle');
     }
+}
+
+function sendSelectedBuddiesList(){
+    fetch('/createGroup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            },
+        body: JSON.stringify({selectedBuddies: selectedBuddies}),
+       
+        
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (response.ok) {
+            window.location.href = '/createGroup';
+        } 
+    })
+    .catch(error => console.error("Error:", error)
+);
 }

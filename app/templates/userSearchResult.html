@@ -1,63 +1,69 @@
-{% extends 'base.html' %} {% block title %}Profile{% endblock %} 
-{% block head %}
+{% extends 'base.html' %} 
+
+{% block title %}User Search Results{% endblock %} 
+
+{% block content %}
+<div class="taste-profile-container">
+  <h2>{{ matches|length }} Matches found</h2>
+
+  {% for match in matches %}
+    <a href="{{ url_for('profile.viewUserSearchResults', user_id=match.user_id) }}" class="match-card"> 
+      <div class="match-icon">
+        <img src="{{ url_for('static', filename=match.icon_path) }}"
+          alt="User Icon"
+          class="user-icon">
+      </div>
+      <div class="match-info">
+        <h3>{{ match.first_name }} {{ match.last_name }}</h3>
+      </div>
+    </a>
+  {% endfor %}
+  
+  <p>
+    <a href="{{ url_for('daily_dish.TasteBuds') }}">
+        <button>Go Back</button>
+    </a>
+  </p>
+</div>
+
 <style>
-  body {
+  .match-card {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      text-align: center;
+      text-decoration: none;
+      background-color: var(--white);
+      border: 1px solid var(--gray-medium);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      color: var(--slate-dark);
   }
-  .profile-icon img {
-      width: 150px;
-      height: 150px;
+  
+  .match-card:hover {
+      background-color: var(--gray-light);
   }
-</style>
+  
+  .match-icon {
+      flex-shrink: 0;
+      margin-right: 15px;
+  }
+  
+  .user-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+  }
+  
+  .match-info h3 {
+      margin: 0;
+      font-size: 20px;
+  }
+  
+  .match-info p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: var(--slate-light);
+  }
+  </style>
 {% endblock %}
-
-{% block
-content %}
-
-
-<body>
-
-  <div class="find-friend" 
-    style="display: flex; 
-          flex-direction: column; 
-          align-items: center; 
-          text-align: center; 
-          max-width: 100%; 
-          margin: auto; 
-          border-radius: 10px;
-          background-color: white;">
-    <h2>{{ user.first_name }} {{ user.last_name }}!</h2>
-    <div class="profile-icon" style="align-self: center;">
-      {% if user.icon_path %}
-          <img src="{{ url_for('static', filename=user.icon_path) }}" 
-              alt="It's You!"
-              style="width: 150px; height: 150px;">
-      {% else %}
-          <img src="{{ url_for('static', filename='images\profile_icons\default1.png') }}" 
-              alt="Default Icon"
-              style="width: 150px; height: 150px">
-      {% endif %}
-    </div>
-    <p>Email: {{ user.email }}</p>
-
-    <form action="{{ url_for('auth.addFriend', user_id=user.user_id) }}" method="post">
-      <button type="submit">Add Buddy</button>
-    </form>
-
-    <p>
-      <a href="{{ url_for('daily_dish.TasteBuds') }}">
-          <button>Go Back</button>
-      </a>
-    </p>
-
-    <!-- Flash Message for Friend added or Already Friends -->
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
-    %} {% for category, message in messages %}
-    <div class="flash-message {{ category }}">{{ message }}</div>
-    <br />
-    {% endfor %} {% endif %} {% endwith %} {% endblock %}
-  </div>
-</body>

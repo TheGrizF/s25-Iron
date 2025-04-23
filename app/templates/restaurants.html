@@ -70,9 +70,9 @@
                 <div class="restaurant-info">
                     <h2>{{ restaurant.restaurant_name }} </h2>
                     <!--p class="hours">{{ restaurant.hours | safe }}</p-->
-                    <p class="details">{{ restaurant.description }}</p>
+                    <p class="details" style ="font-size: 16px">{{ restaurant.description }}</p>
                     <div class = "restaurant-info-address">
-                        <p class="address">{{ restaurant.location|truncate_at_comma}} </p>
+                        <p class="address" style ="font-size: 16px">{{ restaurant.location|truncate_at_comma}} </p>
                     </div>
                     <div class="tags">
                         <span class="tag">Free Wifi</span>
@@ -94,7 +94,7 @@
         <!-- Troubleshooting the database -->
         {% else %}
         <p>No restaurants available.</p>
-        
+       
         {% endif %}
        
     </div>

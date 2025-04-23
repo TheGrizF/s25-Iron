@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from backend.utils import normalize_email
 from database import db, bcrypt
 from database.models.taste_profiles import tasteProfile
@@ -18,6 +18,12 @@ def index():
 def add_user_page():
     return render_template('addUser.html')
 
+"""
+    Displays the form for adding a new user account.
+    This form allows users to input their first name, last name, email, and select a profile icon.
+    It returns the 'addUser.html' template to collect this information.
+"""
+
 @auth_bp.route('/addUser', methods=['POST'])
 def add_user():
     first_name = request.form.get("first_name")
@@ -27,6 +33,13 @@ def add_user():
     icon_path = request.form.get("icon_path") or "images/profile_icons/default1.png"
     print(icon_path)
 
+    """
+     Processes the submitted user registration and creates a new user and taste profile in the database.
+     It performs validation, checks for duplicate email addresses, and saves user data if valid.
+     After registration, it redirects the user to the taste profile page and stores the user ID in the session.
+ 
+     """
+     
     if not first_name or not last_name or not email or not password:
         flash("Missing required fields.", "error")
         return redirect(url_for('auth.add_user_page'))
@@ -40,8 +53,9 @@ def add_user():
         first_name=first_name, 
         last_name=last_name, 
         email=email,
+        password_hash=bcrypt.generate_password_hash(password).decode('utf-8'),  # Hash the password
         icon_path=icon_path)
-    new_user.password = password  # automatically hashes password
+     
 
     db.session.add(new_user)
     db.session.commit()
@@ -53,7 +67,16 @@ def add_user():
     session["user_id"] = new_user.user_id  
     return redirect(url_for("profile.taste_profile"))
 
-@auth_bp.route('/login', methods=['POST'])
+    taste_profile = tasteProfile(user_id=new_user.user_id, current_step=1)
+    db.session.add(taste_profile)
+    db.session.commit()
+    
+    session["user_id"] = new_user.user_id  
+    return redirect(url_for("profile.taste_profile"))
+
+   
+
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     email = normalize_email(request.form.get("email"))
     password = request.form.get("password")
@@ -99,6 +122,13 @@ def change_password():
 
 @auth_bp.route('/logout')
 def logout():
+
+    """
+    This function logs out the current user out of the application by clearing the session and redirecting them to the index page, which is the login page.
+    This ensures any authenticated user is removed from the session an ends the session securely.
+    A message is displayed to inform the user that they have logged out.
+
+    """
     session.clear()
     flash("You have been logged out.", "success")
     return redirect(url_for('auth.index'))
@@ -106,6 +136,13 @@ def logout():
 
 @auth_bp.route('/TasteBuds', methods=['GET', 'POST'])
 def searchUser():
+
+    """
+    This function allows users to search for other users by username or email in order to view their profile.
+    If the input includes an email, it performs a direct match; otherwise, it searches by first and/or last name.
+    Results can redirect to a user profile, a list of matches, or show an error if no match is found.
+
+    """
     userName = request.form.get('userName', "").strip()
     current_user_id = session.get('user_id')  # Renamed to avoid conflict with model
 
@@ -113,7 +150,7 @@ def searchUser():
         flash("Enter a name or email to find your buddy")
         return redirect(url_for('daily_dish.TasteBuds'))
 
-    search = userName.split()
+    search = userName.lower().split()
 
     # Default values
     first_name, last_name = None, None
@@ -124,27 +161,49 @@ def searchUser():
         last_name = search[1]
 
     # Check for email - Case insensitive
-    if "@" in userName:
-        normalize_userName = normalize_email(userName)
-        found_user = user.query.filter(func.lower(user.email) == userName.lower()).first()
+    if "@" in userName:        
+        normalized_email = normalize_email(userName)
+        found_user = user.query.filter(func.lower(user.email) == normalized_email).first()
+        if found_user:
+            if found_user.user_id == current_user_id:
+                return redirect(url_for('profile.view_profile'))
+            return redirect(url_for('profile.viewUserSearchResults', user_id=found_user.user_id))
     else:
         # Case insensitive search by first and last name
-        matches = user.query.filter(func.lower(user.first_name) == first_name.lower())
+        matches = user.query.filter(
+            or_(
+                func.lower(user.first_name) == first_name,
+                func.lower(user.last_name) == first_name
+            ),
+            user.user_id != current_user_id
+        )
+        
         if last_name:
             matches = matches.filter(func.lower(user.last_name) == last_name.lower())
-        found_user = matches.first()
-
-    if found_user:
-        if found_user.user_id == current_user_id:
-            return redirect(url_for('profile.view_profile'))
-        else:
+        
+        all_matches = matches.all()
+        
+        if len(all_matches) == 1:
+            found_user = all_matches[0]
+            if found_user.user_id == current_user_id:
+                return redirect(url_for('profile.view_profile'))
             return redirect(url_for('profile.viewUserSearchResults', user_id=found_user.user_id))
-
-    flash("No user found")
+        
+        elif len(all_matches) > 1:
+            return render_template('userSearchResult.html', matches=all_matches, search_term=userName)
+        
+    flash("No user found", "error")
     return redirect(url_for('daily_dish.TasteBuds'))
  
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])
 def addFriend(user_id):
+
+    """
+    The addFriend function adds a user as a follower of the currently logged-in user.
+    It prevents duplicate entries by checking if the following already exists before adding it.
+    After processing, it redirects the user back to the current page and displays a message.
+
+    """
     current_user_id = session.get('user_id')
 
     if not current_user_id:
@@ -165,6 +224,13 @@ def addFriend(user_id):
 
 @auth_bp.route('/removeFriend/<user_id>', methods=['POST', 'GET'])
 def removeFriend(user_id):
+
+    """
+    Removes the specified user from the current user's list of users they follow.
+    This function ensures the user is logged in and that the following of the specififed user exists before deleting it from the database.
+    Once removed, a confirmation message is shown that the current user does not follow the other user anymore.
+
+    """
     current_user_id = session.get('user_id')
 
     if not current_user_id:
@@ -184,10 +250,25 @@ def removeFriend(user_id):
 
 @auth_bp.route('/database')
 def database():
+
+    
+    """
+    The databse function Renders a HTML page used to interact with the content of the database.
+    This function serves as a front end for developers or administrators to view the backend data structures.
+    It returns the 'database.html' template.
+
+    """
     return render_template('database.html')
 
 @auth_bp.route('/test_database')
 def test_database():
+
+    """
+    The function inspects all SQLAlchemy models and retrieves their data for debugging.
+    It collects table names, column names, and data records, and renders them in a readable format on a webpage.
+
+    """
+
     from database import db
     from sqlalchemy.inspection import inspect
 

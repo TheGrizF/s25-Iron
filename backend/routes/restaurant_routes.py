@@ -12,7 +12,9 @@ restaurant_bp = Blueprint('restaurant', __name__)
 def restaurants():
     user_id = session.get("user_id")
     if not user_id:
-        return "Must be logged in!", 404
+        flash("Log in to view restaurants!", "error")
+        return redirect(url_for("auth.login"))
+
     
     restaurant_info = get_all_restaurant_info(user_id)
 
@@ -50,7 +52,9 @@ def restaurant_detail(restaurant_id):
 
     user_id = session.get('user_id')        # gets user_id for current user in session
     if not user_id:
-        return "User not logged in", 404
+        flash("Log in to view restaurant info!", "error")
+        return redirect(url_for("auth.login"))
+
     
     restaurant_info = get_restaurant_info(user_id, restaurant_id)
     if not restaurant_info:
@@ -82,7 +86,9 @@ def restaurant_detail(restaurant_id):
 def view_menu(restaurant_id):
     user_id = session.get("user_id")
     if not user_id:
-        return "Not logged in", 404
+        flash("Log in to view menus!", "error")
+        return redirect(url_for("auth.login"))
+
     
     this_restaurant = restaurant.query.get(restaurant_id)
     if not this_restaurant:

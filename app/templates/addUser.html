@@ -14,7 +14,7 @@
             {% endif %}
         {% endwith %}
 
-        <form action="{{ url_for('auth.add_user') }}" method="post">
+        <form action="{{ url_for('auth.add_user') }}" method="post" id="signupForm">
             <div class="form-group">
                 <label for="first_name">First Name</label>
                 <input type="text" id="first_name" name="first_name" required>
@@ -52,6 +52,28 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>Select a User Icon</label>
+                <div class="image-grid profile-icon-grid">
+                    {% for i in range(1, 7) %}
+                    <div class="image-option">
+                        <input type="radio" name="icon_path" id="icon{{ i }}" value="images/profile_icons/default{{ i }}.png" required>
+                        <label for="icon{{ i }}">
+                            <div class="image-wrapper">
+                                <img src="{{ url_for('static', filename='images/profile_icons/default' ~ i ~ '.png') }}" 
+                                     alt="default icon {{ i }}">
+                            </div>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group terms-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the <a href="#" id="termsLink">Terms and Conditions</a></label>
+            </div>
+
             <div class="button-group">
                 <button type="submit" class="submit-btn">Create Account</button>
             </div>
@@ -62,6 +84,151 @@
         </p>
     </div>
 </div>
+
+<!-- Terms and Conditions Modal -->
+<div id="termsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>TasteBuddies Prototype – Terms and Conditions</h2>
+        <div class="terms-content">
+            <p>By creating an account with TasteBuddies, you acknowledge and agree to the following:</p>
+            <ul>
+                <li>This application is a prototype intended for demonstration and testing purposes only. It is not a commercial product and is not intended for public distribution or real-world dietary or restaurant decisions.</li>
+                <li>TasteBuddies does not guarantee the accuracy or completeness of any information presented, including dishes, restaurants, ingredients, or dietary classifications.</li>
+                <li>Users should not rely on this app for allergy safety, dietary compliance, or health-related decisions. Always consult real-world sources when it comes to food sensitivities or dietary restrictions.</li>
+                <li>The team behind TasteBuddies assumes no liability for any reactions, harm, or misinformation that results from using this application. Use it at your own risk.</li>
+                <li>Restaurant and dish data may reference real-world entities, but details may be fictionalized, incomplete, or outdated for the purpose of this demonstration.</li>
+                <li>Dietary labels such as Kosher and Halal are interpreted based on general food categories only, and do not account for preparation practices, religious blessings, or strict certification processes.</li>
+                <li>By continuing to use the TasteBuddies prototype, you agree to all terms and disclaimers listed, including limitations of liability, accuracy of data, and intended use for demonstration only.</li>
+                <li>Restaurant participants and users alike must explicitly acknowledge these terms before using the app.</li>
+                <li>Don't sue us. Seriously.</li>
+            </ul>
+            <h3>TasteBuddies Prototype – Privacy Policy</h3>
+            <p>TasteBuddies is a prototype application created for demonstration and testing purposes only. By using this app, you acknowledge and agree to the following regarding your information:</p>
+            <ul>
+                <li>We do not sell, share, or distribute your data to any third parties.</li>
+                <li>The information you enter is stored solely for prototype functionality (e.g., generating mock recommendations) and is not used for advertising, analytics, or any form of tracking.</li>
+                <li>You are advised not to use real personal information (e.g., real name, email, dietary history, or medical details). We didn't, and neither should you.</li>
+                <li>By submitting any information through this app, you consent to the handling of that information as described in this policy.</li>
+                <li>Although we do not intend to collect sensitive or identifiable data, if you do enter such data, you acknowledge and accept that it is unprotected and may be exposed in the event of a data breach. This app is not GDPR-, CCPA-, or HIPAA-compliant.</li>
+                <li>We implement basic precautions but cannot guarantee total security. If this app gets hacked, you agree not to hold us liable for any damages, data loss, or unauthorized access.</li>
+                <li>Use of this app implies your explicit agreement to these data handling terms, even in a prototype environment.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+.terms-group {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+/* Override default input styles for the checkbox */
+.terms-group input[type="checkbox"] {
+    width: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.terms-group label {
+    margin: 0;
+}
+
+#termsLink {
+    color: var(--burgundy-main);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+.terms-content {
+    margin-top: 20px;
+}
+
+.terms-content h2, .terms-content h3 {
+    color: var(--burgundy-main);
+    margin-bottom: 15px;
+}
+
+.terms-content ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.terms-content li {
+    margin-bottom: 10px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('termsModal');
+    const termsLink = document.getElementById('termsLink');
+    const closeBtn = document.getElementsByClassName('close')[0];
+    const signupForm = document.getElementById('signupForm');
+
+    termsLink.onclick = function(e) {
+        e.preventDefault();
+        modal.style.display = 'block';
+    }
+
+    closeBtn.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    signupForm.onsubmit = function(e) {
+        const termsCheckbox = document.getElementById('terms');
+        if (!termsCheckbox.checked) {
+            e.preventDefault();
+            alert('Please agree to the Terms and Conditions before creating an account.');
+        }
+    }
+});
+</script>
 {% endblock %}
 
 {% block bottom_nav %}{% endblock %}

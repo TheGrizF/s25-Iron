@@ -28,7 +28,7 @@
                 {% elif a == 'nuts' %}
                     <img src="{{ url_for('static', filename='images/dishes/allergens/nut.png') }}" alt="Nuts" title="Nuts">
                 {% elif a == 'gluten' %}
-                    <img src="{{ url_for('static', filename='images/dishes/allergens/gluten.png') }}" alt="Gluten" title="Gluten" >
+                    <img src="{{ url_for('static', filename='images/dishes/allergens/wheat.png') }}" alt="Wheat" title="Wheat" >
                 {% elif a == 'egg' %}    
                     <img src="{{ url_for('static', filename='images/dishes/allergens/eggs.png') }}" alt="Eggs" title="Eggs" >
                 {% elif a == 'fish' %}    
@@ -41,6 +41,8 @@
                     <img src="{{ url_for('static', filename='images/dishes/allergens/peanut.png') }}" alt="Peanuts" title="Peanuts" >
                 {% elif a == 'soy' %}    
                     <img src="{{ url_for('static', filename='images/dishes/allergens/soy.png') }}" alt="Soy" title="Soy" >
+                {% elif a == 'soy' %}    
+                    <img src="{{ url_for('static', filename='images/dishes/allergens/sesame.png') }}" alt="Sesame" title="Sesame" >
                 {% else %}
                     <!-- If no specific image is found for the allergen, you can just display text or a default image -->
                     <span>{{ a }}</span>
