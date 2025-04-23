@@ -1,5 +1,6 @@
 import os
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from flask import Flask
 from database.addTestData import insert_test_data
 
@@ -7,6 +8,7 @@ print("I AM IN DATABASE INIT")
 
 # Initialize SQLAlchemy and Bcrypt
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 def init_db(app):
     base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -15,6 +17,7 @@ def init_db(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
+    bcrypt.init_app(app)
 
     with app.app_context():
         # Import models inside app context to avoid circular imports

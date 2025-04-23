@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from sqlalchemy import func, or_
 from backend.utils import normalize_email
-from database import db
+from database import db, bcrypt
 from database.models.taste_profiles import tasteProfile
 from database.models.user import friends, user
 import tastebuddies
+from flask_bcrypt import Bcrypt
+import re
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -28,6 +30,7 @@ def add_user():
     first_name = request.form.get("first_name")
     last_name = request.form.get("last_name")
     email = normalize_email(request.form.get("email"))
+    password = request.form.get("password")
     icon_path = request.form.get("icon_path") or "images/profile_icons/default1.png"
     print(icon_path)
 
@@ -38,19 +41,24 @@ def add_user():
  
      """
 
-    if not first_name or not last_name or not email:
+    if not first_name or not last_name or not email or not password:
         flash("Missing required fields.", "error")
         return redirect(url_for('auth.add_user_page'))
+
+    if not is_valid_email(email):
+        flash("Invalid email format.", "error")
+        return redirect(url_for("auth.add_user_page"))
 
     exists = user.query.filter_by(email=email).first()
     if exists:
         flash("Email already attached to an account.", "error")
         return redirect(url_for("auth.add_user_page"))
-
+    
     new_user = user(
         first_name=first_name, 
         last_name=last_name, 
         email=email,
+        password=password,
         icon_path=icon_path)
 
     db.session.add(new_user)
@@ -63,7 +71,10 @@ def add_user():
     session["user_id"] = new_user.user_id  
     return redirect(url_for("profile.taste_profile"))
 
-   
+def is_valid_email(email):
+    email_regex = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+    return re.match(email_regex, email) is not None
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -80,7 +91,7 @@ def login():
 
         selected_user = user.query.filter(func.lower(user.email) == email.lower()).first()
 
-        if selected_user:
+        if selected_user  and selected_user.check_password(password):
             session["user_id"] = selected_user.user_id
             return redirect(url_for("profile.view_profile"))
         else:
@@ -89,6 +100,36 @@ def login():
     else:
         return render_template("index.html")
     
+@auth_bp.route("/changePassword", methods=["GET", "POST"])
+def change_password():
+    if request.method == "POST":
+        email = normalize_email(request.form.get("email"))
+        old_password = request.form.get("old_password")
+        new_password = request.form.get("new_password")
+        confirm_password = request.form.get("confirm_password")
+
+        user_obj = user.query.filter_by(email=email).first()
+
+        if not user_obj:
+            flash("No account found with that email.", "error")
+            return redirect(url_for("auth.change_password"))
+
+        if not user_obj.check_password(old_password):
+            flash("Current password is incorrect.", "error")
+            return redirect(url_for("auth.change_password"))
+
+        if new_password != confirm_password:
+            flash("New passwords do not match.", "error")
+            return redirect(url_for("auth.change_password"))
+
+        user_obj.password = new_password
+
+        db.session.commit()
+        flash("Password updated successfully!", "success")
+        return redirect(url_for("auth.index"))
+
+    return render_template("change_password.html")
+
 @auth_bp.route('/logout')
 def logout():
 
