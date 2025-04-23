@@ -4,7 +4,7 @@ user_id,first_name,last_name,email,password_hash,user_role,icon_path
 3,Oronde',Brown,oronde@tastebuddies.com,tastebuddies,admin,images/profile_icons/oronde.png
 4,Ashley,Barasebwa,ashley@tastebuddies.com,tastebuddies,admin,images/profile_icons/ashley.png
 5,Ben,Nissley,ben@tastebuddies.com,tastebuddies,admin,images/profile_icons/ben.png
-6,NATE,Donald,NATE@tastebuddies.com,tastebuddies,admin,images/profile_icons/nate.png
+6,NATE,Donald,nate@tastebuddies.com,tastebuddies,admin,images/profile_icons/nate.png
 7,Andrew,Miller,andrew@tastebuddies.com,tastebuddies,admin,images/profile_icons/andrew.png
 8,Anthony,Bourdain,ABourdain@noreservations.com,tastebuddies,user,images/profile_icons/bourdain.png
 9,Gordon,Ramsay,cheframsay@hellskitchen.com,tastebuddies,user,images/profile_icons/ramsay.png

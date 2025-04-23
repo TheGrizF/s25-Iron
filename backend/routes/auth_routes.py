@@ -6,6 +6,7 @@ from database.models.taste_profiles import tasteProfile
 from database.models.user import friends, user
 import tastebuddies
 from flask_bcrypt import Bcrypt
+import re
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -39,23 +40,26 @@ def add_user():
      After registration, it redirects the user to the taste profile page and stores the user ID in the session.
  
      """
-     
+
     if not first_name or not last_name or not email or not password:
         flash("Missing required fields.", "error")
         return redirect(url_for('auth.add_user_page'))
+
+    if not is_valid_email(email):
+        flash("Invalid email format.", "error")
+        return redirect(url_for("auth.add_user_page"))
 
     exists = user.query.filter_by(email=email).first()
     if exists:
         flash("Email already attached to an account.", "error")
         return redirect(url_for("auth.add_user_page"))
-
+    
     new_user = user(
         first_name=first_name, 
         last_name=last_name, 
         email=email,
-        password_hash=bcrypt.generate_password_hash(password).decode('utf-8'),  # Hash the password
+        password=password,
         icon_path=icon_path)
-     
 
     db.session.add(new_user)
     db.session.commit()
@@ -67,29 +71,35 @@ def add_user():
     session["user_id"] = new_user.user_id  
     return redirect(url_for("profile.taste_profile"))
 
-    taste_profile = tasteProfile(user_id=new_user.user_id, current_step=1)
-    db.session.add(taste_profile)
-    db.session.commit()
-    
-    session["user_id"] = new_user.user_id  
-    return redirect(url_for("profile.taste_profile"))
+def is_valid_email(email):
+    email_regex = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+    return re.match(email_regex, email) is not None
 
-   
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    email = normalize_email(request.form.get("email"))
-    password = request.form.get("password")
 
-    selected_user = user.query.filter(func.lower(user.email) == email.lower()).first()
+    """
+    This function Handles the user login with a form on the login page.
+    If the method is POST, it verifies the email and logs in the user if a match is found in the database.
+    If the login is successful, it redirects to the user's taste  profile page; otherwise, it shows an error and returns to the index.
 
-    if selected_user and selected_user.check_password(password):  # verify hashed password
-        session["user_id"] = selected_user.user_id
-        return redirect(url_for("profile.view_profile"))
+    """
+    if request.method == 'POST':
+        email = normalize_email(request.form.get("email"))
+        password = request.form.get("password")
+
+        selected_user = user.query.filter(func.lower(user.email) == email.lower()).first()
+
+        if selected_user  and selected_user.check_password(password):
+            session["user_id"] = selected_user.user_id
+            return redirect(url_for("profile.view_profile"))
+        else:
+            flash("Invalid email or password. Please try again.", "error")
+            return redirect(url_for("auth.index"))
     else:
-        flash("Invalid email or password. Please try again.", "error")
-        return redirect(url_for("auth.index"))
-
+        return render_template("index.html")
+    
 @auth_bp.route("/changePassword", methods=["GET", "POST"])
 def change_password():
     if request.method == "POST":

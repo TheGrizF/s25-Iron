@@ -22,11 +22,11 @@ def dishes():
     # get full filtered/sorted dish list (shared with /load-more-dishes)
     all_dishes = get_filtered_sorted_dishes(user_id, search, filter_by, sort_by)
 
-    # debug output (optional)
-    import os, json
-    os.makedirs("debug_logs", exist_ok=True)
-    with open("debug_logs/debug_dishes.json", "w") as f:
-        json.dump(all_dishes, f, indent=2, default=str)
+    # # debug output
+    # import os, json
+    # os.makedirs("debug_logs", exist_ok=True)
+    # with open("debug_logs/debug_dishes.json", "w") as f:
+    #     json.dump(all_dishes, f, indent=2, default=str)
 
     # only send first 20 for initial load
     return render_template("dishes.html", dishes=all_dishes[:20])
@@ -68,6 +68,7 @@ def submit_review():
     db.session.commit()
 
     return redirect(url_for('dish.dish_detail', dish_id=dish_id))
+
 
 @dish_bp.route("/review", methods=["GET"])
 def review_page():

@@ -33,3 +33,5 @@ node_modules
 
 # Flask session files
 flask_session/
+
+debug_logs/

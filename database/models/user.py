@@ -31,26 +31,23 @@ class user(db.Model):
         CheckConstraint("user_role IN ('admin', 'user', 'moderator')", name="valid_user_role"),
     )
 
-    def __init__(self, first_name, last_name, email, password="tastebuddies", user_role="user"):
-        """Ensure password is always hashed when creating a user."""
+    def __init__(self, first_name, last_name, email, password="tastebuddies", user_role="user", icon_path="images/profile_icons/default1.png"):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
         self.user_role = user_role
+        self.icon_path = icon_path
 
     @property
     def password(self):
-        """Prevents direct access to the password."""
         raise AttributeError("Password is not a readable attribute.")
 
     @password.setter
     def password(self, password):
-        """Hashes the password before storing it."""
         self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
 
     def check_password(self, password):
-        """Checks if a given password matches the stored hash."""
         return bcrypt.check_password_hash(self.password_hash, password)
 
 

@@ -36,12 +36,6 @@ def insert_test_data():
 
     }
 
-    json_files = {
-        #'taste_profile': 'database/databaseTestData/tasteProfile.json',
-        #'restaurant': 'database/databaseTestData/restaurant.json',
-        #'dish_taste_profile': 'database/databaseTestData/dishTasteProfile.json'
-    }
-
     try:
         # loop through the csv files and insert data
         for table, file_path in csv_files.items():
@@ -59,93 +53,24 @@ def insert_test_data():
             except Exception as e:
                 print(f"Error inserting data into {table}: {e}")
 
-        # loop through the json files and insert data
-        for table, file_path in json_files.items():
-            try:
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    json_data = json.load(file)  # load json data
-
-                    for entry in json_data:
-                        if table == "taste_profile":
-                            restrictions = json.dumps(entry["restrictions"])
-
-                            cursor.execute(
-                                "INSERT INTO taste_profile (taste_profile_id, user_id, restrictions, sweet, spicy, sour, bitter, umami, savory) "
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                                (
-                                    entry["taste_profile_id"],
-                                    entry["user_id"],
-                                    restrictions,
-                                    entry["sweet"],
-                                    entry["savory"],
-                                    entry["sour"],
-                                    entry["bitter"],
-                                    entry["spicy"],
-                                    entry["umami"],
-                                )
-                            )
-                        
-                        elif table == "restaurant":
-                            restrictions = json.dumps(entry["restrictions"])
-
-                            cursor.execute(
-                                "INSERT INTO restaurant (restaurant_id, restaurant_name, restrictions, location, rating_average, phone_number, clean_average, busy_average) "
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, )",
-                                (
-                                    entry["restaurant_id"],
-                                    entry["restaurant_name"],
-                                    restrictions,
-                                    entry["location"],
-                                    entry["rating_average"],
-                                    entry["phone_number"],
-                                    entry["clean_average"],
-                                    entry["busy_average"]
-                                )
-                            )
-
-                        elif table == "dish_taste_profile":
-                            restrictions = json.dumps(entry["restrictions"])
-
-                            cursor.execute(
-                                "INSERT INTO dish_taste_profile (dish_taste_profile_id, dish_id, cuisine, restrictions, sweet, spicy, sour, bitter, umami, savory) "
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                                (
-                                    entry["dish_taste_profile_id"],
-                                    entry["dish_id"],
-                                    entry["cuisine"],
-                                    restrictions,
-                                    entry["sweet"],
-                                    entry["spicy"],
-                                    entry["sour"],
-                                    entry["bitter"],
-                                    entry["umami"],
-                                    entry["savory"]
-                                )
-                            )
-            except FileNotFoundError:
-                print(f"Warning: {file_path} not found, skipping {table}...")
-            except Exception as e:
-                print(f"Error inserting data into {table}: {e}")
-
-
         # Commit the inserted data
         conn.commit()
-        # 🔹 Step 1: Retrieve all plaintext passwords
+
+        # Retrieve all plaintext passwords
         cursor.execute("SELECT user_id, password_hash FROM user")
         users = cursor.fetchall()
 
         for user_id, password in users:
-            # 🔹 Step 2: Check if the password is already hashed
+            # Check if the password is already hashed
             if not password.startswith("$2b$"):  # Bcrypt hashes start with $2b$
                 print(f"Hashing password for user_id {user_id}")
 
-                # 🔹 Step 3: Hash plaintext password
+                # Hash plaintext password
                 hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
 
-                # 🔹 Step 4: Update the password in the database
+                # Update the password in the database
                 cursor.execute("UPDATE user SET password_hash = ? WHERE user_id = ?", (hashed_password, user_id))
 
-        # 🔹 Step 5: Commit changes
         conn.commit()
         print("All plaintext passwords have been hashed.")
     

@@ -56,11 +56,7 @@ function toggleFollow(element) {
         console.log("Removed user:", userId);
         updateBuddyDisplay();
     }
-<<<<<<< HEAD
-
-=======
     sendSelectedBuddiesList()
->>>>>>> origin/main
     console.log("Selected Buddies:", selectedBuddies); // Debugging
 }
 
