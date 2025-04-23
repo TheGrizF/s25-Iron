@@ -91,6 +91,13 @@ def login():
     
 @auth_bp.route('/logout')
 def logout():
+
+    """
+    This function logs out the current user out of the application by clearing the session and redirecting them to the index page, which is the login page.
+    This ensures any authenticated user is removed from the session an ends the session securely.
+    A message is displayed to inform the user that they have logged out.
+
+    """
     session.clear()
     flash("You have been logged out.", "success")
     return redirect(url_for('auth.index'))
@@ -98,6 +105,13 @@ def logout():
 
 @auth_bp.route('/TasteBuds', methods=['GET', 'POST'])
 def searchUser():
+
+    """
+    This function allows users to search for other users by username or email in order to view their profile.
+    If the input includes an email, it performs a direct match; otherwise, it searches by first and/or last name.
+    Results can redirect to a user profile, a list of matches, or show an error if no match is found.
+
+    """
     userName = request.form.get('userName', "").strip()
     current_user_id = session.get('user_id')  # Renamed to avoid conflict with model
 
@@ -152,6 +166,13 @@ def searchUser():
  
 @auth_bp.route('/addFriend/<user_id>', methods=['POST', 'GET'])
 def addFriend(user_id):
+
+    """
+    The addFriend function adds a user as a follower of the currently logged-in user.
+    It prevents duplicate entries by checking if the following already exists before adding it.
+    After processing, it redirects the user back to the current page and displays a message.
+
+    """
     current_user_id = session.get('user_id')
 
     if not current_user_id:
@@ -172,6 +193,13 @@ def addFriend(user_id):
 
 @auth_bp.route('/removeFriend/<user_id>', methods=['POST', 'GET'])
 def removeFriend(user_id):
+
+    """
+    Removes the specified user from the current user's list of users they follow.
+    This function ensures the user is logged in and that the following of the specififed user exists before deleting it from the database.
+    Once removed, a confirmation message is shown that the current user does not follow the other user anymore.
+
+    """
     current_user_id = session.get('user_id')
 
     if not current_user_id:
@@ -191,10 +219,25 @@ def removeFriend(user_id):
 
 @auth_bp.route('/database')
 def database():
+
+    
+    """
+    The databse function Renders a HTML page used to interact with the content of the database.
+    This function serves as a front end for developers or administrators to view the backend data structures.
+    It returns the 'database.html' template.
+
+    """
     return render_template('database.html')
 
 @auth_bp.route('/test_database')
 def test_database():
+
+    """
+    The function inspects all SQLAlchemy models and retrieves their data for debugging.
+    It collects table names, column names, and data records, and renders them in a readable format on a webpage.
+
+    """
+
     from database import db
     from sqlalchemy.inspection import inspect
 
