@@ -327,7 +327,7 @@ def get_buddy(user_id):
     Retrieves and returns profile information for a specific buddy (user).
 
     This function queries the database for a user based on the provided user ID.
-    If the buddy is found, their user ID, icon path, first name, and last name are returned in JSON format.
+    If the buddy is found, their user ID, icon path, first name, and last name are returned.
     If the buddy is not found or an error occurs, an appropriate error message is returned.
 
     Parameter:
