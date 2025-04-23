@@ -10,6 +10,17 @@ daily_dish_bp = Blueprint('daily_dish', __name__)
 
 @daily_dish_bp.route('/dailyDish')
 def daily_dish():
+
+    """
+    This function renders the Daily Dish page for a logged-in user.
+
+    This route checks if a user is logged in. If not, it redirects to the login page with a flash message.
+    If authenticated, it retrieves a list of featured dishes and the user's personalized daily dish feed,
+    then renders the dailyDish.html template with this information.
+
+    Returns:
+        Response: Rendered HTML page displaying the daily dish feed and featured dishes.
+    """
     user_id = session.get('user_id')
     if not user_id:
         flash("Please log in first!", "error")
@@ -23,6 +34,13 @@ def daily_dish():
 
 @daily_dish_bp.route('/search')
 def search():
+
+    """
+    Displays the search page to the user.
+    This route is responsible for displaying the search page to the user. 
+    It returns the rendered HTML page for the search functionality, shown to the user.
+
+    """
     return render_template('search.html')
 
 @daily_dish_bp.route('/TasteBuds.html')
@@ -42,6 +60,15 @@ def TasteBuds():
 
 @daily_dish_bp.route('/createGroup', methods = ['POST','GET'])
 def createGroup():
+
+    """
+    This function handles the creation of a dining group by storing selected buddies from a JSON request in the session.
+    This function allows users to form a temporary group of dining partners for generating personalized restaurant matches.
+    It plays a key role in enabling group-based recommendation features within the application.
+    on a successful POST, there will be a JSON response with a success status.
+    on error or GET it redirects to the overlappingRestaurants route.
+
+    """
     user_id = session.get('user_id')
     try:
      groupData = request.get_json('userId')
