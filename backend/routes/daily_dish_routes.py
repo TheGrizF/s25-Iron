@@ -306,10 +306,34 @@ def groupMatch(index=0):
 
 @daily_dish_bp.route('/restaurant/<id>')
 def restaurant_detail(id):
+
+    """
+    This function renders the restaurant detail page for a specific restaurant.
+    This function is used when a user navigates to the restaurant detail view using a specific restaurant ID.
+
+    Parameter:
+        id: The unique identifier of the restaurant passed through the URL.
+
+    Returns:
+        The 'restaurant_detail.html' template for the specified restaurant.
+
+    """
     return render_template('restaurant_detail.html')
 
 @daily_dish_bp.route('/get-buddy/<int:user_id>')
 def get_buddy(user_id):
+
+    """
+    Retrieves and returns profile information for a specific buddy (user).
+
+    This function queries the database for a user based on the provided user ID.
+    If the buddy is found, their user ID, icon path, first name, and last name are returned.
+    If the buddy is not found or an error occurs, an appropriate error message is returned.
+
+    Parameter:
+        user_id: The unique identifier of the user whose buddy data is being requested.
+
+    """
     try:
         buddy = user.query.filter_by(user_id=user_id).first()
         if buddy:
