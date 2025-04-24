@@ -33,6 +33,21 @@ def dishes():
 
 @dish_bp.route("/dishes/<int:dish_id>")
 def dish_detail(dish_id):
+
+    """
+    The function displays detailed information about a specific dish, including reviews and save status.
+    This function ensures the user is logged in before retrieving dish details from the database.
+    It checks whether the dish has been saved by the user and passes this information along with
+    the dish data to the template for rendering.
+
+    Parameter:
+        dish_id: The unique identifier of the dish to display.
+
+    Returns:
+        Renders the 'dish_detail.html' template with the dish information and saved status.
+        If the user is not logged in, redirects to the login page with a message.
+        
+    """
     user_id = session.get('user_id')
     if not user_id:
         flash("Please log in first!", "error")
@@ -47,6 +62,19 @@ def dish_detail(dish_id):
 
 @dish_bp.route("/submit-review", methods=["POST"])
 def submit_review():
+
+    """
+    This function handles the submission of a user review for a dish.
+    The function ensures the user is logged in, retrieves the submitted form
+    for the dish review (including the dish ID, restaurant ID, rating, and review content).
+    It also creates a new review record, stores it in the database, and redirects the user to the
+    dish detail page.
+
+    Returns:
+        Redirects the user to the dish detail page after successfully saving the review.
+        If the user is not logged in, redirects them to the login page with a message.
+
+    """
     user_id = session.get('user_id')
     if not user_id:
         flash("Please log in first!", "error")
@@ -72,6 +100,18 @@ def submit_review():
 
 @dish_bp.route("/review", methods=["GET"])
 def review_page():
+
+    """
+    The function renders the review page for a specific dish and restaurant.
+    This function checks if the user is logged in. If not, it redirects them to the login page.
+    If the user is authenticated, it retrieves the dish ID, restaurant ID and the user object from the database.
+    It also displays the review submission page.
+
+    Returns:
+        It returns the 'review.html' template with the dish ID, restaurant ID, and user object 
+        if the user is authenticated. If not, it redirects the user to the login page with an error message.
+
+    """
     dish_id = request.args.get("dish_id")
     restaurant_id = request.args.get("restaurant_id")
     user_id = session.get("user_id")
@@ -84,6 +124,18 @@ def review_page():
 
 @dish_bp.route("/toggle-save/<int:dish_id>", methods=["POST"])
 def toggle_save(dish_id):
+
+    """
+
+    This function toggles the saved status of a dish for the currently logged-in user.
+    If the user is not logged in, they are redirected to the login page. If the dish is not currently saved, the dish 
+    is added to their saved list. 
+
+    Returns:
+        It returns A JSON object indicating the success status and the new saved state 
+        (True if saved, False if unsaved), or a redirect response if the user is not logged in.
+
+    """
     user_id = session.get("user_id")
     if not user_id:
         flash("Please log in first!", "error")
@@ -104,6 +156,14 @@ def toggle_save(dish_id):
 
 @dish_bp.route("/load-more-dishes")
 def load_more_dishes():
+
+    """
+
+    This function loads additional dishes for the user based on optional search, filter, and parameters.
+    Dishes are filtered and sorted based on the parameters.
+    The user must be logged in to access this functionality.
+
+    """
     user_id = session.get("user_id")
     if not user_id:
         return jsonify({"success": False, "error": "Not logged in"}), 403
