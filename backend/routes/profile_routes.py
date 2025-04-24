@@ -71,6 +71,18 @@ def viewUserSearchResults(user_id):
 
 @profile_bp.route('/delete_profile', methods=['POST'])
 def delete_profile():
+
+    """
+    The function deletes the currently logged-in user's profile from the database.
+    This allows a logged-in user to permanently delete their account.
+    If the user is not authenticated or the user record is not found, error messages are shown.
+    After successful deletion, the user's session is cleared and they are redirected to the Tastebuddies homepage.
+
+    Returns:
+        A redirect to the 'auth.index' route.
+        Messages are displayed to indicate success or failure from the deletion process.
+
+    """
     user_id = session.get('user_id')
 
     if not user_id:
@@ -143,6 +155,18 @@ def taste_profile_step11():
 
 @profile_bp.route('/taste-profile/debug')
 def taste_profile_debug():
+
+    """
+    The function displays debug information for the user's taste profile session data.
+
+    This endpoint prints the full contents of the current session to the console,
+    including any stored taste profile data from steps 1 to 11. It is useful for
+    debugging the multi-step taste profile setup process.
+
+    Returns:
+        It returns the 'tasteProfileDebug.html' template.
+
+    """
     print("Full session contents:", dict(session))
     for i in range(1, 12):
         key = f'taste_profile_step{i}'
@@ -423,6 +447,20 @@ def save_taste_profile_step11():
     
 @profile_bp.route('/api/taste-profile/exit_early', methods=['POST'])
 def exit_early():
+
+    """
+
+    The function finalizes the user's taste profile early and updates taste comparisons.
+    This endpoint allows users to exit the taste profile setup process early.
+    If the user is authenticated, it updates their taste comparison data accordingly.
+    This is useful for saving partial progress or skipping remaining steps.
+
+    Returns:
+        It returns A JSON response indicating success or failure. On success,
+        returns a message confirming the update. 
+        On failure, it returns an error message.
+
+    """
     try:
         user_id = session.get('user_id')
         if not user_id:
@@ -437,6 +475,19 @@ def exit_early():
 
 @profile_bp.route('/taste-profile/view')
 def view_edit_taste_profile():
+
+    """
+    The function displays the user's current taste profile for viewing or editing.
+    Retrieves the authenticated user's taste profile information including
+    current progress in the setup process, allergy and dietary restriction data.
+    Determines the next step in the profile setup if incomplete.
+
+    Returns:
+         It Renders the 'viewTasteProfile.html' template populated with 
+        user data, taste profile, allergies, dietary restrictions, and next 
+        step if applicable. Redirects to login page if the user is not authenticated.
+
+    """
     user_id = session.get('user_id')
     if not user_id:
         flash('Please log in first.', 'error')
@@ -493,6 +544,18 @@ def update_taste_profile():
         
 @profile_bp.route('/matches', methods=['GET'])
 def matches_page():
+
+    """
+    The function Renders the taste matches page for the logged-in user.
+    Attempts to retrieve the current user's first and last name to personalize the
+    matches page. If the user is not found or an error occurs, a "Your" name is used.
+
+    Returns:
+        Response: Renders the 'tasteMatches.html' template with a personalized or default
+        user name. In case of any errors or missing user data, the template is still rendered 
+        with a fallback name.
+
+    """
     try:
         user_id = session.get('user_id')
         selected_user = user.query.get(user_id)
@@ -533,6 +596,17 @@ def get_user_matches():
 
 @profile_bp.route('/dish-matches', methods=['GET'])
 def dish_match_page():
+
+    """
+    The function shows the dish matches page for the currently logged-in user.
+    Retrieves the user's name from the session and displays it on the dish matches page. 
+    If the user cannot be found or an error occurs, the page still loads with a default name.
+
+    Returns:
+        This function returns the 'dishMatches.html' template, with a personalized or fallback 
+        username depending on session status and user lookup success.
+
+    """
     try:
         user_id = session.get('user_id')
         selected_user = user.query.get(user_id)
