@@ -84,6 +84,16 @@ def restaurant_detail(restaurant_id):
 
 @restaurant_bp.route("/restaurant/<int:restaurant_id>/menu")
 def view_menu(restaurant_id):
+
+    """
+    The function displays the menu for a specific restaurant.
+    It also checks if the user is logged in the session. 
+    If the user is not logged in, it shows an error message and redirects them to the login page. 
+
+    Returns:
+        It returns a redirect to the login page if the user is not logged in. 
+
+    """
     user_id = session.get("user_id")
     if not user_id:
         flash("Log in to view menus!", "error")
@@ -132,6 +142,18 @@ def sort_restaurants(filtered_restaurants, sort_by="match_percentage"):
 
 @restaurant_bp.route('/restaurant/<int:restaurant_id>/post-update', methods=['POST'])
 def post_update(restaurant_id):
+
+    """
+    This function handles the posting of a live update for a specific restaurant by a logged-in user.
+    This function processes a form submission from a user, validates the content written,
+    checks for profanity, and saves the update to the database.
+    It ensures the user is authenticated before allowing the action.
+
+    Returns:
+        It returns a redirect response to the login page if the user is not logged in,
+        or if the user is logged in it returns back to the restaurant detail page with messages indicating success or error with the live post update.
+
+    """
     
     profanity.load_censor_words()
     user_id = session.get('user_id')
