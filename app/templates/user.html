@@ -17,7 +17,7 @@
             box-sizing: border-box !important; 
             overflow: hidden !important;
             background-color: var(--gray-light);"> <!--Sorry Ben, didn't want to mess with your css-->
-    <button class="back-button" onclick="window.history.back()">
+    <button class="back-button" onclick="goBack()">
         <i class="fas fa-chevron-left"></i>
     </button>
     <div class="profile-icon">
@@ -36,11 +36,11 @@
 
     <div class="button-group centered">
         {% if is_buddy %}
-            <form action="{{ url_for('auth.removeFriend', user_id=viewed_user.user_id) }}" method="POST">
+            <form id ="followForm" action="{{ url_for('auth.removeFriend', user_id=viewed_user.user_id) }}" method="POST">
                 <button type="submit" class="add-buddy-btn">Unfollow</button>
             </form>
         {% else %}
-            <form action="{{ url_for('auth.addFriend', user_id=viewed_user.user_id) }}" method="POST">
+            <form id ="unfollowForm" action="{{ url_for('auth.addFriend', user_id=viewed_user.user_id) }}" method="POST">
                 <button type="submit" class="add-buddy-btn">Follow</button>
             </form>
         {% endif %}
@@ -95,86 +95,131 @@
 
 <!-- Can it swing from a web? No it can't, its a graph -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const currPoints= {{ current_points|safe }};
-    const otherPoints= {{ other_points|safe }};
+    document.addEventListener('DOMContentLoaded', () => {
+        const currPoints= {{ current_points|safe }};
+        const otherPoints= {{ other_points|safe }};
 
-    const labels = ['Sweet', 'Sour', 'Spicy', 'Bitter', 'Umami', 'Savory'];
+        const labels = ['Sweet', 'Sour', 'Spicy', 'Bitter', 'Umami', 'Savory'];
 
-    const data ={
-        labels: labels,
-        datasets: [
-            {
-                label: "You",
-                data: [
-                    currPoints.sweet,
-                    currPoints.sour,
-                    currPoints.spicy,
-                    currPoints.bitter,
-                    currPoints.umami,
-                    currPoints.savory
-                ],
-                fill: true,
-                backgroundColor: "rgba(196, 24, 58, 0.2)",
-                borderColor: "#C4183A",
-                pointBackgroundColor: "#C4183A",
-            },
-            {
-                label: "{{ viewed_user.first_name }}",
-                data: [
-                    otherPoints.sweet,
-                    otherPoints.sour,
-                    otherPoints.spicy,
-                    otherPoints.bitter,
-                    otherPoints.umami,
-                    otherPoints.savory
-                ],
-                fill: true,
-                backgroundColor: "rgba(244, 185, 66, 0.2)",
-                borderColor: "#F4B942",
-                pointBackgroundColor: "#F4B942",
-            }
-        ]
-    };
-
-    const config = {
-        type: 'radar',
-        data: data,
-        options: {
-            scales: {
-                r: {
-                    min: 0,
-                    max: 5,
-                    ticks: {
-                        stepSize: 1,
-                        display: false
-                    },
-                    pointLabels: {
-                        font: {
-                            size: 16,
-                            weight: 'bold',
-                            family: "'inherit'",
-                            
-                        },
-                    }
+        const data ={
+            labels: labels,
+            datasets: [
+                {
+                    label: "You",
+                    data: [
+                        currPoints.sweet,
+                        currPoints.sour,
+                        currPoints.spicy,
+                        currPoints.bitter,
+                        currPoints.umami,
+                        currPoints.savory
+                    ],
+                    fill: true,
+                    backgroundColor: "rgba(196, 24, 58, 0.2)",
+                    borderColor: "#C4183A",
+                    pointBackgroundColor: "#C4183A",
+                },
+                {
+                    label: "{{ viewed_user.first_name }}",
+                    data: [
+                        otherPoints.sweet,
+                        otherPoints.sour,
+                        otherPoints.spicy,
+                        otherPoints.bitter,
+                        otherPoints.umami,
+                        otherPoints.savory
+                    ],
+                    fill: true,
+                    backgroundColor: "rgba(244, 185, 66, 0.2)",
+                    borderColor: "#F4B942",
+                    pointBackgroundColor: "#F4B942",
                 }
-            },
-            plugins: {
-                legend: {
-                    labels: {
-                        font: {
-                            size: 16,
-                            weight: 'bold',
-                            family: "'inherit'",
+            ]
+        };
+
+        const config = {
+            type: 'radar',
+            data: data,
+            options: {
+                scales: {
+                    r: {
+                        min: 0,
+                        max: 5,
+                        ticks: {
+                            stepSize: 1,
+                            display: false
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 16,
+                                weight: 'bold',
+                                family: "'inherit'",
+                                
+                            },
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 16,
+                                weight: 'bold',
+                                family: "'inherit'",
+                            }
                         }
                     }
                 }
             }
-        }
-    }; 
+        }; 
 
-    new Chart(document.getElementById('tasteSpiderGraph'), config);
-});
+        new Chart(document.getElementById('tasteSpiderGraph'), config);
+
+        // Spidey needs to also listen to the buttons to know how to go back
+        if (!localStorage.getItem('profileInteractionCount')) {
+            localStorage.setItem('profileInteractionCount', '0');
+        }
+        
+        // Add event listeners to forms
+        const followForm = document.getElementById('followForm');
+        const unfollowForm = document.getElementById('unfollowForm');
+        
+        // Increment counter whenever follow or unfollow is clicked
+        if (followForm) {
+            followForm.addEventListener('submit', function() {
+                incrementInteractionCounter();
+            });
+        }
+        
+        if (unfollowForm) {
+            unfollowForm.addEventListener('submit', function() {
+                incrementInteractionCounter();
+            });
+        }
+    });
+
+    // Increment counter logic
+    function incrementInteractionCounter() {
+        let count = parseInt(localStorage.getItem('profileInteractionCount') || '0');
+        count++;
+        localStorage.setItem('profileInteractionCount', count.toString());
+        console.log('Interaction count:', count);
+    }
+
+    // Go back the counted interactions
+    function goBack() {
+        const count = parseInt(localStorage.getItem('profileInteractionCount') || '0');
+        
+        if (count > 0) {
+            window.history.go(-(count + 1));
+            // Reset the counter after navigation away
+            localStorage.setItem('profileInteractionCount', '0');
+        } else {
+            // Just go back normally if no interactions
+            window.history.back();
+        }
+    }
+    
 </script>
 
 
