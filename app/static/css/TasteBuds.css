@@ -62,7 +62,7 @@
   text-align: center;
   justify-content: center; /* Center text horizontally */
   align-items: center; /* Center text vertically */
-  text-align:
+  font-size: 1em;
 }
 
 
@@ -120,6 +120,7 @@
   border-radius: 10px;
   overflow: hidden;
   background: var(--white);
+  font-size: 16px;
 }
 
 
