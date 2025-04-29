@@ -16,13 +16,6 @@
     </div>
 
     <div class="restaurant-info">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
 
         <h2>{{ restaurant.restaurant_name }}</h2>
 
@@ -44,6 +37,13 @@
 
         <!-- open hours below form -->
         <p class="hours">Open hours: <br>{{ restaurant.hours | safe }}</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}" style="margin: auto;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </div>
 
     <!-- script for toggling form visibility -->

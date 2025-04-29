@@ -210,3 +210,14 @@ form {
     width: 100%;
     box-sizing: border-box;
 }
+
+.text-area {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 20px 0;
+    min-height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--light-grey);
+    font-family: inherit;
+}

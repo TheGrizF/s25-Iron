@@ -50,7 +50,7 @@ body {
     width: 100%;
     position: relative;
 }
-/************************************************************************/
+/**************************************************************/
 
 .filter-section {
     margin: 0 0;
@@ -59,7 +59,7 @@ body {
 .filter-row {
     display: flex;
     gap: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
 }
 
 .filter-dropdown {
@@ -67,7 +67,7 @@ body {
     padding: 8px;
     border: none;
     border-radius: 5px;
-    margin-bottom: 0px;
+    margin-bottom: 6px;
 }
 
 .filter-row form {
