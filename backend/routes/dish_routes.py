@@ -3,6 +3,7 @@ from database import db
 from backend.utils import get_dish_info, get_dish_recommendations, get_filtered_sorted_dishes
 from database.models.review import review
 from database.models.user import savedDishes, user
+from better_profanity import profanity
 
 
 dish_bp = Blueprint('dish', __name__)
@@ -75,6 +76,7 @@ def submit_review():
         If the user is not logged in, redirects them to the login page with a message.
 
     """
+    profanity.load_censor_words()
     user_id = session.get('user_id')
     if not user_id:
         flash("Please log in first!", "error")
@@ -84,6 +86,10 @@ def submit_review():
     rating = request.form.get("rating")
     content = request.form.get("content")
     rating = int(rating)
+
+    if profanity.contains_profanity(content):
+        flash('Your update contains inappropriate language.', 'error')
+        return redirect(request.referrer)
 
     new_review = review(
         user_id=user_id,
