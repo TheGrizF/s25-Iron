@@ -803,9 +803,6 @@ def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="mat
                 for keyword in searched_keywords
             )
         ]
-    print("Final sorted dish scores:")
-    for d in all_dishes:
-        print(f"{d['dish_name']}: {d['match_score']}")
     return sort_dishes(all_dishes, sort_by)
 
 def sort_dishes(filtered_dishes, sort_by="match_score"):
