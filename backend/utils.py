@@ -183,6 +183,14 @@ def get_dish_recommendations(user_id):
     user_dietary_list = {r[0].lower() for r in user_dietary}
     user_cuisine_list = {c.cuisine_id: c.preference_level for c in user_cuisine}
 
+    # get users own reviews
+    user_reviews_raw = (
+        db.session.query(review.dish_id, review.rating)
+        .filter(review.user_id == user_id)
+        .all()
+    )
+    user_reviews = {dish_id: rating for dish_id, rating in user_reviews_raw}
+
     # Get top 6 taste matches  --- commented out limit, get them all?
     taste_bud_query = (
         db.session.query(tasteComparisons.compare_to, tasteComparisons.comparison_num)
@@ -191,11 +199,16 @@ def get_dish_recommendations(user_id):
         #.limit(10)
         .all()
     )
+
     # t[0]:t[1] => buddy_id & comparison_num
     taste_bud_id = {t[0]: t[1] for t in taste_bud_query}
 
-    # Top 3 dishes from each match  --- commented out, get them all?
     unique_dishes = {}
+
+    # Add user reviewed dishes to list
+    for dish_id, rating in user_reviews.items():
+        unique_dishes[dish_id] = (user_id, 0, rating)
+
     for bud_id, comparison_num in taste_bud_id.items():
         best_dish_query = (
             db.session.query(review.dish_id, review.rating)
@@ -209,17 +222,8 @@ def get_dish_recommendations(user_id):
         for dish_id, bud_review in best_dish_query:
             if dish_id not in unique_dishes or bud_review > unique_dishes[dish_id][2]:
                 unique_dishes[dish_id] = (bud_id, comparison_num, bud_review)
-
-    # include users own reviews!
-    user_reviews = (
-        db.session.query(review.dish_id, review.rating)
-        .filter(review.user_id == user_id)
-        .all()
-    )
     
-    for dish_id, user_review in user_reviews:
-        if dish_id not in unique_dishes or user_review > unique_dishes[dish_id][2]:
-            unique_dishes[dish_id] = (user_id, 0, user_review)
+
 
     dish_matches = []
     for dish_id, (bud_id, comparison_num, bud_review) in unique_dishes.items():
@@ -263,19 +267,47 @@ def get_dish_recommendations(user_id):
         ) or None
 
         # Normalize scores (0 to 1)
-        bud_score = 1 - (comparison_num / 24)  # Adjust this if we change how tastebuddy score is determined
-        review_score = bud_review / 5   
+        bud_score = 1 - (comparison_num / 48)  # Adjust this if we change how tastebuddy score is determined
+        if bud_score >= 0.90:
+            review_weight = 1.0
+        elif bud_score >= 0.80:
+            review_weight = 0.75
+        elif bud_score >= 0.70:
+            review_weight = 0.50
+        elif bud_score >= 0.60:
+            review_weight = 0.25
+        else:
+            review_weight = 0.0
+        review_score = (bud_review / 5) * review_weight
         avg_review = avg_rating / 5
         cuisine_score = user_cuisine_list.get(dish_cuisine, 0) / 5 # Will be a 5 if it is in there, 0 if it is not, result 1 or 0
 
-        # Apply weights and turn to percent
-        dish_score = round((
-            (bud_score     * 0.55) +
-            (review_score  * 0.25) +
-            (avg_review    * 0.15) +
-            (cuisine_score * 0.05)
-        ) * 100, 1)
 
+
+        # Weight based on own review
+        own_review = user_reviews.get(dish_id)
+
+        if own_review is not None:
+        # Apply weights
+            base_score = (
+                ((own_review / 5) * 0.85) +
+                (avg_review    * 0.10) +
+                (cuisine_score * 0.05)
+            )
+        else:
+            if bud_score < 0.9:
+                penalty = (1 - (0.9 - bud_score)) ** 2
+                bud_score *= penalty
+            base_score = (
+                (bud_score     * 0.65) +
+                (review_score  * 0.20) +
+                (avg_review    * 0.10) +
+                (cuisine_score * 0.05)
+            )
+
+        adjusted_score = max(0, min(1, base_score))
+        dish_score = round(adjusted_score * 100, 1)
+            
         scored_matches.append((dish_id, bud_id, dish_score))
 
     # Sort list based on score, descending and return
@@ -759,7 +791,6 @@ def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="mat
                 for keyword in searched_keywords
             )
         ]
-
     return sort_dishes(all_dishes, sort_by)
 
 def sort_dishes(filtered_dishes, sort_by="match_score"):

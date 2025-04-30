@@ -369,9 +369,9 @@ def get_matches():#This doesn't work correctly
         results = [{ "user_id": match.compare_to,
                 "first_name": match.first_name,
                 "last_name": match.last_name,
-                "match_score": round((24 - match.comparison_num) / 24 * 100, 1),
+                "match_score": round((48 - match.comparison_num) / 48 * 100, 1),
                 "icon_path": match.icon_path} 
-                for match in matches if round((24 - match.comparison_num) / 24 * 100, 1) > 75]
+                for match in matches if round((48 - match.comparison_num) / 48 * 100, 1) > 80]
 
         return results
 
