@@ -183,6 +183,14 @@ def get_dish_recommendations(user_id):
     user_dietary_list = {r[0].lower() for r in user_dietary}
     user_cuisine_list = {c.cuisine_id: c.preference_level for c in user_cuisine}
 
+    # get users own reviews
+    user_reviews_raw = (
+        db.session.query(review.dish_id, review.rating)
+        .filter(review.user_id == user_id)
+        .all()
+    )
+    user_reviews = {dish_id: rating for dish_id, rating in user_reviews_raw}
+
     # Get top 6 taste matches  --- commented out limit, get them all?
     taste_bud_query = (
         db.session.query(tasteComparisons.compare_to, tasteComparisons.comparison_num)
@@ -192,25 +200,15 @@ def get_dish_recommendations(user_id):
         .all()
     )
 
-    # Filter for strongest matches
-    filtered_buds = [t for t in taste_bud_query if t[1] <= 100]
-
-    if len(filtered_buds) < 3:
-        filtered_buds = taste_bud_query[:3]
-
     # t[0]:t[1] => buddy_id & comparison_num
-    taste_bud_id = {t[0]: t[1] for t in filtered_buds}
+    taste_bud_id = {t[0]: t[1] for t in taste_bud_query}
 
-    # get users own reviews
-    user_reviews_raw = (
-        db.session.query(review.dish_id, review.rating)
-        .filter(review.user_id == user_id)
-        .all()
-    )
-    user_reviews = {dish_id: rating for dish_id, rating in user_reviews_raw}
-
-    # 
     unique_dishes = {}
+
+    # Add user reviewed dishes to list
+    for dish_id, rating in user_reviews.items():
+        unique_dishes[dish_id] = (user_id, 0, rating)
+
     for bud_id, comparison_num in taste_bud_id.items():
         best_dish_query = (
             db.session.query(review.dish_id, review.rating)
@@ -284,40 +282,30 @@ def get_dish_recommendations(user_id):
         avg_review = avg_rating / 5
         cuisine_score = user_cuisine_list.get(dish_cuisine, 0) / 5 # Will be a 5 if it is in there, 0 if it is not, result 1 or 0
 
-        # Apply weights
-        base_score = (
-            (bud_score     * 0.65) +
-            (review_score  * 0.20) +
-            (avg_review    * 0.10) +
-            (cuisine_score * 0.05)
-        )
-
-        if bud_score < 0.9:
-            penalty = (1 - (0.9 - bud_score)) ** 2
-            base_score *= penalty
 
 
         # Weight based on own review
         own_review = user_reviews.get(dish_id)
-        adjust = 0
 
         if own_review is not None:
-            if own_review == 1:
-                adjust = -0.6
-            elif own_review == 2:
-                adjust = -0.3
-            elif own_review == 3:
-                adjust = -0.15
-            elif own_review == 5:
-                adjust = 0.1
+        # Apply weights
+            base_score = (
+                ((own_review / 5) * 0.85) +
+                (avg_review    * 0.10) +
+                (cuisine_score * 0.05)
+            )
         else:
-            if avg_rating < 2.5:
-                adjust = -0.3
-            elif avg_rating < 3.5:
-                adjust = -0.2
-        
-        adjusted_score = base_score * (1 + adjust)
-        adjusted_score = max(0, min(1, adjusted_score))
+            if bud_score < 0.9:
+                penalty = (1 - (0.9 - bud_score)) ** 2
+                bud_score *= penalty
+            base_score = (
+                (bud_score     * 0.65) +
+                (review_score  * 0.20) +
+                (avg_review    * 0.10) +
+                (cuisine_score * 0.05)
+            )
+
+        adjusted_score = max(0, min(1, base_score))
         dish_score = round(adjusted_score * 100, 1)
             
         scored_matches.append((dish_id, bud_id, dish_score))
