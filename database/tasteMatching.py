@@ -32,7 +32,7 @@ def updateTasteComparisons(currID):
             abs(currUser.umami - nextUser.umami),
             abs(currUser.savory - nextUser.savory)
         ]
-        totalTaste = sum(values)
+        totalTaste = sum([v ** 1.5 for v in values])
 
         # add allergen / diet check here? or in display
 
@@ -51,4 +51,3 @@ def updateTasteComparisons(currID):
             db.session.add(newEntry)
     
     db.session.commit()
-    

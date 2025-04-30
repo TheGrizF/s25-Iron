@@ -191,10 +191,25 @@ def get_dish_recommendations(user_id):
         #.limit(10)
         .all()
     )
-    # t[0]:t[1] => buddy_id & comparison_num
-    taste_bud_id = {t[0]: t[1] for t in taste_bud_query}
 
-    # Top 3 dishes from each match  --- commented out, get them all?
+    # Filter for strongest matches
+    filtered_buds = [t for t in taste_bud_query if t[1] <= 100]
+
+    if len(filtered_buds) < 3:
+        filtered_buds = taste_bud_query[:3]
+
+    # t[0]:t[1] => buddy_id & comparison_num
+    taste_bud_id = {t[0]: t[1] for t in filtered_buds}
+
+    # get users own reviews
+    user_reviews_raw = (
+        db.session.query(review.dish_id, review.rating)
+        .filter(review.user_id == user_id)
+        .all()
+    )
+    user_reviews = {dish_id: rating for dish_id, rating in user_reviews_raw}
+
+    # 
     unique_dishes = {}
     for bud_id, comparison_num in taste_bud_id.items():
         best_dish_query = (
@@ -209,17 +224,8 @@ def get_dish_recommendations(user_id):
         for dish_id, bud_review in best_dish_query:
             if dish_id not in unique_dishes or bud_review > unique_dishes[dish_id][2]:
                 unique_dishes[dish_id] = (bud_id, comparison_num, bud_review)
-
-    # include users own reviews!
-    user_reviews = (
-        db.session.query(review.dish_id, review.rating)
-        .filter(review.user_id == user_id)
-        .all()
-    )
     
-    for dish_id, user_review in user_reviews:
-        if dish_id not in unique_dishes or user_review > unique_dishes[dish_id][2]:
-            unique_dishes[dish_id] = (user_id, 0, user_review)
+
 
     dish_matches = []
     for dish_id, (bud_id, comparison_num, bud_review) in unique_dishes.items():
@@ -263,19 +269,57 @@ def get_dish_recommendations(user_id):
         ) or None
 
         # Normalize scores (0 to 1)
-        bud_score = 1 - (comparison_num / 24)  # Adjust this if we change how tastebuddy score is determined
-        review_score = bud_review / 5   
+        bud_score = 1 - (comparison_num / 48)  # Adjust this if we change how tastebuddy score is determined
+        if bud_score >= 0.90:
+            review_weight = 1.0
+        elif bud_score >= 0.80:
+            review_weight = 0.75
+        elif bud_score >= 0.70:
+            review_weight = 0.50
+        elif bud_score >= 0.60:
+            review_weight = 0.25
+        else:
+            review_weight = 0.0
+        review_score = (bud_review / 5) * review_weight
         avg_review = avg_rating / 5
         cuisine_score = user_cuisine_list.get(dish_cuisine, 0) / 5 # Will be a 5 if it is in there, 0 if it is not, result 1 or 0
 
-        # Apply weights and turn to percent
-        dish_score = round((
-            (bud_score     * 0.55) +
-            (review_score  * 0.25) +
-            (avg_review    * 0.15) +
+        # Apply weights
+        base_score = (
+            (bud_score     * 0.65) +
+            (review_score  * 0.20) +
+            (avg_review    * 0.10) +
             (cuisine_score * 0.05)
-        ) * 100, 1)
+        )
 
+        if bud_score < 0.9:
+            penalty = (1 - (0.9 - bud_score)) ** 2
+            base_score *= penalty
+
+
+        # Weight based on own review
+        own_review = user_reviews.get(dish_id)
+        adjust = 0
+
+        if own_review is not None:
+            if own_review == 1:
+                adjust = -0.6
+            elif own_review == 2:
+                adjust = -0.3
+            elif own_review == 3:
+                adjust = -0.15
+            elif own_review == 5:
+                adjust = 0.1
+        else:
+            if avg_rating < 2.5:
+                adjust = -0.3
+            elif avg_rating < 3.5:
+                adjust = -0.2
+        
+        adjusted_score = base_score * (1 + adjust)
+        adjusted_score = max(0, min(1, adjusted_score))
+        dish_score = round(adjusted_score * 100, 1)
+            
         scored_matches.append((dish_id, bud_id, dish_score))
 
     # Sort list based on score, descending and return
@@ -759,7 +803,9 @@ def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="mat
                 for keyword in searched_keywords
             )
         ]
-
+    print("Final sorted dish scores:")
+    for d in all_dishes:
+        print(f"{d['dish_name']}: {d['match_score']}")
     return sort_dishes(all_dishes, sort_by)
 
 def sort_dishes(filtered_dishes, sort_by="match_score"):

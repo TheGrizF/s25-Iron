@@ -158,7 +158,6 @@ select:hover {
     font-size: 1.1em;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-transform: uppercase;
     letter-spacing: 1px;
     color: white;
 }
@@ -172,7 +171,6 @@ select:hover {
     font-size: 1.1em;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-transform: uppercase;
     letter-spacing: 1px;
     min-width: 200px;
     text-align: center;

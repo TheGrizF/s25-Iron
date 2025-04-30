@@ -666,8 +666,8 @@ def view_user(user_id):
         tasteComparisons.compare_to == user_id
     ).first()
     
-    comparison_num = comparison.comparison_num if comparison else 12  # 50% fallback
-
+    comparison_num = comparison.comparison_num
+    
     # Get info for spider-graph
     user_tp = tasteProfile.query.filter_by(user_id=current_user_id).first()
     other_tp = tasteProfile.query.filter_by(user_id=user_id).first()

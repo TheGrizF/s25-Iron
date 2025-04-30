@@ -63,7 +63,7 @@ class tasteComparisons(db.Model):
 
     __table_args__ = (
         CheckConstraint("compare_from != compare_to", name="prevent_self_comparison"),
-        CheckConstraint("comparison_num BETWEEN 0 AND 50", name="valid_comparison_num"),
+        CheckConstraint("comparison_num BETWEEN 0 AND 96", name="valid_comparison_num"),
     )
 
 class cuisine(db.Model):

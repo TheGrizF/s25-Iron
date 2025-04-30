@@ -23,7 +23,7 @@ dish_id,dish_name,description,featured,available,image_path,price
 22,Aburi Zushi,"Seared salmon nigiri with scallions, pickled ginger and eel sauce.",0,0,images/dishes/koshi/aburi_zushi.jpg,15.95
 23,April Roll,"Avocado and cucumber roll topped with salmon, diced mango with mango sauce.",0,1,images/dishes/koshi/april_roll.jpg,14.95
 24,Scallop Ninja Roll,"Spicy tuna and shrimp tempura topped with torched scallop, shrimp, butter and eel sauce.",1,1,images/dishes/koshi/scallop_ninja_roll.jpg,19.95
-25,Summer Breeze,"Tuna, salmon, rock fish, crab stick, avocado, cucumber, masago, scallion with sweet vinegar wrapped in daikon.",0,1,images/dishes/azars/azars_lentil_soup.png,14.95
+25,Summer Breeze,"Tuna, salmon, rock fish, crab stick, avocado, cucumber, masago, scallion with sweet vinegar wrapped in daikon.",0,1,images/dishes/koshi/summer_breeze.jpg,14.95
 26,Foxy Roll,"Crab salad and avocado roll topped with tuna, salmon, jalapeno, sriracha, and apple puree.",0,1,images/dishes/koshi/foxy_roll.jpg,18.95
 27,Adam's Apple Roll,"Salmon tartar and apple topped with salmon, avocado and spicy mayo.",0,0,images/dishes/koshi/adams_apple_roll.jpg,15.95
 28,Tida Thai Sampler,"With 2 shrimp bikini, 2 crab rangoon, 3 dumplings, 4 calamari, 2 spring rolls, 4 fried tofu served with an assortment of sauce",1,1,images/dishes/tida_thai/tida_thai_sampler.jpg,17.95
