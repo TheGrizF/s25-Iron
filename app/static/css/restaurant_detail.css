@@ -55,7 +55,7 @@
     background: var(--burgundy-main);
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 8px 10px;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -64,7 +64,7 @@
 }
 
 .recommendations {
-    padding: 20px;
+    padding:  20px 0;
 }
 
 .dishes-grid {

@@ -10,7 +10,7 @@
 <div class="restaurant-detail">
     <div class="header-images">
         <img src="{{ url_for('static', filename=restaurant.image_path) }}" alt="Restaurant ambiance">
-        <button class="back-button" onclick="window.history.back()">
+        <button class="back-button" onclick="goBack()">
             <i class="fas fa-chevron-left"></i>
         </button>
     </div>
@@ -36,7 +36,7 @@
         </button>
 
         <!-- open hours below form -->
-        <p class="hours">Open hours: <br>{{ restaurant.hours | safe }}</p>
+        <p class="hours" style="font-size: 0.8em;">Open hours: <br>{{ restaurant.hours | safe }}</p>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -55,7 +55,7 @@
     </script>
 
 <section class="recommendations">
-    <h2 style="margin-top:0px;">Recommended for You:</h2>
+    <h2 style="margin-top:0px; margin-left:15px;">Recommended for You:</h2>
     <div class="dishes-grid">
         {% for dish in restaurant.dishes[:2] %}
         <a href="{{ url_for('dish.dish_detail', dish_id=dish.dish_id) }}" class="dish-card">
@@ -128,4 +128,45 @@
         </div>
     </section>
 </section>
+
+<script>
+            document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the profile interaction counter if it doesn't exist
+            if (!localStorage.getItem('profileInteractionCount')) {
+                localStorage.setItem('profileInteractionCount', '0');
+            }
+            
+            const updateForm = document.querySelector('.update-form form');
+
+            if (updateForm) {
+                updateForm.addEventListener('submit', function(event) {
+                    // Increment counter when update form is submitted
+                    incrementInteractionCounter();
+                });
+            }
+            });
+    
+    
+        // Increment counter logic
+        function incrementInteractionCounter() {
+            let count = parseInt(localStorage.getItem('profileInteractionCount') || '0');
+            count++;
+            localStorage.setItem('profileInteractionCount', count.toString());
+            console.log('Interaction count:', count);
+        }
+
+        // Go back the counted interactions
+        function goBack() {
+            const count = parseInt(localStorage.getItem('profileInteractionCount') || '0');
+            
+            if (count > 0) {
+                window.history.go(-(count + 1));
+                // Reset the counter after navigation away
+                localStorage.setItem('profileInteractionCount', '0');
+            } else {
+                // Just go back normally if no interactions
+                window.history.back();
+            }
+        }
+</script>
 {% endblock %}

@@ -332,7 +332,7 @@
             <textarea class="text-area" name="content" placeholder="Share your thoughts..."></textarea>
 
             <div class="bottom-buttons">
-                <button class="bottom-button" type="button" onclick="window.history.back()">Cancel</button>
+                <button class="bottom-button" type="button" onclick="goBack()">Cancel</button>
                 <button class="bottom-button" type="submit" id="submitButton">Submit</button>
             </div>
         </form>
@@ -398,6 +398,51 @@
             this.style.backgroundColor = 'var(--dark-grey)';
             document.querySelector('.text-area').style.display = 'block';
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the profile interaction counter if it doesn't exist
+            if (!localStorage.getItem('profileInteractionCount')) {
+                localStorage.setItem('profileInteractionCount', '0');
+            }
+            
+            // Add event listener to the form itself, not the submit button
+            const reviewForm = document.getElementById('reviewForm');
+            
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', function(event) {
+                    // Check if form is valid (rating is selected)
+                    const rating = document.getElementById('rating').value;
+                    if (rating) {
+                        // Only increment if the form is valid and will be submitted
+                        incrementInteractionCounter();
+                        console.log('Form submitted, interaction count incremented');
+                    }
+                });
+            }
+        });
+    
+    
+        // Increment counter logic
+        function incrementInteractionCounter() {
+            let count = parseInt(localStorage.getItem('profileInteractionCount') || '0');
+            count++;
+            localStorage.setItem('profileInteractionCount', count.toString());
+            console.log('Interaction count:', count);
+        }
+
+        // Go back the counted interactions
+        function goBack() {
+            const count = parseInt(localStorage.getItem('profileInteractionCount') || '0');
+            
+            if (count > 0) {
+                window.history.go(-(count + 1));
+                // Reset the counter after navigation away
+                localStorage.setItem('profileInteractionCount', '0');
+            } else {
+                // Just go back normally if no interactions
+                window.history.back();
+            }
+        }
         
     </script>
 </body>
