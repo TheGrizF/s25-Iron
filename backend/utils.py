@@ -5,6 +5,7 @@ Keeps them organized so we can use them again if we need to.
 from datetime import datetime, timedelta
 from flask import session
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 from database import db
 from database.models.taste_profiles import dishTasteProfile
 from database.models.user import cuisineUserJunction, savedDishes, user, user_allergen, user_restriction, tasteComparisons, friends
@@ -173,7 +174,7 @@ def get_dish_recommendations(user_id):
         dish_score: % score based on average rating, taste buddy score, and cuisine match, 
     """
     # Get user info from db
-    user_tp = db.session.query(user).filter(user.user_id == user_id).first()
+    # user_tp = db.session.query(user).filter(user.user_id == user_id).first()
     user_allergy = db.session.query(user_allergen.allergen).filter(user_allergen.user_id == user_id).all()
     user_dietary = db.session.query(user_restriction.restriction).filter(user_restriction.user_id == user_id).all()
     user_cuisine = db.session.query(cuisineUserJunction).filter(cuisineUserJunction.user_id == user_id).all()
@@ -266,6 +267,13 @@ def get_dish_recommendations(user_id):
             .scalar()
         ) or None
 
+        restaurant_id = (
+            db.session.query(menu.restaurant_id)
+            .join(menuDishJunction, menu.menu_id == menuDishJunction.menu_id)
+            .filter(menuDishJunction.dish_id == dish_id)
+            .scalar()
+        )
+
         # Normalize scores (0 to 1)
         bud_score = 1 - (comparison_num / 48)  # Adjust this if we change how tastebuddy score is determined
         if bud_score >= 0.90:
@@ -308,11 +316,26 @@ def get_dish_recommendations(user_id):
         adjusted_score = max(0, min(1, base_score))
         dish_score = round(adjusted_score * 100, 1)
             
-        scored_matches.append((dish_id, bud_id, dish_score))
+        scored_matches.append((dish_id, bud_id, dish_score, restaurant_id))
 
     # Sort list based on score, descending and return
     scored_matches.sort(key=lambda x: x[2], reverse=True)
     return scored_matches
+
+def get_group_dish_recommendations(user_ids):
+    """"
+    Method to get a dictionary of dish recommendations for multiple users.
+    :param user_ids: list of user ids to get group recommendations for
+    :return group_recommendations: formatted dictionary { user_id: [(dish_id, tastebuddy_id, score), ...]}
+    """
+    group_recommendations = {}
+    for userid in user_ids:
+        try:
+            group_recommendations[userid] = get_dish_recommendations(userid)
+        except Exception as e:
+            print(f"Failed to get recomendations for user {userid}: {e}")
+            group_recommendations[userid] = []
+    return group_recommendations
 
 """
 Refactoring from restaurant routes.  Both restaurant and restaurant details require a collection of the restaurant
@@ -363,11 +386,8 @@ def get_restaurant_dish_scores(user_id, restaurant_id):
 
     return sorted(dishes_with_match, key=lambda x: x["match_percentage"], reverse=True)
 
-def get_restaurant_info(user_id, restaurant_id):
-    this_restaurant: restaurant = restaurant.query.get(restaurant_id)
-    if not this_restaurant:
-        return None
-    
+def get_restaurant_info(user_id, this_restaurant, update_info=None):
+
     restaurant_dishes = get_restaurant_dish_scores(user_id, this_restaurant.restaurant_id)
 
     matched_scores = [d["match_percentage"] for d in restaurant_dishes]
@@ -377,20 +397,6 @@ def get_restaurant_info(user_id, restaurant_id):
         f"{entry.days_of_week}: {entry.open_time.strftime('%I:%M %p')} - {entry.close_time.strftime('%I:%M %p')}"
         for entry in this_restaurant.operating_hours
     )
-
-    recent_threshold = datetime.now() - timedelta(hours=4)
-
-    recent_update = (
-        db.session.query(liveUpdate)
-        .filter(liveUpdate.restaurant_id == this_restaurant.restaurant_id)
-        .filter(liveUpdate.created_at >= recent_threshold)
-        .order_by(liveUpdate.created_at.desc())
-        .first()
-    )
-    if recent_update:
-        update_info = recent_update.update_content
-    else:
-        update_info = None
 
     return {
             "restaurant_id": this_restaurant.restaurant_id,
@@ -411,8 +417,49 @@ def get_restaurant_info(user_id, restaurant_id):
         }
 
 def get_all_restaurant_info(user_id):
-    all_restaurants = restaurant.query.all()
-    return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
+    recent_update_threshold = datetime.now() - timedelta(hours=4)
+
+    all_restaurants = (
+        db.session.query(restaurant)
+        .options(
+            joinedload(restaurant.operating_hours),
+            joinedload(restaurant.menu)
+                .joinedload(menu.menu_dishes)
+                .joinedload(menuDishJunction.dish)
+        ).all()
+    )
+
+    recent_updates = (
+        db.session.query(liveUpdate)
+        .filter(liveUpdate.created_at >= recent_update_threshold)
+        .order_by(liveUpdate.created_at.desc())
+        .all()
+    )
+    update_map = {}
+    for update in recent_updates:
+        if update.restaurant_id not in update_map:
+            update_map[update.restaurant_id] = update.update_content
+
+    return [get_restaurant_info(user_id, rest, update_map.get(rest.restaurant_id)) for rest in all_restaurants]
+
+def get_bulk_restaurant_info(user_id, restaurant_ids):
+    """
+    Batch call to getting restaurant info for multiple restaurants.
+    :param user_id: user id for restaurant rating
+    :param restaurant_ids: list of restaurant ids to get rating for
+    :return: { restaurant_id: info_dict }
+    """
+    restaurants = db.session.query(restaurant).options(
+        joinedload(restaurant.operating_hours),
+        joinedload(restaurant.menu)
+            .joinedload(menu.menu_dishes)
+            .joinedload(menuDishJunction.dish)
+    ).filter(restaurant.restaurant_id.in_(restaurant_ids)).all()
+
+    return {
+        rest.restaurant_id: get_restaurant_info(user_id, rest)
+        for rest in restaurants
+    }
 
 def relative_time(original_time):
     """
@@ -490,6 +537,16 @@ def get_friend_reviews(user_id, limit=None):
     # get all reviews from friends ordered by most recent first
     raw_reviews = (
         db.session.query(review)
+        .options(
+            joinedload(review.user)
+            .load_only(user.first_name,
+                       user.last_name,
+                       user.icon_path),
+            joinedload(review.dish)
+            .joinedload(dish.menu_dishes)
+            .joinedload(menuDishJunction.menu)
+            .joinedload(menu.restaurant)
+        )
         .filter(review.user_id.in_(friend_ids))
         .order_by(review.created_at.desc())
         .all()
@@ -530,32 +587,43 @@ def get_daily_dishes(user_id, limit=10):
 
     recommended = get_dish_recommendations(user_id)
     
-    new_dishes = [dish for dish in recommended if dish[1] != user_id][:limit]
+    new_dishes = [dish for dish in recommended if dish[1] != user_id and dish[2] >= 70][:limit]
 
     dish_ids = [dish[0] for dish in new_dishes]
+
     dishes = {
-        this_dish.dish_id: this_dish 
-        for this_dish in db.session.query(dish).filter(dish.dish_id.in_(dish_ids)).all()
+        d.dish_id: d for d in db.session.query(dish)
+        .options(
+            joinedload(dish.menu_dishes)
+                .joinedload(menuDishJunction.menu)
+                .joinedload(menu.restaurant),
+            joinedload(dish.reviews).joinedload(review.user)
+        )
+        .filter(dish.dish_id.in_(dish_ids)).all()
     }
 
-    reviews = (
-        db.session.query(review)
-        .filter(review.dish_id.in_(dishes.keys()), review.user_id != user_id)
-        .order_by(review.created_at.desc())
-        .distinct(review.dish_id)
-        .all()
-    )
-
-    buddy_reviews = {
-        rev.dish_id: {
-            "buddy_name": f"{rev.user.first_name} {rev.user.last_name}",
-            "buddy_icon": rev.user.icon_path,
-            "review_content": rev.content,
-            "time_stamp": relative_time(rev.created_at),
-            "rating": rev.rating,
-        }
-        for rev in reviews
+    match_scores = {
+        m.compare_to: m.comparison_num
+        for m in db.session.query(tasteComparisons)
+        .filter(tasteComparisons.compare_from == user_id)
     }
+
+    buddy_reviews = {}
+    for d in dishes.values():
+        for rev in sorted(d.reviews, key=lambda r: r.created_at, reverse=True):
+            if (
+                rev.user_id != user_id and 
+                match_scores.get(rev.user_id, 0) <= 14 and
+                rev.rating > 3
+            ):
+                buddy_reviews[d.dish_id] = {
+                    "buddy_name": f"{rev.user.first_name} {rev.user.last_name}",
+                    "buddy_icon": rev.user.icon_path,
+                    "review_content": rev.content,
+                    "time_stamp": relative_time(rev.created_at),
+                    "buddy_rating": rev.rating,
+                }
+            break
     
     daily_dishes = [
         {
@@ -565,14 +633,10 @@ def get_daily_dishes(user_id, limit=10):
             "restaurant": dishes[id].menu_dishes[0].menu.restaurant.restaurant_name,
             "restaurant_id": dishes[id].menu_dishes[0].menu.restaurant.restaurant_id,
             "match_score": score,
-
-            "buddy_name": buddy_reviews[id]["buddy_name"],
-            "buddy_icon": buddy_reviews[id]["buddy_icon"],
-            "buddy_rating": buddy_reviews[id]["rating"],
-            "review_content": buddy_reviews[id]["review_content"],
-            "time_stamp": buddy_reviews[id]["time_stamp"]
+            **buddy_reviews.get(id, {})
         }
-        for id, _, score in new_dishes if id in dishes
+        for id, _, score, _ in new_dishes 
+        if id in dishes and id in buddy_reviews
     ]
         
     return daily_dishes
@@ -588,7 +652,13 @@ def get_saved_dishes(user_id, limit=None):
         - restaurant_id: to link to restaurant page
         - date_saved: date user saved the dish
     """
-    user_info = db.session.query(user).get(user_id)
+    user_info = db.session.query(user).options(
+        joinedload(user.saved_dishes)
+        .joinedload(savedDishes.dish)
+        .joinedload(dish.menu_dishes)
+        .joinedload(menuDishJunction.menu)
+        .joinedload(menu.restaurant)
+    ).get(user_id)
 
     if not user_info:
         return []
@@ -634,6 +704,10 @@ def get_live_updates(user_id, threshold=75, limit=None):
 
     match_updates = (
         db.session.query(liveUpdate)
+        .options(
+            joinedload(liveUpdate.user),
+            joinedload(liveUpdate.restaurant)
+        )
         .filter(liveUpdate.restaurant_id.in_(match_rest_ids))
         .filter(liveUpdate.user_id != user_id)
         .filter(liveUpdate.created_at >= twenty_four_hours_ago)
@@ -665,17 +739,19 @@ def get_follow_notifications(user_id, limit=None):
         .all()
     )
 
+    follow_back = {
+        following.buddy_id for following in db.session.query(friends)
+        .filter_by(user_id=user_id)
+        .all()
+    }
+
     notifications = []
     for relation, follower in new_follows:
-        is_following_back = db.session.query(friends).filter_by(
-            user_id=user_id, buddy_id=follower.user_id
-        ).first() is not None
-
         notifications.append({
             "follower_id": follower.user_id,
             "name": f"{follower.first_name} {follower.last_name}",
             "icon_path": follower.icon_path,
-            "is_following_back": is_following_back,
+            "is_following_back": follower.user_id in follow_back,
         })
 
     if limit:
@@ -758,6 +834,22 @@ def get_average_dish_price(restaurant_id):
     roundedPrice = f"{roundPrice:.2f}"
     
     return roundedPrice
+
+def get_average_dish_prices(restaurant_ids):
+    """
+    Batch call to get all avg prices for restaurants.
+    :param restaurant_ids: List of restaurant ids to get average prices
+    :return: dictionary format { restaurant_id: "avg_price_str" }
+    """
+    results = (
+        db.session.query(menu.restaurant_id, func.avg(dish.price))
+        .join(menuDishJunction, dish.dish_id == menuDishJunction.dish_id)
+        .join(menu, menu.menu_id == menuDishJunction.menu_id)
+        .filter(menu.restaurant_id.in_(restaurant_ids))
+        .group_by(menu.restaurant_id)
+        .all()
+    )
+    return {rest_id: f"{round(avg, 2):.2f}" for rest_id, avg in results}
 
 def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="match_score"):
     dish_recommendations = get_dish_recommendations(user_id)

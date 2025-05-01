@@ -3,7 +3,7 @@ from database import db
 from database.models.dish import dish, menuDishJunction, menu 
 from database.models.restaurant import restaurant
 from database.models.user import friends, tasteComparisons, user
-from backend.utils import get_featured_dishes, get_follow_notifications, get_friend_reviews, get_saved_dishes, get_dish_recommendations, get_live_updates, get_daily_feed, get_all_restaurant_info, get_restaurant_info, get_average_dish_price
+from backend.utils import get_average_dish_prices, get_bulk_restaurant_info, get_featured_dishes, get_group_dish_recommendations, get_dish_recommendations, get_daily_feed, get_all_restaurant_info, get_restaurant_info, get_average_dish_price
 import json
 
 daily_dish_bp = Blueprint('daily_dish', __name__)
@@ -211,39 +211,43 @@ def groupMatch(index=0):
             additional_ids = [rid for rid in sorted_ids if rid not in top_restaurant_ids][:5-len(top_restaurant_ids)]
             top_restaurant_ids.extend(additional_ids)
 
-        # Load dishes from top restaurants beforehand
-        dish_restaurant_pairs = (
-            db.session.query(menuDishJunction.dish_id, menu.restaurant_id)
-            .join(menu, menuDishJunction.menu_id == menu.menu_id)
-            .filter(menu.restaurant_id.in_(top_restaurant_ids))
-            .all()
-        )
-
-        # Map dishes to restaurants
-        dish_to_restaurant = {dish_id: restaurant_id for dish_id, restaurant_id in dish_restaurant_pairs}
-
         # Assign top dishes per group member
         top_dishes_by_member = {}
+
+        group_dish_recommendations = get_group_dish_recommendations([user.user_id for user in activeGroupInfo])
+
         for member in activeGroupInfo:
             user_dishes = {}
-            dish_recommendations = get_dish_recommendations(member.user_id)
+            dish_recommendations = group_dish_recommendations.get(member.user_id, [])
             
             # Find each member's top dish per restaurant
-            for dish_id, tastebuddy_id, dish_score in dish_recommendations:
-                rest_id = dish_to_restaurant.get(dish_id)
+            for dish_id, tastebuddy_id, dish_score, rest_id in dish_recommendations:
                 if rest_id in top_restaurant_ids:
                     if (rest_id not in user_dishes) or (dish_score > user_dishes[rest_id][2]):
                         user_dishes[rest_id] = (dish_id, tastebuddy_id, dish_score)
             
             top_dishes_by_member[member.user_id] = user_dishes
         
+        avg_prices = get_average_dish_prices(top_restaurant_ids)
+        rest_info_map = get_bulk_restaurant_info(user_id, top_restaurant_ids)
+
+        all_dish_ids = {
+            dish_id for member in activeGroupInfo
+            for dish_id in [
+                top_dishes_by_member.get(member.user_id, {}).get(rest_id, (None,))[0]
+                for rest_id in top_dishes_by_member.get(member.user_id, {})
+            ] if dish_id is not None
+        }
+
+        dishes = {
+            d.dish_id: d for d in dish.query.filter(dish.dish_id.in_(all_dish_ids)).all()
+        }
         
         for restaurant_id in top_restaurant_ids:
-            restaurantInfo = get_restaurant_info(user_id, restaurant_id)
+            restaurantInfo = rest_info_map.get(restaurant_id)
             if restaurantInfo:
-                average_price = get_average_dish_price(restaurant_id)
                 restaurantInfo['weightedScores'] = weightedScores[restaurant_id]
-                restaurantInfo['average_price'] = average_price
+                restaurantInfo['average_price'] = avg_prices.get(restaurant_id, "42")
                 restaurantInfo['restaurant_name'] = restaurantInfo.get('restaurant_name')
                 if restaurant_id in highMatchingRestaurants:
                     restaurantInfo['confidence'] = 'High'
@@ -263,7 +267,7 @@ def groupMatch(index=0):
                         
                         # Lazily fetch dish info as needed
                         if dish_id not in dish_details:
-                            dish_obj = dish.query.get(dish_id)
+                            dish_obj = dishes.get(dish_id)
                             if dish_obj:
                                 dish_details[dish_id] = {
                                     'dish_id': dish_id,
