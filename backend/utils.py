@@ -174,7 +174,7 @@ def get_dish_recommendations(user_id):
         dish_score: % score based on average rating, taste buddy score, and cuisine match, 
     """
     # Get user info from db
-    user_tp = db.session.query(user).filter(user.user_id == user_id).first()
+    # user_tp = db.session.query(user).filter(user.user_id == user_id).first()
     user_allergy = db.session.query(user_allergen.allergen).filter(user_allergen.user_id == user_id).all()
     user_dietary = db.session.query(user_restriction.restriction).filter(user_restriction.user_id == user_id).all()
     user_cuisine = db.session.query(cuisineUserJunction).filter(cuisineUserJunction.user_id == user_id).all()
@@ -267,6 +267,13 @@ def get_dish_recommendations(user_id):
             .scalar()
         ) or None
 
+        restaurant_id = (
+            db.session.query(menu.restaurant_id)
+            .join(menuDishJunction, menu.menu_id == menuDishJunction.menu_id)
+            .filter(menuDishJunction.dish_id == dish_id)
+            .scalar()
+        )
+
         # Normalize scores (0 to 1)
         bud_score = 1 - (comparison_num / 48)  # Adjust this if we change how tastebuddy score is determined
         if bud_score >= 0.90:
@@ -309,11 +316,26 @@ def get_dish_recommendations(user_id):
         adjusted_score = max(0, min(1, base_score))
         dish_score = round(adjusted_score * 100, 1)
             
-        scored_matches.append((dish_id, bud_id, dish_score))
+        scored_matches.append((dish_id, bud_id, dish_score, restaurant_id))
 
     # Sort list based on score, descending and return
     scored_matches.sort(key=lambda x: x[2], reverse=True)
     return scored_matches
+
+def get_group_dish_recommendations(user_ids):
+    """"
+    Method to get a dictionary of dish recommendations for multiple users.
+    :param user_ids: list of user ids to get group recommendations for
+    :return group_recommendations: formatted dictionary { user_id: [(dish_id, tastebuddy_id, score), ...]}
+    """
+    group_recommendations = {}
+    for userid in user_ids:
+        try:
+            group_recommendations[userid] = get_dish_recommendations(userid)
+        except Exception as e:
+            print(f"Failed to get recomendations for user {userid}: {e}")
+            group_recommendations[userid] = []
+    return group_recommendations
 
 """
 Refactoring from restaurant routes.  Both restaurant and restaurant details require a collection of the restaurant
@@ -419,6 +441,25 @@ def get_all_restaurant_info(user_id):
             update_map[update.restaurant_id] = update.update_content
 
     return [get_restaurant_info(user_id, rest, update_map.get(rest.restaurant_id)) for rest in all_restaurants]
+
+def get_bulk_restaurant_info(user_id, restaurant_ids):
+    """
+    Batch call to getting restaurant info for multiple restaurants.
+    :param user_id: user id for restaurant rating
+    :param restaurant_ids: list of restaurant ids to get rating for
+    :return: { restaurant_id: info_dict }
+    """
+    restaurants = db.session.query(restaurant).options(
+        joinedload(restaurant.operating_hours),
+        joinedload(restaurant.menu)
+            .joinedload(menu.menu_dishes)
+            .joinedload(menuDishJunction.dish)
+    ).filter(restaurant.restaurant_id.in_(restaurant_ids)).all()
+
+    return {
+        rest.restaurant_id: get_restaurant_info(user_id, rest)
+        for rest in restaurants
+    }
 
 def relative_time(original_time):
     """
@@ -594,7 +635,7 @@ def get_daily_dishes(user_id, limit=10):
             "match_score": score,
             **buddy_reviews.get(id, {})
         }
-        for id, _, score in new_dishes 
+        for id, _, score, _ in new_dishes 
         if id in dishes and id in buddy_reviews
     ]
         
@@ -793,6 +834,22 @@ def get_average_dish_price(restaurant_id):
     roundedPrice = f"{roundPrice:.2f}"
     
     return roundedPrice
+
+def get_average_dish_prices(restaurant_ids):
+    """
+    Batch call to get all avg prices for restaurants.
+    :param restaurant_ids: List of restaurant ids to get average prices
+    :return: dictionary format { restaurant_id: "avg_price_str" }
+    """
+    results = (
+        db.session.query(menu.restaurant_id, func.avg(dish.price))
+        .join(menuDishJunction, dish.dish_id == menuDishJunction.dish_id)
+        .join(menu, menu.menu_id == menuDishJunction.menu_id)
+        .filter(menu.restaurant_id.in_(restaurant_ids))
+        .group_by(menu.restaurant_id)
+        .all()
+    )
+    return {rest_id: f"{round(avg, 2):.2f}" for rest_id, avg in results}
 
 def get_filtered_sorted_dishes(user_id, search="", filter_by="all", sort_by="match_score"):
     dish_recommendations = get_dish_recommendations(user_id)
