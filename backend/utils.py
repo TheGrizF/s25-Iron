@@ -5,6 +5,7 @@ Keeps them organized so we can use them again if we need to.
 from datetime import datetime, timedelta
 from flask import session
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 from database import db
 from database.models.taste_profiles import dishTasteProfile
 from database.models.user import cuisineUserJunction, savedDishes, user, user_allergen, user_restriction, tasteComparisons, friends
@@ -363,11 +364,8 @@ def get_restaurant_dish_scores(user_id, restaurant_id):
 
     return sorted(dishes_with_match, key=lambda x: x["match_percentage"], reverse=True)
 
-def get_restaurant_info(user_id, restaurant_id):
-    this_restaurant: restaurant = restaurant.query.get(restaurant_id)
-    if not this_restaurant:
-        return None
-    
+def get_restaurant_info(user_id, this_restaurant, update_info=None):
+
     restaurant_dishes = get_restaurant_dish_scores(user_id, this_restaurant.restaurant_id)
 
     matched_scores = [d["match_percentage"] for d in restaurant_dishes]
@@ -377,20 +375,6 @@ def get_restaurant_info(user_id, restaurant_id):
         f"{entry.days_of_week}: {entry.open_time.strftime('%I:%M %p')} - {entry.close_time.strftime('%I:%M %p')}"
         for entry in this_restaurant.operating_hours
     )
-
-    recent_threshold = datetime.now() - timedelta(hours=4)
-
-    recent_update = (
-        db.session.query(liveUpdate)
-        .filter(liveUpdate.restaurant_id == this_restaurant.restaurant_id)
-        .filter(liveUpdate.created_at >= recent_threshold)
-        .order_by(liveUpdate.created_at.desc())
-        .first()
-    )
-    if recent_update:
-        update_info = recent_update.update_content
-    else:
-        update_info = None
 
     return {
             "restaurant_id": this_restaurant.restaurant_id,
@@ -411,8 +395,30 @@ def get_restaurant_info(user_id, restaurant_id):
         }
 
 def get_all_restaurant_info(user_id):
-    all_restaurants = restaurant.query.all()
-    return [get_restaurant_info(user_id, rest.restaurant_id) for rest in all_restaurants]
+    recent_update_threshold = datetime.now() - timedelta(hours=4)
+
+    all_restaurants = (
+        db.session.query(restaurant)
+        .options(
+            joinedload(restaurant.operating_hours),
+            joinedload(restaurant.menu)
+                .joinedload(menu.menu_dishes)
+                .joinedload(menuDishJunction.dish)
+        ).all()
+    )
+
+    recent_updates = (
+        db.session.query(liveUpdate)
+        .filter(liveUpdate.created_at >= recent_update_threshold)
+        .order_by(liveUpdate.created_at.desc())
+        .all()
+    )
+    update_map = {}
+    for update in recent_updates:
+        if update.restaurant_id not in update_map:
+            update_map[update.restaurant_id] = update.update_content
+
+    return [get_restaurant_info(user_id, rest, update_map.get(rest.restaurant_id)) for rest in all_restaurants]
 
 def relative_time(original_time):
     """
