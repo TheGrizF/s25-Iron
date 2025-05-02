@@ -55,8 +55,8 @@ def restaurant_detail(restaurant_id):
         flash("Log in to view restaurant info!", "error")
         return redirect(url_for("auth.login"))
 
-    
-    restaurant_info = get_restaurant_info(user_id, restaurant_id)
+    rest = restaurant.query.get(restaurant_id)
+    restaurant_info = get_restaurant_info(user_id, rest)
     if not restaurant_info:
         return "Restaurant not found", 404
     
