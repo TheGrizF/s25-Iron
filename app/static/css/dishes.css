@@ -109,17 +109,9 @@ body {
     align-items: flex-start;
     flex-wrap: nowrap; 
     justify-content: flex-start;
-    gap: 15px;
-    position: relative;
-}
-
-.card-link {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    text-decoration: none;
-    color: inherit;
-    gap: 15px;
+    /*justify-content: space-between; */
+    /*align-items: center;*/
+    gap: 15 px;
 }
 
 .dish-card img {
@@ -141,6 +133,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
 }
 
 .dish-info h2 {
@@ -209,16 +202,15 @@ body {
 }
 
 .dish-save {
+    /*flex: 1;*/
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 30px;
-    position: relative;
-    z-index: 2;
 }
 
-.dish-save i {
+.dish-save i{
     font-size: 24px;
     flex-shrink:0;
 }
@@ -234,6 +226,9 @@ body {
 .dish-save .not-saved:hover {
     color: var(--burgundy-main);
 }
+
+
+
 
 @media (max-width: 768px) {
     .dishes-container {
