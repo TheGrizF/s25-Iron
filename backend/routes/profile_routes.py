@@ -45,7 +45,7 @@ def view_profile():
     # Get recommended dishes
     recommended_dishes = get_dish_recommendations(user_id)[:5]
     dish_matches = []
-    for dish_id, buddy_id, match_percent in recommended_dishes:
+    for dish_id, buddy_id, match_percent, _ in recommended_dishes:
         dish_info = db.session.query(dish.dish_name).filter(dish.dish_id == dish_id).first()
         buddy_info = db.session.query(user.first_name, user.last_name).filter(user.user_id == buddy_id).first()
 
@@ -629,7 +629,7 @@ def api_dish_matches():
     recommended_dishes = get_dish_recommendations(user_id)
 
     results = []
-    for dish_id, buddy_id, match_percent in recommended_dishes:
+    for dish_id, buddy_id, match_percent, _ in recommended_dishes:
         dish_info = db.session.query(dish.dish_name).filter(dish.dish_id == dish_id).first()
         buddy_info = db.session.query(user.first_name, user.last_name).filter(user.user_id == buddy_id).first()
 
