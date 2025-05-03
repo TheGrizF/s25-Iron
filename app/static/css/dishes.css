@@ -59,7 +59,7 @@ body {
 .filter-row {
     display: flex;
     gap: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 .filter-dropdown {
@@ -67,7 +67,7 @@ body {
     padding: 8px;
     border: none;
     border-radius: 5px;
-    margin-bottom: 6px;
+    margin-bottom: 0px;
 }
 
 .filter-row form {
@@ -94,6 +94,7 @@ body {
     display: flex;
     flex-direction: column; 
     gap: 5px;
+    margin-top: 0;
 }
 
 .dish-card {
@@ -111,7 +112,9 @@ body {
     justify-content: flex-start;
     /*justify-content: space-between; */
     /*align-items: center;*/
-    gap: 15 px;
+    gap: 15px;
+    margin-right: 0;
+    margin-left: 0;
 }
 
 .dish-card img {

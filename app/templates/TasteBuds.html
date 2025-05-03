@@ -24,7 +24,44 @@
 <script>
   function showLoading() {
     document.getElementById('loading-overlay').style.display = 'flex';
+    sessionStorage.setItem('loading', 'true');
   }
+
+  // Function to hide loading overlay
+  function hideLoading() {
+    document.getElementById('loading-overlay').style.display = 'none';
+  }
+  
+  // Function to hide loading overlay
+  function hideLoading() {
+    document.getElementById('loading-overlay').style.display = 'none';
+    sessionStorage.removeItem('loading');
+  }
+  
+  // Stop infinite loading from back navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    if (sessionStorage.getItem('loading') === 'true') {
+      // If we navigated back and loading was active, clear it
+      sessionStorage.removeItem('loading');
+    }
+    
+    hideLoading();
+
+    // Set a flag when page is first loaded
+    if (!sessionStorage.getItem('pageLoaded')) {
+      sessionStorage.setItem('pageLoaded', 'true');
+    } else {
+      sessionStorage.removeItem('pageLoaded');
+      window.location.reload();
+    }
+    
+    // Refresh after back button
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+  });
 </script>
 
 <div class="loading-overlay" id="loading-overlay">
