@@ -57,17 +57,18 @@
             {% endif %}
         </form>
     </div>
-
-    <div id="dishes-list" class="dishes-list">
-        {% if dishes %}
-            {% for dish in dishes %}
-                {% include 'components/dish_card.html' %}
-            {% endfor %}
-        {% else %}
-            <p>No dishes available.</p>
-        {% endif %}
-    </div>
 </div>
+
+<div id="dishes-list" class="dishes-list">
+    {% if dishes %}
+        {% for dish in dishes %}
+            {% include 'components/dish_card.html' %}
+        {% endfor %}
+    {% else %}
+        <p>No dishes available.</p>
+    {% endif %}
+</div>
+
 {% endblock %}
 
 {% block scripts %}

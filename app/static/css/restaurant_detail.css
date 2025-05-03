@@ -2,6 +2,11 @@
     padding-bottom: 70px;
 } 
 
+/*Added this, remove if it looks bad in mobile*/
+.restaurant-detail h2{
+    font-size: 26px;
+} 
+
 .header-images {
     position: relative;
     height: 250px;
@@ -17,7 +22,7 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    background: rgba(139, 137, 137, 0.9);
+    background: rgba(92, 91, 91, 0.7);
     border: none;
     width: 40px;
     height: 40px;
