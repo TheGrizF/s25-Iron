@@ -1,0 +1,4 @@
+restaurant_id,restaurant_name,weighted_score,average_price,confidence
+101,The Hungry Hippo,85,25.99,High
+102,Taste of Town,73,19.50,Medium
+103,Budget Bites,65,12.00,Low

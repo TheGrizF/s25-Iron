@@ -1,0 +1,5 @@
+dish_id,dish_name,price,image_path,restaurant_id,user_id,match_score
+201,Truffle Burger,15.99,/images/burger.png,101,1,90
+202,Miso Ramen,12.50,/images/ramen.png,101,2,88
+203,Taco Trio,8.75,/images/taco.png,102,1,80
+204,Vegan Bowl,11.00,/images/vegan.png,103,2,70
